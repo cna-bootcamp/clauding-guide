@@ -1,0 +1,105 @@
+@startuml
+!theme mono
+title 회원 서비스 - 데이터 모델
+
+' Style configurations
+skinparam linetype ortho
+hide circle
+
+' Member entities
+entity "members" as members {
+  * userId: varchar(50) <<PK>>
+  --
+  userName: varchar(100)
+  password: varchar(255)
+  bankName: varchar(50)
+  bankAccount: varchar(50)
+  characterId: integer
+  createdAt: timestamp
+  updatedAt: timestamp
+}
+
+entity "roles" as roles {
+  * userId: varchar(50) <<FK>>
+  * role: varchar(20)
+  --
+}
+
+' Relationships
+members ||--o{ roles
+
+@enduml
+
+@startuml
+!theme mono
+title 마이구독 서비스 - 데이터 모델
+
+' Style configurations
+skinparam linetype ortho
+hide circle
+
+' MySubscription entities
+entity "my_subscriptions" as my_subs {
+  * id: bigint <<PK>>
+  --
+  userId: varchar(50)
+  subscriptionId: bigint
+  createdAt: timestamp
+  updatedAt: timestamp
+}
+
+entity "subscriptions" as subs {
+  * id: bigint <<PK>>
+  --
+  name: varchar(100)
+  description: text
+  categoryId: varchar(50)
+  fee: integer
+  maxShareNum: integer
+  logoUrl: varchar(255)
+}
+
+entity "categories" as categories {
+  * id: varchar(50) <<PK>>
+  --
+  categoryName: varchar(100)
+}
+
+' Relationships
+my_subs }--|| subs : subscriptionId
+subs }--|| categories : categoryId
+
+@enduml
+
+@startuml
+!theme mono
+title 구독추천 서비스 - 데이터 모델
+
+' Style configurations
+skinparam linetype ortho
+hide circle
+
+' Spending entities
+entity "spending_history" as spending {
+  * id: bigint <<PK>>
+  --
+  userId: varchar(50)
+  category: varchar(50)
+  amount: decimal(15,2)
+  spendDate: date
+  createdAt: timestamp
+}
+
+' Category mapping entities
+entity "categories" as categories {
+  * id: varchar(50) <<PK>>
+  --
+  categoryName: varchar(100)
+  spendingCategory: varchar(50)
+  imagePath: varchar(255)
+}
+
+' Relationships
+spending }o--o{ categories : "카테고리 매핑"
+
+@enduml

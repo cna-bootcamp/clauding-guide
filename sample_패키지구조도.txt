@@ -1,0 +1,88 @@
+@startuml
+!theme mono
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+
+title 구독관리 시스템 - 패키지 구조
+
+package "com.unicorn.lifesub" {
+  package "member" {
+    package "member.controller" as memberController
+    package "member.service" as memberService
+    package "member.domain" as memberDomain
+    package "member.repository" as memberRepository
+    package "member.repository.entity" as memberEntity
+    package "member.dto" as memberDto
+    package "member.config" as memberConfig
+  }
+
+  package "mysub" {
+    package "mysub.infra" {
+      package "mysub.infra.controller" as mysubController
+      package "mysub.infra.gateway" as mysubGateway
+      package "mysub.infra.gateway.repository" as mysubRepository
+      package "mysub.infra.gateway.entity" as mysubEntity
+      package "mysub.infra.dto" as mysubDto
+      package "mysub.infra.config" as mysubConfig
+    }
+
+    package "mysub.biz" {
+      package "mysub.biz.usecase.in" as mysubUsecaseIn
+      package "mysub.biz.usecase.out" as mysubUsecaseOut
+      package "mysub.biz.service" as mysubService
+      package "mysub.biz.domain" as mysubDomain
+    }
+  }
+
+  package "recommend" {
+    package "recommend.controller" as recommendController
+    package "recommend.service" as recommendService
+    package "recommend.domain" as recommendDomain
+    package "recommend.repository" as recommendRepository
+    package "recommend.repository.entity" as recommendEntity
+    package "recommend.dto" as recommendDto
+    package "recommend.config" as recommendConfig
+  }
+
+  package "common" {
+    package "common.dto" as commonDto
+    package "common.util" as commonUtil
+    package "common.exception" as commonException
+    package "common.response" as commonResponse
+  }
+}
+
+' 계층 간 의존관계
+memberController --> memberService
+memberService --> memberDomain
+memberService --> memberRepository
+memberRepository --> memberEntity
+
+mysubController --> mysubUsecaseIn
+mysubService --> mysubUsecaseIn
+mysubService --> mysubUsecaseOut
+mysubService --> mysubDomain
+mysubGateway --> mysubUsecaseOut
+mysubGateway --> mysubRepository
+mysubRepository --> mysubEntity
+
+recommendController --> recommendService
+recommendService --> recommendDomain
+recommendService --> recommendRepository
+recommendRepository --> recommendEntity
+
+' 공통 모듈 의존관계
+memberController ..> commonResponse
+mysubController ..> commonResponse
+recommendController ..> commonResponse
+
+memberService ..> commonException
+mysubService ..> commonException
+recommendService ..> commonException
+
+memberController ..> commonDto
+mysubController ..> commonDto
+recommendController ..> commonDto
+
+@enduml

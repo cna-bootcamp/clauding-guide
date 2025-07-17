@@ -1,0 +1,44 @@
+@startuml
+!theme mono
+title 구독관리 서비스 - 외부 시퀀스 다이어그램
+
+actor Client
+participant APIGateway
+participant "회원 서비스\n(Authentication)" as AuthService
+participant "마이구독 서비스\n(MySubscription)" as MySubService
+participant "구독추천 서비스\n(RecommendService)" as RecommendService
+
+' 회원 서비스 호출
+Client -> APIGateway: 로그인 요청\nPOST /api/auth/login
+APIGateway -> AuthService: 로그인 요청 전달\nPOST /api/auth/login
+
+Client -> APIGateway: 로그아웃 요청\nPOST /api/auth/logout
+APIGateway -> AuthService: 로그아웃 요청 전달\nPOST /api/auth/logout
+
+' 마이구독 서비스 호출
+Client -> APIGateway: 총 구독료 조회\nGET /api/users/{userId}/subscriptions/total-fee
+APIGateway -> MySubService: 총 구독료 조회 요청 전달\nGET /api/users/{userId}/subscriptions/total-fee
+
+Client -> APIGateway: 나의 구독 목록 조회\nGET /api/users/{userId}/subscriptions
+APIGateway -> MySubService: 나의 구독 목록 조회 요청 전달\nGET /api/users/{userId}/subscriptions
+
+Client -> APIGateway: 구독 상세 정보 조회\nGET /api/subscriptions/{subscriptionId}
+APIGateway -> MySubService: 구독 상세 정보 조회 요청 전달\nGET /api/subscriptions/{subscriptionId}
+
+Client -> APIGateway: 구독하기\nPOST /api/users/{userId}/subscriptions
+APIGateway -> MySubService: 구독하기 요청 전달\nPOST /api/users/{userId}/subscriptions
+
+Client -> APIGateway: 구독 취소\nDELETE /api/users/{userId}/subscriptions/{subscriptionId}
+APIGateway -> MySubService: 구독 취소 요청 전달\nDELETE /api/users/{userId}/subscriptions/{subscriptionId}
+
+Client -> APIGateway: 카테고리별 구독 서비스 목록 조회\nGET /api/subscriptions?categoryId={categoryId}
+APIGateway -> MySubService: 카테고리별 구독 서비스 목록 조회 요청 전달\nGET /api/subscriptions?categoryId={categoryId}
+
+' 구독추천 서비스 호출
+Client -> APIGateway: 추천 구독 카테고리 조회\nGET /api/recommend/categories?userId={userId}
+APIGateway -> RecommendService: 추천 구독 카테고리 조회 요청 전달\nGET /api/recommend/categories?userId={userId}
+
+' 마이크로서비스 간 통신
+MySubService -> RecommendService: 구독 서비스 정보 요청
+
+@enduml

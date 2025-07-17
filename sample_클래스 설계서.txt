@@ -1,0 +1,598 @@
+@startuml
+!theme mono
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+
+title 회원 서비스 - 클래스 다이어그램 (Layered 아키텍처)
+
+package "com.unicorn.lifesub.member" {
+  package "controller" {
+    class AuthController {
+      -authService: AuthService
+      +login(loginRequest: LoginRequest): ResponseEntity<TokenResponse>
+      +logout(logoutRequest: LogoutRequest): ResponseEntity<LogoutResponse>
+    }
+  }
+
+  package "service" {
+    interface AuthService {
+      +login(loginRequest: LoginRequest): TokenResponse
+      +logout(logoutRequest: LogoutRequest): LogoutResponse
+    }
+
+    class AuthServiceImpl {
+      -memberRepository: MemberRepository
+      -jwtTokenProvider: JwtTokenProvider
+      +login(loginRequest: LoginRequest): TokenResponse
+      +logout(logoutRequest: LogoutRequest): LogoutResponse
+    }
+  }
+
+  package "domain" {
+    class Member {
+      -userId: String
+      -userName: String
+      -password: String
+      -bankName: String
+      -bankAccount: String
+      -characterId: Integer
+      +getUserId(): String
+      +getUserName(): String
+      +getPassword(): String
+      +getBankName(): String
+      +getBankAccount(): String
+      +getCharacterId(): Integer
+    }
+  }
+
+  package "repository" {
+    interface MemberRepository {
+      +findByUserId(userId: String): Optional<MemberEntity>
+      +save(memberEntity: MemberEntity): MemberEntity
+    }
+
+    package "entity" {
+      class MemberEntity {
+        -userId: String
+        -userName: String
+        -password: String
+        -bankName: String
+        -bankAccount: String
+        -characterId: Integer
+        +toDomain(): Member
+        +fromDomain(member: Member): MemberEntity
+      }
+    }
+  }
+
+  package "dto" {
+    class LoginRequest {
+      -userId: String
+      -password: String
+      +getUserId(): String
+      +getPassword(): String
+    }
+
+    class LogoutRequest {
+      -userId: String
+      +getUserId(): String
+    }
+
+    class TokenResponse {
+      -accessToken: String
+      -refreshToken: String
+      -expiresIn: long
+      +getAccessToken(): String
+      +getRefreshToken(): String
+      +getExpiresIn(): long
+    }
+
+    class LogoutResponse {
+      -success: boolean
+      -message: String
+      +isSuccess(): boolean
+      +getMessage(): String
+    }
+  }
+
+  package "config" {
+    class SecurityConfig {
+      -jwtTokenProvider: JwtTokenProvider
+      +securityFilterChain(http: HttpSecurity): SecurityFilterChain
+      +corsConfigurationSource(): CorsConfigurationSource
+    }
+
+    class JwtTokenProvider {
+      -algorithm: Algorithm
+      -secret: String
+      -accessTokenExpiry: Long
+      -refreshTokenExpiry: Long
+      +createToken(memberEntity: MemberEntity, authorities: Collection<GrantedAuthority>): TokenResponse
+      +validateToken(token: String): int
+      +getAuthentication(token: String): Authentication
+      +invalidateToken(userId: String): void
+    }
+  }
+}
+
+' 관계 정의
+AuthController --> AuthService
+AuthServiceImpl ..|> AuthService
+AuthServiceImpl --> MemberRepository
+AuthServiceImpl --> JwtTokenProvider
+MemberRepository ..> MemberEntity
+SecurityConfig --> JwtTokenProvider
+AuthController ..> LoginRequest
+AuthController ..> LogoutRequest
+AuthController ..> TokenResponse
+AuthController ..> LogoutResponse
+MemberEntity ..> Member
+
+@enduml
+
+@startuml
+!theme mono
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+
+title 마이구독 서비스 - 클래스 다이어그램 (Clean 아키텍처)
+
+package "com.unicorn.lifesub.mysub" {
+  package "infra" {
+    package "controller" {
+      class MySubscriptionController {
+        -totalFeeInputBoundary: TotalFeeInputBoundary
+        -mySubscriptionsInputBoundary: MySubscriptionsInputBoundary
+        -subscriptionDetailInputBoundary: SubscriptionDetailInputBoundary 
+        -subscribeInputBoundary: SubscribeInputBoundary
+        -cancelSubscriptionInputBoundary: CancelSubscriptionInputBoundary
+        -subscriptionCategoriesInputBoundary: SubscriptionCategoriesInputBoundary
+        -subscriptionsByCategeoryInputBoundary: SubscriptionsByCategoryInputBoundary
+        +getTotalFee(userId: String): ResponseEntity<TotalFeeResponse>
+        +getMySubscriptions(userId: String): ResponseEntity<List<MySubscriptionListResponse>>
+        +getSubscriptionDetail(subscriptionId: Long): ResponseEntity<SubscriptionDetailResponse>
+        +subscribeSub(userId: String, subscriptionId: Long): ResponseEntity<SubscribeResponse>
+        +cancelSub(userId: String, subscriptionId: Long): ResponseEntity<SuccessResponse>
+        +getSubscriptionCategories(): ResponseEntity<List<CategoryListDTO>>
+        +getSubscriptionsByCategory(categoryId: String): ResponseEntity<List<SubscriptionListResponse>>
+      }
+    }
+
+    package "gateway" {
+      class SubscriptionDataAccess {
+        -mySubscriptionJpaRepository: MySubscriptionJpaRepository
+        -subscriptionJpaRepository: SubscriptionJpaRepository
+        -categoryJpaRepository: CategoryJpaRepository
+        +findByUserId(userId: String): List<MySubscription>
+        +findSubscriptionById(subscriptionId: Long): Optional<Subscription>
+        +save(mySubscription: MySubscription): MySubscription
+        +delete(userId: String, subscriptionId: Long): void
+        +findAllCategories(): List<Category>
+        +findSubscriptionsByCategory(categoryId: String): List<Subscription>
+      }
+
+      package "repository" {
+        interface MySubscriptionJpaRepository {
+          +findByUserId(userId: String): List<MySubscriptionEntity>
+          +findByUserIdAndSubscriptionId(userId: String, subscriptionId: Long): Optional<MySubscriptionEntity>
+          +save(mySubscriptionEntity: MySubscriptionEntity): MySubscriptionEntity
+          +delete(mySubscriptionEntity: MySubscriptionEntity): void
+        }
+        
+        interface SubscriptionJpaRepository {
+          +findById(id: Long): Optional<SubscriptionEntity>
+          +findByCategoryId(categoryId: String): List<SubscriptionEntity>
+          +findAll(): List<SubscriptionEntity>
+        }
+        
+        interface CategoryJpaRepository {
+          +findAll(): List<CategoryEntity>
+          +findById(id: String): Optional<CategoryEntity>
+        }
+      }
+
+      package "entity" {
+        class MySubscriptionEntity {
+          -userId: String
+          -subscriptionId: Long
+          +toDomain(): MySubscription
+          +fromDomain(mySubscription: MySubscription): MySubscriptionEntity
+        }
+        
+        class SubscriptionEntity {
+          -id: Long
+          -name: String
+          -description: String
+          -categoryId: String
+          -fee: int
+          -maxShareNum: int
+          -logo: String
+          +toDomain(): Subscription
+          +fromDomain(subscription: Subscription): SubscriptionEntity
+        }
+        
+        class CategoryEntity {
+          -id: String
+          -categoryName: String
+          +toDomain(): Category
+          +fromDomain(category: Category): CategoryEntity
+        }
+      }
+    }
+
+    package "dto" {
+      class TotalFeeResponse {
+        -totalFee: int
+        -rangeImage: String
+        +getTotalFee(): int
+        +getRangeImage(): String
+      }
+
+      class MySubscriptionListResponse {
+        -subscriptionId: Long
+        -serviceName: String
+        -logoUrl: String
+        +getSubscriptionId(): Long
+        +getServiceName(): String
+        +getLogoUrl(): String
+      }
+
+      class SubscriptionDetailResponse {
+        -subscriptionId: Long
+        -serviceName: String
+        -category: String
+        -description: String
+        -fee: int
+        -maxShareNum: int
+        +getSubscriptionId(): Long
+        +getServiceName(): String
+        +getCategory(): String
+        +getDescription(): String
+        +getFee(): int
+        +getMaxShareNum(): int
+      }
+
+      class SubscriptionListResponse {
+        -subscriptionId: Long
+        -serviceName: String
+        -logoUrl: String
+        -description: String
+        -fee: int
+        +getSubscriptionId(): Long
+        +getServiceName(): String
+        +getLogoUrl(): String
+        +getDescription(): String
+        +getFee(): int
+      }
+
+      class CategoryListDTO {
+        -categoryName: String
+        +getCategoryName(): String
+      }
+
+      class SubscribeResponse {
+        -success: boolean
+        -message: String
+        +isSuccess(): boolean
+        +getMessage(): String
+      }
+
+      class SuccessResponse {
+        -success: boolean
+        -message: String
+        +isSuccess(): boolean
+        +getMessage(): String
+      }
+    }
+  }
+
+  package "biz" {
+    package "usecase" {
+      package "in" {
+        interface TotalFeeInputBoundary {
+          +getTotalFee(userId: String): TotalFeeResponse
+        }
+
+        interface MySubscriptionsInputBoundary {
+          +getMySubscriptions(userId: String): List<MySubscriptionListResponse>
+        }
+
+        interface SubscriptionDetailInputBoundary {
+          +getSubscriptionDetail(subscriptionId: Long): SubscriptionDetailResponse
+        }
+
+        interface SubscribeInputBoundary {
+          +subscribeSub(userId: String, subscriptionId: Long): SubscribeResponse
+        }
+
+        interface CancelSubscriptionInputBoundary {
+          +cancelSub(userId: String, subscriptionId: Long): SuccessResponse
+        }
+        
+        interface SubscriptionCategoriesInputBoundary {
+          +getCategories(): List<CategoryListDTO>
+        }
+        
+        interface SubscriptionsByCategoryInputBoundary {
+          +getSubscriptionsByCategory(categoryId: String): List<SubscriptionListResponse>
+        }
+      }
+
+      package "out" {
+        interface SubscriptionDataAccessInterface {
+          +findByUserId(userId: String): List<MySubscription>
+          +findSubscriptionById(subscriptionId: Long): Optional<Subscription>
+          +save(mySubscription: MySubscription): MySubscription
+          +delete(userId: String, subscriptionId: Long): void
+          +findAllCategories(): List<Category>
+          +findSubscriptionsByCategory(categoryId: String): List<Subscription>
+        }
+      }
+    }
+
+    package "service" {
+      class MySubscriptionInteractor {
+        -subscriptionDataAccess: SubscriptionDataAccessInterface
+        +getTotalFee(userId: String): TotalFeeResponse
+        +getMySubscriptions(userId: String): List<MySubscriptionListResponse>
+        +getSubscriptionDetail(subscriptionId: Long): SubscriptionDetailResponse
+        +subscribeSub(userId: String, subscriptionId: Long): SubscribeResponse
+        +cancelSub(userId: String, subscriptionId: Long): SuccessResponse
+        +getCategories(): List<CategoryListDTO>
+        +getSubscriptionsByCategory(categoryId: String): List<SubscriptionListResponse>
+      }
+    }
+
+    package "domain" {
+      class MySubscription {
+        -userId: String
+        -subscriptionId: Long
+        +getUserId(): String
+        +getSubscriptionId(): Long
+      }
+
+      class Subscription {
+        -id: Long
+        -name: String
+        -categoryId: String
+        -description: String
+        -fee: int
+        -maxShareNum: int
+        -logoUrl: String
+        +getId(): Long
+        +getName(): String
+        +getCategoryId(): String
+        +getDescription(): String
+        +getFee(): int
+        +getMaxShareNum(): int
+        +getLogoUrl(): String
+      }
+      
+      class Category {
+        -id: String
+        -categoryName: String
+        +getId(): String
+        +getCategoryName(): String
+      }
+    }
+  }
+}
+
+' 관계 정의
+MySubscriptionController --> TotalFeeInputBoundary
+MySubscriptionController --> MySubscriptionsInputBoundary
+MySubscriptionController --> SubscriptionDetailInputBoundary
+MySubscriptionController --> SubscribeInputBoundary
+MySubscriptionController --> CancelSubscriptionInputBoundary
+MySubscriptionController --> SubscriptionCategoriesInputBoundary
+MySubscriptionController --> SubscriptionsByCategoryInputBoundary
+
+MySubscriptionInteractor ..|> TotalFeeInputBoundary
+MySubscriptionInteractor ..|> MySubscriptionsInputBoundary
+MySubscriptionInteractor ..|> SubscriptionDetailInputBoundary
+MySubscriptionInteractor ..|> SubscribeInputBoundary
+MySubscriptionInteractor ..|> CancelSubscriptionInputBoundary
+MySubscriptionInteractor ..|> SubscriptionCategoriesInputBoundary
+MySubscriptionInteractor ..|> SubscriptionsByCategoryInputBoundary
+
+MySubscriptionInteractor --> SubscriptionDataAccessInterface
+
+SubscriptionDataAccess ..|> SubscriptionDataAccessInterface
+SubscriptionDataAccess --> MySubscriptionJpaRepository
+SubscriptionDataAccess --> SubscriptionJpaRepository
+SubscriptionDataAccess --> CategoryJpaRepository
+
+MySubscriptionJpaRepository ..> MySubscriptionEntity
+SubscriptionJpaRepository ..> SubscriptionEntity
+CategoryJpaRepository ..> CategoryEntity
+
+MySubscriptionEntity ..> MySubscription
+SubscriptionEntity ..> Subscription
+CategoryEntity ..> Category
+
+MySubscriptionInteractor ..> MySubscription
+MySubscriptionInteractor ..> Subscription
+MySubscriptionInteractor ..> Category
+
+@enduml
+
+@startuml
+!theme mono
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+
+title 구독추천 서비스 - 클래스 다이어그램 (Layered 아키텍처)
+
+package "com.unicorn.lifesub.recommend" {
+  package "controller" {
+    class RecommendController {
+      -recommendService: RecommendService
+      +getRecommendCategories(userId: String): ResponseEntity<RecommendCategoryDTO>
+    }
+  }
+
+  package "service" {
+    interface RecommendService {
+      +getRecommendCategories(userId: String): RecommendCategoryDTO
+    }
+
+    class RecommendServiceImpl {
+      -spendingRepository: SpendingRepository
+      -categoryRepository: CategoryRepository
+      +getRecommendCategories(userId: String): RecommendCategoryDTO
+    }
+  }
+
+  package "domain" {
+    class Category {
+      -id: String
+      -categoryName: String
+      -spendingCategory: String
+      +getId(): String
+      +getCategoryName(): String
+      +getSpendingCategory(): String
+    }
+
+    class Spending {
+      -id: Long
+      -userId: String
+      -category: String
+      -amount: BigDecimal
+      +getId(): Long
+      +getUserId(): String
+      +getCategory(): String
+      +getAmount(): BigDecimal
+    }
+  }
+
+  package "repository" {
+    interface SpendingRepository {
+      +findTopCategoryByUserId(userId: String): String
+      +findTotalExpenseByUserId(userId: String): int
+    }
+
+    interface CategoryRepository {
+      +findByCategoryMapping(spendingCategory: String): CategoryEntity
+    }
+
+    package "entity" {
+      class SpendingEntity {
+        -id: Long
+        -userId: String
+        -category: String
+        -amount: BigDecimal
+        +toDomain(): Spending
+        +fromDomain(spending: Spending): SpendingEntity
+      }
+
+      class CategoryEntity {
+        -id: String
+        -categoryName: String
+        -spendingCategory: String
+        +toDomain(): Category
+        +fromDomain(category: Category): CategoryEntity
+      }
+    }
+  }
+
+  package "dto" {
+    class RecommendCategoryDTO {
+      -categoryName: String
+      -imagePath: String
+      -baseDate: String
+      +getCategoryName(): String
+      +getImagePath(): String
+      +getBaseDate(): String
+    }
+  }
+
+  package "config" {
+    class SwaggerConfig {
+      +openAPI(): OpenAPI
+    }
+  }
+}
+
+' 관계 정의
+RecommendController --> RecommendService
+RecommendServiceImpl ..|> RecommendService
+RecommendServiceImpl --> SpendingRepository
+RecommendServiceImpl --> CategoryRepository
+SpendingRepository ..> SpendingEntity
+CategoryRepository ..> CategoryEntity
+SpendingEntity ..> Spending
+CategoryEntity ..> Category
+RecommendController ..> RecommendCategoryDTO
+
+@enduml
+
+@startuml
+!theme mono
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+
+title 공통 모듈 - 클래스 다이어그램
+
+package "com.unicorn.lifesub.common" {
+  package "dto" {
+    class ApiResponse<T> {
+      -status: int
+      -message: String
+      -data: T
+      +getStatus(): int
+      +getMessage(): String
+      +getData(): T
+      +success(): ApiResponse<T>
+      +error(message: String): ApiResponse<T>
+    }
+  }
+
+  package "exception" {
+    class BizException {
+      -errorCode: String
+      -message: String
+      +getBizException(message: String)
+      +getBizException(message: String, cause: Throwable)
+    }
+
+    class GlobalExceptionHandler {
+      +handleBizException(e: BizException): ResponseEntity<ApiResponse>
+      +handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ApiResponse>
+      +handleException(e: Exception): ResponseEntity<ApiResponse>
+    }
+  }
+
+  package "util" {
+    class DateUtils {
+      +{static} formatDate(date: LocalDateTime, pattern: String): String
+      +{static} parseDate(dateStr: String, pattern: String): LocalDateTime
+      +{static} getCurrentDateStr(pattern: String): String
+    }
+
+    class ValidationUtils {
+      +{static} validateNotNull(obj: Object, message: String): void
+      +{static} validateNotEmpty(str: String, message: String): void
+    }
+  }
+
+  package "response" {
+    class ResponseBuilder {
+      +{static} ok(): ResponseEntity<ApiResponse>
+      +{static} ok(data: Object): ResponseEntity<ApiResponse>
+      +{static} created(data: Object): ResponseEntity<ApiResponse>
+      +{static} noContent(): ResponseEntity<ApiResponse>
+      +{static} badRequest(message: String): ResponseEntity<ApiResponse>
+      +{static} unauthorized(message: String): ResponseEntity<ApiResponse>
+      +{static} forbidden(message: String): ResponseEntity<ApiResponse>
+      +{static} notFound(message: String): ResponseEntity<ApiResponse>
+      +{static} internalServerError(message: String): ResponseEntity<ApiResponse>
+    }
+  }
+}
+
+@enduml
+
