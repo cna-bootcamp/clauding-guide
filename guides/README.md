@@ -36,11 +36,11 @@
 ### 🏗️ 4. 설계 작업 (design/)
 | 파일 | 설명 | 사용 시점 |
 |------|------|-----------|
-| [common-principles.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md) | 공통 설계 원칙 및 전략 | 모든 설계 단계에서 참조 |
-| [architecture.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/architecture.md) | 논리/물리 아키텍처 설계 | 전체 시스템 구조 설계 시 |
-| [api-design.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/api-design.md) | OpenAPI 기반 API 설계 | 서비스별 API 명세 작성 시 |
-| [sequence-design.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/sequence-design.md) | 외부/내부 시퀀스 설계 | 서비스 플로우 설계 시 |
-| [class-data-design.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/class-data-design.md) | 클래스/데이터 설계 | 세부 구현 설계 시 |
+| [common-principles.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md) | 공통 설계 원칙 | 모든 설계 단계에서 참조 |
+| [architecture.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/architecture.md) | 논리/물리 아키텍처 설계 가이드 | 전체 시스템 구조 설계 시 |
+| [api-design.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/api-design.md) | API 설계 가이드 | 서비스별 API 명세 작성 시 |
+| [sequence-design.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/sequence-design.md) | 외부/내부 시퀀스 설계 가이드 | 서비스 플로우 설계 시 |
+| [class-data-design.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/class-data-design.md) | 클래스/데이터 설계 가이드 | 세부 구현 설계 시 |
 
 ### 🛠️ 5. 기술 도구 (tools/)
 | 파일 | 설명 | 사용 시점 |
