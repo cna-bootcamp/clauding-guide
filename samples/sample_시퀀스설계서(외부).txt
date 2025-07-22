@@ -1,0 +1,40 @@
+@startuml
+!theme mono
+
+title 여행준비플로우 - 외부 시퀀스 다이어그램
+
+actor User
+participant "API Gateway" as Gateway
+participant "Profile Service" as Profile
+database "Redis Cache" as Redis
+
+== 1. 멤버 등록 ==
+User -> Gateway: POST /api/profile/members\n(여행 멤버 등록)
+note right: name, age, healthStatus,\nhealthNote, preferences
+Gateway -> Profile: POST /api/profile/members
+
+Profile -> Redis: 멤버 정보 캐싱
+
+== 2. 멤버 목록 조회 ==
+User -> Gateway: GET /api/profile/members\n(등록된 멤버 확인)
+Gateway -> Redis: 캐시 조회
+alt 캐시 미스
+    Gateway -> Profile: GET /api/profile/members
+    Profile -> Redis: 조회 결과 캐싱
+end
+
+== 3. 여행 정보 등록 ==
+User -> Gateway: POST /api/profile/trips\n(여행 기본 정보 등록)
+note right: tripName, startDate, endDate,\norigin, destination,\naccommodation, memberIds
+Gateway -> Profile: POST /api/profile/trips
+
+Profile -> Redis: 여행 정보 캐싱
+
+== 4. 이동수단 설정 ==
+User -> Gateway: POST /api/profile/trips/{tripId}/transport\n(이동 수단 설정)
+note right: date, transportType,\nisDefault
+Gateway -> Profile: POST /api/profile/trips/{tripId}/transport
+
+Profile -> Redis: 이동수단 정보 캐싱
+
+@enduml
