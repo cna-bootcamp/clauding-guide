@@ -21,7 +21,7 @@ SVG Wireframe을 생성해주세요:
 /sc:design --persona-architect --think-hard --seq --uc --wave-mode auto --wave-strategy systematic 
 
 클라우드 아키텍처 패턴 적용 방안을 작성해 주세요:
-- '클라우드 아키텍처 패턴 선정 가이드'를 준용하여 작성 
+- [클라우드 아키텍처 패턴 선정 가이드](https://cna-bootcamp.github.io/clauding-guide/guides/requirements/architecture-patterns.md)를 준용하여 작성 
 ```
 
 ## 논리아키텍처 설계
