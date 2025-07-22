@@ -1,0 +1,26 @@
+{
+  "name": "openapi-to-csv",
+  "version": "1.0.0",
+  "description": "Convert OpenAPI YAML files to CSV format for API documentation",
+  "main": "openapi-to-csv.js",
+  "bin": {
+    "openapi-to-csv": "./openapi-to-csv.js"
+  },
+  "scripts": {
+    "start": "node openapi-to-csv.js"
+  },
+  "keywords": [
+    "openapi",
+    "csv",
+    "api",
+    "documentation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
