@@ -1,598 +1,469 @@
 @startuml
 !theme mono
-skinparam classAttributeIconSize 0
-skinparam classFontSize 12
-skinparam classAttributeFontSize 11
 
-title 회원 서비스 - 클래스 다이어그램 (Layered 아키텍처)
+title 여행 프로파일 서비스 - 클래스 다이어그램
 
-package "com.unicorn.lifesub.member" {
-  package "controller" {
-    class AuthController {
-      -authService: AuthService
-      +login(loginRequest: LoginRequest): ResponseEntity<TokenResponse>
-      +logout(logoutRequest: LogoutRequest): ResponseEntity<LogoutResponse>
-    }
-  }
+' 공통 컴포넌트 import
+!include common-base.txt
 
-  package "service" {
-    interface AuthService {
-      +login(loginRequest: LoginRequest): TokenResponse
-      +logout(logoutRequest: LogoutRequest): LogoutResponse
-    }
-
-    class AuthServiceImpl {
-      -memberRepository: MemberRepository
-      -jwtTokenProvider: JwtTokenProvider
-      +login(loginRequest: LoginRequest): TokenResponse
-      +logout(logoutRequest: LogoutRequest): LogoutResponse
-    }
-  }
-
-  package "domain" {
-    class Member {
-      -userId: String
-      -userName: String
-      -password: String
-      -bankName: String
-      -bankAccount: String
-      -characterId: Integer
-      +getUserId(): String
-      +getUserName(): String
-      +getPassword(): String
-      +getBankName(): String
-      +getBankAccount(): String
-      +getCharacterId(): Integer
-    }
-  }
-
-  package "repository" {
-    interface MemberRepository {
-      +findByUserId(userId: String): Optional<MemberEntity>
-      +save(memberEntity: MemberEntity): MemberEntity
-    }
-
-    package "entity" {
-      class MemberEntity {
-        -userId: String
-        -userName: String
-        -password: String
-        -bankName: String
-        -bankAccount: String
-        -characterId: Integer
-        +toDomain(): Member
-        +fromDomain(member: Member): MemberEntity
-      }
-    }
-  }
-
-  package "dto" {
-    class LoginRequest {
-      -userId: String
-      -password: String
-      +getUserId(): String
-      +getPassword(): String
-    }
-
-    class LogoutRequest {
-      -userId: String
-      +getUserId(): String
-    }
-
-    class TokenResponse {
-      -accessToken: String
-      -refreshToken: String
-      -expiresIn: long
-      +getAccessToken(): String
-      +getRefreshToken(): String
-      +getExpiresIn(): long
-    }
-
-    class LogoutResponse {
-      -success: boolean
-      -message: String
-      +isSuccess(): boolean
-      +getMessage(): String
-    }
-  }
-
-  package "config" {
-    class SecurityConfig {
-      -jwtTokenProvider: JwtTokenProvider
-      +securityFilterChain(http: HttpSecurity): SecurityFilterChain
-      +corsConfigurationSource(): CorsConfigurationSource
-    }
-
-    class JwtTokenProvider {
-      -algorithm: Algorithm
-      -secret: String
-      -accessTokenExpiry: Long
-      -refreshTokenExpiry: Long
-      +createToken(memberEntity: MemberEntity, authorities: Collection<GrantedAuthority>): TokenResponse
-      +validateToken(token: String): int
-      +getAuthentication(token: String): Authentication
-      +invalidateToken(userId: String): void
-    }
-  }
-}
-
-' 관계 정의
-AuthController --> AuthService
-AuthServiceImpl ..|> AuthService
-AuthServiceImpl --> MemberRepository
-AuthServiceImpl --> JwtTokenProvider
-MemberRepository ..> MemberEntity
-SecurityConfig --> JwtTokenProvider
-AuthController ..> LoginRequest
-AuthController ..> LogoutRequest
-AuthController ..> TokenResponse
-AuthController ..> LogoutResponse
-MemberEntity ..> Member
-
-@enduml
-
-@startuml
-!theme mono
-skinparam classAttributeIconSize 0
-skinparam classFontSize 12
-skinparam classAttributeFontSize 11
-
-title 마이구독 서비스 - 클래스 다이어그램 (Clean 아키텍처)
-
-package "com.unicorn.lifesub.mysub" {
-  package "infra" {
+package "com.unicorn.tripgen.profile" {
+    
+    ' Controller Layer
     package "controller" {
-      class MySubscriptionController {
-        -totalFeeInputBoundary: TotalFeeInputBoundary
-        -mySubscriptionsInputBoundary: MySubscriptionsInputBoundary
-        -subscriptionDetailInputBoundary: SubscriptionDetailInputBoundary 
-        -subscribeInputBoundary: SubscribeInputBoundary
-        -cancelSubscriptionInputBoundary: CancelSubscriptionInputBoundary
-        -subscriptionCategoriesInputBoundary: SubscriptionCategoriesInputBoundary
-        -subscriptionsByCategeoryInputBoundary: SubscriptionsByCategoryInputBoundary
-        +getTotalFee(userId: String): ResponseEntity<TotalFeeResponse>
-        +getMySubscriptions(userId: String): ResponseEntity<List<MySubscriptionListResponse>>
-        +getSubscriptionDetail(subscriptionId: Long): ResponseEntity<SubscriptionDetailResponse>
-        +subscribeSub(userId: String, subscriptionId: Long): ResponseEntity<SubscribeResponse>
-        +cancelSub(userId: String, subscriptionId: Long): ResponseEntity<SuccessResponse>
-        +getSubscriptionCategories(): ResponseEntity<List<CategoryListDTO>>
-        +getSubscriptionsByCategory(categoryId: String): ResponseEntity<List<SubscriptionListResponse>>
-      }
+        class MemberController {
+            - memberService: MemberService
+            + getMembers(): ResponseEntity<List<MemberResponse>>
+            + createMember(request: MemberRequest): ResponseEntity<MemberResponse>
+            + getMemberById(memberId: UUID): ResponseEntity<MemberResponse>
+            + updateMember(memberId: UUID, request: MemberRequest): ResponseEntity<MemberResponse>
+            + deleteMember(memberId: UUID): ResponseEntity<Void>
+        }
+        
+        class TripController {
+            - tripService: TripService
+            + getTrips(): ResponseEntity<List<TripResponse>>
+            + createTrip(request: TripRequest): ResponseEntity<TripResponse>
+            + getTripById(tripId: UUID): ResponseEntity<TripResponse>
+            + updateTrip(tripId: UUID, request: TripRequest): ResponseEntity<TripResponse>
+            + deleteTrip(tripId: UUID): ResponseEntity<Void>
+        }
+        
+        class TransportController {
+            - transportService: TransportService
+            + getTransportSettings(tripId: UUID): ResponseEntity<List<TransportSettingResponse>>
+            + createTransportSetting(tripId: UUID, request: TransportSettingRequest): ResponseEntity<TransportSettingResponse>
+            + updateTransportSetting(tripId: UUID, transportId: UUID, request: TransportSettingRequest): ResponseEntity<TransportSettingResponse>
+            + deleteTransportSetting(tripId: UUID, transportId: UUID): ResponseEntity<Void>
+        }
     }
-
-    package "gateway" {
-      class SubscriptionDataAccess {
-        -mySubscriptionJpaRepository: MySubscriptionJpaRepository
-        -subscriptionJpaRepository: SubscriptionJpaRepository
-        -categoryJpaRepository: CategoryJpaRepository
-        +findByUserId(userId: String): List<MySubscription>
-        +findSubscriptionById(subscriptionId: Long): Optional<Subscription>
-        +save(mySubscription: MySubscription): MySubscription
-        +delete(userId: String, subscriptionId: Long): void
-        +findAllCategories(): List<Category>
-        +findSubscriptionsByCategory(categoryId: String): List<Subscription>
-      }
-
-      package "repository" {
-        interface MySubscriptionJpaRepository {
-          +findByUserId(userId: String): List<MySubscriptionEntity>
-          +findByUserIdAndSubscriptionId(userId: String, subscriptionId: Long): Optional<MySubscriptionEntity>
-          +save(mySubscriptionEntity: MySubscriptionEntity): MySubscriptionEntity
-          +delete(mySubscriptionEntity: MySubscriptionEntity): void
-        }
-        
-        interface SubscriptionJpaRepository {
-          +findById(id: Long): Optional<SubscriptionEntity>
-          +findByCategoryId(categoryId: String): List<SubscriptionEntity>
-          +findAll(): List<SubscriptionEntity>
-        }
-        
-        interface CategoryJpaRepository {
-          +findAll(): List<CategoryEntity>
-          +findById(id: String): Optional<CategoryEntity>
-        }
-      }
-
-      package "entity" {
-        class MySubscriptionEntity {
-          -userId: String
-          -subscriptionId: Long
-          +toDomain(): MySubscription
-          +fromDomain(mySubscription: MySubscription): MySubscriptionEntity
-        }
-        
-        class SubscriptionEntity {
-          -id: Long
-          -name: String
-          -description: String
-          -categoryId: String
-          -fee: int
-          -maxShareNum: int
-          -logo: String
-          +toDomain(): Subscription
-          +fromDomain(subscription: Subscription): SubscriptionEntity
-        }
-        
-        class CategoryEntity {
-          -id: String
-          -categoryName: String
-          +toDomain(): Category
-          +fromDomain(category: Category): CategoryEntity
-        }
-      }
-    }
-
-    package "dto" {
-      class TotalFeeResponse {
-        -totalFee: int
-        -rangeImage: String
-        +getTotalFee(): int
-        +getRangeImage(): String
-      }
-
-      class MySubscriptionListResponse {
-        -subscriptionId: Long
-        -serviceName: String
-        -logoUrl: String
-        +getSubscriptionId(): Long
-        +getServiceName(): String
-        +getLogoUrl(): String
-      }
-
-      class SubscriptionDetailResponse {
-        -subscriptionId: Long
-        -serviceName: String
-        -category: String
-        -description: String
-        -fee: int
-        -maxShareNum: int
-        +getSubscriptionId(): Long
-        +getServiceName(): String
-        +getCategory(): String
-        +getDescription(): String
-        +getFee(): int
-        +getMaxShareNum(): int
-      }
-
-      class SubscriptionListResponse {
-        -subscriptionId: Long
-        -serviceName: String
-        -logoUrl: String
-        -description: String
-        -fee: int
-        +getSubscriptionId(): Long
-        +getServiceName(): String
-        +getLogoUrl(): String
-        +getDescription(): String
-        +getFee(): int
-      }
-
-      class CategoryListDTO {
-        -categoryName: String
-        +getCategoryName(): String
-      }
-
-      class SubscribeResponse {
-        -success: boolean
-        -message: String
-        +isSuccess(): boolean
-        +getMessage(): String
-      }
-
-      class SuccessResponse {
-        -success: boolean
-        -message: String
-        +isSuccess(): boolean
-        +getMessage(): String
-      }
-    }
-  }
-
-  package "biz" {
-    package "usecase" {
-      package "in" {
-        interface TotalFeeInputBoundary {
-          +getTotalFee(userId: String): TotalFeeResponse
-        }
-
-        interface MySubscriptionsInputBoundary {
-          +getMySubscriptions(userId: String): List<MySubscriptionListResponse>
-        }
-
-        interface SubscriptionDetailInputBoundary {
-          +getSubscriptionDetail(subscriptionId: Long): SubscriptionDetailResponse
-        }
-
-        interface SubscribeInputBoundary {
-          +subscribeSub(userId: String, subscriptionId: Long): SubscribeResponse
-        }
-
-        interface CancelSubscriptionInputBoundary {
-          +cancelSub(userId: String, subscriptionId: Long): SuccessResponse
-        }
-        
-        interface SubscriptionCategoriesInputBoundary {
-          +getCategories(): List<CategoryListDTO>
-        }
-        
-        interface SubscriptionsByCategoryInputBoundary {
-          +getSubscriptionsByCategory(categoryId: String): List<SubscriptionListResponse>
-        }
-      }
-
-      package "out" {
-        interface SubscriptionDataAccessInterface {
-          +findByUserId(userId: String): List<MySubscription>
-          +findSubscriptionById(subscriptionId: Long): Optional<Subscription>
-          +save(mySubscription: MySubscription): MySubscription
-          +delete(userId: String, subscriptionId: Long): void
-          +findAllCategories(): List<Category>
-          +findSubscriptionsByCategory(categoryId: String): List<Subscription>
-        }
-      }
-    }
-
+    
+    ' Service Layer
     package "service" {
-      class MySubscriptionInteractor {
-        -subscriptionDataAccess: SubscriptionDataAccessInterface
-        +getTotalFee(userId: String): TotalFeeResponse
-        +getMySubscriptions(userId: String): List<MySubscriptionListResponse>
-        +getSubscriptionDetail(subscriptionId: Long): SubscriptionDetailResponse
-        +subscribeSub(userId: String, subscriptionId: Long): SubscribeResponse
-        +cancelSub(userId: String, subscriptionId: Long): SuccessResponse
-        +getCategories(): List<CategoryListDTO>
-        +getSubscriptionsByCategory(categoryId: String): List<SubscriptionListResponse>
-      }
+        interface MemberService {
+            + findAll(): List<Member>
+            + findById(memberId: UUID): Member
+            + create(memberDto: MemberDto): Member
+            + update(memberId: UUID, memberDto: MemberDto): Member
+            + delete(memberId: UUID): void
+            + existsById(memberId: UUID): Boolean
+        }
+        
+        class MemberServiceImpl implements MemberService {
+            - memberRepository: MemberRepository
+            - memberMapper: MemberMapper
+            - cacheManager: CacheManager
+            + findAll(): List<Member>
+            + findById(memberId: UUID): Member
+            + create(memberDto: MemberDto): Member
+            + update(memberId: UUID, memberDto: MemberDto): Member
+            + delete(memberId: UUID): void
+            + existsById(memberId: UUID): Boolean
+            - validateMember(memberDto: MemberDto): void
+            - invalidateCache(memberId: UUID): void
+        }
+        
+        interface TripService {
+            + findAll(): List<Trip>
+            + findById(tripId: UUID): Trip
+            + create(tripDto: TripDto): Trip
+            + update(tripId: UUID, tripDto: TripDto): Trip
+            + delete(tripId: UUID): void
+            + addMemberToTrip(tripId: UUID, memberId: UUID): void
+            + removeMemberFromTrip(tripId: UUID, memberId: UUID): void
+        }
+        
+        class TripServiceImpl implements TripService {
+            - tripRepository: TripRepository
+            - memberService: MemberService
+            - tripMapper: TripMapper
+            - cacheManager: CacheManager
+            - locationService: LocationService
+            + findAll(): List<Trip>
+            + findById(tripId: UUID): Trip
+            + create(tripDto: TripDto): Trip
+            + update(tripId: UUID, tripDto: TripDto): Trip
+            + delete(tripId: UUID): void
+            + addMemberToTrip(tripId: UUID, memberId: UUID): void
+            + removeMemberFromTrip(tripId: UUID, memberId: UUID): void
+            - validateTrip(tripDto: TripDto): void
+            - validateDateRange(startDate: LocalDate, endDate: LocalDate): void
+            - enrichLocationData(location: Location): Location
+        }
+        
+        interface TransportService {
+            + findByTripId(tripId: UUID): List<TransportSetting>
+            + create(tripId: UUID, transportDto: TransportSettingDto): TransportSetting
+            + update(transportId: UUID, transportDto: TransportSettingDto): TransportSetting
+            + delete(transportId: UUID): void
+            + getDefaultTransport(tripId: UUID): TransportSetting
+        }
+        
+        class TransportServiceImpl implements TransportService {
+            - transportRepository: TransportSettingRepository
+            - tripService: TripService
+            - transportMapper: TransportSettingMapper
+            + findByTripId(tripId: UUID): List<TransportSetting>
+            + create(tripId: UUID, transportDto: TransportSettingDto): TransportSetting
+            + update(transportId: UUID, transportDto: TransportSettingDto): TransportSetting
+            + delete(transportId: UUID): void
+            + getDefaultTransport(tripId: UUID): TransportSetting
+            - ensureOnlyOneDefault(tripId: UUID, transportId: UUID): void
+        }
+        
+        class LocationService {
+            - restTemplate: RestTemplate
+            - apiKey: String
+            + geocode(address: String): Location
+            + reverseGeocode(latitude: Double, longitude: Double): Location
+            + validateCoordinates(latitude: Double, longitude: Double): Boolean
+        }
     }
-
+    
+    ' Repository Layer
+    package "repository" {
+        interface MemberRepository extends JpaRepository {
+            + findByNameContaining(name: String): List<Member>
+            + findByAgeRange(minAge: Integer, maxAge: Integer): List<Member>
+            + findByHealthStatus(status: HealthStatus): List<Member>
+        }
+        
+        interface TripRepository extends JpaRepository {
+            + findByDateRange(startDate: LocalDate, endDate: LocalDate): List<Trip>
+            + findByMemberId(memberId: UUID): List<Trip>
+            + findByDestinationCity(city: String): List<Trip>
+            + existsByTripNameAndDateRange(name: String, start: LocalDate, end: LocalDate): Boolean
+        }
+        
+        interface TransportSettingRepository extends JpaRepository {
+            + findByTripId(tripId: UUID): List<TransportSetting>
+            + findByTripIdAndDate(tripId: UUID, date: LocalDate): Optional<TransportSetting>
+            + findDefaultByTripId(tripId: UUID): Optional<TransportSetting>
+            + deleteByTripId(tripId: UUID): void
+        }
+    }
+    
+    ' Domain/Entity Layer
     package "domain" {
-      class MySubscription {
-        -userId: String
-        -subscriptionId: Long
-        +getUserId(): String
-        +getSubscriptionId(): Long
-      }
-
-      class Subscription {
-        -id: Long
-        -name: String
-        -categoryId: String
-        -description: String
-        -fee: int
-        -maxShareNum: int
-        -logoUrl: String
-        +getId(): Long
-        +getName(): String
-        +getCategoryId(): String
-        +getDescription(): String
-        +getFee(): int
-        +getMaxShareNum(): int
-        +getLogoUrl(): String
-      }
-      
-      class Category {
-        -id: String
-        -categoryName: String
-        +getId(): String
-        +getCategoryName(): String
-      }
+        class Member implements Identifiable, Auditable {
+            - id: UUID
+            - name: String
+            - age: Integer
+            - healthStatus: HealthStatus
+            - healthNote: String
+            - preferences: Set<PreferenceType>
+            - createdAt: LocalDateTime
+            - updatedAt: LocalDateTime
+            - createdBy: String
+            - updatedBy: String
+            + Member()
+            + addPreference(preference: PreferenceType): void
+            + removePreference(preference: PreferenceType): void
+            + isHealthy(): Boolean
+        }
+        
+        class Trip implements Identifiable, Auditable, Versionable {
+            - id: UUID
+            - tripName: String
+            - startDate: LocalDate
+            - endDate: LocalDate
+            - origin: Location
+            - destination: Location
+            - accommodation: Accommodation
+            - members: Set<Member>
+            - transportSettings: Set<TransportSetting>
+            - version: Long
+            - createdAt: LocalDateTime
+            - updatedAt: LocalDateTime
+            - createdBy: String
+            - updatedBy: String
+            + Trip()
+            + addMember(member: Member): void
+            + removeMember(member: Member): void
+            + getDuration(): Integer
+            + isActive(): Boolean
+        }
+        
+        class TransportSetting implements Identifiable, Auditable {
+            - id: UUID
+            - trip: Trip
+            - date: LocalDate
+            - transportType: TransportType
+            - isDefault: Boolean
+            - createdAt: LocalDateTime
+            - updatedAt: LocalDateTime
+            - createdBy: String
+            - updatedBy: String
+            + TransportSetting()
+            + appliesTo(date: LocalDate): Boolean
+        }
+        
+        class Location {
+            - country: String
+            - city: String
+            - address: String
+            - latitude: Double
+            - longitude: Double
+            + Location()
+            + getDisplayName(): String
+            + calculateDistance(other: Location): Double
+        }
+        
+        class Accommodation {
+            - name: String
+            - address: String
+            - phone: String
+            - checkInTime: LocalTime
+            - checkOutTime: LocalTime
+            + Accommodation()
+            + isValidCheckInTime(time: LocalTime): Boolean
+            + isValidCheckOutTime(time: LocalTime): Boolean
+        }
+        
+        enum HealthStatus {
+            GOOD
+            CAUTION
+            LIMITED
+        }
+        
+        enum PreferenceType {
+            CULTURE
+            NATURE
+            ACTIVITY
+            FOOD
+            SHOPPING
+        }
+        
+        enum TransportType {
+            PUBLIC_TRANSPORT
+            PRIVATE_CAR
+            WALKING
+            BICYCLE
+            TAXI
+        }
     }
-  }
+    
+    ' DTO Layer
+    package "dto" {
+        package "request" {
+            class MemberRequest {
+                - name: String
+                - age: Integer
+                - healthStatus: String
+                - healthNote: String
+                - preferences: List<String>
+                + validate(): void
+            }
+            
+            class TripRequest {
+                - tripName: String
+                - startDate: LocalDate
+                - endDate: LocalDate
+                - origin: LocationRequest
+                - destination: LocationRequest
+                - accommodation: AccommodationRequest
+                - memberIds: List<UUID>
+                + validate(): void
+            }
+            
+            class LocationRequest {
+                - country: String
+                - city: String
+                - address: String
+                + validate(): void
+            }
+            
+            class AccommodationRequest {
+                - name: String
+                - address: String
+                - phone: String
+                - checkInTime: String
+                - checkOutTime: String
+                + validate(): void
+            }
+            
+            class TransportSettingRequest {
+                - date: LocalDate
+                - transportType: String
+                - isDefault: Boolean
+                + validate(): void
+            }
+        }
+        
+        package "response" {
+            class MemberResponse {
+                - id: UUID
+                - name: String
+                - age: Integer
+                - healthStatus: String
+                - healthNote: String
+                - preferences: List<String>
+                - createdAt: LocalDateTime
+                - updatedAt: LocalDateTime
+                + static from(member: Member): MemberResponse
+            }
+            
+            class TripResponse {
+                - id: UUID
+                - tripName: String
+                - startDate: LocalDate
+                - endDate: LocalDate
+                - origin: LocationResponse
+                - destination: LocationResponse
+                - accommodation: AccommodationResponse
+                - memberIds: List<UUID>
+                - createdAt: LocalDateTime
+                - updatedAt: LocalDateTime
+                + static from(trip: Trip): TripResponse
+            }
+            
+            class LocationResponse {
+                - country: String
+                - city: String
+                - address: String
+                - latitude: Double
+                - longitude: Double
+                + static from(location: Location): LocationResponse
+            }
+            
+            class AccommodationResponse {
+                - name: String
+                - address: String
+                - phone: String
+                - checkInTime: String
+                - checkOutTime: String
+                + static from(accommodation: Accommodation): AccommodationResponse
+            }
+            
+            class TransportSettingResponse {
+                - id: UUID
+                - tripId: UUID
+                - date: LocalDate
+                - transportType: String
+                - isDefault: Boolean
+                - createdAt: LocalDateTime
+                - updatedAt: LocalDateTime
+                + static from(transportSetting: TransportSetting): TransportSettingResponse
+            }
+        }
+        
+        package "internal" {
+            class MemberDto {
+                - name: String
+                - age: Integer
+                - healthStatus: HealthStatus
+                - healthNote: String
+                - preferences: Set<PreferenceType>
+            }
+            
+            class TripDto {
+                - tripName: String
+                - startDate: LocalDate
+                - endDate: LocalDate
+                - origin: Location
+                - destination: Location
+                - accommodation: Accommodation
+                - memberIds: Set<UUID>
+            }
+            
+            class TransportSettingDto {
+                - date: LocalDate
+                - transportType: TransportType
+                - isDefault: Boolean
+            }
+        }
+    }
+    
+    ' Mapper Layer
+    package "mapper" {
+        interface MemberMapper {
+            + toEntity(request: MemberRequest): Member
+            + toEntity(dto: MemberDto): Member
+            + toDto(request: MemberRequest): MemberDto
+            + toDto(entity: Member): MemberDto
+            + toResponse(entity: Member): MemberResponse
+            + updateEntity(entity: Member, dto: MemberDto): void
+        }
+        
+        interface TripMapper {
+            + toEntity(request: TripRequest): Trip
+            + toEntity(dto: TripDto): Trip
+            + toDto(request: TripRequest): TripDto
+            + toDto(entity: Trip): TripDto
+            + toResponse(entity: Trip): TripResponse
+            + updateEntity(entity: Trip, dto: TripDto): void
+        }
+        
+        interface TransportSettingMapper {
+            + toEntity(request: TransportSettingRequest): TransportSetting
+            + toEntity(dto: TransportSettingDto): TransportSetting
+            + toDto(request: TransportSettingRequest): TransportSettingDto
+            + toDto(entity: TransportSetting): TransportSettingDto
+            + toResponse(entity: TransportSetting): TransportSettingResponse
+            + updateEntity(entity: TransportSetting, dto: TransportSettingDto): void
+        }
+    }
 }
 
 ' 관계 정의
-MySubscriptionController --> TotalFeeInputBoundary
-MySubscriptionController --> MySubscriptionsInputBoundary
-MySubscriptionController --> SubscriptionDetailInputBoundary
-MySubscriptionController --> SubscribeInputBoundary
-MySubscriptionController --> CancelSubscriptionInputBoundary
-MySubscriptionController --> SubscriptionCategoriesInputBoundary
-MySubscriptionController --> SubscriptionsByCategoryInputBoundary
+' Controller -> Service
+MemberController --> MemberService
+TripController --> TripService
+TransportController --> TransportService
 
-MySubscriptionInteractor ..|> TotalFeeInputBoundary
-MySubscriptionInteractor ..|> MySubscriptionsInputBoundary
-MySubscriptionInteractor ..|> SubscriptionDetailInputBoundary
-MySubscriptionInteractor ..|> SubscribeInputBoundary
-MySubscriptionInteractor ..|> CancelSubscriptionInputBoundary
-MySubscriptionInteractor ..|> SubscriptionCategoriesInputBoundary
-MySubscriptionInteractor ..|> SubscriptionsByCategoryInputBoundary
+' Service Implementation
+MemberServiceImpl --> MemberRepository
+MemberServiceImpl --> MemberMapper
+TripServiceImpl --> TripRepository
+TripServiceImpl --> MemberService
+TripServiceImpl --> TripMapper
+TripServiceImpl --> LocationService
+TransportServiceImpl --> TransportSettingRepository
+TransportServiceImpl --> TripService
+TransportServiceImpl --> TransportSettingMapper
 
-MySubscriptionInteractor --> SubscriptionDataAccessInterface
+' Repository -> Domain
+MemberRepository ..> Member
+TripRepository ..> Trip
+TransportSettingRepository ..> TransportSetting
 
-SubscriptionDataAccess ..|> SubscriptionDataAccessInterface
-SubscriptionDataAccess --> MySubscriptionJpaRepository
-SubscriptionDataAccess --> SubscriptionJpaRepository
-SubscriptionDataAccess --> CategoryJpaRepository
+' Domain Relationships
+Trip "1" *-- "0..*" Member : contains
+Trip "1" *-- "0..*" TransportSetting : has
+Trip "1" *-- "1" Location : origin
+Trip "1" *-- "1" Location : destination
+Trip "1" *-- "0..1" Accommodation : stays at
+TransportSetting "*" --> "1" Trip : belongs to
+Member --> HealthStatus
+Member --> PreferenceType
+TransportSetting --> TransportType
 
-MySubscriptionJpaRepository ..> MySubscriptionEntity
-SubscriptionJpaRepository ..> SubscriptionEntity
-CategoryJpaRepository ..> CategoryEntity
+' DTO -> Domain mapping
+MemberMapper ..> Member
+MemberMapper ..> MemberRequest
+MemberMapper ..> MemberResponse
+MemberMapper ..> MemberDto
+TripMapper ..> Trip
+TripMapper ..> TripRequest
+TripMapper ..> TripResponse
+TripMapper ..> TripDto
+TransportSettingMapper ..> TransportSetting
+TransportSettingMapper ..> TransportSettingRequest
+TransportSettingMapper ..> TransportSettingResponse
+TransportSettingMapper ..> TransportSettingDto
 
-MySubscriptionEntity ..> MySubscription
-SubscriptionEntity ..> Subscription
-CategoryEntity ..> Category
+' Response DTOs relationships
+TripResponse ..> LocationResponse
+TripResponse ..> AccommodationResponse
+LocationResponse ..> Location
+AccommodationResponse ..> Accommodation
 
-MySubscriptionInteractor ..> MySubscription
-MySubscriptionInteractor ..> Subscription
-MySubscriptionInteractor ..> Category
+' Request DTOs relationships
+TripRequest ..> LocationRequest
+TripRequest ..> AccommodationRequest
 
-@enduml
-
-@startuml
-!theme mono
-skinparam classAttributeIconSize 0
-skinparam classFontSize 12
-skinparam classAttributeFontSize 11
-
-title 구독추천 서비스 - 클래스 다이어그램 (Layered 아키텍처)
-
-package "com.unicorn.lifesub.recommend" {
-  package "controller" {
-    class RecommendController {
-      -recommendService: RecommendService
-      +getRecommendCategories(userId: String): ResponseEntity<RecommendCategoryDTO>
-    }
-  }
-
-  package "service" {
-    interface RecommendService {
-      +getRecommendCategories(userId: String): RecommendCategoryDTO
-    }
-
-    class RecommendServiceImpl {
-      -spendingRepository: SpendingRepository
-      -categoryRepository: CategoryRepository
-      +getRecommendCategories(userId: String): RecommendCategoryDTO
-    }
-  }
-
-  package "domain" {
-    class Category {
-      -id: String
-      -categoryName: String
-      -spendingCategory: String
-      +getId(): String
-      +getCategoryName(): String
-      +getSpendingCategory(): String
-    }
-
-    class Spending {
-      -id: Long
-      -userId: String
-      -category: String
-      -amount: BigDecimal
-      +getId(): Long
-      +getUserId(): String
-      +getCategory(): String
-      +getAmount(): BigDecimal
-    }
-  }
-
-  package "repository" {
-    interface SpendingRepository {
-      +findTopCategoryByUserId(userId: String): String
-      +findTotalExpenseByUserId(userId: String): int
-    }
-
-    interface CategoryRepository {
-      +findByCategoryMapping(spendingCategory: String): CategoryEntity
-    }
-
-    package "entity" {
-      class SpendingEntity {
-        -id: Long
-        -userId: String
-        -category: String
-        -amount: BigDecimal
-        +toDomain(): Spending
-        +fromDomain(spending: Spending): SpendingEntity
-      }
-
-      class CategoryEntity {
-        -id: String
-        -categoryName: String
-        -spendingCategory: String
-        +toDomain(): Category
-        +fromDomain(category: Category): CategoryEntity
-      }
-    }
-  }
-
-  package "dto" {
-    class RecommendCategoryDTO {
-      -categoryName: String
-      -imagePath: String
-      -baseDate: String
-      +getCategoryName(): String
-      +getImagePath(): String
-      +getBaseDate(): String
-    }
-  }
-
-  package "config" {
-    class SwaggerConfig {
-      +openAPI(): OpenAPI
-    }
-  }
-}
-
-' 관계 정의
-RecommendController --> RecommendService
-RecommendServiceImpl ..|> RecommendService
-RecommendServiceImpl --> SpendingRepository
-RecommendServiceImpl --> CategoryRepository
-SpendingRepository ..> SpendingEntity
-CategoryRepository ..> CategoryEntity
-SpendingEntity ..> Spending
-CategoryEntity ..> Category
-RecommendController ..> RecommendCategoryDTO
+' Service -> Common components
+MemberServiceImpl --> CacheManager
+TripServiceImpl --> CacheManager
+LocationService --> RestTemplate
 
 @enduml
-
-@startuml
-!theme mono
-skinparam classAttributeIconSize 0
-skinparam classFontSize 12
-skinparam classAttributeFontSize 11
-
-title 공통 모듈 - 클래스 다이어그램
-
-package "com.unicorn.lifesub.common" {
-  package "dto" {
-    class ApiResponse<T> {
-      -status: int
-      -message: String
-      -data: T
-      +getStatus(): int
-      +getMessage(): String
-      +getData(): T
-      +success(): ApiResponse<T>
-      +error(message: String): ApiResponse<T>
-    }
-  }
-
-  package "exception" {
-    class BizException {
-      -errorCode: String
-      -message: String
-      +getBizException(message: String)
-      +getBizException(message: String, cause: Throwable)
-    }
-
-    class GlobalExceptionHandler {
-      +handleBizException(e: BizException): ResponseEntity<ApiResponse>
-      +handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ApiResponse>
-      +handleException(e: Exception): ResponseEntity<ApiResponse>
-    }
-  }
-
-  package "util" {
-    class DateUtils {
-      +{static} formatDate(date: LocalDateTime, pattern: String): String
-      +{static} parseDate(dateStr: String, pattern: String): LocalDateTime
-      +{static} getCurrentDateStr(pattern: String): String
-    }
-
-    class ValidationUtils {
-      +{static} validateNotNull(obj: Object, message: String): void
-      +{static} validateNotEmpty(str: String, message: String): void
-    }
-  }
-
-  package "response" {
-    class ResponseBuilder {
-      +{static} ok(): ResponseEntity<ApiResponse>
-      +{static} ok(data: Object): ResponseEntity<ApiResponse>
-      +{static} created(data: Object): ResponseEntity<ApiResponse>
-      +{static} noContent(): ResponseEntity<ApiResponse>
-      +{static} badRequest(message: String): ResponseEntity<ApiResponse>
-      +{static} unauthorized(message: String): ResponseEntity<ApiResponse>
-      +{static} forbidden(message: String): ResponseEntity<ApiResponse>
-      +{static} notFound(message: String): ResponseEntity<ApiResponse>
-      +{static} internalServerError(message: String): ResponseEntity<ApiResponse>
-    }
-  }
-}
-
-@enduml
-

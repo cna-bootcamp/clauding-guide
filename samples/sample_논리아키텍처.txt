@@ -1,103 +1,147 @@
 @startuml
 !theme mono
 
-title 구독관리 서비스 - 논리 아키텍처
+skinparam classAttributeIconSize 0
+skinparam classFontSize 14
+skinparam classAttributeFontSize 12
+skinparam componentStyle rectangle
 
-' 패키지 정의
-package "클라이언트 계층" {
-    [모바일 앱] as mobileApp
-    [웹 앱] as webApp
+title 여행 상세 일정 생성 서비스 - 논리 아키텍처
+
+' 액터 정의
+actor "여행자" as User
+
+' 외부 시스템
+cloud "외부 API" {
+    component "카카오 MCP\n(국내 지도)" as KakaoMCP #FFA07A
+    component "구글 MCP\n(해외 지도)" as GoogleMCP #FFA07A
 }
 
-package "게이트웨이 계층" {
-    [API Gateway] as apiGateway
-    note right of apiGateway
-        - 라우팅
-        - 요청 분배
-        - 인증 토큰 검증
-    end note
-}
-
-package "회원 서비스" {
-    [인증 컨트롤러] as authController
-    [회원 서비스] as memberService
-    [회원 저장소] as memberRepository
+' 시스템 영역
+rectangle "여행 일정 시스템" {
+    ' API Gateway
+    component "API Gateway" as Gateway #87CEEB
     
-    note right of authController
-        - 로그인/로그아웃 처리
-        - 인증 토큰 관리
-    end note
-}
-
-package "마이구독 서비스" {
-    [마이구독 컨트롤러] as mySubController
-    [마이구독 서비스] as mySubService
-    [마이구독 저장소] as mySubRepository
+    ' 마이크로서비스
+    component "프로파일 서비스" as ProfileService #90EE90
+    component "일정 서비스" as ItineraryService #90EE90  
+    component "장소 서비스" as LocationService #90EE90
     
-    note right of mySubController
-        - 구독 목록 조회
-        - 구독 상세 조회
-        - 구독/취소 처리
-        - 총 구독료 계산
-    end note
-}
-
-package "구독추천 서비스" {
-    [추천 컨트롤러] as recommendController
-    [추천 서비스] as recommendService
-    [추천 저장소] as recommendRepository
+    ' 데이터 저장소
+    database "Redis Cache" as RedisCache #F08080
     
-    note right of recommendController
-        - 지출 기반 추천 카테고리 제공
-        - 구독 카테고리 목록 제공
-        - 구독 서비스 목록 제공
-    end note
+    ' 비동기 처리 (AI 일정 생성용)
+    component "Job Queue" as JobQueue #DDA0DD
 }
 
-package "데이터 계층" {
-    database "회원 DB" as memberDB
-    database "구독 DB" as subscriptionDB
-    database "구독추천 DB" as recommendDB {
-        [지출정보 테이블] as spendingTable
-        [카테고리 테이블] as categoryTable
-        
-        note bottom of categoryTable
-            소비카테고리와 구독추천카테고리
-            매핑 정보 저장
-        end note
-    }
-}
+' 사용자 인터랙션
+User --> Gateway : HTTP/HTTPS
 
-' 관계 정의
-mobileApp --> apiGateway : 1. API 요청
-webApp --> apiGateway : 1. API 요청
-
-apiGateway --> authController : 2. 인증 요청
-apiGateway --> mySubController : 2. 구독 관련 요청
-apiGateway --> recommendController : 2. 추천 관련 요청
-
-authController --> memberService : 3. 인증 처리
-memberService --> memberRepository : 4. 회원 정보 조회
-memberRepository --> memberDB : 5. 데이터 접근
-
-mySubController --> mySubService : 3. 구독 정보 처리
-mySubService --> mySubRepository : 4. 구독 정보 조회
-mySubRepository --> subscriptionDB : 5. 데이터 접근
-mySubService --> recommendService : 6. 구독 서비스 정보 요청
-
-recommendController --> recommendService : 3. 추천 처리
-recommendService --> recommendRepository : 4. 추천 정보 조회
-recommendRepository --> recommendDB : 5. 데이터 접근
-
-' 주요 시나리오 흐름
-note right of mobileApp
-  주요 사용자 시나리오:
-  1. 로그인/로그아웃 (USR-005, USR-010, USR-015)
-  2. 메인화면 구독 정보 조회 (MSS-005, MSS-010)
-  3. 추천 구독 카테고리 확인 (RSS-005)
-  4. 구독 서비스 상세 확인 (MSS-020)
-  5. 구독 신청/취소 (MSS-025, MSS-030)
-  6. 구독 카테고리별 서비스 조회 (MSS-035, MSS-040)
+' 사용자 요청 플로우
+note left of User
+<b>사용자 요청 플로우</b>
+----
+1. 로그인/인증
+2. 멤버 정보 등록
+3. 여행 기본정보 설정
+4. 이동수단 선택
+5. AI 일정 생성 요청
+6. 장소 정보 조회
+7. 일정 수정
+8. 사진/메모 첨부
+9. 다국어 장소 검색
 end note
+
+' Gateway 라우팅
+Gateway --> ProfileService : 프로파일 관련 (1~4)
+Gateway --> ItineraryService : 일정 관련 (5,7,8)
+Gateway --> LocationService : 장소 관련 (6,9)
+
+' 서비스 간 통신
+ItineraryService --> RedisCache : 프로파일 캐시 직접 읽기
+ItineraryService --> Gateway : 장소 서비스 호출
+Gateway --> LocationService : 단일 장소 조회 (동기)
+
+' AI 일정 생성 시 비동기 처리
+ItineraryService ..> JobQueue : AI 일정 생성 작업
+JobQueue ..> LocationService : 다중 장소 정보 요청
+
+' 캐시 활용
+ProfileService --> RedisCache : 프로파일 Write-through
+ItineraryService --> RedisCache : 일정 데이터 캐싱
+LocationService --> RedisCache : 장소 정보 캐싱
+
+' 캐시 키 표준
+note on link
+<b>캐시 키 규칙</b>
+profile:trip:{tripId}
+profile:member:{memberId}
+location:place:{placeId}
+end note
+
+' 외부 API 호출
+LocationService --> KakaoMCP : 국내 장소 API
+LocationService --> GoogleMCP : 해외 장소 API
+
+
+' 핵심 패턴 설명
+note right of Gateway
+<b>API Gateway Pattern</b>
+----
+• 단일 진입점
+• 인증/인가 처리
+• 서비스 간 통신 중재
+• Circuit Breaker 통합
+end note
+
+note bottom of LocationService
+<b>Circuit Breaker Pattern</b>
+----
+• 외부 API 장애 격리
+• 자동 복구 메커니즘
+• Fallback 응답 제공
+end note
+
+note bottom of RedisCache
+<b>Shared Cache Pattern</b>
+----
+• 서비스 간 데이터 공유
+• Write-through 캐싱
+• 표준화된 키 구조
+• TTL: 프로파일(24h), 장소(1h)
+end note
+
+note left of ItineraryService
+<b>CQRS Pattern</b>
+----
+• 읽기/쓰기 모델 분리
+• 조회 전용 최적화
+• 높은 조회 성능
+end note
+
+note top of JobQueue
+<b>Job Queue Pattern</b>
+----
+• AI 일정 생성 비동기 처리
+• 장시간 작업 백그라운드 실행
+• 작업 상태 추적
+end note
+
+
+' 범례
+legend right
+|= 색상 |= 구분 |
+| <#87CEEB> | API Gateway |
+| <#90EE90> | 마이크로서비스 |
+| <#FFA07A> | 외부 시스템 |
+| <#F08080> | 캐시 저장소 |
+| <#DDA0DD> | 비동기 처리 인프라 |
+|= 통신 방식 |= 설명 |
+| 실선 (→) | 동기 통신 (REST API) |
+| 점선 (..>) | 비동기 작업 처리 |
+|= 사용 구분 |= 설명 |
+| 단일 장소 조회 | 동기 통신 (캐시 활용) |
+| AI 일정 생성 | 비동기 처리 (Job Queue) |
+endlegend
 
 @enduml

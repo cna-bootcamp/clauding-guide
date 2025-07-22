@@ -1,105 +1,168 @@
 @startuml
 !theme mono
-title 회원 서비스 - 데이터 모델
 
-' Style configurations
-skinparam linetype ortho
-hide circle
+title 프로파일 서비스 - Entity Relationship Diagram
 
-' Member entities
-entity "members" as members {
-  * userId: varchar(50) <<PK>>
-  --
-  userName: varchar(100)
-  password: varchar(255)
-  bankName: varchar(50)
-  bankAccount: varchar(50)
-  characterId: integer
-  createdAt: timestamp
-  updatedAt: timestamp
+' 데이터베이스 스키마 정의
+!define TABLE(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define PK(x) <b>x</b>
+!define FK(x) <i>x</i>
+!define UNIQUE(x) <u>x</u>
+
+' Member 테이블
+TABLE(member, "MEMBER\n(회원)") {
+    PK(id: UUID)
+    --
+    name: VARCHAR(100) NOT NULL
+    age: INTEGER NOT NULL
+    health_status: VARCHAR(20) NOT NULL
+    health_note: TEXT
+    --
+    created_at: TIMESTAMP WITH TIME ZONE
+    updated_at: TIMESTAMP WITH TIME ZONE
+    created_by: VARCHAR(100)
+    updated_by: VARCHAR(100)
 }
 
-entity "roles" as roles {
-  * userId: varchar(50) <<FK>>
-  * role: varchar(20)
-  --
+' Member Preference 테이블
+TABLE(member_preference, "MEMBER_PREFERENCE\n(회원 선호도)") {
+    PK(FK(member_id: UUID))
+    PK(preference_type: VARCHAR(20))
 }
 
-' Relationships
-members ||--o{ roles
-
-@enduml
-
-@startuml
-!theme mono
-title 마이구독 서비스 - 데이터 모델
-
-' Style configurations
-skinparam linetype ortho
-hide circle
-
-' MySubscription entities
-entity "my_subscriptions" as my_subs {
-  * id: bigint <<PK>>
-  --
-  userId: varchar(50)
-  subscriptionId: bigint
-  createdAt: timestamp
-  updatedAt: timestamp
+' Trip 테이블
+TABLE(trip, "TRIP\n(여행)") {
+    PK(id: UUID)
+    --
+    UNIQUE(trip_name: VARCHAR(200)) NOT NULL
+    UNIQUE(start_date: DATE) NOT NULL
+    UNIQUE(end_date: DATE) NOT NULL
+    --
+    .. Origin Location ..
+    origin_country: VARCHAR(100) NOT NULL
+    origin_city: VARCHAR(100) NOT NULL
+    origin_address: VARCHAR(500)
+    origin_latitude: DECIMAL(10,8)
+    origin_longitude: DECIMAL(11,8)
+    --
+    .. Destination Location ..
+    destination_country: VARCHAR(100) NOT NULL
+    destination_city: VARCHAR(100) NOT NULL
+    destination_address: VARCHAR(500)
+    destination_latitude: DECIMAL(10,8)
+    destination_longitude: DECIMAL(11,8)
+    --
+    .. Accommodation ..
+    accommodation_name: VARCHAR(200)
+    accommodation_address: VARCHAR(500)
+    accommodation_phone: VARCHAR(50)
+    accommodation_check_in_time: TIME
+    accommodation_check_out_time: TIME
+    --
+    version: BIGINT NOT NULL
+    created_at: TIMESTAMP WITH TIME ZONE
+    updated_at: TIMESTAMP WITH TIME ZONE
+    created_by: VARCHAR(100)
+    updated_by: VARCHAR(100)
 }
 
-entity "subscriptions" as subs {
-  * id: bigint <<PK>>
-  --
-  name: varchar(100)
-  description: text
-  categoryId: varchar(50)
-  fee: integer
-  maxShareNum: integer
-  logoUrl: varchar(255)
+' Trip Member 테이블
+TABLE(trip_member, "TRIP_MEMBER\n(여행-회원 매핑)") {
+    PK(FK(trip_id: UUID))
+    PK(FK(member_id: UUID))
+    --
+    joined_at: TIMESTAMP WITH TIME ZONE
 }
 
-entity "categories" as categories {
-  * id: varchar(50) <<PK>>
-  --
-  categoryName: varchar(100)
+' Transport Setting 테이블
+TABLE(transport_setting, "TRANSPORT_SETTING\n(교통수단 설정)") {
+    PK(id: UUID)
+    --
+    FK(trip_id: UUID) NOT NULL
+    date: DATE
+    transport_type: VARCHAR(20) NOT NULL
+    is_default: BOOLEAN NOT NULL
+    --
+    created_at: TIMESTAMP WITH TIME ZONE
+    updated_at: TIMESTAMP WITH TIME ZONE
+    created_by: VARCHAR(100)
+    updated_by: VARCHAR(100)
 }
 
-' Relationships
-my_subs }--|| subs : subscriptionId
-subs }--|| categories : categoryId
+' 관계 정의
+member ||--o{ member_preference : "has preferences"
+member ||--o{ trip_member : "participates in"
+trip ||--o{ trip_member : "has members"
+trip ||--o{ transport_setting : "has transport settings"
 
-@enduml
+' 인덱스 표시를 위한 노트
+note top of member
+  <b>Indexes:</b>
+  • idx_member_name (name)
+  • idx_member_health_status (health_status)
+  • idx_member_age_range (age)
+end note
 
-@startuml
-!theme mono
-title 구독추천 서비스 - 데이터 모델
+note top of member_preference
+  <b>Indexes:</b>
+  • idx_member_preference_type (preference_type)
+  
+  <b>Check Constraints:</b>
+  • preference_type IN ('CULTURE', 'NATURE', 
+    'ACTIVITY', 'FOOD', 'SHOPPING')
+end note
 
-' Style configurations
-skinparam linetype ortho
-hide circle
+note bottom of trip
+  <b>Indexes:</b>
+  • idx_trip_dates (start_date, end_date)
+  • idx_trip_destination_city (destination_city)
+  • idx_trip_name (trip_name)
+  • idx_trip_unique_name_dates (trip_name, start_date, end_date) UNIQUE
+  
+  <b>Check Constraints:</b>
+  • end_date >= start_date
+  • Coordinates must be both NULL or both NOT NULL
+end note
 
-' Spending entities
-entity "spending_history" as spending {
-  * id: bigint <<PK>>
-  --
-  userId: varchar(50)
-  category: varchar(50)
-  amount: decimal(15,2)
-  spendDate: date
-  createdAt: timestamp
-}
+note bottom of trip_member
+  <b>Indexes:</b>
+  • idx_trip_member_member_id (member_id)
+  
+  <b>Foreign Key Actions:</b>
+  • trip_id: ON DELETE CASCADE
+  • member_id: ON DELETE RESTRICT
+end note
 
-' Category mapping entities
-entity "categories" as categories {
-  * id: varchar(50) <<PK>>
-  --
-  categoryName: varchar(100)
-  spendingCategory: varchar(50)
-  imagePath: varchar(255)
-}
+note bottom of transport_setting
+  <b>Indexes:</b>
+  • idx_transport_setting_trip_id (trip_id)
+  • idx_transport_setting_trip_date (trip_id, date)
+  • idx_transport_default_per_trip (trip_id) WHERE is_default = TRUE UNIQUE
+  
+  <b>Check Constraints:</b>
+  • transport_type IN ('PUBLIC_TRANSPORT', 'PRIVATE_CAR', 
+    'WALKING', 'BICYCLE', 'TAXI')
+  • Either date is set OR is_default is TRUE (not both)
+end note
 
-' Relationships
-spending }o--o{ categories : "카테고리 매핑"
+' 범례
+legend right
+  <b>Legend:</b>
+  PK = Primary Key
+  FK = Foreign Key
+  UNIQUE = Unique Constraint (part of composite)
+  
+  <b>Data Types:</b>
+  • UUID: Universally Unique Identifier
+  • VARCHAR(n): Variable character with max length
+  • INTEGER: 32-bit integer
+  • DECIMAL(p,s): Fixed precision decimal
+  • DATE: Date without time
+  • TIME: Time without date
+  • TIMESTAMP WITH TIME ZONE: Timestamp with timezone
+  • BOOLEAN: True/False
+  • TEXT: Variable length text
+  • BIGINT: 64-bit integer (for version)
+end legend
 
 @enduml

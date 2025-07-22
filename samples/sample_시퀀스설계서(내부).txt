@@ -1,313 +1,248 @@
 @startuml
 !theme mono
-title 구독관리 서비스 - 외부 시퀀스 다이어그램
+title 일정 서비스 - 경로 및 시간 계산 내부 시퀀스
 
-actor Client
-participant APIGateway
-participant "회원 서비스\n(Authentication)" as AuthService
-participant "마이구독 서비스\n(MySubscription)" as MySubService
-participant "구독추천 서비스\n(RecommendService)" as RecommendService
+actor User as "여행자"
+participant RouteController as "RouteController"
+participant RouteService as "RouteService"
+participant RouteCalculator as "RouteCalculator"
+participant CacheManager as "CacheManager\n(Redis)"
+participant RouteRepository as "RouteRepository"
+participant MCPProvider as "MCP Provider\n(Location Service)"
+participant ProfileCache as "Profile Cache\n(Transport Settings)"
 
-' 회원 서비스 호출
-Client -> APIGateway: 로그인 요청\nPOST /api/auth/login
-APIGateway -> AuthService: 로그인 요청 전달\nPOST /api/auth/login
-
-Client -> APIGateway: 로그아웃 요청\nPOST /api/auth/logout
-APIGateway -> AuthService: 로그아웃 요청 전달\nPOST /api/auth/logout
-
-' 마이구독 서비스 호출
-Client -> APIGateway: 총 구독료 조회\nGET /api/users/{userId}/subscriptions/total-fee
-APIGateway -> MySubService: 총 구독료 조회 요청 전달\nGET /api/users/{userId}/subscriptions/total-fee
-
-Client -> APIGateway: 나의 구독 목록 조회\nGET /api/users/{userId}/subscriptions
-APIGateway -> MySubService: 나의 구독 목록 조회 요청 전달\nGET /api/users/{userId}/subscriptions
-
-Client -> APIGateway: 구독 상세 정보 조회\nGET /api/subscriptions/{subscriptionId}
-APIGateway -> MySubService: 구독 상세 정보 조회 요청 전달\nGET /api/subscriptions/{subscriptionId}
-
-Client -> APIGateway: 구독하기\nPOST /api/users/{userId}/subscriptions
-APIGateway -> MySubService: 구독하기 요청 전달\nPOST /api/users/{userId}/subscriptions
-
-Client -> APIGateway: 구독 취소\nDELETE /api/users/{userId}/subscriptions/{subscriptionId}
-APIGateway -> MySubService: 구독 취소 요청 전달\nDELETE /api/users/{userId}/subscriptions/{subscriptionId}
-
-Client -> APIGateway: 카테고리별 구독 서비스 목록 조회\nGET /api/subscriptions?categoryId={categoryId}
-APIGateway -> MySubService: 카테고리별 구독 서비스 목록 조회 요청 전달\nGET /api/subscriptions?categoryId={categoryId}
-
-' 구독추천 서비스 호출
-Client -> APIGateway: 추천 구독 카테고리 조회\nGET /api/recommend/categories?userId={userId}
-APIGateway -> RecommendService: 추천 구독 카테고리 조회 요청 전달\nGET /api/recommend/categories?userId={userId}
-
-' 마이크로서비스 간 통신
-MySubService -> RecommendService: 구독 서비스 정보 요청
-
-@enduml
-
-
-@startuml
-!theme mono
-title 회원 서비스 - 내부 시퀀스 다이어그램
-
-actor Client
-participant "API Gateway" as APIGateway
-participant "AuthController" as AuthController
-participant "AuthService" as AuthService
-participant "MemberRepository" as MemberRepository
-participant "JwtTokenProvider" as JwtTokenProvider
-database "회원 DB" as MemberDB
-
-' 로그인 흐름
-Client -> APIGateway: POST /api/auth/login
-activate APIGateway
-APIGateway -> AuthController: 로그인 요청
-activate AuthController
-AuthController -> AuthService: login(loginRequest)
-activate AuthService
-AuthService -> MemberRepository: findByUserId(userId)
-activate MemberRepository
-MemberRepository -> MemberDB: 회원 조회
-MemberDB --> MemberRepository: 회원 정보 반환
-deactivate MemberRepository
-MemberRepository --> AuthService: MemberEntity 반환
-
-' 패스워드 검증
-AuthService -> AuthService: 패스워드 검증
-note right of AuthService
-  암호화된 패스워드와
-  입력된 패스워드 비교
+note over User, ProfileCache
+    사용자가 여행 일정의 장소들 간 이동 경로와 시간을 계산하고
+    최적화하여 현실적인 일정을 수립하는 과정
 end note
 
-' 토큰 생성
-AuthService -> JwtTokenProvider: createToken(memberEntity, authorities)
-activate JwtTokenProvider
-JwtTokenProvider -> JwtTokenProvider: Access Token 생성
-JwtTokenProvider -> JwtTokenProvider: Refresh Token 생성
-JwtTokenProvider --> AuthService: TokenResponse 반환
-deactivate JwtTokenProvider
+== 경로 계산 및 최적화 요청 ==
 
-AuthService --> AuthController: TokenResponse 반환
-deactivate AuthService
-AuthController --> APIGateway: TokenResponse 반환
-deactivate AuthController
-APIGateway --> Client: 200 OK, TokenResponse
-deactivate APIGateway
+User -> RouteController : POST /api/itinerary/trips/{tripId}/routes/calculate
+note right : RouteCalculateRequest\n- date: 2024-07-02\n- places: [placeId1, placeId2, ...]\n- transportType: PRIVATE_CAR\n- optimization: {optimize: true}
 
-' 로그아웃 흐름
-Client -> APIGateway: POST /api/auth/logout
-activate APIGateway
-APIGateway -> AuthController: 로그아웃 요청
-activate AuthController
-AuthController -> AuthService: logout(logoutRequest)
-activate AuthService
-
-' 토큰 무효화
-AuthService -> JwtTokenProvider: invalidateToken(userId)
-activate JwtTokenProvider
-JwtTokenProvider --> AuthService: 토큰 무효화 결과
-deactivate JwtTokenProvider
-
-AuthService --> AuthController: LogoutResponse 반환
-deactivate AuthService
-AuthController --> APIGateway: LogoutResponse 반환
-deactivate AuthController
-APIGateway --> Client: 200 OK, LogoutResponse
-deactivate APIGateway
-
-@enduml
-
-@startuml
-!theme mono
-title 구독추천 서비스 - 내부 시퀀스 다이어그램
-
-actor Client
-participant "API Gateway" as APIGateway
-participant "RecommendController" as RecommendController
-participant "RecommendService" as RecommendService
-participant "CategoryRepository" as CategoryRepository
-participant "SpendingRepository" as SpendingRepository
-participant "SubscriptionRepository" as SubscriptionRepository
-database "구독추천 DB" as RecommendDB
-
-' 추천 구독 카테고리 조회
-Client -> APIGateway: GET /api/recommend/categories?userId={userId}
-activate APIGateway
-APIGateway -> RecommendController: 추천 구독 카테고리 요청
-activate RecommendController
-RecommendController -> RecommendService: getRecommendCategories(userId)
-activate RecommendService
-RecommendService -> SpendingRepository: findTopCategoryByUserId(userId)
-activate SpendingRepository
-SpendingRepository -> RecommendDB: 최고 지출 카테고리 조회
-RecommendDB --> SpendingRepository: 지출 데이터 반환
-deactivate SpendingRepository
-SpendingRepository --> RecommendService: 최고 지출 카테고리 반환
-
-RecommendService -> CategoryRepository: findByCategoryMapping(topSpendingCategory)
-activate CategoryRepository
-CategoryRepository -> RecommendDB: 매핑된 구독 카테고리 조회
-RecommendDB --> CategoryRepository: 카테고리 데이터 반환
-deactivate CategoryRepository
-CategoryRepository --> RecommendService: 매핑된 구독 카테고리 반환
-
-RecommendService -> RecommendService: 추천 카테고리 DTO 변환
-note right of RecommendService
-  최고 지출 카테고리에 매핑된
-  구독 카테고리와 이미지 설정
+RouteController -> RouteController : 요청 데이터 검증
+note right
+    - 최소 2개 이상의 장소 필요
+    - 날짜 형식 및 유효성 검증
+    - transportType 유효성 확인
 end note
 
-RecommendService --> RecommendController: RecommendCategoryDTO 반환
-deactivate RecommendService
-RecommendController --> APIGateway: RecommendCategoryDTO 반환
-deactivate RecommendController
-APIGateway --> Client: 200 OK, RecommendCategoryDTO
-deactivate APIGateway
+RouteController -> RouteService : calculateRoutes(tripId, request)
 
-' 지출 카테고리 및 총 지출액 조회
-Client -> APIGateway: GET /api/recommend/expense?userId={userId}
-activate APIGateway
-APIGateway -> RecommendController: 지출 카테고리 및 총액 요청
-activate RecommendController
-RecommendController -> RecommendService: getExpenseSummary(userId)
-activate RecommendService
-RecommendService -> SpendingRepository: findByUserId(userId)
-activate SpendingRepository
-SpendingRepository -> RecommendDB: 사용자 지출 데이터 조회
-RecommendDB --> SpendingRepository: 지출 데이터 목록 반환
-deactivate SpendingRepository
-SpendingRepository --> RecommendService: 지출 데이터 목록 반환
+== 캐시 및 설정 정보 조회 ==
 
-RecommendService -> RecommendService: 지출 데이터 집계
-note right of RecommendService
-  - 카테고리별 지출 합산
-  - 최고 지출 카테고리 선정
-  - 총 지출액 계산
+RouteService -> ProfileCache : getTransportSettings(tripId)
+note right : 여행의 기본 이동 수단 설정 조회
+ProfileCache --> RouteService : TransportSettings\n(기본 이동 수단, 선호도)
+
+RouteService -> RouteService : 이동 수단 결정
+note right
+    요청에 transportType이 있으면 사용
+    없으면 프로파일의 기본 설정 사용
 end note
 
-RecommendService --> RecommendController: ExpenseSummaryDTO 반환
-deactivate RecommendService
-RecommendController --> APIGateway: ExpenseSummaryDTO 반환
-deactivate RecommendController
-APIGateway --> Client: 200 OK, ExpenseSummaryDTO
-deactivate APIGateway
-
-' 구독 카테고리 목록 조회
-Client -> APIGateway: GET /api/recommend/categories
-activate APIGateway
-APIGateway -> RecommendController: 구독 카테고리 목록 요청
-activate RecommendController
-RecommendController -> RecommendService: getAllCategories()
-activate RecommendService
-RecommendService -> CategoryRepository: findAll()
-activate CategoryRepository
-CategoryRepository -> RecommendDB: 전체 카테고리 조회
-RecommendDB --> CategoryRepository: 카테고리 목록 반환
-deactivate CategoryRepository
-CategoryRepository --> RecommendService: 카테고리 목록 반환
-
-RecommendService -> RecommendService: 카테고리 DTO 변환
-RecommendService --> RecommendController: CategoryListDTO 목록 반환
-deactivate RecommendService
-RecommendController --> APIGateway: CategoryListDTO 목록 반환
-deactivate RecommendController
-APIGateway --> Client: 200 OK, CategoryListDTO 목록
-deactivate APIGateway
-
-' 카테고리별 구독서비스 목록 조회
-Client -> APIGateway: GET /api/recommend/services?category={category}
-activate APIGateway
-APIGateway -> RecommendController: 카테고리별 구독서비스 요청
-activate RecommendController
-RecommendController -> RecommendService: getServicesByCategory(category)
-activate RecommendService
-RecommendService -> SubscriptionRepository: findByCategory(category)
-activate SubscriptionRepository
-SubscriptionRepository -> RecommendDB: 카테고리별 구독서비스 조회
-RecommendDB --> SubscriptionRepository: 구독서비스 목록 반환
-deactivate SubscriptionRepository
-SubscriptionRepository --> RecommendService: 구독서비스 목록 반환
-
-RecommendService -> RecommendService: 서비스 DTO 변환
-RecommendService --> RecommendController: ServiceListDTO 목록 반환
-deactivate RecommendService
-RecommendController --> APIGateway: ServiceListDTO 목록 반환
-deactivate RecommendController
-APIGateway --> Client: 200 OK, ServiceListDTO 목록
-deactivate APIGateway
-
-' 구독 서비스 상세 정보 조회
-Client -> APIGateway: GET /api/recommend/services/{serviceId}
-activate APIGateway
-APIGateway -> RecommendController: 구독 서비스 상세 요청
-activate RecommendController
-RecommendController -> RecommendService: getServiceDetail(serviceId)
-activate RecommendService
-RecommendService -> SubscriptionRepository: findById(serviceId)
-activate SubscriptionRepository
-SubscriptionRepository -> RecommendDB: 구독 서비스 상세 조회
-RecommendDB --> SubscriptionRepository: 구독 서비스 데이터 반환
-deactivate SubscriptionRepository
-SubscriptionRepository --> RecommendService: 구독 서비스 데이터 반환
-
-RecommendService -> RecommendService: 서비스 상세 DTO 변환
-RecommendService --> RecommendController: ServiceDetailDTO 반환
-deactivate RecommendService
-RecommendController --> APIGateway: ServiceDetailDTO 반환
-deactivate RecommendController
-APIGateway --> Client: 200 OK, ServiceDetailDTO
-deactivate APIGateway
-
-@enduml
-
-@startuml
-!theme mono
-title 구독추천 서비스 - 추천 구독 카테고리 내부 시퀀스 다이어그램
-
-actor Client
-participant "API Gateway" as APIGateway
-participant "RecommendController" as RecommendController
-participant "RecommendService" as RecommendService
-participant "SpendingRepository" as SpendingRepository
-participant "CategoryRepository" as CategoryRepository
-database "구독추천 DB" as RecommendDB
-
-' 추천 구독 카테고리 조회
-Client -> APIGateway: GET /api/recommend/categories?userId={userId}
-activate APIGateway
-APIGateway -> RecommendController: 추천 구독 카테고리 요청
-activate RecommendController
-RecommendController -> RecommendService: getRecommendCategories(userId)
-activate RecommendService
-
-' 지출 데이터 기반 최고 지출 카테고리 조회
-RecommendService -> SpendingRepository: findTopCategoryByUserId(userId)
-activate SpendingRepository
-SpendingRepository -> RecommendDB: 최고 지출 카테고리 조회
-RecommendDB --> SpendingRepository: 지출 데이터 반환
-SpendingRepository --> RecommendService: 최고 지출 카테고리 반환
-deactivate SpendingRepository
-
-' 추천 구독 카테고리 매핑
-RecommendService -> CategoryRepository: findByCategoryMapping(topSpendingCategory)
-activate CategoryRepository
-CategoryRepository -> RecommendDB: 매핑된 구독 카테고리 조회
-RecommendDB --> CategoryRepository: 카테고리 데이터 반환
-CategoryRepository --> RecommendService: 매핑된 구독 카테고리 반환
-deactivate CategoryRepository
-
-' 응답 데이터 생성
-RecommendService -> RecommendService: 추천 카테고리 DTO 변환
-note right of RecommendService
-  최고 지출 카테고리에 매핑된
-  구독 카테고리와 이미지 설정
-  baseDate 값 포함
+RouteService -> CacheManager : getCachedRoute(routeKey)
+note right
+    routeKey = hash(places, transportType, date, options)
+    기존 계산된 경로가 있는지 확인
 end note
 
-RecommendService --> RecommendController: RecommendCategoryDTO 반환
-deactivate RecommendService
-RecommendController --> APIGateway: RecommendCategoryDTO 반환
-deactivate RecommendController
-APIGateway --> Client: 200 OK, RecommendCategoryDTO
-deactivate APIGateway
+alt 캐시된 경로 존재
+    CacheManager --> RouteService : CachedRouteResult
+    RouteService -> RouteService : 캐시 유효성 검증
+    note right
+        - TTL 확인 (교통 정보 기준)
+        - 실시간 교통 요청 여부 확인
+    end note
+    
+    alt 캐시 유효함
+        RouteService --> RouteController : RouteCalculateResponse\n(캐시된 결과)
+        RouteController --> User : 200 OK with cached routes
+    else 캐시 만료 또는 실시간 요청
+        RouteService -> RouteService : 새로운 계산 필요
+    end
+end
+
+== 실제 경로 계산 프로세스 ==
+
+RouteService -> RouteCalculator : calculateOptimalRoutes(places, transportType, options)
+
+RouteCalculator -> RouteCalculator : MCP 제공자 선택
+note right
+    국내 여행: Kakao Map MCP
+    해외 여행: Google Maps MCP
+    장소의 국가 정보로 판단
+end note
+
+== 순차 경로 계산 ==
+
+loop 각 구간별 경로 계산 (i번째 -> i+1번째 장소)
+    RouteCalculator -> MCPProvider : getDirections(fromPlace, toPlace, transportType)
+    note right
+        - origin: lat, lng
+        - destination: lat, lng  
+        - mode: driving/transit/walking
+        - departure_time: 출발 예정 시간
+        - traffic_model: real_time
+    end note
+    
+    MCPProvider -> MCPProvider : 외부 API 호출
+    note right
+        국내: Kakao Direction API
+        해외: Google Maps Direction API
+    end note
+    
+    MCPProvider --> RouteCalculator : DirectionResult\n- distance, duration\n- polyline, steps\n- traffic_info
+    
+    RouteCalculator -> RouteCalculator : 결과 표준화 및 검증
+    note right
+        - 거리/시간 단위 통일
+        - 불가능한 경로 필터링
+        - 대체 경로 확인
+    end note
+end
+
+== 경로 최적화 (옵션) ==
+
+alt optimization.optimize = true
+    RouteCalculator -> RouteCalculator : 경로 최적화 알고리즘
+    note right
+        TSP(Traveling Salesman Problem) 기반
+        - 시작점/끝점 고정
+        - 중간 장소 순서 최적화
+        - 총 이동 시간 최소화
+    end note
+    
+    RouteCalculator -> MCPProvider : getOptimizedWaypoints(places, constraints)
+    MCPProvider --> RouteCalculator : OptimizedRouteOrder
+    
+    RouteCalculator -> RouteCalculator : 최적화된 순서로 재계산
+end
+
+== 대체 경로 계산 ==
+
+RouteCalculator -> MCPProvider : getAlternativeRoutes(primaryRoute, options)
+note right
+    - avoid_tolls: 유료도로 회피
+    - avoid_highways: 고속도로 회피
+    - scenic_route: 경관 도로 우선
+end note
+
+MCPProvider --> RouteCalculator : AlternativeRoutes[]
+
+== 결과 생성 및 캐싱 ==
+
+RouteCalculator -> RouteCalculator : 결과 종합 및 검증
+note right
+    - 총 거리/시간 계산
+    - 구간별 상세 정보 정리
+    - polyline 데이터 압축
+    - 실시간 교통 정보 반영
+end note
+
+RouteCalculator --> RouteService : RouteCalculationResult
+
+RouteService -> RouteRepository : saveRouteCalculation(result)
+note right : 계산 결과를 DB에 저장 (이력 관리)
+
+RouteService -> CacheManager : cacheRoute(routeKey, result, TTL)
+note right
+    TTL 설정 전략:
+    - 실시간 교통 포함: 15분
+    - 정적 경로: 24시간
+    - 교통 혼잡 시간대: 5분
+end note
+
+RouteService -> RouteService : 응답 데이터 구성
+note right
+    RouteCalculateResponse {
+        totalDistance, totalDuration,
+        routes[], alternativeRoutes[],
+        optimization_applied,
+        traffic_considered
+    }
+end note
+
+RouteService --> RouteController : RouteCalculateResponse
+RouteController --> User : 200 OK with calculation results
+
+== 경로 상세 정보 조회 ==
+
+User -> RouteController : GET /api/itinerary/routes/{routeId}?realtime=true
+
+RouteController -> RouteService : getRouteDetail(routeId, realtime)
+
+alt realtime = true
+    RouteService -> MCPProvider : getRealTimeTrafficInfo(routeId)
+    MCPProvider --> RouteService : RealTimeTrafficInfo
+    note right
+        - 현재 교통 혼잡도
+        - 예상 지연 시간  
+        - 사고/공사 정보
+    end note
+    
+    RouteService -> RouteService : 실시간 정보 적용
+else realtime = false
+    RouteService -> CacheManager : getCachedRouteDetail(routeId)
+    alt 캐시 존재
+        CacheManager --> RouteService : CachedRouteDetail
+    else 캐시 없음
+        RouteService -> RouteRepository : findRouteById(routeId)
+        RouteRepository --> RouteService : RouteEntity
+    end
+end
+
+RouteService -> RouteService : RouteDetail 구성
+note right
+    상세 정보:
+    - 구간별 step-by-step directions
+    - polyline 경로 데이터
+    - 실시간 교통 정보
+    - 예상 소요 시간
+    - 대체 경로 옵션
+end note
+
+RouteService --> RouteController : RouteDetail
+RouteController --> User : 200 OK with detailed route info
+
+== 오류 처리 ==
+
+alt MCP API 오류 발생
+    MCPProvider --> RouteCalculator : API Error (rate limit, network, etc.)
+    RouteCalculator -> RouteCalculator : 폴백 전략 실행
+    note right
+        1. 캐시된 과거 데이터 사용
+        2. 다른 MCP 제공자 시도
+        3. 정적 거리 계산으로 대체
+        4. 오류 응답 반환
+    end note
+    
+    RouteCalculator --> RouteService : Fallback Result or Error
+    RouteService --> RouteController : 부분 성공 또는 오류 응답
+    RouteController --> User : 206 Partial Content or 500 Error
+end
+
+alt 장소 정보 오류
+    RouteCalculator -> RouteCalculator : 장소 검증 실패
+    note right
+        - 좌표 정보 없음
+        - 접근 불가능한 장소
+        - 존재하지 않는 장소
+    end note
+    
+    RouteCalculator --> RouteService : ValidationError
+    RouteService --> RouteController : BadRequestError
+    RouteController --> User : 400 Bad Request
+end
+
+note over User, ProfileCache
+    핵심 비즈니스 로직:
+    1. 캐시 우선 전략으로 성능 최적화
+    2. 국가별 최적 MCP 제공자 자동 선택
+    3. 실시간 교통 정보 반영으로 정확성 향상
+    4. 경로 최적화로 효율적인 여행 일정 지원
+    5. 대체 경로 제공으로 선택의 다양성 보장
+end note
 
 @enduml
-
