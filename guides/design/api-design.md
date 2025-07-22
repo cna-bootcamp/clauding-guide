@@ -24,7 +24,7 @@
   - 필수 필드 존재 여부
 
 [작성 방법]
-- **공통 설계 원칙 참조**: [common-principles.md](common-principles.md)
+- **공통 설계 원칙 참조**: [common-principles.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md)
 - 서브 에이전트를 활용한 병렬 작성 권장
 - 의존성 분석 및 병렬 처리 전략 적용
 - 의존성 그룹별로 에이전트를 할당하여 동시 작업
@@ -94,34 +94,36 @@ design/backend/api/
 **위치**: `guides/tools/openapi-to-csv/`
 
 ### 🚀 설치 및 사용법
+1. 변환 프로그램 다운로드 
+아래 파일을 tools/openapi-to-csv 디렉토리에 다운로드 
+https://cna-bootcamp.github.io/clauding-guide/guides/tools/openapi-to-csv/openapi-to-csv.js
+https://cna-bootcamp.github.io/clauding-guide/guides/tools/openapi-to-csv/package.json 
 
-1. **의존성 설치**:
+
+2. **의존성 설치**:
    ```bash
-   cd guides/tools/openapi-to-csv
+   cd tools/openapi-to-csv
    npm install
    ```
 
-2. **전역 설치** (선택사항):
+3. **전역 설치** (선택사항):
    ```bash
    # 전역 설치 시 어디서든 사용 가능
-   cd guides/tools/openapi-to-csv
+   cd tools/openapi-to-csv
    npm install -g .
    ```
 
-3. **CSV 생성 실행**:
+4. **CSV 생성 실행**:
    ```bash
    # 방법 1: 전역 설치 후
    openapi-to-csv -d design/backend/api -o design/backend/api/API설계서.txt
    
    # 방법 2: 직접 실행
-   node guides/tools/openapi-to-csv/openapi-to-csv.js -d design/backend/api -o design/backend/api/API설계서.txt
+   node tools/openapi-to-csv/openapi-to-csv.js -d design/backend/api -o design/backend/api/API설계서.txt
    
-   # 방법 3: npm script 사용
-   cd guides/tools/openapi-to-csv
-   npm start -- -d ../../../design/backend/api -o ../../../design/backend/api/API설계서.txt
    ```
 
-4. **사용 옵션**:
+5. **사용 옵션**:
    ```bash
    openapi-to-csv [옵션]
    
