@@ -29,7 +29,7 @@ SVG Wireframe을 생성해주세요:
 /sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
 
 논리 아키텍처를 설계해 주세요:
-- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guide/design/common-principles.md)과 [논리아키텍처 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guide/design/architecture.md)를 준용하여 설계 
+- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md)과 [논리아키텍처 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guides/design/architecture.md)를 준용하여 설계 
 
 ```
 
@@ -38,7 +38,7 @@ SVG Wireframe을 생성해주세요:
 /sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
 
 API를 설계해 주세요:
-- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guide/design/common-principles.md)과 [API 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guide/design/api-design.md)를 준용하여 설계 
+- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guides/guide/design/common-principles.md)과 [API 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guides/design/api-design.md)를 준용하여 설계 
 
 ```
 
@@ -47,7 +47,7 @@ API를 설계해 주세요:
 /sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
 
 외부 시퀀스 설계를 해 주세요:
-- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guide/design/common-principles.md)과 [외부 시퀀스 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guide/design/sequence-design.md)를 준용하여 설계 
+- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md)과 [외부 시퀀스 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guides/design/sequence-design.md)를 준용하여 설계 
 
 ```
 
@@ -56,7 +56,7 @@ API를 설계해 주세요:
 /sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
 
 내부 시퀀스 설계를 해 주세요:
-- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guide/design/common-principles.md)과 [내부 시퀀스 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guide/design/sequence-design.md)를 준용하여 설계 
+- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md)과 [내부 시퀀스 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guides/design/sequence-design.md)를 준용하여 설계 
 
 ```
 
@@ -65,7 +65,7 @@ API를 설계해 주세요:
 /sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
 
 클래스 설계를 해주세요:
-- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guide/design/common-principles.md)과 [클래스 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guide/design/class-data-design.md)를 준용하여 설계
+- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md)과 [클래스 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guides/design/class-data-design.md)를 준용하여 설계
 - 패키지 그룹: com.unicorn.tripgen
 - 개발 아키텍처 패턴 
   - itinerary: Clean 
@@ -78,7 +78,7 @@ API를 설계해 주세요:
 /sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
 
 데이터 설계를 해주세요:
-- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guide/design/common-principles.md)과 [데이터 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guide/design/class-data-design.md)를 준용하여 설계
+- [공통 설계 원칙](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md)과 [데이터 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guides/design/class-data-design.md)를 준용하여 설계
 
 ```
 
@@ -87,7 +87,7 @@ API를 설계해 주세요:
 /sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
 
 물리 아키텍처를 설계 해주세요:
-- [공통 설계 원칙]((https://cna-bootcamp.github.io/clauding-guide/guide/design/common-principles.md)과 [물리 아키텍처 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guide/design/architecture.md)를 준용하여 설계
+- [공통 설계 원칙]((https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md)과 [물리 아키텍처 설계 가이드](https://cna-bootcamp.github.io/clauding-guide/guides/design/architecture.md)를 준용하여 설계
 - CLOUD: Azure Cloud 
 ```
 
