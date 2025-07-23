@@ -44,7 +44,7 @@
 - 네트워크, 보안, 운영 아키텍처는 작성하지 않음 
 - 모니터링/로깅/보안과 관련된 제품/서비스는 생략함 
 - 아래 제품을 우선적으로 사용
-  - API Gateway: Istio나 Spring Cloud Gateway를 사용 
+  - API Gateway: Istio나 Spring Cloud Gateway
   - Database: 클라우드 관리형 DB가 아닌 오픈 소스 DB 
   - Message Queue: 클라우드 관리형 서비스 
   - 기타: 클라우드 관리형 서비스 
