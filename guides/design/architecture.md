@@ -39,11 +39,15 @@
 [요청사항]
 - {CLOUD} 기반의 배포 아키텍처 작성
 - 설계 결과물을 참조하여 {CLOUD}의 최적의 서비스를 사용 
-- API Gateway는 Istio나 Spring Cloud Gateway를 사용 
 - MVP이므로 최소한으로 구성함 
 - 백킹서비스 설치 가이드에 있는 제품을 우선적으로 사용 
 - 네트워크, 보안, 운영 아키텍처는 작성하지 않음 
 - 모니터링/로깅/보안과 관련된 제품/서비스는 생략함 
+- 아래 제품을 우선적으로 사용
+  - API Gateway: Istio나 Spring Cloud Gateway를 사용 
+  - Database: 클라우드 관리형 DB가 아닌 오픈 소스 DB 
+  - Message Queue: 클라우드 관리형 서비스 
+  - 기타: 클라우드 관리형 서비스 
 [참고자료]
 - 유저스토리: Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
