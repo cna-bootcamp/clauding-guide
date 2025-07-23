@@ -12,9 +12,10 @@ claude mcp add-from-claude-desktop -s user
 ### 🔧 1단계: 자동 배치 파일 생성
 
 Claude Desktop 설정을 읽어서 맞춤형 배치 파일을 자동으로 생성합니다.
+- Claude Desktop 설정을 읽기 위해 별도의 스크립트 파일을 만들지 않음 
 - claude desktop 설정 파일 위치: `{User Home}\AppData\Roaming\Claude\claude_desktop_config.json`
-- 기존에 배치 파일이 있는 경우 자동으로 덮어씁니다.
 - 배치파일 생성 위치: `C:\Users\{사용자명}\sync_mcp_servers_auto.bat`
+- 기존에 배치 파일이 있는 경우 자동으로 덮어씁니다.
 - 배치파일은 영어로 작성
 - 아래 예시를 참고하여 배치파일 생성
 
