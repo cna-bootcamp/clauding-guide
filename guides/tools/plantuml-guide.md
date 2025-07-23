@@ -28,7 +28,7 @@ docker logs plantuml
 TEMP_FILE="/tmp/puml_$(date +%s)_$$.puml"
 
 # 2. 파일 복사
-docker cp diagram.puml plantuml:${TEMP_FILE}
+docker cp {검사할 파일} plantuml:${TEMP_FILE}
 
 # 3. JAR 파일 위치 찾기
 JAR_PATH=$(docker exec plantuml find / -name "plantuml*.jar" 2>/dev/null | head -1)
@@ -51,7 +51,7 @@ $timestamp = [int][double]::Parse((Get-Date -UFormat %s))
 $TEMP_FILE = "/tmp/puml_${timestamp}_$$.puml"
 
 # 2. 파일 복사
-docker cp diagram.puml plantuml:${TEMP_FILE}
+docker cp {검사할 파일} plantuml:${TEMP_FILE}
 
 # 3. JAR 파일 위치 찾기
 $JAR_PATH = docker exec plantuml sh -c "find / -name 'plantuml*.jar' 2>/dev/null" | Select-Object -First 1
