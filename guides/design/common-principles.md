@@ -183,7 +183,7 @@ paths:
 - **sequence diagram에서 `..>` 사용 금지**
 - **비동기는 `->>` 또는 `-->>` 사용**
 - **테마는 반드시 `mono` 사용**
-- plantuml 문법검사는 guides/tools/plantuml-guide.md를 참조 
+- plantuml 문법검사 가이드: https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
   
 ### 병렬 처리
 - **의존성 분석 선행**: 병렬 처리 전 반드시 의존성 파악
