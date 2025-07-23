@@ -39,7 +39,9 @@
 [요청사항]
 - {CLOUD} 기반의 배포 아키텍처 작성
 - 설계 결과물을 참조하여 {CLOUD}의 최적의 서비스를 사용 
-
+- API Gateway는 Istio나 Spring Cloud Gateway를 사용 
+- MVP이므로 최소한으로 구성함 
+- 백킹서비스 설치 가이드에 있는 제품을 우선적으로 사용 
 [참고자료]
 - 유저스토리: Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
@@ -50,7 +52,7 @@
 - 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.txt
 - 클래스 설계서: design/backend/class/{service-name}.txt
 - 데이터 설계서: design/backend/database/*.txt 
-
+- 백킹서비스 설치 가이드: https://cna-bootcamp.github.io/clauding-guide/guides/build/백킹서비스%20설치%20가이드.md
 [예시]
 - 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_물리아키텍처.txt
 
