@@ -202,6 +202,7 @@ https://smithery.ai/ 에서 'GitHub'로 찾아 추가:
 **※ 접근할 Organization에 'Smithery AI'를 추가해야 함**
 - '[Deploy Server]' 클릭 후 GitHub 로그인
 - 'Add Github Account' 선택하여 접근할 Organization 추가
+![](images/2025-07-23-19-20-32.png)
 
 ### Figma MCP 설치
 
@@ -221,13 +222,18 @@ claude_desktop_config.json에 아래와 같이 추가:
 #### Figma MCP 사용법
 
 1. Figma에서 'Cursor Talk To Figma MCP Plugin' 설치
+![](images/2025-07-23-19-21-28.png) 
 2. Claude Desktop이나 Claude Code에서 연동할 Figma 객체 선택 후 플러그인 실행
+![](images/2025-07-23-19-22-02.png)  
 3. 플러그인 창에서 채널 ID 복사. 이 플러그인 창을 닫지 않고 그대로 둠
+![](images/2025-07-23-19-22-26.png) 
 4. Claude Desktop 또는 Claude Code에서 프롬프팅
+![](images/2025-07-23-19-22-49.png)  
 
 ### 설치 확인
 
 Claude Desktop의 '설정' 메뉴에서 확인.
+![](images/2025-07-23-19-24-04.png)  
 
 **※ 설정 파일 수정 후 메인메뉴에서 클로드를 종료 후 다시 시작해야 적용됨**
 
