@@ -45,9 +45,12 @@ ddocker exec -u root plantuml rm -f $TEMP_FILE
 ```
 
 ### Windows PowerShell 버전
-**스크립트 파일을 생성하여 수행**.
-'tools/check-plantuml.ps1'파일이 없으면 아래 내용으로 스크립트 파일을 만듦.
-있으면 그 스크립트 파일을 이용하여 검사. 
+**스크립트 파일(tools/check-plantuml.ps1)을 생성하여 수행**.
+
+1. tools/check-plantuml.ps1 파일 존재 여부 확인 
+2. 스크립트 파일이 없으면 아래 내용으로 스크립트 파일을 만듦.
+3. 스크립트 파일이 있으면 그 스크립트 파일을 이용하여 검사.
+ 
 ```powershell
 param(
     [Parameter(Mandatory=$false)]
