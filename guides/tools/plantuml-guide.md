@@ -54,7 +54,7 @@ ddocker exec -u root plantuml rm -f $TEMP_FILE
 ```powershell
 param(
     [Parameter(Mandatory=$false)]
-    [string]$FilePath = "C:\home\workspace\tripgen\design\backend\system\azure-physical-architecture.txt"
+    [string]$FilePath = "C:\home\workspace\tripgen\design\backend\system\azure-physical-architecture.puml"
 )
 
 Write-Host "=== PlantUML 문법 검사 도구 ===" -ForegroundColor Cyan

@@ -14,7 +14,7 @@
 - '패키지 구조 표준'의 예시를 참조하여 모든 클래스와 파일이 포함된 패키지 구조도를 제공
 - '!include'는 사용하지 말고 필요한 인터페이스 직접 정의
 - Getter/Setter 메소드는 표현하지 말것 
-- 프라퍼티와 메소드를 생략한 간단한 클래스 설계서도 작성: design/backend/class/{서비스명}-simple.txt
+- 프라퍼티와 메소드를 생략한 간단한 클래스 설계서도 작성: design/backend/class/{서비스명}-simple.puml
 - 패키지 구조도는 plantuml 스크립트가 아니라 트리구조 텍스트로 작성  
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**
   - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
@@ -31,7 +31,7 @@ Agent 1: 공통 기반 설계
   - Shared Interfaces (공통 인터페이스)
   - Exception Classes (공통 예외)
   - Utility Classes (공통 유틸리티)
-  - 결과: design/backend/class/common-base.txt
+  - 결과: design/backend/class/common-base.puml
 ```
 
 ### 2단계: 서비스별 병렬 설계 (병렬 실행)
@@ -43,7 +43,7 @@ Agent 2~N: 각 서비스별 독립 설계
   - Controller Classes (API 엔드포인트)
   - 각 서비스의 아키텍처 패턴 적용
   - 1단계 공통 컴포넌트 참조
-  - 결과: design/backend/class/{service-name}.txt
+  - 결과: design/backend/class/{service-name}.puml
 ```
 
 **병렬 처리 기준**:
@@ -93,20 +93,20 @@ Agent 4: Service D (독립)
 [참고자료]
 - 유저스토리: Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
-- 아키텍처패턴: design/pattern/아키텍처패턴.txt
-- 논리아키텍처: design/backend/논리아키텍처.txt
+- 아키텍처패턴: design/pattern/아키텍처패턴.puml
+- 논리아키텍처: design/backend/논리아키텍처.puml
 - API 설계서: design/backend/api/*.yaml
-- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.txt
-- 내부시퀀스 설계서: design/backend/sequence/outer/{서비스명}-{플로우명}.txt
+- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
+- 내부시퀀스 설계서: design/backend/sequence/outer/{서비스명}-{플로우명}.puml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서.txt
+- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서.puml
 - 패키지 구조 표준: https://cna-bootcamp.github.io/clauding-guide/standards/standard_package_structure.txt
   
 [결과파일]
 - design/backend/class/package-structure.txt
-- design/backend/class/{서비스명}.txt
-- design/backend/class/{서비스명}-simple.txt
+- design/backend/class/{서비스명}.puml
+- design/backend/class/{서비스명}-simple.puml
 - 서비스명은 영어로 작성 (예: profile, location, itinerary)
   
 ---
@@ -148,19 +148,19 @@ Agent 1~N: 각 서비스별 데이터베이스 설계
 [참고자료]
 - 유저스토리: Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
-- 아키텍처패턴: design/pattern/아키텍처패턴.txt
-- 논리아키텍처: design/backend/논리아키텍처.txt
+- 아키텍처패턴: design/pattern/아키텍처패턴.puml
+- 논리아키텍처: design/backend/논리아키텍처.puml
 - API 설계서: design/backend/api/*.yaml
-- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.txt
-- 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.txt
-- 클래스 설계서: design/backend/class/{service-name}.txt
+- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
+- 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
+- 클래스 설계서: design/backend/class/{service-name}.puml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_데이터설계서.txt
+- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_데이터설계서.puml
 
 [결과파일]
 - 데이터설계서: design/backend/database/{서비스명}.txt
-- ERD: design/backend/database/{서비스명}-erd.txt
+- ERD: design/backend/database/{서비스명}-erd.puml
 - 캐시DB 설계: design/backend/database/cache.txt
 - 데이터설계 요약: design/backend/database/database-design-summary.md
 - 서비스명은 영어로 작성 

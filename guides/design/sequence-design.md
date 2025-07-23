@@ -11,7 +11,7 @@
   - 서비스 간 상호작용과 협업을 명확히 보여주기 위함
   - 논리 아키텍처의 사용자 요청 플로우와 일치하도록 구성
   - 각 플로우에서 어떤 서비스들이 어떻게 협력하는지 표현
-  - 파일명 규칙: 시퀀스설계서(외부)-{플로우명}.txt
+  - 파일명 규칙: 시퀀스설계서(외부)-{플로우명}.puml
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**
   - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
   - **Window는 스크립트 파일을 생성**하여 수행 
@@ -37,15 +37,15 @@
 [참고자료]
 - 유저스토리: Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
-- 아키텍처패턴: design/pattern/아키텍처패턴.txt
-- 논리아키텍처: design/backend/논리아키텍처.txt
+- 아키텍처패턴: design/pattern/아키텍처패턴.puml
+- 논리아키텍처: design/backend/논리아키텍처.puml
 - API 설계서: design/backend/api/*.yaml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서(외부).txt
+- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서(외부).puml
 
 [결과파일]
-- design/backend/sequence/outer/{플로우명}.txt
+- design/backend/sequence/outer/{플로우명}.puml
 
 ## 내부 시퀀스 설계 가이드 
 
@@ -63,16 +63,16 @@
 [참고자료]
 - 유저스토리: Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
-- 아키텍처패턴: design/pattern/아키텍처패턴.txt
-- 논리아키텍처: design/backend/논리아키텍처.txt
+- 아키텍처패턴: design/pattern/아키텍처패턴.puml
+- 논리아키텍처: design/backend/논리아키텍처.puml
 - API 설계서: design/backend/api/*.yaml
-- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.txt
+- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서(내부).txt
+- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서(내부).puml
 
 [결과파일]
-- design/backend/sequence/inner/{서비스명}-{시나리오}.txt
+- design/backend/sequence/inner/{서비스명}-{시나리오}.puml
 - 서비스명은 영어로 시나리오명은 한글로 작성  
 
 [시나리오 분류 가이드]
