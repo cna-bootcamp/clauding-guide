@@ -21,6 +21,8 @@ docker logs plantuml
 
 ## 문법 검사 방법
 
+### Linux/macOS 버전
+
 ```bash
 # 1. 고유 파일명 생성 (충돌 방지)
 TEMP_FILE="/tmp/puml_$(date +%s)_$$.puml"
@@ -39,6 +41,29 @@ docker exec plantuml sh -c "cd /tmp && java -jar ${JAR_PATH} -failfast -v ${TEMP
 
 # 6. 임시 파일 삭제
 docker exec plantuml rm ${TEMP_FILE}
+```
+
+### Windows PowerShell 버전
+
+```powershell
+# 1. 고유 파일명 생성 (충돌 방지)
+$timestamp = [int][double]::Parse((Get-Date -UFormat %s))
+$TEMP_FILE = "/tmp/puml_${timestamp}_$$.puml"
+
+# 2. 파일 복사
+docker cp diagram.puml plantuml:${TEMP_FILE}
+
+# 3. JAR 파일 위치 찾기
+$JAR_PATH = docker exec plantuml sh -c "find / -name 'plantuml*.jar' 2>/dev/null" | Select-Object -First 1
+
+# 4. 문법 검사
+docker exec plantuml java -jar $JAR_PATH -checkonly $TEMP_FILE
+
+# 5. 상세 에러 확인 (필요시)
+docker exec plantuml sh -c "cd /tmp && java -jar $JAR_PATH -failfast -v $TEMP_FILE" 2>&1 | Select-String "Error line"
+
+# 6. 임시 파일 삭제
+docker exec plantuml rm $TEMP_FILE
 ```
 
 ### 검사 결과 해석
@@ -86,4 +111,3 @@ ClassC --> ClassD : 연관 (점선)
 2. 비동기 메시지는 `->>` 또는 `-->>` 사용
 3. 동기/비동기를 명확히 구분하여 일관되게 사용
 4. 다이어그램 타입별로 유효한 화살표가 다름
-
