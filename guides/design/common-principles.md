@@ -84,7 +84,9 @@
 
 ## PlantUML 문법 검사 가이드 
 - 링크: https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
-
+- **Window는 스크립트 파일(tools/check-plantuml.ps1)을 이용**하여 수행
+- 스크립트 파일이 없으면 'PlantUML 문법 검사  가이드'를 참조하여 생성하여 수행 
+  
 ## 🎨 PlantUML 작성 표준
 
 ### 기본 템플릿
