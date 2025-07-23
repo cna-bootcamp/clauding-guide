@@ -6,7 +6,7 @@ Claude Desktop 설정을 읽어서 맞춤형 배치 파일을 자동으로 생�
 - **배치파일은 영어로 작성**
 - 반드시 PowerShell이 아닌 Command창에서 수행하도록 가이드
 - 아래 예시를 참고하여 배치파일 생성
-
+```
 @echo off
 echo ===============================================
 echo   Claude Desktop MCP Auto Sync
@@ -41,3 +41,4 @@ echo 2. Wait 2 minutes then use /mcp command to check server status
 echo 3. Verify all servers are working properly
 echo.
 pause
+```
