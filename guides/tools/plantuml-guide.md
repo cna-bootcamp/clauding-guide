@@ -20,6 +20,7 @@ docker logs plantuml
 ```
 
 ## 문법 검사 방법
+현재 OS에 맞게 수행 
 
 ### Linux/macOS 버전
 
