@@ -1,4 +1,4 @@
-# 유저스토리 작성
+# 유저스토리 작성 프롬프트 
 
 ```
 /sc:document --persona-scribe --persona-architect --think --wave-strategy systematic 
