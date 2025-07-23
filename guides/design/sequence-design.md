@@ -14,6 +14,7 @@
   - 파일명 규칙: 시퀀스설계서(외부)-{플로우명}.txt
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**
   - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
+  - **Window는 스크립트 파일을 생성**하여 수행 
 
 [작성 원칙]
 - 하나의 플로우는 사용자의 특정 목표 달성 과정을 표현
@@ -57,6 +58,7 @@
 - 서비스별 독립적인 에이전트가 각 시나리오를 동시에 작업
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**
   - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
+  - **Window는 스크립트 파일을 생성**하여 수행 
 
 [참고자료]
 - 유저스토리: Userstory.md

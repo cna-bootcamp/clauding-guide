@@ -32,6 +32,7 @@
 - **CI/CD 통합**: 자동화된 검증 프로세스
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**
   - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
+  - **Window는 스크립트 파일을 생성**하여 수행 
 
 ### 6. 🚀 점진적 구현 원칙
 - **MVP → 확장 → 고도화**: 단계별 접근
