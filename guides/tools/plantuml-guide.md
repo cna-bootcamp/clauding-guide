@@ -4,7 +4,7 @@
 
 PlantUML 다이어그램의 문법 오류를 사전에 검출하여 렌더링 실패를 방지하기 위한 가이드입니다. Docker 기반 PlantUML 서버를 활용하여 로컬에서 빠르게 문법을 검증할 수 있습니다.
 
-## PlantUML 서버 설치
+## PlantUML 서버 설치 검사
 
 ### Docker로 PlantUML 서버 실행
 
@@ -41,7 +41,7 @@ docker exec plantuml java -jar ${JAR_PATH} -checkonly ${TEMP_FILE}
 docker exec plantuml sh -c "cd /tmp && java -jar ${JAR_PATH} -failfast -v ${TEMP_FILE} 2>&1 | grep -E 'Error line'"
 
 # 6. 임시 파일 삭제
-docker exec plantuml rm ${TEMP_FILE}
+ddocker exec -u root plantuml rm -f $TEMP_FILE
 ```
 
 ### Windows PowerShell 버전
@@ -64,7 +64,7 @@ docker exec plantuml java -jar $JAR_PATH -checkonly $TEMP_FILE
 docker exec plantuml sh -c "cd /tmp && java -jar $JAR_PATH -failfast -v $TEMP_FILE" 2>&1 | Select-String "Error line"
 
 # 6. 임시 파일 삭제
-docker exec plantuml rm $TEMP_FILE
+docker exec -u root plantuml rm -f $TEMP_FILE
 ```
 
 ### 검사 결과 해석
