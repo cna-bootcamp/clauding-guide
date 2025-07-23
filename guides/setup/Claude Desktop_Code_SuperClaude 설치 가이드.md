@@ -66,6 +66,10 @@ Node Version Manager 사용
   npm install -g @anthropic-ai/claude-code
   ```
 
+## Claude Code 편의 기능 설정
+
+guides/setup/Claude code setup.md를 참조하여 수행합니다.  
+
 ---
 
 ## SuperClaude 설치
