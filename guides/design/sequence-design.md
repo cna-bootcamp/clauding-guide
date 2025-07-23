@@ -12,6 +12,8 @@
   - 논리 아키텍처의 사용자 요청 플로우와 일치하도록 구성
   - 각 플로우에서 어떤 서비스들이 어떻게 협력하는지 표현
   - 파일명 규칙: 시퀀스설계서(외부)-{플로우명}.txt
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
+  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
 
 [작성 원칙]
 - 하나의 플로우는 사용자의 특정 목표 달성 과정을 표현
@@ -53,6 +55,8 @@
 - **각 서비스-시나리오별로 분리하여 각각 작성**
 - 각 서비스별 주요 시나리오마다 독립적인 시퀀스 설계 수행
 - 서비스별 독립적인 에이전트가 각 시나리오를 동시에 작업
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
+  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
 
 [참고자료]
 - 유저스토리: Userstory.md

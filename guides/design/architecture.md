@@ -10,7 +10,9 @@
 - 클라이언트에서 API Gateway로는 단일 연결선으로 표현
 - 서비스별 색상 구분으로 시각적 명확성 확보
 - 서비스 간 의존성을 명확히 표현 (동기/비동기, 필수/선택적)
-
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
+  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
+ 
 [의존성 표현 방법]
 - 실선 화살표(→): 동기적 의존성 (필수)
 - 비동기 화살표(->>): 비동기 의존성 (fire-and-forget)
@@ -48,6 +50,9 @@
   - Database: 클라우드 관리형 DB가 아닌 오픈 소스 DB 
   - Message Queue: 클라우드 관리형 서비스 
   - 기타: 클라우드 관리형 서비스 
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
+  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
+
 [참고자료]
 - 유저스토리: Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
