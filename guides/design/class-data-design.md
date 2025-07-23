@@ -14,6 +14,7 @@
 - '패키지 구조 표준'의 예시를 참조하여 모든 클래스와 파일이 포함된 패키지 구조도를 제공
 - '!include'는 사용하지 말고 필요한 인터페이스 직접 정의
 - Getter/Setter 메소드는 표현하지 말것 
+- 프라퍼티와 메소드를 생략한 간단한 클래스 설계서도 작성: design/backend/class/{서비스명}-simple.txt
 - 패키지 구조도는 plantuml 스크립트가 아니라 트리구조 텍스트로 작성  
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**
   - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
@@ -104,7 +105,8 @@ Agent 4: Service D (독립)
   
 [결과파일]
 - design/backend/class/package-structure.txt
-- design/backend/class/{service-name}.txt
+- design/backend/class/{서비스명}.txt
+- design/backend/class/{서비스명}-simple.txt
 - 서비스명은 영어로 작성 (예: profile, location, itinerary)
   
 ---
