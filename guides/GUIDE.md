@@ -1,11 +1,16 @@
 # Clauding Guide 
-최종 수정일시: 2025-07-24 23:27
+최종 수정일시: 2025-07-25 00:30
 
 ## 서비스 기획 가이드 
-- **유저스토리 작성 프롬프트**
-  - 설명: 유저스토리 작성을 위한 요구사항 정의 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/userstory-prompt.md
-  - 파일명: userstory-prompt.md  
+- **서비스 기획 프롬프트**
+  - 설명: 유저스토리 작성 등 서비스 기획을 위한 프롬프트 예시  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/think-prompt.md
+  - 파일명: think-prompt.md  
+
+- **서비스 기획 가이드**
+  - 설명: 서비스 기획 방법 안내 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/think/think-guide.md
+  - 파일명: think-guide.md  
 
 ---
 
