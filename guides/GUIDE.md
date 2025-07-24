@@ -94,7 +94,7 @@
 ## 참조 문서
 - **유저스토리 작성 방법**
   - 설명: 유저스토리 형식과 작성법 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/references/유저스토리작성방법.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/references/유저스토리작성방법.md
   - 파일명: userstory-writing.md
 
 - **클라우드 아키텍처 패턴 요약표**
