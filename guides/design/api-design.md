@@ -71,7 +71,7 @@ design/backend/api/
 - 유저스토리: design/Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처: design/backend/system/논리아키텍처.puml
+- 논리아키텍처: design/backend/logical/논리아키텍처.puml
 - OpenAPI 스펙: https://swagger.io/specification/
 
 [예시]

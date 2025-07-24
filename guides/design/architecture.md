@@ -32,7 +32,7 @@
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.puml
 
 [결과파일]
-- design/backend/system/논리아키텍처.puml
+- design/backend/logical/논리아키텍처.puml
 
 ## 물리 아키텍처 설계 가이드
 [요청사항]
@@ -52,12 +52,13 @@
 - 유저스토리: design/Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처: design/backend/system/논리아키텍처.puml
+- 논리아키텍처: design/backend/logical/논리아키텍처.puml
 - API 설계서: design/backend/api/*.yaml
 - 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
 - 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
 - 클래스 설계서: design/backend/class/{service-name}.puml
 - 데이터 설계서: design/backend/database/*.txt 
+- High Level 아키텍처 정의: design/backend/system/*.puml
 - 백킹서비스 설치 가이드
 [예시]
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_물리아키텍처.puml
