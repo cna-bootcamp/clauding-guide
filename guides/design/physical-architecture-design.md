@@ -15,8 +15,8 @@
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용 
 [참고자료]
 - 유저스토리: design/Userstory.md
-- Wireframe: design/wireframe/{화면순서번호 2자리}-{화면명}.svg
-- Flow 다이어그램: design/wireframe/user-flow-diagram.svg 
+- Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
+- Flow 다이어그램: design/uiux/user-flow-diagram.svg 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
 - 논리아키텍처: design/backend/logical/논리아키텍처.puml
 - API 설계서: design/backend/api/*.yaml

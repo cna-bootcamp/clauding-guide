@@ -115,8 +115,8 @@ graph TB
 
 ## 참고 자료
 - **유저스토리**: design/Userstory.md
-- Wireframe: design/wireframe/{화면순서번호 2자리}-{화면명}.svg
-- Flow 다이어그램: design/wireframe/user-flow-diagram.svg 
+- Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
+- Flow 다이어그램: design/uiux/user-flow-diagram.svg 
 - **클라우드 아키텍처 패턴 요약표**
 
 ## 결과 파일

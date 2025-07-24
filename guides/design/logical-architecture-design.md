@@ -23,8 +23,8 @@
 
 [참고자료]
 - 유저스토리: design/Userstory.md
-- Wireframe: design/wireframe/{화면순서번호 2자리}-{화면명}.svg
-- Flow 다이어그램: design/wireframe/user-flow-diagram.svg 
+- Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
+- Flow 다이어그램: design/uiux/user-flow-diagram.svg 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
 
 [예시]
