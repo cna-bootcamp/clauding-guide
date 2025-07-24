@@ -4,23 +4,80 @@
 ### 데이터베이스 
 1.설치 가이드 작성 
 ```
-/sc:document --persona-devops --think --uc -c7 --wave-mode auto --wave-strategy systematic --focus architecture
+/sc:document --persona-devops --think --uc --c7 --wave-mode auto --wave-strategy systematic --focus architecture
 
 "백킹서비스 설치 가이드"에 따라 데이터베이스 설치 방법을 안내해 주십시오.
 ```
 
 2.설치 수행 요청
 ```
-/sc:implement --persona-devops --think --uc -c7 --wave-mode auto --wave-strategy systematic
+/sc:implement --persona-devops --think --uc --c7 --seq --wave-mode auto --wave-strategy systematic
 
 [요구사항]
-- 데이터베이스 설치 가이드에 따라 실제 설치 수행
+- 데이터베이스 설치 가이드에 따라 필요한 모든 데이터베이스 설치
 - 현재 OS에 맞게 설치
 - AKS에 설치
   - azure login이 이미 되어 있음
   - AKS: aks-digitalgarage-01
-- 설치 후 SQL Client(예: DBeaver)에서 접근 방법 안내 
+  - Namespace: tripgen
+  - Database명: tripgen
+- 데이터베이스 종류별로 서브 에이젼트를 병렬로 수행하여 설치
+- 설치 후 데이터베이스 종류에 맞게 연결 방법 안내 
 [참고자료]
-- build/backing-service/database 하위 파일 
+- 데이터베이스 설치 가이드: build/backing-service/database 하위 파일 
+[결과파일]
+- build/backing-service/database/데이터베이스 설치 결과-{db종류}.md 
 ```
 
+3.설치 제거
+```
+/sc:implement --persona-devops --think --uc --c7 --seq --wave-mode auto --wave-strategy systematic
+
+[요구사항]
+- "데이터베이스 설치 결과"를 보고 관련된 모든 리소스를 삭제
+- 현재 OS에 맞게 수행  
+- 데이터베이스 종류별로 서브 에이젼트를 병렬로 수행하여 설치
+- 설치 후 "데이터베이스 설치 결과"파일 삭제 
+- 결과파일은 생성할 필요 없고 화면에만 결과 표시 
+[참고자료]
+- 데이터베이스 설치 결과: build/backing-service/database/데이터베이스 설치 결과-{db종류}.md 
+```
+
+---
+
+### Message Queue 
+1.설치 가이드 작성 
+```
+/sc:document --persona-devops --think --uc --c7 --wave-mode auto --wave-strategy systematic --focus architecture
+
+"백킹서비스 설치 가이드"에 따라 Message Queue 설치 방법을 안내해 주십시오.
+```
+
+2.설치 수행 요청
+```
+/sc:implement --persona-devops --think --uc --c7 --seq --wave-mode auto --wave-strategy systematic
+
+[요구사항]
+- "Message Queue 설치 가이드"에 따라 필요한 모든 Message Queue 설치
+- 현재 OS에 맞게 설치
+- Message Queue 종류별로 서브 에이젼트를 병렬로 수행하여 설치
+- 설치 후 Message Queue 종류에 맞게 설치 확인 방법 안내 
+[참고자료]
+- Message Queue 설치 가이드: build/backing-service/mq 하위 파일 
+[결과파일]
+- build/backing-service/mq/MQ 설치 결과-{MQ종류}.md 
+```
+
+3.설치 제거
+```
+/sc:implement --persona-devops --think --uc --c7 --seq --wave-mode auto --wave-strategy systematic
+
+[요구사항]
+- "Message Queue 설치 결과"를 보고 관련된 모든 리소스를 삭제
+- 현재 OS에 맞게 수행  
+- Message Queue 종류별로 서브 에이젼트를 병렬로 수행하여 설치
+- 설치 후 "Message Queue 설치 결과"파일 삭제 
+- 결과파일은 생성할 필요 없고 화면에만 결과 표시 
+[참고자료]
+- Message Queue 설치 결과: build/backing-service/mq/MQ 설치 결과-{MQ종류}.md 
+```
