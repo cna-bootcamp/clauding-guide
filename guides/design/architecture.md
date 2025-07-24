@@ -32,7 +32,7 @@
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.puml
 
 [결과파일]
-- design/backend/논리아키텍처.puml
+- design/backend/system/논리아키텍처.puml
 
 ## 물리 아키텍처 설계 가이드
 [요청사항]
@@ -49,10 +49,10 @@
   - 기타: 클라우드 관리형 서비스 
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용 
 [참고자료]
-- 유저스토리: Userstory.md
+- 유저스토리: design/Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처: design/backend/논리아키텍처.puml
+- 논리아키텍처: design/backend/system/논리아키텍처.puml
 - API 설계서: design/backend/api/*.yaml
 - 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
 - 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
