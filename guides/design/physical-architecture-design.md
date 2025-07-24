@@ -29,4 +29,4 @@
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_물리아키텍처.puml
 
 [결과파일]
-- design/backend/physical/ 폴더에 생성 
+- design/backend/physical/물리아키텍처.puml
