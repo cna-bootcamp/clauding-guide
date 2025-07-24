@@ -31,9 +31,7 @@
 
 [참고자료]
 - 유저스토리: design/userstory.md
-- 스타일가이드: design/uiux/style-guide.md
-- Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
-- Flow 다이어그램: design/uiux/user-flow-diagram.svg 
+- UI/UX 설계서: design/uiux/uiux.md
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
 - 논리아키텍처 설명: design/backend/logical/logical-architecture.md
 - 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.puml
