@@ -10,7 +10,7 @@
 - 물리아키텍처: design/backend/system/ 하위 파일 
 - 백킹 서비스 설치 방법
 [결과파일]
-- build/backing-service/ 하위에 작성 
+- build/backing-service/database 하위에 작성 
 
 ---
 
@@ -23,5 +23,5 @@
 - 물리아키텍처: design/system/ 하위 파일 
 - 백킹 서비스 설치 방법
 [결과파일]
-- build/backing-service/mq-{mq name}.txt 
+- build/backing-service/mq/ 하위에 작성 
 
