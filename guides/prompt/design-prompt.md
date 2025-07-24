@@ -3,7 +3,7 @@
 ## UI/UX 설계
 
 ```
-/sc:design --persona-frontend --think --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-frontend --think --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 SVG Wireframe을 생성해주세요:
 
@@ -18,7 +18,7 @@ SVG Wireframe을 생성해주세요:
 
 ## 클라우드 아키텍처 패턴 선정 
 ```
-/sc:design --persona-architect --think-hard --seq --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-architect --think-hard --seq --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 클라우드 아키텍처 패턴 적용 방안을 작성해 주세요:
 - '클라우드 아키텍처 패턴 선정 가이드'를 준용하여 작성 
@@ -26,7 +26,7 @@ SVG Wireframe을 생성해주세요:
 
 ## 논리아키텍처 설계
 ```
-/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 논리 아키텍처를 설계해 주세요:
 - '공통 설계 원칙'과 '논리아키텍처 설계 가이드'를 준용하여 설계 
@@ -35,7 +35,7 @@ SVG Wireframe을 생성해주세요:
 
 ## API 설계
 ```
-/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 API를 설계해 주세요:
 - '공통 설계 원칙'과 'API 설계 가이드'를 준용하여 설계 
@@ -44,7 +44,7 @@ API를 설계해 주세요:
 
 ## 외부 시퀀스 설계
 ```
-/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 외부 시퀀스 설계를 해 주세요:
 - '공통 설계 원칙'과 '외부 시퀀스 설계 가이드'를 준용하여 설계 
@@ -53,7 +53,7 @@ API를 설계해 주세요:
 
 ## 내부 시퀀스 설계
 ```
-/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 내부 시퀀스 설계를 해 주세요:
 - '공통 설계 원칙'과 '내부 시퀀스 설계 가이드'를 준용하여 설계 
@@ -62,7 +62,7 @@ API를 설계해 주세요:
 
 ## 클래스 설계
 ```
-/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 클래스 설계를 해주세요:
 - '공통 설계 원칙'과 '클래스 설계 가이드'를 준용하여 설계
@@ -75,7 +75,7 @@ API를 설계해 주세요:
 
 ## 데이터 설계
 ```
-/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 데이터 설계를 해주세요:
 - '공통 설계 원칙'과 '데이터 설계 가이드'를 준용하여 설계
@@ -84,7 +84,7 @@ API를 설계해 주세요:
 
 ## 물리 아키텍처 설계
 ```
-/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic 
+/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 물리 아키텍처를 설계 해주세요:
 - '공통 설계 원칙'과 '물리 아키텍처 설계 가이드'를 준용하여 설계
@@ -97,7 +97,7 @@ API를 설계해 주세요:
 
 설계 수정 검토 요청 예
 ```
-/sc:design is running… --personar-architect --think-hard --c7 --seq 
+/sc:design --personar-architect --think-hard --c7 --seq --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 중요한 요구사항 수정이 필요해요. 
 AI일정 생성 시 Claude API를 이용하고자 합니다. 
@@ -113,7 +113,16 @@ Claude가 구글/카카오 MCP와 바로 연동할 수 있는지를 검토해 �
 
 설계 수정 요청 예
 ```
-/sc:document is running… --persona-architect --persona-scribe --think-hard --c7 --seq
+/sc:document --persona-architect --persona-scribe --think-hard --c7 --seq --uc --wave-mode auto --wave-strategy systematic --delegate auto
 - 관련된 설계 결과물을 모두 수정 해 주세요. /design 폴더 하위에 설계 결과 있음.
+- 서브 에이젼트로 병렬 처리가 가능한지 검토하여 병렬처리 바람
+```
+
+## 설계 통합 검토
+모든 설계 결과를 검토 요청함 
+```
+/sc:design --persona-architect --persona-scribe --think-hard --c7 --seq --uc --wave-mode auto --wave-strategy systematic --delegate auto
+- 모든 설계 결과물을 검토하여 설계 내용이 일치하지 않거나 잘못된 부분을 수정 
+- /design 폴더 하위에 설계 결과 있음
 - 서브 에이젼트로 병렬 처리가 가능한지 검토하여 병렬처리 바람
 ```
