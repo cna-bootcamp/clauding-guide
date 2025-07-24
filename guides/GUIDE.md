@@ -1,5 +1,5 @@
 # Clauding Guide 
-최종 수정일시: 2025-07-25 00:54
+최종 수정일시: 2025-07-25 14:22
 
 ## 서비스 기획 가이드 
 - **서비스 기획 프롬프트**
@@ -30,6 +30,11 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/uiux-design.md
   - 파일명: uiux-design.md
 
+- **프로토타입 작성 가이드**
+  - 설명: 프로토타입 작성 방법 안내  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/uiux-prototype.md
+  - 파일명: uiux-prototype.md
+  
 - **아키텍처 패턴 선정 가이드**
   - 설명: 클라우드 아키텍처 패턴 선정 방법 안내 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/architecture-patterns.md
