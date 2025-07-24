@@ -165,7 +165,7 @@ function convertToCSV(apiSpecs) {
 function main() {
     const args = process.argv.slice(2);
     let inputDir = '.';
-    let outputFile = 'API설계서.txt';
+    let outputFile = 'API설계서.md';
     
     // Parse command line arguments
     for (let i = 0; i < args.length; i++) {

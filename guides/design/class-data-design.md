@@ -58,7 +58,7 @@ Agent N+1: 통합 작업
   - 명명 규칙 통일성 확인
   - 의존성 검증
   - 크로스 서비스 참조 검증
-  - 결과: design/backend/class/package-structure.txt
+  - 결과: design/backend/class/package-structure.md
 ```
 
 ### 병렬 처리 실행 지침
@@ -99,10 +99,10 @@ Agent 4: Service D (독립)
 
 [예시]
 - 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서.puml
-- 패키지 구조 표준: https://cna-bootcamp.github.io/clauding-guide/standards/standard_package_structure.txt
+- 패키지 구조 표준: https://cna-bootcamp.github.io/clauding-guide/standards/standard_package_structure.md
   
 [결과파일]
-- design/backend/class/package-structure.txt
+- design/backend/class/package-structure.md
 - design/backend/class/{서비스명}.puml
 - design/backend/class/{서비스명}-simple.puml
 - 서비스명은 영어로 작성 (예: profile, location, itinerary)
@@ -155,8 +155,8 @@ Agent 1~N: 각 서비스별 데이터베이스 설계
 - 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_데이터설계서.puml
 
 [결과파일]
-- 데이터설계서: design/backend/database/{서비스명}.txt
+- 데이터설계서: design/backend/database/{서비스명}.md
 - ERD: design/backend/database/{서비스명}-erd.puml
-- 캐시DB 설계: design/backend/database/cache.txt
+- 캐시DB 설계: design/backend/database/cache.md
 - 데이터설계 요약: design/backend/database/database-design-summary.md
 - 서비스명은 영어로 작성 

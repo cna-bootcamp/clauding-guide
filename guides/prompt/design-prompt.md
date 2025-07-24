@@ -83,6 +83,16 @@ API를 설계해 주세요:
 ```
 
 ## 물리 아키텍처 설계
+1) High Level 아키텍처 정의
+```
+/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
+
+High Level 아키텍처 정의서를 작성해 주세요.
+- 'High Level 아키텍처 정의 가이드'를 준용하여 설계
+
+```
+
+2) 물리 아키텍처 설계 
 ```
 /sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 

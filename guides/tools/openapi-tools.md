@@ -36,17 +36,17 @@ guides/tools/openapi-to-csv/
 #### 기본 사용
 ```bash
 # 전역 설치 후
-openapi-to-csv -d design/backend/api -o design/backend/API설계서.txt
+openapi-to-csv -d design/backend/api -o design/backend/API설계서.md
 
 # 직접 실행
-node guides/tools/openapi-to-csv/openapi-to-csv.js -d design/backend/api -o design/backend/API설계서.txt
+node guides/tools/openapi-to-csv/openapi-to-csv.js -d design/backend/api -o design/backend/API설계서.md
 ```
 
 #### 옵션
 | 옵션 | 설명 | 기본값 |
 |------|------|--------|
 | `-d, --directory` | OpenAPI YAML 파일들이 있는 디렉토리 | `.` |
-| `-o, --output` | 출력 CSV 파일 경로 | `API설계서.txt` |
+| `-o, --output` | 출력 CSV 파일 경로 | `API설계서.md` |
 | `-h, --help` | 도움말 표시 | - |
 | `--version` | 버전 정보 | - |
 
@@ -56,7 +56,7 @@ node guides/tools/openapi-to-csv/openapi-to-csv.js -d design/backend/api -o desi
 openapi-to-csv -d ./api -o ./api-spec.csv
 
 # 상대 경로 사용
-openapi-to-csv -d design/backend/api -o design/backend/API설계서.txt
+openapi-to-csv -d design/backend/api -o design/backend/API설계서.md
 
 # 현재 디렉토리의 YAML 파일들 처리
 openapi-to-csv -o ./output.csv

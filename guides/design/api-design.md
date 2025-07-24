@@ -76,11 +76,11 @@ design/backend/api/
 
 [예시]
 - swagger api yaml: https://cna-bootcamp.github.io/clauding-guide/samples/sample_swagger_api.yaml
-- API 설계서: https://cna-bootcamp.github.io/clauding-guide/samples/sample_API%20설계서.txt
+- API 설계서: https://cna-bootcamp.github.io/clauding-guide/samples/sample_API%20설계서.md
 
 [결과파일]
 - design/backend/api/*.yaml (OpenAPI 형식)
-- design/backend/api/API설계서.txt (CSV 형식)
+- design/backend/api/API설계서.md (CSV 형식)
 - 각 파일 작성 후 다음 단계 수행:
   1. swagger-cli validate 실행하여 검증
   2. openapi-to-csv 실행하여 CSV 생성
@@ -115,10 +115,10 @@ https://cna-bootcamp.github.io/clauding-guide/guides/tools/openapi-to-csv/packag
 4. **CSV 생성 실행**:
    ```bash
    # 방법 1: 전역 설치 후
-   openapi-to-csv -d design/backend/api -o design/backend/api/API설계서.txt
+   openapi-to-csv -d design/backend/api -o design/backend/api/API설계서.md
    
    # 방법 2: 직접 실행
-   node tools/openapi-to-csv/openapi-to-csv.js -d design/backend/api -o design/backend/api/API설계서.txt
+   node tools/openapi-to-csv/openapi-to-csv.js -d design/backend/api -o design/backend/api/API설계서.md
    
    ```
 
@@ -128,13 +128,13 @@ https://cna-bootcamp.github.io/clauding-guide/guides/tools/openapi-to-csv/packag
    
    옵션:
      -d, --directory <dir>   입력 디렉토리 (기본: .)
-     -o, --output <file>     출력 파일명 (기본: API설계서.txt)
+     -o, --output <file>     출력 파일명 (기본: API설계서.md)
      -h, --help             도움말 표시
      --version              버전 정보
    ```
 
 ### 📊 생성 결과
-- **출력 파일**: design/backend/api/API설계서.txt
+- **출력 파일**: design/backend/api/API설계서.md
 - **형식**: 파이프(|)로 구분된 CSV
 - **Excel 활용**: 구분자를 파이프(|)로 설정하여 열기
 
