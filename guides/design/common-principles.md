@@ -107,10 +107,7 @@ title [다이어그램 제목]
 
 ### 파일 구조
 ```
-design/backend/api/
-├── profile-service-api.yaml
-├── itinerary-service-api.yaml
-└── location-service-api.yaml
+design/backend/api/{service-name}-api.yaml
 ```
 
 ### 필수 필드

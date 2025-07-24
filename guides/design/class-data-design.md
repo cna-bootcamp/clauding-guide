@@ -89,7 +89,7 @@ Agent 4: Service D (독립)
 ```
 
 [참고자료]
-- 유저스토리: Userstory.md
+- 유저스토리: design/Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
 - 논리아키텍처: design/backend/논리아키텍처.puml
@@ -98,8 +98,8 @@ Agent 4: Service D (독립)
 - 내부시퀀스 설계서: design/backend/sequence/outer/{서비스명}-{플로우명}.puml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서.puml
-- 패키지 구조 표준: https://cna-bootcamp.github.io/clauding-guide/standards/standard_package_structure.md
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서.puml
+- 패키지 구조 표준: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/standards/standard_package_structure.md
   
 [결과파일]
 - design/backend/class/package-structure.md
@@ -142,7 +142,7 @@ Agent 1~N: 각 서비스별 데이터베이스 설계
 - **캐시 활용**: 타 서비스 데이터는 캐시로만 참조 
 
 [참고자료]
-- 유저스토리: Userstory.md
+- 유저스토리: design/Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
 - 논리아키텍처: design/backend/논리아키텍처.puml
@@ -152,7 +152,7 @@ Agent 1~N: 각 서비스별 데이터베이스 설계
 - 클래스 설계서: design/backend/class/{service-name}.puml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_데이터설계서.puml
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_데이터설계서.puml
 
 [결과파일]
 - 데이터설계서: design/backend/database/{서비스명}.md

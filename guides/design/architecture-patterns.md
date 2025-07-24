@@ -114,10 +114,9 @@ graph TB
 - **예상 효과**: 정량적 성과 지표 (응답시간 개선, 처리량 증가 등)
 
 ## 참고 자료
-- **유저스토리**: `Userstory.md`
+- **유저스토리**: `design/Userstory.md`
 - **화면설계**: `design/wireframe` 폴더
-- **클라우드 아키텍처 패턴**: [Cloud Design Patterns 개요](https://cna-bootcamp.github.io/clauding-guide/references/Cloud%20Design%20Patterns(개요).md)
-
+- **클라우드 아키텍처 패턴 요약표**
 ## 결과 파일
 선정된 아키텍처 패턴은 다음과 같이 문서화됩니다:
 

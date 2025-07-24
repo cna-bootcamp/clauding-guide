@@ -102,7 +102,7 @@ Then: 가입 완료 메시지가 표시되고 환영 이메일이 발송됨
 ```
 
 ## 참고 자료
-- [유저스토리 작성 샘플](https://cna-bootcamp.github.io/clauding-guide/samples/Userstory.pdf)
+- [유저스토리 작성 샘플](https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/Userstory.pdf)
 
 ## 결과 파일
 작성된 유저스토리는 다음 위치에 저장됩니다:

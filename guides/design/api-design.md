@@ -75,8 +75,8 @@ design/backend/api/
 - OpenAPI 스펙: https://swagger.io/specification/
 
 [예시]
-- swagger api yaml: https://cna-bootcamp.github.io/clauding-guide/samples/sample_swagger_api.yaml
-- API 설계서: https://cna-bootcamp.github.io/clauding-guide/samples/sample_API%20설계서.md
+- swagger api yaml: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_swagger_api.yaml
+- API 설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_API%20설계서.md
 
 [결과파일]
 - design/backend/api/*.yaml (OpenAPI 형식)
@@ -96,8 +96,8 @@ design/backend/api/
 ### 🚀 설치 및 사용법
 1. 변환 프로그램 다운로드 
 아래 파일을 tools/openapi-to-csv 디렉토리에 다운로드 
-https://cna-bootcamp.github.io/clauding-guide/guides/tools/openapi-to-csv/openapi-to-csv.js
-https://cna-bootcamp.github.io/clauding-guide/guides/tools/openapi-to-csv/package.json 
+https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/openapi-to-csv/openapi-to-csv.js
+https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/openapi-to-csv/package.json 
 
 2. **의존성 설치**:
    ```bash

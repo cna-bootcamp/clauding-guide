@@ -29,7 +29,7 @@
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_논리아키텍처.puml
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.puml
 
 [결과파일]
 - design/backend/논리아키텍처.puml
@@ -89,7 +89,7 @@
 - 데이터 설계서: design/backend/database/*.txt 
 - 백킹서비스 설치 가이드
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_물리아키텍처.puml
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_물리아키텍처.puml
 
 [결과파일]
 - design/backend/system/ 폴더에 생성 

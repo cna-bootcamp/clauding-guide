@@ -328,7 +328,7 @@ claude mcp add-from-claude-desktop -s user
 Claude Code를 실행하고 아래 프롬프트로 동기화 batch파일을 만들어 실행니다.  
 ```
 아래 가이드를 참조하여 Claude Code에 MCP 설정을 추가하는 방법을 가이드 해 주십시오.
-- 가이드: https://cna-bootcamp.github.io/clauding-guide/guides/setup/sync_mcp.md
+- 가이드: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/setup/sync_mcp.md
 ```
 
 ---

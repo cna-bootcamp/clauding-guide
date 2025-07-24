@@ -32,14 +32,14 @@
 - **데이터 흐름별**: 데이터의 생성, 변환, 저장 과정
 
 [참고자료]
-- 유저스토리: Userstory.md
+- 유저스토리: design/Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
 - 논리아키텍처: design/backend/논리아키텍처.puml
 - API 설계서: design/backend/api/*.yaml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서(외부).puml
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서(외부).puml
 
 [결과파일]
 - design/backend/sequence/outer/{플로우명}.puml
@@ -64,7 +64,7 @@
 - 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
 
 [예시]
-- 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_시퀀스설계서(내부).puml
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서(내부).puml
 
 [결과파일]
 - design/backend/sequence/inner/{서비스명}-{시나리오}.puml
