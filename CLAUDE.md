@@ -80,5 +80,6 @@ Claude 사용 가이드 문서화
 ---
 
 ## Git 연동
+- "pull" 명령어 입력 시 Git pull 명령을 수행하고 충돌이 있을 때 최신 파일로 병합 수행  
 - "push" 또는 "푸시" 명령어 입력시 git add, commit, push를 수행 
 - Commit Message는 한글로 함

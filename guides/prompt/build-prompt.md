@@ -24,9 +24,9 @@
 - 데이터베이스 종류별로 서브 에이젼트를 병렬로 수행하여 설치
 - 설치 후 데이터베이스 종류에 맞게 연결 방법 안내 
 [참고자료]
-- 데이터베이스 설치 가이드: build/backing-service/database 하위 파일 
+- 데이터베이스 설치 가이드: build/database-install.md 
 [결과파일]
-- build/backing-service/database/데이터베이스 설치 결과-{db종류}.md 
+- build/database/데이터베이스 설치 결과-{db종류}.md 
 ```
 
 3.설치 제거
@@ -40,7 +40,7 @@
 - 설치 후 "데이터베이스 설치 결과"파일 삭제 
 - 결과파일은 생성할 필요 없고 화면에만 결과 표시 
 [참고자료]
-- 데이터베이스 설치 결과: build/backing-service/database/데이터베이스 설치 결과-{db종류}.md 
+- 데이터베이스 설치 결과: build/database/데이터베이스 설치 결과-{db종류}.md 
 ```
 
 ---
@@ -63,9 +63,9 @@
 - Message Queue 종류별로 서브 에이젼트를 병렬로 수행하여 설치
 - 설치 후 Message Queue 종류에 맞게 설치 확인 방법 안내 
 [참고자료]
-- Message Queue 설치 가이드: build/backing-service/mq 하위 파일 
+- Message Queue 설치 가이드: build/mq-install.md 
 [결과파일]
-- build/backing-service/mq/MQ 설치 결과-{MQ종류}.md 
+- build/mq/MQ 설치 결과-{MQ종류}.md 
 ```
 
 3.설치 제거
@@ -79,5 +79,5 @@
 - 설치 후 "Message Queue 설치 결과"파일 삭제 
 - 결과파일은 생성할 필요 없고 화면에만 결과 표시 
 [참고자료]
-- Message Queue 설치 결과: build/backing-service/mq/MQ 설치 결과-{MQ종류}.md 
+- Message Queue 설치 결과: build/mq/MQ 설치 결과-{MQ종류}.md 
 ```
