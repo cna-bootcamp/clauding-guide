@@ -11,7 +11,7 @@
   - 컴포넌트별 분리된 wireframe
   - 사용자 플로우 다이어그램 포함 
 [참고자료]
-- 유저스토리: design/Userstory.md
+- 유저스토리: design/userstory.md
 [결과파일] 
 - 스타일가이드: design/uiux/style-guide.md 
 - Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg

@@ -114,7 +114,8 @@ graph TB
 - **예상 효과**: 정량적 성과 지표 (응답시간 개선, 처리량 증가 등)
 
 ## 참고 자료
-- **유저스토리**: design/Userstory.md
+- **유저스토리**: design/userstory.md
+- 스타일가이드: design/uiux/style-guide.md
 - Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
 - Flow 다이어그램: design/uiux/user-flow-diagram.svg 
 - **클라우드 아키텍처 패턴 요약표**

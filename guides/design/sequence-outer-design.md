@@ -30,7 +30,8 @@
 - **데이터 흐름별**: 데이터의 생성, 변환, 저장 과정
 
 [참고자료]
-- 유저스토리: design/Userstory.md
+- 유저스토리: design/userstory.md
+- 스타일가이드: design/uiux/style-guide.md
 - Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
 - Flow 다이어그램: design/uiux/user-flow-diagram.svg 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml

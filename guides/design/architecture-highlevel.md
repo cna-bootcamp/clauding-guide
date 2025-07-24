@@ -18,7 +18,8 @@
 - 개발언어, 개발 프레임워크, AI모델은 '제품별 버전 가이드"를 참조하여 GA된 최신 버전 사용
 - 결과는 'High Level 아키텍처 정의서.md'에 작성하고 별도의 다른 파일은 생성하지 말것
 [참고자료]
-- 유저스토리: design/Userstory.md
+- 유저스토리: design/userstory.md
+- 스타일가이드: design/uiux/style-guide.md
 - Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
 - Flow 다이어그램: design/uiux/user-flow-diagram.svg 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml

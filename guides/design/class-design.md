@@ -86,7 +86,7 @@ Agent 4: Service D (독립)
 ```
 
 [참고자료]
-- 유저스토리: design/Userstory.md
+- 유저스토리: design/userstory.md
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
 - 논리아키텍처 설명: design/backend/logical/logical-architecture.md
 - 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.puml
