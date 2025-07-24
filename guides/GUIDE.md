@@ -129,3 +129,9 @@
   - 설명: OpenAPI 3.0 YAML 파일을 CSV 형식으로 변환하는 도구. openapi-to-csv폴더 하위의 파일 이용함. 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/openapi-tools.md
   - 파일명: openapi-tools.md
+
+- **MCP 동기화 도구**
+  - 설명: Window에서 Cloude Desktop의 MCP설정을 읽어 Claude Code에 MCP 서버를 동기화하는 툴 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/sync-mcp.md
+  - 파일명: sync-mcp.md
+  
