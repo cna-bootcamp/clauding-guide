@@ -14,8 +14,9 @@ SVG Wireframe을 생성해주세요:
   - 컴포넌트별 분리된 wireframe
   - 사용자 플로우 다이어그램 포함 
 - 결과파일: 
-  - design/wireframe/{화면명}.svg
+  - design/wireframe/{화면순서번호 2자리}-{화면명}.svg
   - 화면명은 한글로 작성  
+    예시) 01-대시보드.svg
 ```
 
 ## 클라우드 아키텍처 패턴 선정 
