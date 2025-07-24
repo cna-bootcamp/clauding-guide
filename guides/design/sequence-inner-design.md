@@ -11,9 +11,11 @@
 
 [참고자료]
 - 유저스토리: design/Userstory.md
-- 화면설계: design/wireframe 폴더의 화면설계 
+- Wireframe: design/wireframe/{화면순서번호 2자리}-{화면명}.svg
+- Flow 다이어그램: design/wireframe/user-flow-diagram.svg 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처: design/backend/logical/논리아키텍처.puml
+- 논리아키텍처 설명: design/backend/logical/logical-architecture.md
+- 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.puml
 - API 설계서: design/backend/api/*.yaml
 - 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
 

@@ -31,10 +31,10 @@ Agent 1~N: 각 서비스별 데이터베이스 설계
 - **캐시 활용**: 타 서비스 데이터는 캐시로만 참조 
 
 [참고자료]
-- 유저스토리: design/Userstory.md
-- 화면설계: design/wireframe 폴더의 화면설계 
+- 유저스토리: design/Userstory.md 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처: design/backend/logical/논리아키텍처.puml
+- 논리아키텍처 설명: design/backend/logical/logical-architecture.md
+- 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.puml
 - API 설계서: design/backend/api/*.yaml
 - 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
 - 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml

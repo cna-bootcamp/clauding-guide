@@ -5,18 +5,8 @@
 ```
 /sc:design --persona-frontend --think --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
-SVG Wireframe을 생성해주세요:
-
-- **주요 화면**: design/Userstory.md를 꼼꼼히 이해하여 작성 
-- 서브 에이젼트를 병렬로 실행하여 작업
-- **SVG 요구사항**:
-  - 반응형 레이아웃 (320px~1024px)
-  - 컴포넌트별 분리된 wireframe
-  - 사용자 플로우 다이어그램 포함 
-- 결과파일: 
-  - design/wireframe/{화면순서번호 2자리}-{화면명}.svg
-  - 화면명은 한글로 작성  
-    예시) 01-대시보드.svg
+UI/UX 설계를 해주세요:
+- 'UI/UX 설계 가이드'를 준용하여 작성
 ```
 
 ## 클라우드 아키텍처 패턴 선정 
