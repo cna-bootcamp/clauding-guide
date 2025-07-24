@@ -92,6 +92,11 @@
 ---
 
 ## 참조 문서
+- **프로젝트 지침 템플릿**
+  - 설명: 프로젝트 지침인 CLAUDE.md 파일 템플릿 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/references/instruction-template.md
+  - 파일명: instruction-template.md
+
 - **유저스토리 작성 방법**
   - 설명: 유저스토리 형식과 작성법 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/references/유저스토리작성방법.md
