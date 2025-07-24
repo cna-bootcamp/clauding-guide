@@ -49,6 +49,19 @@
   - 10. 개발 운영 (DevOps)
   - 11. 보안 아키텍처
   - 12. 품질 속성 구현 전략
+- 백엔드 기술스택은 각 마이크로서비스마다 정의
+- 기술스택 버전은 GA된 최신 버전 사용
+- 서비스별 아키텍처 패턴은 클래스 설계 결과와 일치해야 함 
+- MVP이므로 최소한으로 구성함 
+- 백킹서비스 설치 가이드에 있는 제품을 우선적으로 사용 
+- 모니터링/로깅/보안과 관련된 제품/서비스는 생략함 
+- 아래 제품을 우선적으로 사용
+  - API Gateway: Istio나 Spring Cloud Gateway
+  - Database: 클라우드 관리형 DB가 아닌 오픈 소스 DB 
+  - Message Queue: 클라우드 관리형 서비스 
+  - 기타: 클라우드 관리형 서비스 
+- AI API 모델은 최신 모델 선택 
+-  
 [참고자료]
 - 유저스토리: design/Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
@@ -60,8 +73,9 @@
 - 클래스 설계서: design/backend/class/{service-name}.puml
 - 데이터 설계서: design/backend/database/*
 - High Level 아키텍처 정의서 템플릿
+- 백킹서비스 설치 가이드
 [결과파일]
-- desing/High Level 아키텍처 정의서.md
+- design/High Level 아키텍처 정의서.md
 
 ## 물리 아키텍처 설계 가이드
 [요청사항]
