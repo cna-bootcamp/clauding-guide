@@ -24,7 +24,7 @@
   - 필수 필드 존재 여부
 
 [작성 방법]
-- **공통 설계 원칙 참조**: [common-principles.md](https://cna-bootcamp.github.io/clauding-guide/guides/design/common-principles.md)
+- **공통 설계 원칙 참조**
 - 서브 에이전트를 활용한 병렬 작성 권장
 - 의존성 분석 및 병렬 처리 전략 적용
 - 의존성 그룹별로 에이전트를 할당하여 동시 작업
@@ -98,7 +98,6 @@ design/backend/api/
 아래 파일을 tools/openapi-to-csv 디렉토리에 다운로드 
 https://cna-bootcamp.github.io/clauding-guide/guides/tools/openapi-to-csv/openapi-to-csv.js
 https://cna-bootcamp.github.io/clauding-guide/guides/tools/openapi-to-csv/package.json 
-
 
 2. **의존성 설치**:
    ```bash

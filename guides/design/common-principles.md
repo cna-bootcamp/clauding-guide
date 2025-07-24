@@ -30,9 +30,7 @@
 - **각 단계마다 자동 검증**: 품질 보장
 - **실시간 피드백**: 오류 조기 발견 및 수정
 - **CI/CD 통합**: 자동화된 검증 프로세스
-- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
-  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
-  - **Window는 스크립트 파일을 생성**하여 수행 
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용 
 
 ### 6. 🚀 점진적 구현 원칙
 - **MVP → 확장 → 고도화**: 단계별 접근
@@ -81,11 +79,6 @@
 - **의존성 그룹별**: 참조 관계가 있는 서비스들은 순차 처리
 - **독립 서비스**: 병렬 처리
 - **공통 클래스**: 모든 서비스 설계 완료 후 마지막 처리
-
-## PlantUML 문법 검사 가이드 
-- 링크: https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
-- **Window는 스크립트 파일(tools/check-plantuml.ps1)을 이용**하여 수행
-- 스크립트 파일이 없으면 'PlantUML 문법 검사  가이드'를 참조하여 생성하여 수행 
   
 ## 🎨 PlantUML 작성 표준
 

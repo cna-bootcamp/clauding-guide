@@ -16,10 +16,7 @@
 - Getter/Setter 메소드는 표현하지 말것 
 - 프라퍼티와 메소드를 생략한 간단한 클래스 설계서도 작성: design/backend/class/{서비스명}-simple.puml
 - 패키지 구조도는 plantuml 스크립트가 아니라 트리구조 텍스트로 작성  
-- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
-  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
-  - **Window는 스크립트 파일(tools/check-plantuml.ps1)을 이용**하여 수행
-  - 스크립트 파일이 없으면 'PlantUML 문법 검사  가이드'를 참조하여 생성하여 수행 
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용  
 [작성 방법]
 - **서브 에이전트를 활용한 병렬 작성 필수**
 - **3단계 하이브리드 접근법 적용**
@@ -123,10 +120,7 @@ Agent 4: Service D (독립)
 - ERD의 plantuml script 문법 검사를 수행 
 - 캐시 사용 시 캐시DB설계를 별도로 작성 
 - 데이터설계 요약 파일을 별도로 작성 
-- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
-  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
-  - **Window는 스크립트 파일(tools/check-plantuml.ps1)을 이용**하여 수행
-  - 스크립트 파일이 없으면 'PlantUML 문법 검사  가이드'를 참조하여 생성하여 수행 
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용  
 [작성 방법]
 - **서브 에이전트를 활용한 병렬 작성 권장**
 - **서비스별 독립 데이터베이스 설계**

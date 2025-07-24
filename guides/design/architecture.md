@@ -10,10 +10,7 @@
 - 클라이언트에서 API Gateway로는 단일 연결선으로 표현
 - 서비스별 색상 구분으로 시각적 명확성 확보
 - 서비스 간 의존성을 명확히 표현 (동기/비동기, 필수/선택적)
-- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
-  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
-  - **Window는 스크립트 파일(tools/check-plantuml.ps1)을 이용**하여 수행
-  - 스크립트 파일이 없으면 'PlantUML 문법 검사  가이드'를 참조하여 생성하여 수행  
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용 
 [의존성 표현 방법]
 - 실선 화살표(→): 동기적 의존성 (필수)
 - 비동기 화살표(->>): 비동기 의존성 (fire-and-forget)
@@ -51,10 +48,7 @@
   - Database: 클라우드 관리형 DB가 아닌 오픈 소스 DB 
   - Message Queue: 클라우드 관리형 서비스 
   - 기타: 클라우드 관리형 서비스 
-- **PlantUML 스크립트 파일 생성 즉시 검사 실행**
-  - PlantUML 문법 검사  가이드:  https://cna-bootcamp.github.io/clauding-guide/guides/tools/plantuml-guide.md
-  - **Window는 스크립트 파일(tools/check-plantuml.ps1)을 이용**하여 수행
-  - 스크립트 파일이 없으면 'PlantUML 문법 검사  가이드'를 참조하여 생성하여 수행 
+- **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용 
 [참고자료]
 - 유저스토리: Userstory.md
 - 화면설계: design/wireframe 폴더의 화면설계 
@@ -65,7 +59,7 @@
 - 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
 - 클래스 설계서: design/backend/class/{service-name}.puml
 - 데이터 설계서: design/backend/database/*.txt 
-- 백킹서비스 설치 가이드: https://cna-bootcamp.github.io/clauding-guide/guides/build/백킹서비스%20설치%20가이드.md
+- 백킹서비스 설치 가이드
 [예시]
 - 링크: https://cna-bootcamp.github.io/clauding-guide/samples/sample_물리아키텍처.puml
 
