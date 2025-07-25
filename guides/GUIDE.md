@@ -187,6 +187,7 @@
 - "@dev-testcode": /sc:test @back @qa --think @complex-flag
 - "@cicd": /sc:implement @devops @archi @back --think @complex-flag
 - "@document": /sc:document --think-hard @scribe @complex-flag
+- "@estimate": /sc:estimate --think-hard @complex-flag
 
 ## 파일 약어 
 - "@error": claude/debug/error.png파일을 의미함 
