@@ -150,9 +150,7 @@
   ## 산출물 디렉토리 
 - 유저스토리: design/userstory.md
 - UI/UX 설계서: design/uiux/uiux.md
-- 스타일가이드: design/uiux/style-guide.md 
-- Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
-- Flow 다이어그램: design/uiux/user-flow-diagram.svg 
+- 스타일가이드: design/uiux/style-guide.md  
 - UI/UX 설계서: design/uiux/uiux.md
 - 프로토타입: design/uiux/prototype/*.html 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
