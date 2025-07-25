@@ -1,5 +1,5 @@
 # Clauding Guide 
-최종 수정일시: 2025-07-25 23:00
+최종 수정일시: 2025-07-26 03:40
 
 ## 서비스 기획 가이드 
 - **서비스 기획 프롬프트**
@@ -165,10 +165,32 @@
 - High Level 아키텍처 정의: design/backend/physical/*.puml
 
 ## 프롬프트 약어 
-- "@front": "/sc:design --persona-frontend --think --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto"
-- "@archi": "/sc:design --persona-architect --think-hard --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto"
-- "@doc": "/sc:document --persona-architect --persona-scribe --think-hard --c7 --seq --uc --wave-mode auto --wave-strategy systematic --delegate auto"
-- "@infra": "/sc:document --persona-devops --think --uc --seq --c7 --wave-mode auto --wave-strategy systematic"
+## 역할 약어 
+- "@archi": "--persona-architect"
+- "@front": "--persona-front"
+- "@back": "--persona-backend"
+- "@secu": "--persona-security"
+- "@qa": "--persona-qa"
+- "@refact": "--persona-refactor" 
+- "@devops": "--persona-devops"
+- "@scribe": "--persona-scriber"
 
+## 작업 약어 
+- "@complex-flag": --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
+
+- "@userstory": /sc:document @scribe @archi --think --wave-strategy systematic
+- "@uiux": /sc:design --think @front --uc --wave-mode auto --wave-strategy systematic
+- "@prototype": /sc:implement @front --answer-only 
+- "@design-pattern": /sc:design @archi --think-hard @complex-flag
+- "@architecture": /sc:design @archi @back @refact --think-hard  @complex-flag
+- "@backing-service": /sc:implement @devops @back --think-hard  @complex-flag
+- "@dev-backend": /sc:implement @back --think-hard @complex-flag
+- "@dev-front": /sc:implement @front --think-hard @complex-flag
+- "@dev-testcode": /sc:test @back @qa --think @complex-flag
+- "@cicd": /sc:implement @devops @archi @back --think @complex-flag
+- "@document": /sc:document --think-hard @scribe @complex-flag
+
+## 파일 약어 
 - "@error": claude/debug/error.png파일을 의미함 
 - "@info": claude/debug/info.png파일을 의미함
+
