@@ -1,5 +1,5 @@
 # Clauding Guide 
-최종 수정일시: 2025-07-25 14:22
+최종 수정일시: 2025-07-25 23:00
 
 ## 서비스 기획 가이드 
 - **서비스 기획 프롬프트**
@@ -145,3 +145,25 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/sync-mcp.md
   - 파일명: sync-mcp.md
   
+  ---
+
+  ## 산출물 디렉토리 
+- 유저스토리: design/userstory.md
+- UI/UX 설계서: design/uiux/uiux.md
+- 스타일가이드: design/uiux/style-guide.md 
+- Wireframe: design/uiux/wireframe/{화면순서번호 2자리}-{화면명}.svg
+- Flow 다이어그램: design/uiux/user-flow-diagram.svg 
+- UI/UX 설계서: design/uiux/uiux.md
+- 프로토타입: design/uiux/prototype/*.html 
+- 아키텍처패턴: design/pattern/아키텍처패턴.puml
+- 논리아키텍처: design/backend/logical/논리아키텍처.puml
+- API 설계서: design/backend/api/*.yaml
+- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
+- 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
+- 클래스 설계서: design/backend/class/{service-name}.puml
+- 데이터 설계서: design/backend/database/*.txt 
+- High Level 아키텍처 정의: design/backend/physical/*.puml
+
+## Trouble Shooting
+- "!error": claude/debug/error.png파일을 의미함 
+- "!info": claude/debug/info.png파일을 의미함
