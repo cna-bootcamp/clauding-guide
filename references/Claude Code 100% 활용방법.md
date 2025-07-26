@@ -1,5 +1,15 @@
-# SuperClaude 활용예제
+# Claude Code 100% 활용 방법 
 
+이 문서는 Claude Code를 IDE(vscode, IntelliJ)와 통합하고 SuperClaude 명령을 활용하여 사용하는 방법을 안내합니다.  
+
+## 사전준비 
+- [Claude Code와 SuperClaude 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/01.Claude%20Desktop_Code_SuperClaude%20%EC%84%A4%EC%B9%98%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
+- MCP 설치: 위 가이드의 마지막에 있는 링크 이용하여 수행  
+- [Claude Code 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/02.Claude%20code%20setup.md)
+- [Cluade Project Instruction 작성 가이드](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/03.instruction-guide.md)
+
+IDE 통합 안될 때 
+![](images/2025-07-27-07-37-21.png) 
 
 ```
 @analyze as @front --play 대시보드 화면을 브라우저에서 열어 분석
