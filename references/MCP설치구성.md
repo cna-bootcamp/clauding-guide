@@ -121,6 +121,14 @@ https://smithery.ai/ 에서 'GitHub'로 찾아 추가:
 4. Claude Desktop 또는 Claude Code에서 프롬프팅
 ![](images/2025-07-23-19-22-49.png)  
 
+참고) HTML파일 또는 이미지를 이용하여 피그마 객체 만들기 예시  
+```
+Figma 채널'cgqs7jzi'에 대시보드 html을 이용하여 figma 객체를 만들어 주세요.                                                                                 │
+  - 대시보드: C:\home\workspace\tripgen\design\uiux\prototype\01-대시보드.html                                                                        │
+  - html을 읽어 변형하지 말고 객체를 생성                                                                                                             │
+  - 모바일에 최적화하여 생성  
+```
+
 ### 설치 확인
 
 Claude Desktop의 '설정' 메뉴에서 확인.
