@@ -187,6 +187,7 @@
 - "@dev-testcode": /sc:test @back @qa --think @complex-flag
 - "@cicd": /sc:implement @devops @archi @back --think @complex-flag
 - "@document": /sc:document --think-hard @scribe @complex-flag
+- "@fix": /sc:troubleshoot --think-hard --seq 
 - "@estimate": /sc:estimate --think-hard @complex-flag
 
 ## 파일 약어 
