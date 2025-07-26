@@ -1,5 +1,5 @@
 # Clauding Guide 
-최종 수정일시: 2025-07-26 21:51
+최종 수정일시: 2025-07-27 02:01
 
 ## 서비스 기획 가이드 
 - **서비스 기획 프롬프트**
@@ -187,10 +187,11 @@
 - "@dev-testcode": /sc:test @back @qa --think @complex-flag
 - "@test-front": /sc:test @qa @front --play --think @complex-flag
 - "@cicd": /sc:implement @devops @archi @back --think @complex-flag
-- "@document": /sc:document --think-hard @scribe @complex-flag
-- "@fix": /sc:troubleshoot --think-hard --seq 
+- "@document": /sc:document --think @scribe @complex-flag
+- "@fix": /sc:troubleshoot --think --seq 
 - "@estimate": /sc:estimate --think-hard @complex-flag
-- "@improve": /sc:improve --think-hard @complex-flag
+- "@improve": /sc:improve --think @complex-flag
+- "@analyze": /sc:analyze --think --seq 
 
 ## 파일 약어 
 - "@error": claude/debug/error.png파일을 의미함 
