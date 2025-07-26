@@ -4,12 +4,62 @@
 
 ## 사전준비 
 - [Claude Code와 SuperClaude 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/01.Claude%20Desktop_Code_SuperClaude%20%EC%84%A4%EC%B9%98%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
-- MCP 설치: 위 가이드의 마지막에 있는 링크 이용하여 수행  
+- MCP 설치: 'Claude Code와 SuperClaude 설치' 가이드의 'MCP설치'섹션에서 수행  
 - [Claude Code 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/02.Claude%20code%20setup.md)
-- [Cluade Project Instruction 작성 가이드](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/03.instruction-guide.md)
+- IDE와 통합: 'Claude Code 설정'의 'IDE와 통합'섹션에서 수행  
+- [Claude Instruction 생성](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)  
+  - YOLO모드 전환 
+    ```
+    claude-yolo
+    ```
+  - 프로젝트 디렉토리로 이동하여 claude 또는 cy 명령으로 Claude Code 실행 
+  - [프로젝트 설정 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)를 참조하여 수행  
+  - Project 루트 디렉토리에 CLAUDE.md 생성 확인  
+  - Claude Code를 종료하고 다시 시작 
+    ```
+    /exit 
+    ```
+    ```
+    cy 또는 claude 
+    ```
 
-IDE 통합 안될 때 
+**Tip) IDE 통합 안될 때**: 작업관리자에서 Claude 프로세스 모두 종료하고 다시 시도  
 ![](images/2025-07-27-07-37-21.png) 
+
+---
+
+## 사전지식 이해 
+### 역할과 작업 약어 이해 
+SuperClaude 명령어와 파라미터가 복잡하기 때문에 기획, 설계, 개발, 배포에서 사용하는 작업들을   
+약어로 만들어서 CLAUDE.md에 만들었습니다.    
+위 'Claude Instruction 생성'작업을 하면 생성됩니다.    
+프로젝트 루트의 CLAUDE.md 맨 아래에 있습니다.   
+작업 뿐 아니라 역할에 대한 약어도 있습니다.    
+약어에 대한 의미는 아래 'SuperClaude 명령어 및 파라미터 목록' 문서를 참고하면 됩니다.  
+
+참고) ClaudeCode/SuperClaude 명령과 파라미터
+- [Claude Code 명령어 및 파라미터](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/Claude%20Code%20%EB%AA%85%EB%A0%B9%EC%96%B4%20%EB%B0%8F%20%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0.md)
+- [SuperClaude 명령어 및 파라미터 목록](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/SuperClaude%20%EB%AA%85%EB%A0%B9%EC%96%B4%20%EB%B0%8F%20%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%20%EB%AA%A9%EB%A1%9D.md)
+
+### 프로젝트 단계별 사용 프롬프트 
+이 약어들을 이용하여 각 단계별로 작업하는 프롬프트는 아래에 있습니다.  
+- [기획 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/02.think-prompt.md)
+- [설계 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/03.design-prompt.md)
+- [개발 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/04.build-prompt.md)
+- [배포 프롬프트]()
+
+### 프로젝트 단계별 가이드  
+CLAUDE.md에는 각 프로젝트 단계별로 사용되는 가이드의 URL이 정의되어 있습니다.   
+프롬젝트 단계별 사용하는 프롬프트는 이 가이드를 참조하도록 되어 있습니다.   
+
+### 산출물 디렉토리 약어 이해 
+CLAUDE.md에는 각 단계별 산출물의 위치가 정의되어 있습니다.   
+프롬프트에서 산춤물 이름만 입력하면 Claude Code는 그 위치를 알 수 있게 됩니다. 
+
+---
+
+
+## 프롬프트 사용 예시 
 
 ```
 @analyze as @front --play 대시보드 화면을 브라우저에서 열어 분석
