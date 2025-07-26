@@ -192,6 +192,7 @@
 - "@estimate": /sc:estimate --think-hard @complex-flag
 - "@improve": /sc:improve --think @complex-flag
 - "@analyze": /sc:analyze --think --seq 
+- "@explain": /sc:explain --think --seq --answer-only 
 
 ## 파일 약어 
 - "@error": claude/debug/error.png파일을 의미함 
