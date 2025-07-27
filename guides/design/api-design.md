@@ -1,30 +1,73 @@
 # API 설계 가이드
 
 [요청사항]
-- OpenAPI 3.0 스펙을 사용하여 API 설계
-- 각 서비스별로 별도의 YAML 파일 생성  
-- 작성된 YAML의 문법 및 구조 검증 수행
+- 설계 원칙 준용 
+- API 선정 원칙에 따라 API 선정 
+- 파일 작성 안내에 따라 작성 
+- 각 서비스별로 별도의 YAML 파일 생성 
+- 파일구조와 파일명 규칙 준수  
+- 검증방법에 따라 작성된 YAML의 문법 및 구조 검증 수행
+- 병렬수행 안내에 따라 동시 수행 
 - 최종 완료 후 API 확인 방법 안내 
   - https://editor.swagger.io/ 접근  
   - 생성된 swagger yaml파일을 붙여서 확인 및 테스트  
-[API 선정]
-- 유저스토리와 매칭되어야 함. 불필요한 추가 API 생성 금지 
+
+<설계 원칙>
+- 각 서비스 API는 독립적으로 완전한 명세를 포함
+- 공통 스키마는 각 서비스에서 필요에 따라 직접 정의
+- 서비스 간 의존성을 최소화하여 독립 배포 가능
+- 중복되는 스키마가 많아질 경우에만 공통 파일 도입 검토
+
+<API 선정 원칙>
+- **공통 설계 원칙 참조**
+- **유저스토리와 매칭**되어야 함. **불필요한 추가 API 생성 금지**  
   (유저스토리 ID를 x-user-story 확장 필드에 명시)
 - UI/UX 설계서의 '사용자 플로우'참조하여 선정  
 - 논리아키텍처 참조하여 마이크로서비스 내/외의 인터페이스를 이해하여 선정 
-[Swagger yaml 작성 안내]
+
+<파일 작성 안내>
+- OpenAPI 3.0 스펙 준용 
 - **servers 섹션 필수화**
   - 모든 OpenAPI 명세에 servers 섹션 포함
   - SwaggerHub Mock URL을 첫 번째 옵션으로 배치
-
 - **example 데이터 권장**
   - 스키마에 example을 추가하여 Swagger UI에서 테스트 할 수 있게함 
-
 - **테스트 시나리오 포함**
   - 각 API 엔드포인트별 테스트 케이스 정의
   - 성공/실패 케이스 모두 포함
+- 작성 형식
+  - YAML 형식의 OpenAPI 3.0 명세
+  - 각 API별 필수 항목:
+    - summary: API 목적 설명
+    - operationId: 고유 식별자
+    - x-user-story: 유저스토리 ID
+    - x-controller: 담당 컨트롤러
+    - tags: API 그룹 분류
+    - requestBody/responses: 상세 스키마
+  - 각 서비스 파일에 필요한 모든 스키마 포함:
+    - components/schemas: 요청/응답 모델
+    - components/parameters: 공통 파라미터
+    - components/responses: 공통 응답
+    - components/securitySchemes: 인증 방식
 
-[검증 방법]
+<파일 구조>
+```
+design/backend/api/
+├── {service-name}-api.yaml      # 각 마이크로서비스별 API 명세
+└── ...                          # 추가 서비스들
+
+예시:
+├── profile-service-api.yaml     # 프로파일 서비스 API
+├── order-service-api.yaml       # 주문 서비스 API
+└── payment-service-api.yaml     # 결제 서비스 API
+```
+
+<파일명 규칙>
+- 서비스명은 kebab-case로 작성
+- 파일명 형식: {service-name}-api.yaml
+- 서비스명은 유저스토리의 '서비스' 항목을 영문으로 변환하여 사용
+
+<검증 방법>
 - swagger-cli를 사용한 자동 검증 수행
 - 검증 명령어: `swagger-cli validate {파일명}`
 - swagger-cli가 없을 경우 자동 설치:
@@ -40,50 +83,6 @@
   - YAML 구문 오류
   - 스키마 참조 유효성
   - 필수 필드 존재 여부
-
-[작성 방법]
-- **공통 설계 원칙 참조**
-- 서브 에이전트를 활용한 병렬 작성 권장
-- 의존성 분석 및 병렬 처리 전략 적용
-- 의존성 그룹별로 에이전트를 할당하여 동시 작업
-
-[파일 구조]
-```
-design/backend/api/
-├── {service-name}-api.yaml      # 각 마이크로서비스별 API 명세
-└── ...                          # 추가 서비스들
-
-예시:
-├── profile-service-api.yaml     # 프로파일 서비스 API
-├── order-service-api.yaml       # 주문 서비스 API
-└── payment-service-api.yaml     # 결제 서비스 API
-```
-
-[설계 원칙]
-- 각 서비스 API는 독립적으로 완전한 명세를 포함
-- 공통 스키마는 각 서비스에서 필요에 따라 직접 정의
-- 서비스 간 의존성을 최소화하여 독립 배포 가능
-- 중복되는 스키마가 많아질 경우에만 공통 파일 도입 검토
-
-[파일명 규칙]
-- 서비스명은 kebab-case로 작성
-- 파일명 형식: {service-name}-api.yaml
-- 서비스명은 유저스토리의 '서비스' 항목을 영문으로 변환하여 사용
-
-[작성 형식]
-- YAML 형식의 OpenAPI 3.0 명세
-- 각 API별 필수 항목:
-  - summary: API 목적 설명
-  - operationId: 고유 식별자
-  - x-user-story: 유저스토리 ID
-  - x-controller: 담당 컨트롤러
-  - tags: API 그룹 분류
-  - requestBody/responses: 상세 스키마
-- 각 서비스 파일에 필요한 모든 스키마 포함:
-  - components/schemas: 요청/응답 모델
-  - components/parameters: 공통 파라미터
-  - components/responses: 공통 응답
-  - components/securitySchemes: 인증 방식
 
 [참고자료]
 - 유저스토리
