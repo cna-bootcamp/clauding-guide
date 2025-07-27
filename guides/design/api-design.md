@@ -3,12 +3,23 @@
 [요청사항]
 - OpenAPI 3.0 스펙을 사용하여 API 설계
 - 각 서비스별로 별도의 YAML 파일 생성
-- 유저스토리 ID를 x-user-story 확장 필드에 명시
-- 스키마에 example을 추가하여 Swagger UI에서 테스트 할 수 있게함   
+- 유저스토리 ID를 x-user-story 확장 필드에 명시  
 - 작성된 YAML의 문법 및 구조 검증 수행
 - 최종 완료 후 API 확인 방법 안내 
   - https://editor.swagger.io/ 접근  
   - 생성된 swagger yaml파일을 붙여서 확인 및 테스트  
+[Swagger yaml 작성 안내]
+- **servers 섹션 필수화**
+  - 모든 OpenAPI 명세에 servers 섹션 포함
+  - SwaggerHub Mock URL을 첫 번째 옵션으로 배치
+
+- **example 데이터 권장**
+  - 스키마에 example을 추가하여 Swagger UI에서 테스트 할 수 있게함 
+
+- **테스트 시나리오 포함**
+  - 각 API 엔드포인트별 테스트 케이스 정의
+  - 성공/실패 케이스 모두 포함
+
 [검증 방법]
 - swagger-cli를 사용한 자동 검증 수행
 - 검증 명령어: `swagger-cli validate {파일명}`
