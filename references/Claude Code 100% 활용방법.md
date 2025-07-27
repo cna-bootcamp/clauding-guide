@@ -142,9 +142,25 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 ### 단계별 추가 프롬프트 예시 
 ```
 1. API 설계 
-1) 유저스토리에 정의되지 않은 API가 불필요하게 많을때 
-@improve as @archi and @back 유저스토리에 필요한 API만 작성하십시오.
+1) 응답 구조 통일  
 
+Trip '/trips/{tripId}/schedule'과 AI의  /schedules/{requestId}의 결과값이 다르네요. 
+아래와 같이 통일하는게 어떨까요? 
+
+{
+  "tripId": "string",
+  "tripName": "string",
+  "totalDays": 0,
+  "days": [
+    {
+      "dayNumber": 0,
+      "date": "2025-07-27",
+      "city": "string",
+      "weather": {
+        "condition": "sunny",
+        "temperature": {
+   ...
+}
 
 
 ```
