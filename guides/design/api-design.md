@@ -95,6 +95,8 @@ design/backend/api/
 - UI/UX설계서
 - 아키텍처패턴
 - 논리아키텍처
+- 외부시퀀스설계서
+- 내부시퀀스설계서
 - OpenAPI 스펙: https://swagger.io/specification/
 
 [예시]

@@ -37,8 +37,8 @@
 [참고자료]
 - 유저스토리
 - UI/UX설계서
+- 아키텍처패턴
 - 논리아키텍처
-- API설계서
 
 [예시]
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서(외부).puml
