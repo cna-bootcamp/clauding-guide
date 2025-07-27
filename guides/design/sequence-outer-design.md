@@ -30,12 +30,11 @@
 - **데이터 흐름별**: 데이터의 생성, 변환, 저장 과정
 
 [참고자료]
-- 유저스토리: design/userstory.md
-- UI/UX 설계서: design/uiux/uiux.md
-- 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처 설명: design/backend/logical/logical-architecture.md
-- 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.puml
-- API 설계서: design/backend/api/*.yaml
+- 유저스토리
+- UI/UX 설계서
+- 아키텍처패턴
+- 논리아키텍처
+- API 설계서
 
 [예시]
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서(외부).puml

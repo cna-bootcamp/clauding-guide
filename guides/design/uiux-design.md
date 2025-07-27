@@ -6,7 +6,7 @@
 - 상세설계에서 참조하기 위한 UI/UX 설계서를 작성
 - 서브 에이젼트를 병렬로 실행하여 작업
 [참고자료]
-- 유저스토리: design/userstory.md
+- 유저스토리
 [결과파일] 
 - 스타일가이드: design/uiux/style-guide.md 
 - UI/UX 설계서: design/uiux/uiux.md

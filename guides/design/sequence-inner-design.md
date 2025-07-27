@@ -10,13 +10,12 @@
 - **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용 
 
 [참고자료]
-- 유저스토리: design/userstory.md
-- UI/UX 설계서: design/uiux/uiux.md
-- 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처 설명: design/backend/logical/logical-architecture.md
-- 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.puml
-- API 설계서: design/backend/api/*.yaml
-- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
+- 유저스토리
+- UI/UX 설계서
+- 아키텍처패턴
+- 논리아키텍처
+- API 설계서
+- 외부시퀀스 설계서
 
 [예시]
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서(내부).puml

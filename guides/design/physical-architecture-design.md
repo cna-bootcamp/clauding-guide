@@ -12,22 +12,25 @@
   - Database: 클라우드 관리형 DB가 아닌 오픈 소스 DB 
   - Message Queue: 클라우드 관리형 서비스 
   - 기타: 클라우드 관리형 서비스 
-- **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용 
+- Mermaid 파일로 작성   
+- 완료 후 mermaid 스크립트 테스트 방법 안내 
+  - https://mermaid.live/edit 에 접근 
+  - 스크립트 내용을 붙여넣어 확인  
 [참고자료]
-- 유저스토리: design/userstory.md
-- UI/UX 설계서: design/uiux/uiux.md
-- 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처: design/backend/logical/논리아키텍처.puml
-- API 설계서: design/backend/api/*.yaml
-- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
-- 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
-- 클래스 설계서: design/backend/class/{service-name}.puml
-- 데이터 설계서: design/backend/database/*.txt 
-- High Level 아키텍처 정의: design/backend/physical/*.puml
+- 유저스토리
+- UI/UX 설계서
+- 아키텍처패턴
+- 논리아키텍처
+- API 설계서
+- 외부시퀀스 설계서
+- 내부시퀀스 설계서
+- 클래스 설계서
+- 데이터 설계서
+- High Level 아키텍처 정의
 - 백킹서비스 설치 방법
 [예시]
-- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_물리아키텍처.puml
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_물리아키텍처.mmd
 
 [결과파일]
 - 물리아키텍처 설명: design/backend/physical/physical-architecture.md
-- 물리아키텍처 다이어그램: design/backend/physical/physical-architecture.puml
+- 물리아키텍처 다이어그램: design/backend/physical/physical-architecture.mmd

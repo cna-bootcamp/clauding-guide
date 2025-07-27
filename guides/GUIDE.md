@@ -1,5 +1,5 @@
 # Clauding Guide 
-최종 수정일시: 2025-07-27 13:01
+최종 수정일시: 2025-07-27 21:00
 
 ## 서비스 기획 가이드 
 - **서비스 기획 프롬프트**
@@ -127,6 +127,24 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/references/백킹서비스설치방법.md
   - 파일명: backing-service-method.md
 
+---
+
+## 표준
+- 개발주석표준 
+  - 설명: 개발 주석 표준    
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/standards/standard_comment.md
+  - 파일명: standard_comment.md
+
+- 패키지구조표준 
+  - 설명: 패키지 구조 표준과 설계 아키텍처 패턴(Layered, Clean, Hexagonal)별 예시    
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/standards/standard_package_structure.md
+  - 파일명: standard_package_structure.md
+
+- 테스트코드표준 
+  - 설명: 테스트 코드 작성 표준     
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/standards/standard_testcode.md
+  - 파일명: standard_testcode.md
+ 
 ---
 
 ## 기술 도구

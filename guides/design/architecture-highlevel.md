@@ -18,16 +18,15 @@
 - 개발언어, 개발 프레임워크, AI모델은 '제품별 버전 가이드"를 참조하여 GA된 최신 버전 사용
 - 결과는 'High Level 아키텍처 정의서.md'에 작성하고 별도의 다른 파일은 생성하지 말것
 [참고자료]
-- 유저스토리: design/userstory.md
-- UI/UX 설계서: design/uiux/uiux.md
-- 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처 설명: design/backend/logical/logical-architecture.md
-- 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.puml
-- API 설계서: design/backend/api/*.yaml
-- 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
-- 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
-- 클래스 설계서: design/backend/class/{service-name}.puml
-- 데이터 설계서: design/backend/database/*
+- 유저스토리
+- UI/UX 설계서
+- 아키텍처패턴
+- 논리아키텍처
+- API 설계서
+- 외부시퀀스 설계서
+- 내부시퀀스 설계서
+- 클래스 설계서
+- 데이터 설계서
 - High Level 아키텍처 정의서 템플릿
 - 백킹서비스 설치 방법
 - 제품별 버전 가이드  

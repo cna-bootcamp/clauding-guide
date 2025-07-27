@@ -70,11 +70,10 @@ design/backend/api/
   - components/securitySchemes: 인증 방식
 
 [참고자료]
-- 유저스토리: design/userstory.md
-- UI/UX 설계서: design/uiux/uiux.md
-- 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처 설명: design/backend/logical/logical-architecture.md
-- 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.puml
+- 유저스토리
+- UI/UX 설계서
+- 아키텍처패턴
+- 논리아키텍처
 - OpenAPI 스펙: https://swagger.io/specification/
 
 [예시]
