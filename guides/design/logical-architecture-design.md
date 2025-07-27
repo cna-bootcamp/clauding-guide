@@ -1,22 +1,25 @@
 # 논리아키텍처설계가이드
 
 [요청사항]
-- 참고자료를 기준으로 작성 
-- 사용자 관점의 컴포넌트 다이어그램 작성
-- Context Map 스타일로 서비스 내부 구조는 생략하고 서비스 간 관계에 집중
-- 클라이언트에서 API Gateway로는 단일 연결선으로 표현
+- <작성원칙>을 준용하여 설계
 - <통신전략>과 <의존성 표현 방법>을 준수
-- Mermaid 파일로 작성   
+- [결과파일]안내에 따라 파일 작성   
 - 완료 후 mermaid 스크립트 테스트 방법 안내 
   - https://mermaid.live/edit 에 접근 
   - 스크립트 내용을 붙여넣어 확인 
 
 [가이드]
+<작성원칙>
+- **유저스토리와 매칭**되어야 함. **불필요한 추가 설계 금지**
+- UI/UX설계서의 '사용자 플로우'참조하여 설계 
+- '아키텍처패턴'에 선정된 클라우드 디자인 패턴을 적용하여 설계 
+- 사용자 관점의 컴포넌트 다이어그램 작성
+- Context Map 스타일로 서비스 내부 구조는 생략하고 서비스 간 관계에 집중
+- 클라이언트에서 API Gateway로는 단일 연결선으로 표현
 <통신 전략>
 - **동기 통신**: 즉시 응답이 필요한 단순 조회
 - **캐시 우선**: 자주 사용되는 데이터는 캐시에서 직접 읽기
 - **비동기 처리**: 외부 API 다중 호출 등 장시간 작업
-
 <의존성 표현 방법>
 - 실선 화살표(→): 동기적 의존성 (필수)
 - 비동기 화살표(->>): 비동기 의존성 (fire-and-forget)
@@ -34,6 +37,6 @@
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.mmd
 
 [결과파일]
+- 논리아키텍처 다이어그램은 Mermaid 형식으로 작성 
 - 논리아키텍처 설명: design/backend/logical/logical-architecture.md
 - 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.mmd
-
