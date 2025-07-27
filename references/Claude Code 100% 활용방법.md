@@ -141,26 +141,13 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 
 ### 단계별 추가 프롬프트 예시 
 ```
-1. API 설계 
-1) 응답 구조 통일  
+1. 시퀀스 설계
+- 프로토타입을 
+- 시퀀스 설계 결과 검토 시 
+해당 파일을 열고 관련된 프로토타입 화면을 보고 개선하라고 하는게 좋음 
+예)
+프로토타입 기본설정 화면을 웹브라우저로 띄워서 확인한 후 계속 해 주세요.
 
-Trip '/trips/{tripId}/schedule'과 AI의  /schedules/{requestId}의 결과값이 다르네요. 
-아래와 같이 통일하는게 어떨까요? 
-
-{
-  "tripId": "string",
-  "tripName": "string",
-  "totalDays": 0,
-  "days": [
-    {
-      "dayNumber": 0,
-      "date": "2025-07-27",
-      "city": "string",
-      "weather": {
-        "condition": "sunny",
-        "temperature": {
-   ...
-}
 
 
 ```
