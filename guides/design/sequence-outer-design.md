@@ -45,3 +45,4 @@
 
 [결과파일]
 - design/backend/sequence/outer/{플로우명}.puml
+- 플로우명은 한글로 네이밍 
