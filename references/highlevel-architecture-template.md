@@ -1,4 +1,4 @@
-# High Level 아키텍처 정의서
+# HighLevel아키텍처정의서서
 
 ## 1. 개요 (Executive Summary)
 

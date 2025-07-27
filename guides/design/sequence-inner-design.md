@@ -1,4 +1,4 @@
-# 내부 시퀀스 설계 가이드 
+# 내부시퀀스설계 가이드 
 
 [요청사항]
 - **서브 에이전트를 활용한 병렬 작성 필수**
@@ -11,10 +11,10 @@
 
 [참고자료]
 - 유저스토리
-- UI/UX 설계서
+- UI/UX설계서
 - 논리아키텍처
-- API 설계서
-- 외부시퀀스 설계서
+- API설계서
+- 외부시퀀스설계서
 
 [예시]
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서(내부).puml

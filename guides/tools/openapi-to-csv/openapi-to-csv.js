@@ -229,7 +229,7 @@ function writeCSVFile(rows, outputPath) {
   });
   
   // 마크다운 내용 생성
-  let markdownContent = `# API 설계서
+  let markdownContent = `# API설계서
 
 ## API 목록 (서비스별 분리, 전치된 CSV 형식)
 

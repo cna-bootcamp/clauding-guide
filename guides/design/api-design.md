@@ -1,4 +1,4 @@
-# API 설계 가이드
+# API설계가이드
 
 [요청사항]
 - 설계 원칙 준용 
@@ -20,10 +20,10 @@
 - 중복되는 스키마가 많아질 경우에만 공통 파일 도입 검토
 
 <API 선정 원칙>
-- **공통 설계 원칙 참조**
+- **공통설계원칙 참조**
 - **유저스토리와 매칭**되어야 함. **불필요한 추가 API 생성 금지**  
   (유저스토리 ID를 x-user-story 확장 필드에 명시)
-- UI/UX 설계서의 '사용자 플로우'참조하여 선정  
+- UI/UX설계서의 '사용자 플로우'참조하여 선정  
 - 논리아키텍처 참조하여 마이크로서비스 내/외의 인터페이스를 이해하여 선정 
 
 <파일 작성 안내>
@@ -92,14 +92,14 @@ design/backend/api/
 
 [참고자료]
 - 유저스토리
-- UI/UX 설계서
+- UI/UX설계서
 - 아키텍처패턴
 - 논리아키텍처
 - OpenAPI 스펙: https://swagger.io/specification/
 
 [예시]
 - swagger api yaml: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_swagger_api.yaml
-- API 설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_API%20설계서.md
+- API설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_API%20설계서.md
 
 [결과파일]
 - design/backend/api/*.yaml (OpenAPI 형식)

@@ -1,4 +1,4 @@
-# PlantUML 문법 검사 가이드
+# PlantUML문법검사가이드
 
 ## 개요
 

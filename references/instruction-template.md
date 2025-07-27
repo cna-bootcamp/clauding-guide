@@ -66,7 +66,7 @@
    - **PlantUML**: 모든 다이어그램 표준 (`!theme mono`)
    - **OpenAPI 3.0**: API 명세 표준
    - **PlantUML 문법 검사 필수**
-     - **PlamtUML 스크립트 파일은 'PlantUML 문법 검사 가이드'를 준용**
+     - **PlamtUML 스크립트 파일은 'PlantUML문법검사가이드'를 준용**
      - **Window는 스크립트 파일(tools/check-plantuml.ps1)을 이용**하여 수행
      - 스크립트 파일이 없으면 'PlantUML 문법 검사  가이드'를 참조하여 생성하여 수행 
    - **OpenAPI 문법 검사 필수**
