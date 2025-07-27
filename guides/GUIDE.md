@@ -1,5 +1,5 @@
 # Clauding Guide 
-최종 수정일시: 2025-07-27 02:01
+최종 수정일시: 2025-07-27 13:01
 
 ## 서비스 기획 가이드 
 - **서비스 기획 프롬프트**
@@ -154,12 +154,12 @@
 - UI/UX 설계서: design/uiux/uiux.md
 - 프로토타입: design/uiux/prototype/*.html 
 - 아키텍처패턴: design/pattern/아키텍처패턴.puml
-- 논리아키텍처: design/backend/logical/논리아키텍처.puml
+- 논리아키텍처: design/backend/logical/*
 - API 설계서: design/backend/api/*.yaml
 - 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
 - 내부시퀀스 설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
 - 클래스 설계서: design/backend/class/{service-name}.puml
-- 데이터 설계서: design/backend/database/*.txt 
+- 데이터 설계서: design/backend/database/*
 - High Level 아키텍처 정의: design/backend/physical/*.puml
 
 ## 프롬프트 약어 
