@@ -122,7 +122,7 @@ graph TB
 선정된 아키텍처 패턴은 다음과 같이 문서화됩니다:
 
 ### 파일명
-design/pattern/아키텍처패턴.md
+design/pattern/architecture-pattern.md
 
 ### 필수 포함 내용
 1. **요구사항 분석 결과**

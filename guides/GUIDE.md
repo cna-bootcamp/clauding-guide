@@ -171,7 +171,7 @@
 - 스타일가이드: design/uiux/style-guide.md  
 - UI/UX 설계서: design/uiux/uiux.md
 - 프로토타입: design/uiux/prototype/*.html 
-- 아키텍처패턴: design/pattern/아키텍처패턴.puml
+- 아키텍처패턴: design/pattern/architecture-pattern.md
 - 논리아키텍처: design/backend/logical/*
 - API 설계서: design/backend/api/*.yaml
 - 외부시퀀스 설계서: design/backend/sequence/outer/{플로우명}.puml
