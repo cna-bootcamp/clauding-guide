@@ -4,6 +4,7 @@
 - OpenAPI 3.0 스펙을 사용하여 API 설계
 - 각 서비스별로 별도의 YAML 파일 생성
 - 유저스토리 ID를 x-user-story 확장 필드에 명시
+- 스키마에 example을 추가하여 Swagger UI에서 테스트 할 수 있게함   
 - 작성된 YAML의 문법 및 구조 검증 수행
 - 최종 완료 후 API 확인 방법 안내 
   - https://editor.swagger.io/ 접근  
