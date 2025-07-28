@@ -27,21 +27,22 @@
       - 예: A→B 의존 시, A 완료 후 B 실행
       - 독립 서비스 C,D는 A,B와 병렬 실행
   - 1단계 공통 컴포넌트 참조
-  - 클래스의 프라퍼티와 메소드를 모두 기술할 것. 단, **Getter/Setter 메소드는 표현하지 말것** 
-  - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
-  - 각 서비스별 지정된 {설계 아키텍처 패턴}을 적용
+  - 각 서비스별 지정된 {설계 아키텍처 패턴}을 적용 
   - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용
   - '!include'는 사용하지 말고 필요한 인터페이스 직접 정의 
-  - 공통 컴포넌트는 클래스/인터페이스 이름만 명시  
-  - 서비스별 간단 클래스설계서({service-name}-simple.puml) 작성 안함 
-  - 결과: design/backend/class/{service-name}.puml
-  
-- 3단계: 통합 및 검증 (순차적)
+  - 클래스 설계서 작성 
+    - 클래스의 프라퍼티와 메소드를 모두 기술할 것. 단, **Getter/Setter 메소드는 표현하지 말것** 
+    - 설계 아키텍처 패턴에 맞게 아키텍처 레이어별로 그룹핑
+    - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
+    - 공통 컴포넌트는 클래스/인터페이스 이름만 명시  
+    - 결과: design/backend/class/{service-name}.puml
   - 간단 클래스설계서 작성 
-    - 서비스별로 만드는 것이 아니라 모든 서비스의 클래스, 인터페이스, DTO 등 설계요소를 표현하여 한개 파일로 작성  
+    - 설계 아키텍처 패턴에 맞게 아키텍처 레이어별로 그룹핑
     - 프라퍼티와 메소드는 모두 생략하고 설계요소 이름만 명시  
     - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
-    - 결과: design/backend/class/class-simple.puml
+    - 결과: design/backend/class/{service-name}-simple.puml
+  
+- 3단계: 통합 및 검증 (순차적)
   - '패키지구조표준'의 예시를 참조하여 모든 클래스와 파일이 포함된 패키지 구조도를 작성: class.md에 작성 
   - 패키지 구조도는 plantuml 스크립트가 아니라 트리구조 텍스트로 작성  
   - <API/스키마매핑표가이드>에 따라 class.md파일에 매핑표 작성 
@@ -104,6 +105,6 @@
 [결과파일]
 - design/backend/class/common-base.puml
 - design/backend/class/{service-name}.puml
+- design/backend/class/{service-name}-simple.puml
 - design/backend/class/class.md
-- design/backend/class/class-simple.puml
 - service-name은 영어로 작성 (예: profile, location, itinerary)
