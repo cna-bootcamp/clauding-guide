@@ -33,6 +33,7 @@
   - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용
   - '!include'는 사용하지 말고 필요한 인터페이스 직접 정의 
   - 공통 컴포넌트는 클래스/인터페이스 이름만 명시  
+  - 서비스별 간단 클래스설계서({service-name}-simple.puml) 작성 안함 
   - 결과: design/backend/class/{service-name}.puml
   
 - 3단계: 통합 및 검증 (순차적)
