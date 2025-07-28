@@ -37,7 +37,7 @@
   
 - 3단계: 통합 및 검증 (순차적)
   - 간단 클래스설계서 작성 
-    - 모든 서비스의 클래스, 인터페이스, DTO 등 모든 설계요소를 표현 
+    - 모든 서비스의 클래스, 인터페이스, DTO 등 설계요소를 표현 
     - 프라퍼티와 메소드는 모두 생략하고 설계요소 이름만 명시  
     - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
     - 결과: design/backend/class/class-simple.puml
