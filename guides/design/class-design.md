@@ -25,6 +25,11 @@
   - 결과: design/backend/class/common-base.puml
 
 - 2단계: 서비스별 병렬 설계 (병렬 실행)
+  - 병렬 처리 기준에 따라 검토하여 서브 에이젼트를 생성하여 병렬 실행 
+    - 서비스 간 의존성이 없는 경우: 모든 서비스 동시 실행
+    - 의존성이 있는 경우: 의존성 그룹별로 묶어서 실행
+      - 예: A→B 의존 시, A 완료 후 B 실행
+      - 독립 서비스 C,D는 A,B와 병렬 실행
   - 1단계 공통 컴포넌트 참조
   - 클래스의 프라퍼티와 메소드를 모두 기술할 것. 단, **Getter/Setter 메소드는 표현하지 말것** 
   - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
@@ -36,12 +41,6 @@
   - 결과: 
     - design/backend/class/{service-name}.puml
     - design/backend/class/{service-name}-simple.puml
-
-  - 병렬 처리 기준
-    - 서비스 간 의존성이 없는 경우: 모든 서비스 동시 실행
-    - 의존성이 있는 경우: 의존성 그룹별로 묶어서 실행
-      - 예: A→B 의존 시, A 완료 후 B 실행
-      - 독립 서비스 C,D는 A,B와 병렬 실행
 
 - 3단계: 통합 및 검증 (순차적)
   - '패키지구조표준'의 예시를 참조하여 모든 클래스와 파일이 포함된 패키지 구조도를 작성: class.md에 작성 
