@@ -1,19 +1,18 @@
 # API설계가이드
 
 [요청사항]
-- 설계 원칙 준용 
+- <작성 원칙> 준용 
 - <API 선정 원칙>에 따라 API 선정 
-- <파일 작성> 안내에 따라 작성 
-- <파일구조>와 <파일명 규칙> 준수  
+- <파일 작성 안내>에 따라 작성 
 - <병렬처리> 안내에 따라 동시 수행 
 - <검증방법>에 따라 작성된 YAML의 문법 및 구조 검증 수행
-- 각 서비스별로 별도의 YAML 파일 생성 
+- [결과파일]안내에 따라 파일 작성 
 - 최종 완료 후 API 확인 방법 안내 
   - https://editor.swagger.io/ 접근  
   - 생성된 swagger yaml파일을 붙여서 확인 및 테스트  
 
 [가이드]
-<설계 원칙>
+<작성 원칙>
 - 각 서비스 API는 독립적으로 완전한 명세를 포함
 - 공통 스키마는 각 서비스에서 필요에 따라 직접 정의
 - 서비스 간 의존성을 최소화하여 독립 배포 가능
@@ -22,8 +21,7 @@
 <API 선정 원칙>
 - 유저스토리와 매칭 되어야 함. 불필요한 추가 설계 금지  
   (유저스토리 ID를 x-user-story 확장 필드에 명시)
-- UI/UX설계서의 '사용자 플로우'참조하여 선정  
-- 논리아키텍처 참조하여 마이크로서비스 내/외의 인터페이스를 이해하여 선정 
+- '외부시퀀스설계서'/'내부시퀀스설계서'와 일관성 있게 선정 
 
 <파일 작성 안내>
 - OpenAPI 3.0 스펙 준용 
@@ -62,10 +60,10 @@ design/backend/api/
 └── payment-service-api.yaml     # 결제 서비스 API
 ```
 
-<파일명 규칙>
-- 서비스명은 kebab-case로 작성
-- 파일명 형식: {service-name}-api.yaml
-- 서비스명은 유저스토리의 '서비스' 항목을 영문으로 변환하여 사용
+- 파일명 규칙
+  - 서비스명은 kebab-case로 작성
+  - 파일명 형식: {service-name}-api.yaml
+  - 서비스명은 유저스토리의 '서비스' 항목을 영문으로 변환하여 사용
 
 <병렬 처리>
 - **의존성 분석 선행**: 병렬 처리 전 반드시 의존성 파악
@@ -91,9 +89,6 @@ design/backend/api/
 
 [참고자료]
 - 유저스토리
-- UI/UX설계서
-- 아키텍처패턴
-- 논리아키텍처
 - 외부시퀀스설계서
 - 내부시퀀스설계서
 - OpenAPI 스펙: https://swagger.io/specification/
@@ -103,5 +98,5 @@ design/backend/api/
 - API설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_API%20설계서.md
 
 [결과파일]
+- 각 서비스별로 별도의 YAML 파일 생성 
 - design/backend/api/*.yaml (OpenAPI 형식)
-- 각 파일 작성 후 swagger-cli validate 실행하여 검증
