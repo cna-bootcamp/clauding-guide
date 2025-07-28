@@ -2,8 +2,8 @@
 
 [요청사항]
 - <작성원칙>을 준용하여 설계
-- <통신전략>과 <의존성 표현 방법>을 준수
-- [결과파일]안내에 따라 파일 작성   
+- <작성순서>에 따라 설계
+- [결과파일] 안내에 따라 파일 작성 
 - 완료 후 mermaid 스크립트 테스트 방법 안내 
   - https://mermaid.live/edit 에 접근 
   - 스크립트 내용을 붙여넣어 확인 
@@ -16,6 +16,25 @@
 - 사용자 관점의 컴포넌트 다이어그램 작성
 - Context Map 스타일로 서비스 내부 구조는 생략하고 서비스 간 관계에 집중
 - 클라이언트에서 API Gateway로는 단일 연결선으로 표현
+<작성순서>
+- 준비: 참고자료 분석 및 이해 
+- 실행: 
+  - 논리아키텍처 설계서(logical-architecture.md) 작성: 아래 항목은 필수 포함하고 필요 시 항목 추가 
+    - 개요: 설계 원칙, 핵심 컴포넌트 정의 
+    - 서비스 아키텍처 
+      - 서비스별 책임 
+      - 서비스 간 통신 전략 
+    - 주요 사용자 플로우
+    - 데이터 흐름 및 캐싱 전략
+    - 확장성 및 성능 고려사항 
+    - 보안 고려사항
+    - 논리아키텍처 다이어그램  
+      - Mermaid 형식으로 작성하며 별도 파일로 작성: logical-architecture.mmd 
+      - <통신전략>과 <의존성 표현 방법>을 준수
+- 검토:
+  - <작성원칙> 준수 검토
+  - 스쿼드 팀원 리뷰: 누락 및 개선 사항 검토
+  - 수정 사항 선택 및 반영  
 <통신 전략>
 - **동기 통신**: 즉시 응답이 필요한 단순 조회
 - **캐시 우선**: 자주 사용되는 데이터는 캐시에서 직접 읽기
@@ -34,9 +53,9 @@
 - 아키텍처패턴
 
 [예시]
-- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.mmd
+- 논리아키텍처설계서: 
+- 논리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.mmd
 
 [결과파일]
-- 논리아키텍처 다이어그램은 Mermaid 형식으로 작성 
-- 논리아키텍처 설명: design/backend/logical/logical-architecture.md
-- 논리아키텍처 다이어그램: design/backend/logical/logical-architecture.mmd
+- design/backend/logical/logical-architecture.md
+- design/backend/logical/logical-architecture.mmd
