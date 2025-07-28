@@ -158,9 +158,19 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/sync-mcp.md
   - 파일명: sync-mcp.md
   
-  ---
+- PlantUML문법검사기(Window)
+  - 설명: Window용 PlantUML 스크립트 문법 검사기  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/check-plantuml.ps1
+  - 파일명: check-plantuml.ps1
 
-  ## 산출물 디렉토리 
+- PlantUML문법검사기(Linux/Mac)
+  - 설명: Linux/Mac용 PlantUML 스크립트 문법 검사기  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/check-plantuml.sh
+  - 파일명: check-plantuml.sh
+
+---
+
+## 산출물 디렉토리 
 - 유저스토리: design/userstory.md
 - UI/UX설계서: design/uiux/uiux.md
 - 스타일가이드: design/uiux/style-guide.md  
