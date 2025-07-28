@@ -13,12 +13,17 @@
 - 준비:
   - 유저스토리, API설계서, 외부시퀀스설계서, 내부시퀀스설계서, 패키지구조표준 분석 및 이해
 - 실행:
+  - <병렬처리>안내에 따라 각 서비스별 병렬 수행 
   - 데이터설계서 작성
     - 캐시 사용 시 캐시DB 설계 포함
-    - 시작 부분에 '데이터설계 요약' 제공  
+    - 시작 부분에 '데이터설계 요약' 제공 
+    - 결과: {service-name}.md 
   - ERD 작성
-    - <병렬처리>안내에 따라 동시 수행 
+    - 결과: {service-name}-erd.puml
     - **PlantUML 스크립트 파일 생성 즉시 검사 실행**: 'PlantUML 문법 검사  가이드' 준용  
+  - 데이터베이스 스키마 스크립트 작성 
+    - 실행 가능한 SQL 스크립트 작성
+    - 결과: {service-name}-schema.psql
 - 검토: 
   - <작성원칙> 준수 검토
   - 스쿼드 팀원 리뷰: 누락 및 개선 사항 검토
@@ -44,6 +49,7 @@ Agent 1~N: 각 서비스별 데이터베이스 설계
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_데이터설계서.puml
 
 [결과파일]
-- 데이터설계서: design/backend/database/{서비스명}.md
-- ERD: design/backend/database/{서비스명}-erd.puml
-- 서비스명은 영어로 작성 
+- design/backend/database/{service-name}.md
+- design/backend/database/{service-name}-erd.puml
+- design/backend/database/{service-name}-schema.psql
+- service-name은 영어로 작성 
