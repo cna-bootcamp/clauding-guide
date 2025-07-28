@@ -9,18 +9,22 @@
 <작성원칙>
 - **유저스토리와 매칭**되어야 함. **불필요한 추가 설계 금지**
 - API설계서와 일관성 있게 설계 
-  - Controller 클래스의 메소드는 **API 설계서에 정의한 것만 생성**. 단, 필요한 Private 메소드는 추가
-  - Controller 클래스에 Note로 메소드와 API 매핑표 작성
-  - API 매핑표 형식: {메소드}: {API 경로} {API 제목}. 예) login: /login 로그인 
-  - API 매핑표는 {service-name}-simple.puml에만 작성  
+  - Controller 일관성 
+    - Controller 클래스의 메소드는 **API 설계서에 정의한 것만 생성**. 단, 필요한 Private 메소드는 추가
+    - Controller 클래스에 Note로 메소드와 API 매핑표 작성
+    - API 매핑표 형식: {메소드}: {API 경로} {API 제목}. 예) login: /login 로그인 
+    - API 매핑표는 {service-name}-simple.puml에만 작성  
+  - DTO 일관성  
+    - DTO에 Note로 DTO와 API 스키마 매핑표 작성
+    - 스키마 매핑표 형식: {DTO명}: {스키마명}. 예) RegisterRequest: RegisterRequest   
+    - 스키마 매핑표는 {service-name}-simple.puml에만 작성  
 - 외부시퀀스설계서/내부시퀀스설계서의 플로우와 일치하도록 설계    
 
 <작성순서>
 - **서브 에이전트를 활용한 병렬 작성 필수**
 - **3단계 하이브리드 접근법 적용**
-- **마이크로서비스 아키텍처 기반 설계**
-
 - 1단계: 공통 컴포넌트 설계 (순차적)
+  - 공통 클래스와 인터페이스 설계  
   - 결과: design/backend/class/common-base.puml
 
 - 2단계: 서비스별 병렬 설계 (병렬 실행)
@@ -30,6 +34,7 @@
   - 각 서비스별 지정된 {설계 아키텍처 패턴}을 적용
   - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용
   - '!include'는 사용하지 말고 필요한 인터페이스 직접 정의 
+  - 공통 컴포넌트는 클래스/인터페이스 이름만 명시  
   - 프라퍼티와 메소드를 생략한 간단한 클래스설계서(요약)도 작성
   - 결과: 
     - design/backend/class/{service-name}.puml
