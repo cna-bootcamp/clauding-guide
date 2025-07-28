@@ -61,6 +61,7 @@
 - 메소드: '메소드명: 기능 설명'으로 하고 기능 설명은 한글로 함. 예) register: 회원등록 
 - 메소드명에 생성자, Getter, Setter는 생략    
 - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
+- 공통 컴포넌트는 클래스/인터페이스 이름만 명시 
 
 <API/스키마매핑표가이드>
 - **API매핑표**
