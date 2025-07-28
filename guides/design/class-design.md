@@ -33,12 +33,16 @@
   - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용
   - '!include'는 사용하지 말고 필요한 인터페이스 직접 정의 
   - 공통 컴포넌트는 클래스/인터페이스 이름만 명시  
-  - 프라퍼티와 메소드를 생략한 간단한 클래스설계서(요약)도 작성
   - 결과: 
     - design/backend/class/{service-name}.puml
     - design/backend/class/{service-name}-simple.puml
 
 - 3단계: 통합 및 검증 (순차적)
+  - 클래스설계서(요약) 작성 
+    - 모든 서비스의 클래스, 인터페이스, DTO 등 모든 설계요소를 표현 
+    - 프라퍼티와 메소드는 모두 생략하고 설계요소 이름만 명시  
+    - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
+    - 결과: design/backend/class/class-simple.puml
   - '패키지구조표준'의 예시를 참조하여 모든 클래스와 파일이 포함된 패키지 구조도를 작성: class.md에 작성 
   - 패키지 구조도는 plantuml 스크립트가 아니라 트리구조 텍스트로 작성  
   - <API/스키마매핑표가이드>에 따라 class.md파일에 매핑표 작성 
@@ -96,9 +100,8 @@
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서.puml
   
 [결과파일]
-- 클래스설계서: 
-  - design/backend/class/common-base.puml
-  - design/backend/class/{service-name}.puml
-  - design/backend/class/class.md
-- 클래스설계서(요약): design/backend/class/{service-name}-simple.puml
+- design/backend/class/common-base.puml
+- design/backend/class/{service-name}.puml
+- design/backend/class/class.md
+- design/backend/class/class-simple.puml
 - service-name은 영어로 작성 (예: profile, location, itinerary)
