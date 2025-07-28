@@ -167,12 +167,12 @@
 - 프로토타입: design/uiux/prototype/*.html 
 - 아키텍처패턴: design/pattern/architecture-pattern.md
 - 논리아키텍처: design/backend/logical/*
-- API설계서: design/backend/api/*.yaml
+- API설계서: design/backend/api/*
 - 외부시퀀스설계서: design/backend/sequence/outer/{플로우명}.puml
 - 내부시퀀스설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
-- 클래스설계서: design/backend/class/{service-name}.puml
+- 클래스설계서: design/backend/class/*
 - 데이터설계서: design/backend/database/*
-- HighLevel아키텍처정의서: design/backend/physical/*.puml
+- HighLevel아키텍처정의서: design/backend/physical/*
 
 ## 프롬프트 약어 
 ## 역할 약어 
