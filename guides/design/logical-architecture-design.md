@@ -17,7 +17,9 @@
 - Context Map 스타일로 서비스 내부 구조는 생략하고 서비스 간 관계에 집중
 - 클라이언트에서 API Gateway로는 단일 연결선으로 표현
 <작성순서>
-- 준비: 참고자료 분석 및 이해 
+- 준비: 
+  - 참고자료 분석 및 이해 
+  - 프로토타입을 웹브라우저에서 실행하여 서비스 이해 
 - 실행: 
   - 논리아키텍처 설계서(logical-architecture.md) 작성: 아래 항목은 필수 포함하고 필요 시 항목 추가 
     - 개요: 설계 원칙, 핵심 컴포넌트 정의 
@@ -50,8 +52,8 @@
 [참고자료]
 - 유저스토리
 - UI/UX설계서
+- 프로토타입
 - 아키텍처패턴
-
 [예시]
 - 논리아키텍처설계서: 
 - 논리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.mmd
