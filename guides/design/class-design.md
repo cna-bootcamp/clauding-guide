@@ -41,7 +41,10 @@
   - Controller Classes (API 엔드포인트)
   - 각 서비스의 아키텍처 패턴 적용
   - 1단계 공통 컴포넌트 참조
-  - 결과: design/backend/class/{service-name}.puml
+  - 프라퍼티와 메소드를 생략한 간단한 클래스설계서(요약) 작성
+  - 결과: 
+    - design/backend/class/{service-name}.puml
+    - design/backend/class/{service-name}-simple.puml
 
   - 병렬 처리 기준
     - 서비스 간 의존성이 없는 경우: 모든 서비스 동시 실행
@@ -71,7 +74,8 @@
   
 [결과파일]
 - 패키지 구조도: design/backend/class/package-structure.md
-- 클래스설계서: design/backend/class/{서비스명}.puml
-- 클래스설계서(요약): design/backend/class/{서비스명}-simple.puml
-- 서비스명은 영어로 작성 (예: profile, location, itinerary)
-  
+- 클래스설계서: 
+  - design/backend/class/common-base.puml
+  - design/backend/class/{service-name}.puml
+- 클래스설계서(요약): design/backend/class/{service-name}-simple.puml
+- service-name은 영어로 작성 (예: profile, location, itinerary)
