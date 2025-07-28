@@ -31,17 +31,10 @@
   - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용
   - '!include'는 사용하지 말고 필요한 인터페이스 직접 정의 
   - 클래스 설계서 작성 
-    - 패키지 그룹명은 생략하고 설계 아키텍처 패턴에 따른 레이어별로 그룹핑
-    - 클래스의 프라퍼티와 메소드를 모두 기술할 것. 단, **Getter/Setter 메소드는 표현하지 말것** 
-    - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
-    - 공통 컴포넌트는 클래스/인터페이스 이름만 명시  
+    - <클래스설계서 작성규칙>에 따라 작성  
     - 결과: design/backend/class/{service-name}.puml
   - 간단 클래스설계서 작성 
-    - 패키지 그룹명은 생략하고 설계 아키텍처 패턴에 따른 레이어별로 그룹핑
-    - 프라퍼티: 생략 
-    - 메소드: '메소드명: 기능 설명'으로 하고 기능 설명은 한글로 함. 예) register: 회원등록 
-    - 메소드명에 생성자, Getter, Setter는 생략    
-    - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
+    - <간단클래스설계서 작성규칙>에 따라 작성  
     - 결과: design/backend/class/{service-name}-simple.puml
   
 - 3단계: 통합 및 검증 (순차적)
@@ -56,7 +49,19 @@
   - 결과:  
     - design/backend/class/class.md
     - design/backend/class/class-simple.puml
-  
+
+<클래스설계서 작성규칙>
+- 패키지 그룹명은 생략하고 설계 아키텍처 패턴에 따른 레이어별로 그룹핑
+- 클래스의 프라퍼티와 메소드를 모두 기술할 것. 단, **Getter/Setter 메소드는 표현하지 말것** 
+- **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
+- 공통 컴포넌트는 클래스/인터페이스 이름만 명시 
+<간단클래스설계서 작성규칙>
+- 패키지 그룹명은 생략하고 설계 아키텍처 패턴에 따른 레이어별로 그룹핑
+- 프라퍼티: 생략 
+- 메소드: '메소드명: 기능 설명'으로 하고 기능 설명은 한글로 함. 예) register: 회원등록 
+- 메소드명에 생성자, Getter, Setter는 생략    
+- **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
+
 <API/스키마매핑표가이드>
 - **API매핑표**
 아래 예제와 같은 구성으로 작성 
