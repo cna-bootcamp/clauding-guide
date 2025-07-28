@@ -32,12 +32,12 @@
   - '!include'는 사용하지 말고 필요한 인터페이스 직접 정의 
   - 클래스 설계서 작성 
     - 클래스의 프라퍼티와 메소드를 모두 기술할 것. 단, **Getter/Setter 메소드는 표현하지 말것** 
-    - 설계 아키텍처 패턴에 맞게 아키텍처 레이어별로 그룹핑
+    - 패키지별이 아닌 설계 아키텍처 패턴에 맞게 아키텍처 레이어별로 그룹핑
     - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
     - 공통 컴포넌트는 클래스/인터페이스 이름만 명시  
     - 결과: design/backend/class/{service-name}.puml
   - 간단 클래스설계서 작성 
-    - 설계 아키텍처 패턴에 맞게 아키텍처 레이어별로 그룹핑
+    - 패키지별이 아닌 설계 아키텍처 패턴에 맞게 아키텍처 레이어별로 그룹핑
     - 프라퍼티와 메소드는 모두 생략하고 설계요소 이름만 명시  
     - **클래스 간의 관계를 표현**: Generalization, Realization, Dependency, Association, Aggregation, Composition
     - 결과: design/backend/class/{service-name}-simple.puml
