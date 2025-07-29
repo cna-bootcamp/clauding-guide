@@ -45,6 +45,7 @@
 - 프로토타입
 
 [예시]
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서(외부).puml
 
 [결과파일]
 - **주요 비즈니스 플로우별로 파일을 분리하여 작성**

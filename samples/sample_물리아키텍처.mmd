@@ -1,0 +1,49 @@
+graph TB
+    %% Development Environment Physical Architecture
+    %% Core Flow: Users → Ingress → Services → Database
+    
+    Users[Mobile/Web Users] --> Ingress[Kubernetes Ingress Controller]
+    
+    subgraph "Azure Kubernetes Service - Development"
+        Ingress --> UserService[User Service Pod]
+        Ingress --> TravelService[Travel Service Pod]
+        Ingress --> ScheduleService[AI Service Pod]
+        Ingress --> LocationService[Location Service Pod]
+        
+        UserService --> PostgreSQL[PostgreSQL Pod<br/>16GB Storage]
+        TravelService --> PostgreSQL
+        ScheduleService --> PostgreSQL
+        LocationService --> PostgreSQL
+        
+        UserService --> Redis[Redis Pod<br/>Memory Cache]
+        TravelService --> Redis
+        ScheduleService --> Redis
+        LocationService --> Redis
+        
+        TravelService --> ServiceBus[Azure Service Bus<br/>Basic Tier]
+        ScheduleService --> ServiceBus
+        LocationService --> ServiceBus
+    end
+    
+    %% External APIs
+    ExternalAPI[External APIs<br/>OpenAI, Maps, Weather] --> ScheduleService
+    ExternalAPI --> LocationService
+    
+    %% Essential Azure Services
+    AKS --> ContainerRegistry[Azure Container Registry]
+    
+    %% Node Configuration
+    subgraph "Node Pool"
+        NodePool[2x Standard B2s<br/>2 vCPU, 4GB RAM]
+    end
+    
+    %% Styling
+    classDef azureService fill:#0078d4,stroke:#333,stroke-width:2px,color:#fff
+    classDef microservice fill:#ff6b6b,stroke:#333,stroke-width:2px,color:#fff
+    classDef database fill:#4ecdc4,stroke:#333,stroke-width:2px,color:#fff
+    classDef external fill:#95e1d3,stroke:#333,stroke-width:2px,color:#333
+    
+    class Ingress,ServiceBus,ContainerRegistry azureService
+    class UserService,TravelService,ScheduleService,LocationService microservice
+    class PostgreSQL,Redis database
+    class Users,ExternalAPI external
