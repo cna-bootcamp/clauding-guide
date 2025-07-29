@@ -19,6 +19,8 @@ docker run -d --name mermaid-cli --entrypoint tail minlag/mermaid-cli:latest -f 
 docker logs mermaid-cli
 ```
 
+문법검사 후 Container를 중지하지 않고 계속 사용함 
+
 ## 문법 검사 방법
 현재 OS에 맞게 수행
 
