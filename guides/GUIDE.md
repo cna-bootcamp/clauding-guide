@@ -183,7 +183,7 @@
 - 클래스설계서: design/backend/class/*
 - 백엔드패키지구조도: 클래스설계 결과(design/backend/class/class.md)의 '패키지 구조도' 섹션 
 - 데이터설계서: design/backend/database/*
-- HighLevel아키텍처정의서: design/backend/high-level-architecture.md
+- HighLevel아키텍처정의서: design/high-level-architecture.md
 - 물리아키텍처: design/backend/physical/*
 
 ## 프롬프트 약어 

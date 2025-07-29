@@ -24,6 +24,8 @@
 - 실행: 
   - 'HighLevel아키텍처정의서템플릿'을 이용하여 작성 
   - 섹션별 작성 가이드 
+    - '1. 개요 (Executive Summary)':
+      -  1.2 아키텍처 범위 및 경계: 유저스토리, 논리아키텍처, 외부시퀀스설계서와 일치하게 작성
     - '4. 논리 아키텍처 (Logical View)'
       - 시스템 컨텍스트 다이어그램': 논리아키텍처 경로 지정
       - 4.2.2 바운디드 컨텍스트: mermaid 형식으로 작성 
@@ -72,4 +74,4 @@
 - 백킹서비스설치방법
 - 제품별버전가이드  
 [결과파일]
-- design/backend/high-level-architecture.md
+- design/high-level-architecture.md
