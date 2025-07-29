@@ -31,7 +31,7 @@
 - MCP 설치: 'Claude Code와 SuperClaude 설치' 가이드의 'MCP설치'섹션에서 수행  
 - [Claude Code 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/02.Claude%20code%20setup.md)
 - IDE와 통합: 'Claude Code 설정'의 'IDE와 통합'섹션에서 수행  
-- [Claude Instruction 생성](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)  
+- Claude Instruction 생성. 
   - YOLO모드 전환: YOLO모드는 사용자에게 중간 중간 확인받지 않고 Claude Code가 바로 수행하는 옵션입니다.   
     ```
     claude-yolo
