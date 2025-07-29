@@ -12,7 +12,7 @@
   - [프로젝트 단계별 Claude Code 이용](#프로젝트-단계별-claude-code-이용)
     - [시작하기](#시작하기)
     - [서비스 기획 하기](#서비스-기획-하기)
-    - [섫계하기](#섫계하기)
+    - [설계하기](#설계하기)
     - [개발하기](#개발하기)
     - [배포하기](#배포하기)
     - [단계별 작업 방법 Tip](#단계별-작업-방법-tip)
@@ -220,7 +220,7 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 - [서비스 기획 가이드](https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/think/think-guide.md)  
 - [유저스토리 작성하기](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/02.think-prompt.md) 
   
-### 섫계하기 
+### 설계하기 
 [설계 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/03.design-prompt.md)
 
 ### 개발하기
