@@ -102,7 +102,7 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/references/instruction-template.md
   - 파일명: instruction-template.md
 
-- 유저스토리작 방법
+- 유저스토리작성방법
   - 설명: 유저스토리 형식과 작성법 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/references/유저스토리작성방법.md
   - 파일명: userstory-writing.md
@@ -181,8 +181,10 @@
 - 외부시퀀스설계서: design/backend/sequence/outer/{플로우명}.puml
 - 내부시퀀스설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
 - 클래스설계서: design/backend/class/*
+- 백엔드패키지구조도: 클래스설계 결과(design/backend/class/class.md)의 '패키지 구조도' 섹션 
 - 데이터설계서: design/backend/database/*
-- HighLevel아키텍처정의서: design/backend/physical/*
+- HighLevel아키텍처정의서: design/backend/high-level-architecture.md
+- 물리아키텍처: design/backend/physical/*
 
 ## 프롬프트 약어 
 ## 역할 약어 
