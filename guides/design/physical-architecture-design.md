@@ -10,20 +10,23 @@
 
 [가이드]
 <작성원칙>
-- {CLOUD} 기반의 물리 아키텍처
+- {CLOUD} 기반의 물리 아키텍처 설계
 - 'HighLevel아키텍처정의서'와 일치해야 함 
-- MVP이므로 최소한으로 구성함 
 - "백킹서비스 설치 방법"에 있는 제품을 우선적으로 사용 
-- 네트워크, 보안, 운영 아키텍처는 작성하지 않음 
-- 모니터링/로깅/보안과 관련된 제품/서비스는 생략함
 <작성순서>
 - 준비:
   - 아키텍처패턴, 논리아키텍처, 외부시퀀스설계서, 데이터설계서, HighLevel아키텍처정의서 분석 및 이해
 - 실행:
   - 물리아키텍처 설계서 작성: physical-architecture.md
+    - 최적화된 운영환경의 물리 아키텍처 설계
+    - 추가로 MVP로 빠르게 개발할 수 있는 개발환경 물리아키텍처도 설계
+      - 네트워크, 보안, 운영 관련 아키텍처 생략 
+      - 모니터링/로깅/보안과 관련된 제품/서비스 생략함
   - 물리아키텍처 다이어그램 작성: 
     - Mermaid 파일로 작성 
-    - physical-architecture.mmd     
+    - 결과
+      - 개발환경: physical-architecture-dev.mmd
+      - 운영환경: physical-architecture-prod.mmd
 - 검토: 
   - <작성원칙> 준수 검토
   - 스쿼드 팀원 리뷰: 누락 및 개선 사항 검토
@@ -40,4 +43,5 @@
 
 [결과파일]
 - design/backend/physical/physical-architecture.md
-- design/backend/physical/physical-architecture.mmd
+- design/backend/physical/physical-architecture-dev.mmd
+- design/backend/physical/physical-architecture-prod.mmd
