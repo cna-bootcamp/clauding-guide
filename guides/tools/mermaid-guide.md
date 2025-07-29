@@ -13,7 +13,7 @@ Mermaid 다이어그램의 문법 오류를 사전에 검출하여 렌더링 실
 docker ps | grep mermaid-cli
 
 # Mermaid CLI 컨테이너가 없으면 설치 및 실행
-docker run -d --name mermaid-cli --entrypoint tail minlag/mermaid-cli:latest -f /dev/null
+docker run -d --rm --name mermaid-cli -p 48080:8080 --entrypoint sh minlag/mermaid-cli:latest -c "while true;do sleep 3600; done"
 
 # 컨테이너 상태 확인
 docker logs mermaid-cli
