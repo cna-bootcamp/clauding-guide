@@ -8,14 +8,11 @@
 [가이드]
 <작성원칙>
 - {CLOUD}플랫폼에 최적화된 제품/서비스로 구성 
-  - MVP로 가정하여 최소한의 제품/서비스로 구성함 
-  - "백킹서비스설치방법"에 있는 제품을 우선적으로 사용 
-  - 모니터링/로깅/보안과 관련된 제품/서비스는 생략함  
-  - 아래 제품을 우선적으로 사용
-    - API Gateway: Istio나 Spring Cloud Gateway
-    - Database: 클라우드 관리형 DB가 아닌 오픈 소스 DB 
-    - Message Queue: 클라우드 관리형 서비스 
-    - 기타: 클라우드 관리형 서비스 
+- 아래 제품을 우선적으로 사용
+  - API Gateway: Istio나 Spring Cloud Gateway
+  - Database: 클라우드 관리형 DB가 아닌 오픈 소스 DB 
+  - Message Queue: 클라우드 관리형 서비스 
+  - 기타: 클라우드 관리형 서비스 
 - 개발언어, 개발 프레임워크, AI모델은 '제품별버전가이드"를 참조하여 GA된 최신 버전 사용
  
 <작성순서>
