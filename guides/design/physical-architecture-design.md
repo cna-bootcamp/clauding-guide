@@ -19,8 +19,11 @@
 <작성순서>
 - 준비:
   - 아키텍처패턴, 논리아키텍처, 외부시퀀스설계서, 데이터설계서, HighLevel아키텍처정의서 분석 및 이해
-- 실행: 
-  - Mermaid 파일로 작성     
+- 실행:
+  - 물리아키텍처 설계서 작성: physical-architecture.md
+  - 물리아키텍처 다이어그램 작성: 
+    - Mermaid 파일로 작성 
+    - physical-architecture.mmd     
 - 검토: 
   - <작성원칙> 준수 검토
   - 스쿼드 팀원 리뷰: 누락 및 개선 사항 검토
@@ -36,5 +39,5 @@
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_물리아키텍처.mmd
 
 [결과파일]
-- 물리아키텍처 설명: design/backend/physical/physical-architecture.md
-- 물리아키텍처 다이어그램: design/backend/physical/physical-architecture.mmd
+- design/backend/physical/physical-architecture.md
+- design/backend/physical/physical-architecture.mmd
