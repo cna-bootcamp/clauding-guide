@@ -23,7 +23,7 @@
       - 네트워크, 보안, 운영 관련 아키텍처 생략 
       - 모니터링/로깅/보안과 관련된 제품/서비스 생략함
   - 물리아키텍처 다이어그램 작성: 
-    - Mermaid 파일로 작성 
+    - Mermaid 형식으로 작성 
     - 결과
       - 개발환경: physical-architecture-dev.mmd
       - 운영환경: physical-architecture-prod.mmd
