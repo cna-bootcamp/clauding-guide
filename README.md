@@ -36,7 +36,7 @@
     ```
     claude-yolo
     ```
-    'claude-normal'이나 'claude-safe'로 다른 모드로 전환할 수 있습니다.   ㄴㄴ
+    'claude-normal'이나 'claude-safe'로 다른 모드로 전환할 수 있습니다.  
     'claude-help'로 다른 명령을 볼 수 있습니다.   
 
   - 프로젝트 디렉토리로 이동하여 claude 또는 cy 명령으로 Claude Code 실행 
