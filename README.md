@@ -217,7 +217,7 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 중간 중간 자주 '/clear'명령을 사용해 주세요. 이전 대화 기록을 삭제하므로 토큰 절약에 약간(?) 도움 됩니다.   
 
 ### 서비스 기획 하기
-- [서비스 기획 가이드](https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/think/think-guide.md)  
+- [서비스 기획 가이드](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/think/think-guide.md)  
 - [유저스토리 작성하기](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/02.think-prompt.md) 
   
 ### 설계하기 
