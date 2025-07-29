@@ -19,12 +19,16 @@
 - 실행:
   - 물리아키텍처 설계서 작성: physical-architecture.md
     - 최적화된 운영환경의 물리 아키텍처 설계
-    - 추가로 MVP로 빠르게 개발할 수 있는 개발환경 물리아키텍처도 설계
+    - 추가로 MVP로 빠르게 개발할 수 있는 개발환경 물리아키텍처도 설계 
+      - 사용자 → Ingress → 서비스 → 데이터베이스 플로우만 표시
+      - 클라우드 서비스는 최소한으로만 포함
+      - 부가 설명은 문서에만 기록, 다이어그램에서 제거
       - 네트워크, 보안, 운영, CI/CD 관련 아키텍처는 생략  
       - 모니터링/로깅/보안과 관련된 제품/서비스 생략함
-      - Application Gateway: Kubernetes Ingress 
-      - Database: "백킹서비스설치방법"에 있는 오픈소스 DB로 Kubernetes에 Pod로 배포  
-      - Message Queue: "백킹서비스설치방법"에 있는 제품
+      - 제품/서비스 구성 
+        - Application Gateway: Kubernetes Ingress 
+        - Database: "백킹서비스설치방법"에 있는 오픈소스 DB사용. Kubernetes에 Pod로 배포  
+        - Message Queue: "백킹서비스설치방법"에 있는 {CLOUD}에서 제공하는 제품
   - 물리아키텍처 다이어그램 작성: 
     - Mermaid 형식으로 작성 
     - 결과
