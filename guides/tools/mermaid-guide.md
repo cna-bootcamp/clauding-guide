@@ -12,12 +12,27 @@ Mermaid 다이어그램의 문법 오류를 사전에 검출하여 렌더링 실
 # Mermaid CLI 컨테이너가 실행 중인지 확인
 docker ps | grep mermaid-cli
 
-# Mermaid CLI 컨테이너가 없으면 설치 및 실행
-docker run -d --rm --name mermaid-cli -p 48080:8080 --entrypoint sh minlag/mermaid-cli:latest -c "while true;do sleep 3600; done"
+# Mermaid CLI 컨테이너가 없으면 설치 및 실행 (root 권한으로 실행, 포트 48080 사용)
+docker run -d --rm --name mermaid-cli -u root -p 48080:8080 --entrypoint sh minlag/mermaid-cli:latest -c "while true;do sleep 3600; done"
 
 # 컨테이너 상태 확인
 docker logs mermaid-cli
 ```
+
+#### ⚠️ 중요: 최초 컨테이너 생성 후 필수 설정
+
+Mermaid CLI는 Puppeteer를 사용하여 다이어그램을 렌더링하므로 Chromium 브라우저가 필요합니다. 
+컨테이너를 처음 생성한 후 다음 명령을 실행하여 필요한 패키지를 설치해야 합니다:
+
+```bash
+# Chromium 및 필요한 종속성 설치
+docker exec mermaid-cli sh -c "apk add --no-cache chromium chromium-chromedriver nss freetype harfbuzz ca-certificates ttf-freefont"
+
+# Puppeteer가 사용할 설정 파일 생성
+docker exec mermaid-cli sh -c "echo '{\"executablePath\": \"/usr/bin/chromium-browser\", \"args\": [\"--no-sandbox\", \"--disable-setuid-sandbox\", \"--disable-dev-shm-usage\"]}' > /tmp/puppeteer-config.json"
+```
+
+이 설정은 컨테이너가 실행되는 동안 유지되므로 한 번만 실행하면 됩니다.
 
 문법검사 후 Container를 중지하지 않고 계속 사용함 
 
@@ -66,12 +81,14 @@ TEMP_FILE="/tmp/mermaid_$(date +%s)_$$.mmd"
 # 2. 파일 복사
 docker cp {검사할 파일} mermaid-cli:${TEMP_FILE}
 
-# 3. 문법 검사
-docker exec mermaid-cli mmdc -i ${TEMP_FILE} -o /tmp/output.svg -e svg -q
+# 3. 문법 검사 (Puppeteer 설정 파일 사용)
+docker exec mermaid-cli sh -c "cd /home/mermaidcli && node_modules/.bin/mmdc -i ${TEMP_FILE} -o /tmp/output.svg -p /tmp/puppeteer-config.json -q"
 
 # 4. 임시 파일 삭제
 docker exec mermaid-cli rm -f ${TEMP_FILE} /tmp/output.svg
 ```
+
+**주의**: Puppeteer 설정 파일(`/tmp/puppeteer-config.json`)이 있어야 합니다. 없다면 위의 "최초 컨테이너 생성 후 필수 설정"을 먼저 실행하세요.
 
 ### 검사 결과 해석
 

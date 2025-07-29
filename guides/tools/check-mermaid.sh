@@ -36,19 +36,24 @@ echo -e "${GRAY}$(printf '=%.0s' {1..60})${NC}"
 CONTAINER_RUNNING=$(docker ps --filter "name=mermaid-cli" --format "{{.Names}}" 2>/dev/null)
 
 if [ -z "$CONTAINER_RUNNING" ]; then
-    echo -e "${YELLOW}Starting Mermaid CLI container...${NC}"
-    
-    # Start container with tail -f to keep it running
-    docker run -d --name mermaid-cli --entrypoint tail minlag/mermaid-cli:latest -f /dev/null >/dev/null 2>&1
-    
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Error: Failed to start Mermaid container${NC}"
-        exit 1
-    fi
-    
-    sleep 2
-    echo -e "${GREEN}Mermaid CLI container started${NC}"
+    echo -e "${RED}Error: Mermaid CLI container is not running.${NC}"
+    echo -e "${YELLOW}Please follow the setup instructions in the Mermaid guide to start the container.${NC}"
+    echo -e "\n${CYAN}Quick setup commands:${NC}"
+    echo ""
+    echo -e "${GREEN}# 1. Start container with root privileges (port 48080)${NC}"
+    echo -e "${NC}docker run -d --rm --name mermaid-cli -u root -p 48080:8080 --entrypoint sh minlag/mermaid-cli:latest -c \"while true;do sleep 3600; done\"${NC}"
+    echo ""
+    echo -e "${GREEN}# 2. Install Chromium and dependencies${NC}"
+    echo -e "${NC}docker exec mermaid-cli sh -c \"apk add --no-cache chromium chromium-chromedriver nss freetype harfbuzz ca-certificates ttf-freefont\"${NC}"
+    echo ""
+    echo -e "${GREEN}# 3. Create Puppeteer configuration${NC}"
+    echo -e "${NC}docker exec mermaid-cli sh -c \"echo '{\\\"executablePath\\\": \\\"/usr/bin/chromium-browser\\\", \\\"args\\\": [\\\"--no-sandbox\\\", \\\"--disable-setuid-sandbox\\\", \\\"--disable-dev-shm-usage\\\"]}' > /tmp/puppeteer-config.json\"${NC}"
+    echo ""
+    exit 1
 fi
+
+# Set Puppeteer configuration file path
+PUPPETEER_CONFIG_FILE="/tmp/puppeteer-config.json"
 
 # Generate unique temp filename
 TIMESTAMP=$(date +"%Y%m%d%H%M%S")
@@ -65,9 +70,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Run syntax check
+# Run syntax check with Puppeteer configuration
 echo -e "${GRAY}Running syntax check...${NC}"
-OUTPUT=$(docker exec mermaid-cli mmdc -i "$TEMP_FILE" -o "$OUTPUT_FILE" -e svg -q 2>&1)
+OUTPUT=$(docker exec mermaid-cli sh -c "cd /home/mermaidcli && node_modules/.bin/mmdc -i '$TEMP_FILE' -o '$OUTPUT_FILE' -p '$PUPPETEER_CONFIG_FILE' -q" 2>&1)
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -eq 0 ]; then

@@ -23,25 +23,30 @@ Write-Host ("=" * 60) -ForegroundColor Gray
 $containerRunning = docker ps --filter "name=mermaid-cli" --format "{{.Names}}" 2>$null
 
 if (-not $containerRunning) {
-    Write-Host "Starting Mermaid CLI container..." -ForegroundColor Yellow
-    
-    # Start container with tail -f to keep it running
-    docker run -d --name mermaid-cli --entrypoint tail minlag/mermaid-cli:latest -f /dev/null 2>&1 | Out-Null
-    
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "Error: Failed to start Mermaid container" -ForegroundColor Red
-        exit 1
-    }
-    
-    Start-Sleep -Seconds 2
-    Write-Host "Mermaid CLI container started" -ForegroundColor Green
+    Write-Host "Error: Mermaid CLI container is not running." -ForegroundColor Red
+    Write-Host "Please follow the setup instructions in the Mermaid guide to start the container." -ForegroundColor Yellow
+    Write-Host "`nQuick setup commands:" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "# 1. Start container with root privileges (port 48080)" -ForegroundColor Green
+    Write-Host "docker run -d --rm --name mermaid-cli -u root -p 48080:8080 --entrypoint sh minlag/mermaid-cli:latest -c `"while true;do sleep 3600; done`"" -ForegroundColor White
+    Write-Host ""
+    Write-Host "# 2. Install Chromium and dependencies" -ForegroundColor Green
+    Write-Host "docker exec mermaid-cli sh -c `"apk add --no-cache chromium chromium-chromedriver nss freetype harfbuzz ca-certificates ttf-freefont`"" -ForegroundColor White
+    Write-Host ""
+    Write-Host "# 3. Create Puppeteer configuration" -ForegroundColor Green
+    Write-Host "docker exec mermaid-cli sh -c `"echo '{```"executablePath```": ```"/usr/bin/chromium-browser```", ```"args```": [```"--no-sandbox```", ```"--disable-setuid-sandbox```", ```"--disable-dev-shm-usage```"]}' > /tmp/puppeteer-config.json`"" -ForegroundColor White
+    Write-Host ""
+    exit 1
 }
+
+# Set Puppeteer configuration file path
+$puppeteerConfigFile = "/tmp/puppeteer-config.json"
 
 # Generate unique temp filename
 $timestamp = Get-Date -Format "yyyyMMddHHmmss"
-$pid = $PID
-$tempFile = "/tmp/mermaid_${timestamp}_${pid}.mmd"
-$outputFile = "/tmp/mermaid_${timestamp}_${pid}.svg"
+$processId = $PID
+$tempFile = "/tmp/mermaid_${timestamp}_${processId}.mmd"
+$outputFile = "/tmp/mermaid_${timestamp}_${processId}.svg"
 
 try {
     # Copy file to container
@@ -53,9 +58,9 @@ try {
         exit 1
     }
     
-    # Run syntax check
+    # Run syntax check with Puppeteer configuration
     Write-Host "Running syntax check..." -ForegroundColor Gray
-    $output = docker exec mermaid-cli mmdc -i "$tempFile" -o "$outputFile" -e svg -q 2>&1
+    $output = docker exec mermaid-cli sh -c "cd /home/mermaidcli && node_modules/.bin/mmdc -i '$tempFile' -o '$outputFile' -p '$puppeteerConfigFile' -q" 2>&1
     $exitCode = $LASTEXITCODE
     
     if ($exitCode -eq 0) {
