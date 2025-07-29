@@ -53,7 +53,7 @@
 - 유저스토리
 - UI/UX설계서
 - 프로토타입
-- 아키텍처패턴
+- 아키텍처패턴  
 [예시]
 - 논리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.mmd
 
