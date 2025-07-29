@@ -23,12 +23,13 @@
       - 사용자 → Ingress → 서비스 → 데이터베이스 플로우만 표시
       - 클라우드 서비스는 최소한으로만 포함
       - 부가 설명은 문서에만 기록, 다이어그램에서 제거
-      - 네트워크, 보안, 운영, CI/CD 관련 아키텍처는 생략  
+      - 네트워크, 보안, 운영 관련 아키텍처는 생략  
       - 모니터링/로깅/보안과 관련된 제품/서비스 생략함
       - 제품/서비스 구성 
         - Application Gateway: Kubernetes Ingress 
         - Database: "백킹서비스설치방법"에 있는 오픈소스 DB사용. Kubernetes에 Pod로 배포  
         - Message Queue: "백킹서비스설치방법"에 있는 {CLOUD}에서 제공하는 제품
+        - CI/CD: 'HighLevel아키텍처정의서'에 있는 CI/CD 제품
   - 물리아키텍처 다이어그램 작성: 
     - Mermaid 형식으로 작성 
     - 결과
