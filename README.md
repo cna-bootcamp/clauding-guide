@@ -12,6 +12,9 @@
   - [프로젝트 단계별 Claude Code 이용](#프로젝트-단계별-claude-code-이용)
     - [시작하기](#시작하기)
     - [서비스 기획 하기](#서비스-기획-하기)
+    - [섫계하기](#섫계하기)
+    - [개발하기](#개발하기)
+    - [배포하기](#배포하기)
     - [단계별 작업 방법 Tip](#단계별-작업-방법-tip)
       - [유용한 공통 Tip](#유용한-공통-tip)
       - [프로토타입 개발](#프로토타입-개발)
@@ -214,7 +217,17 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 중간 중간 자주 '/clear'명령을 사용해 주세요. 이전 대화 기록을 삭제하므로 토큰 절약에 약간(?) 도움 됩니다.   
 
 ### 서비스 기획 하기
-[서비스 기획 가이드](https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/think/think-guide.md)  
+- [서비스 기획 가이드](https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/think/think-guide.md)  
+- [유저스토리 작성하기](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/02.think-prompt.md) 
+  
+### 섫계하기 
+[설계 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/03.design-prompt.md)
+
+### 개발하기
+[개발 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/04.build-prompt.md)
+
+### 배포하기
+[배포 프롬프트]()
 
 ### 단계별 작업 방법 Tip
 #### 유용한 공통 Tip
