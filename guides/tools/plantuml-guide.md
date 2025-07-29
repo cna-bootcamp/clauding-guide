@@ -3,7 +3,6 @@
 ## 개요
 
 PlantUML 다이어그램의 문법 오류를 사전에 검출하여 렌더링 실패를 방지하기 위한 가이드입니다. Docker 기반 PlantUML 서버를 활용하여 로컬에서 빠르게 문법을 검증할 수 있습니다.
-"현재 OS에 맞게 수행"하세요. 
 
 ## PlantUML 서버 설치 검사
 
@@ -21,23 +20,37 @@ docker logs plantuml
 ```
 
 ## 문법 검사 방법
-"현재 OS에 맞게 수행" 
+현재 OS에 맞게 수행 
 
 ### Linux/macOS 버전
-**Shell 파일(tools/check-plantuml.sh)을 이용하여 수행**.
 
-1. tools/check-plantuml.sh 파일 존재 여부 확인 
-2. Shell 파일이 없으면 "PlantUML문법검사기(Linux/Mac)"을 'tools/check-plantuml.sh'에 다운로드하여 Shell 파일을 만듦
-3. Shell 파일이 있으면 그 스크립트 파일을 이용하여 검사
+```bash
+# 1. 고유 파일명 생성 (충돌 방지)
+TEMP_FILE="/tmp/puml_$(date +%s)_$$.puml"
 
+# 2. 파일 복사
+docker cp {검사할 파일} plantuml:${TEMP_FILE}
+
+# 3. JAR 파일 위치 찾기
+JAR_PATH=$(docker exec plantuml find / -name "plantuml*.jar" 2>/dev/null | head -1)
+
+# 4. 문법 검사
+docker exec plantuml java -jar ${JAR_PATH} -checkonly ${TEMP_FILE}
+
+# 5. 상세 에러 확인 (필요시)
+docker exec plantuml sh -c "cd /tmp && java -jar ${JAR_PATH} -failfast -v ${TEMP_FILE} 2>&1 | grep -E 'Error line'"
+
+# 6. 임시 파일 삭제
+ddocker exec -u root plantuml rm -f $TEMP_FILE
+```
 
 ### Windows PowerShell 버전
 **스크립트 파일(tools/check-plantuml.ps1)을 이용하여 수행**.
 
 1. tools/check-plantuml.ps1 파일 존재 여부 확인 
-2. 스크립트 파일이 없으면 "PlantUML문법검사기(Window)"를 'tools/check-plantuml.ps1'에 다운로드하여 스크립트 파일을 만듦
+2. 스크립트 파일이 없으면 "PlantUML문법검사가이드"를 tools/check-plantuml.ps1 파일로 다운로드하여 스크립트 파일을 만듦
 3. 스크립트 파일이 있으면 그 스크립트 파일을 이용하여 검사
-
+ 
 ### 검사 결과 해석
 
 | 출력 | 의미 | 대응 방법 |
