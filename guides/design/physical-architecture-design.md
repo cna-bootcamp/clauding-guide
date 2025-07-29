@@ -8,7 +8,7 @@
   - https://mermaid.live/edit 에 접근 
   - 스크립트 내용을 붙여넣어 확인  
 
-[가이드]
+[가이드]  
 <작성원칙>
 - {CLOUD} 기반의 물리 아키텍처 설계
 - 'HighLevel아키텍처정의서'와 일치해야 함 
@@ -46,6 +46,7 @@
 - 외부시퀀스설계서
 - 데이터설계서
 - HighLevel아키텍처정의서
+
 [예시]
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_물리아키텍처.mmd
 
