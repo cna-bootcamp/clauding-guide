@@ -234,6 +234,6 @@
 - "@explain": /sc:explain --think --seq --answer-only 
 
 ## 파일 약어 
-- "@error": claude/debug/error.png파일을 의미함 
-- "@info": claude/debug/info.png파일을 의미함
+- "@error": debug/error.png파일을 의미함 
+- "@info": debug/info.png파일을 의미함
 

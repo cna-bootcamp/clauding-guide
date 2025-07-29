@@ -65,39 +65,9 @@ SuperClaude 명령어와 파라미터가 복잡하기 때문에 기획, 설계, 
 프로젝트 루트의 CLAUDE.md 맨 아래에 있습니다.   
 작업 뿐 아니라 역할에 대한 약어도 있습니다.    
 약어에 대한 의미는 아래 'SuperClaude 명령어 및 파라미터 목록' 문서를 참고하면 됩니다.  
-```
-## 프롬프트 약어 
-## 역할 약어 
-- "@archi": "--persona-architect"
-- "@front": "--persona-front"
-- "@back": "--persona-backend"
-- "@secu": "--persona-security"
-- "@qa": "--persona-qa"
-- "@refact": "--persona-refactor" 
-- "@devops": "--persona-devops"
-- "@scribe": "--persona-scriber"
+아래 링크의 마지막 부분을 참고하세요.  
 
-## 작업 약어 
-- "@complex-flag": --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
-
-- "@userstory": /sc:document @scribe @archi --think --wave-strategy systematic
-- "@uiux": /sc:design --think @front --uc --wave-mode auto --wave-strategy systematic
-- "@prototype": /sc:implement @front --answer-only 
-- "@design-pattern": /sc:design @archi --think-hard @complex-flag
-- "@architecture": /sc:design @archi @back @refact --think-hard  @complex-flag
-- "@backing-service": /sc:implement @devops @back --think-hard  @complex-flag
-- "@dev-backend": /sc:implement @back --think-hard @complex-flag
-- "@dev-front": /sc:implement @front --think-hard @complex-flag
-- "@dev-testcode": /sc:test @back @qa --think @complex-flag
-- "@test-front": /sc:test @qa @front --play --think @complex-flag
-- "@cicd": /sc:implement @devops @archi @back --think @complex-flag
-- "@document": /sc:document --think @scribe @complex-flag
-- "@fix": /sc:troubleshoot --think --seq 
-- "@estimate": /sc:estimate --think-hard @complex-flag
-- "@improve": /sc:improve --think @complex-flag
-- "@analyze": /sc:analyze --think --seq 
-- "@explain": /sc:explain --think --seq --answer-only 
-```
+[역할과 작업 약어](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/GUIDE.md)
 
 ### 작업과 약어 사용 프롬프트 예시   
 vscode나 IntelliJ와 통합된 Claude Code에서 수행하면 편합니다.  
