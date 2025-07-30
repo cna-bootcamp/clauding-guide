@@ -5,7 +5,7 @@
 - OS: 리눅스 (윈도우는 WSL 사용)
 - k8s에 standalone으로 설치하는 방법과 Docker로 설치하는 방법 안내
 [참고자료]
-- 물리아키텍처: design/backend/physical/ 하위 파일 
+- 물리아키텍처
 - 백킹서비스설치방법
 [결과파일]
 - build/database/ 하위에 작성 

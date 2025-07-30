@@ -153,6 +153,11 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/plantuml-guide.md
   - 파일명: plantuml-guide.md
 
+- Mermaid문법검사가이드
+  - 설명: Mermaid 문법 검사하는 방법 안내 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/mermaid-guide.md
+  - 파일명: mermaid-guide.md
+
 - MCP동기화도구
   - 설명: Window에서 Cloude Desktop의 MCP설정을 읽어 Claude Code에 MCP 서버를 동기화하는 툴 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/sync-mcp.md
@@ -163,10 +168,20 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/check-plantuml.ps1
   - 파일명: check-plantuml.ps1
 
+- Mermaid문법검사기(Window)
+  - 설명: Window용 PlantUML 스크립트 문법 검사기  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/check-mermaid.ps1
+  - 파일명: check-mermaid.ps1
+
 - PlantUML문법검사기(Linux/Mac)
   - 설명: Linux/Mac용 PlantUML 스크립트 문법 검사기  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/check-plantuml.sh
   - 파일명: check-plantuml.sh
+
+- Mermaid문법검사기(Linux/Mac)
+  - 설명: Linux/Mac용 PlantUML 스크립트 문법 검사기  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/check-mermaid.sh
+  - 파일명: check-mermaid.sh
 
 ---
 
@@ -219,6 +234,6 @@
 - "@explain": /sc:explain --think --seq --answer-only 
 
 ## 파일 약어 
-- "@error": claude/debug/error.png파일을 의미함 
-- "@info": claude/debug/info.png파일을 의미함
+- "@error": debug/error.png파일을 의미함 
+- "@info": debug/info.png파일을 의미함
 

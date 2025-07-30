@@ -31,7 +31,8 @@
         - Message Queue: "백킹서비스설치방법"에 있는 {CLOUD}에서 제공하는 제품
         - CI/CD: 'HighLevel아키텍처정의서'에 있는 CI/CD 제품
   - 물리아키텍처 다이어그램 작성: 
-    - Mermaid 형식으로 작성 
+    - Mermaid 형식으로 작성
+    - **Mermaid 스크립트 파일 검사 실행**: 'Mermaid문법검사가이드' 준용 
     - 결과
       - 개발환경: physical-architecture-dev.mmd
       - 운영환경: physical-architecture-prod.mmd
