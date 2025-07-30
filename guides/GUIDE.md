@@ -4,7 +4,7 @@
 ## 서비스기획 가이드 
 - 서비스기획프롬프트
   - 설명: 유저스토리 작성 등 서비스 기획을 위한 프롬프트 예시  
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/think-prompt.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/02.think-prompt.md
   - 파일명: think-prompt.md  
 
 - 서비스기획가이드
