@@ -17,7 +17,7 @@
 ## 설계 가이드
 - 설계실행프롬프트
   - 설명: 각 설계 단계 실행을 위한 프롬프트 모음
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/design-prompt.md 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/03.design-prompt.md 
   - 파일명: design-prompt.md
 
 - 공통설계원칙
@@ -83,6 +83,10 @@
 ---
 
 ## 개발 가이드
+- 개발실행프롬프트
+  - 설명: 각 개발 단계 실행을 위한 프롬프트 모음
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/04.build-prompt.md 
+  - 파일명: build-prompt.md
 
 - 데이터베이스설치가이드
   - 설명: 데이터베이스 설치 방법 안내 요청 시 참조 

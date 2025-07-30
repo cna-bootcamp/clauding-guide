@@ -369,7 +369,7 @@ claude mcp add-json docker-server '{
 
 mkdir \-p .claude/commands
 
-echo "GitHub 이슈 \#$ARGUMENTS를 분석하고 수정하세요" \> .claude/commands/fix-issue.md
+echo "GitHub 이슈 \#$ARGUMENTS를 분석하고 수정하세요" \> /commands/fix-issue.md
 
 사용법: `/fix-issue 123`
 
