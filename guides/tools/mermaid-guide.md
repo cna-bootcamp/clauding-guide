@@ -12,12 +12,27 @@ Mermaid 다이어그램의 문법 오류를 사전에 검출하여 렌더링 실
 # Mermaid CLI 컨테이너가 실행 중인지 확인
 docker ps | grep mermaid-cli
 
+# ⚠️ 중요: 첫 실행 시 이미지 다운로드를 먼저 진행 (큰 이미지로 인한 타임아웃 방지)
+docker pull minlag/mermaid-cli:latest
+
 # Mermaid CLI 컨테이너가 없으면 설치 및 실행 (root 권한으로 실행, 포트 48080 사용)
 docker run -d --rm --name mermaid-cli -u root -p 48080:8080 --entrypoint sh minlag/mermaid-cli:latest -c "while true;do sleep 3600; done"
 
 # 컨테이너 상태 확인
 docker logs mermaid-cli
 ```
+
+#### 💡 Docker 이미지 다운로드 관련 주의사항
+
+**첫 실행 시 발생할 수 있는 문제:**
+- `minlag/mermaid-cli:latest` 이미지가 큰 용량(약 700MB+)이므로 다운로드에 시간이 오래 걸림
+- `docker run` 명령 실행 시 이미지가 없으면 자동 다운로드하지만 타임아웃 발생 가능
+- **해결방법**: `docker pull` 명령으로 이미지를 먼저 다운로드한 후 컨테이너 실행
+
+**권장 실행 순서:**
+1. `docker pull minlag/mermaid-cli:latest` (이미지 다운로드)
+2. `docker run` 명령으로 컨테이너 실행
+3. 필수 설정 진행
 
 #### ⚠️ 중요: 최초 컨테이너 생성 후 필수 설정
 
