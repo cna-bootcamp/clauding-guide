@@ -1,0 +1,184 @@
+graph TB
+    %% Production Environment Physical Architecture
+    %% Enterprise-grade Azure Cloud Architecture
+    
+    Users[Mobile/Web Users<br/>1만~10만 명] --> CDN[Azure Front Door<br/>+ CDN]
+    
+    subgraph "Azure Cloud - Production Environment"
+        CDN --> AppGateway[Application Gateway<br/>+ WAF v2<br/>Zone Redundant]
+        
+        subgraph "VNet (10.0.0.0/16)"
+            subgraph "Gateway Subnet (10.0.4.0/24)"
+                AppGateway
+            end
+            
+            subgraph "Application Subnet (10.0.1.0/24)"
+                subgraph "AKS Premium Cluster - Multi-Zone"
+                    direction TB
+                    
+                    subgraph "System Node Pool"
+                        SystemNode1[System Node 1<br/>Zone 1<br/>D2s_v3]
+                        SystemNode2[System Node 2<br/>Zone 2<br/>D2s_v3]
+                        SystemNode3[System Node 3<br/>Zone 3<br/>D2s_v3]
+                    end
+                    
+                    subgraph "Application Node Pool"
+                        AppNode1[App Node 1<br/>Zone 1<br/>D4s_v3]
+                        AppNode2[App Node 2<br/>Zone 2<br/>D4s_v3]
+                        AppNode3[App Node 3<br/>Zone 3<br/>D4s_v3]
+                    end
+                    
+                    subgraph "Application Services"
+                        UserService[User Service<br/>3 replicas, HPA<br/>2-10 replicas]
+                        TripService[Trip Service<br/>3 replicas, HPA<br/>3-15 replicas]
+                        AIService[AI Service<br/>2 replicas, HPA<br/>2-8 replicas]
+                        LocationService[Location Service<br/>2 replicas, HPA<br/>2-10 replicas]
+                    end
+                end
+            end
+            
+            AppGateway -->|NodePort 30080-30083| UserService
+            AppGateway -->|NodePort 30080-30083| TripService  
+            AppGateway -->|NodePort 30080-30083| AIService
+            AppGateway -->|NodePort 30080-30083| LocationService
+            
+            subgraph "Database Subnet (10.0.2.0/24)"
+                PostgreSQLPrimary[Azure PostgreSQL<br/>Flexible Server<br/>Primary - Zone 1<br/>GP_Standard_D4s_v3]
+                PostgreSQLReplica[PostgreSQL<br/>Read Replica<br/>Zone 2]
+                PostgreSQLBackup[Automated Backup<br/>Point-in-time Recovery<br/>35 days retention]
+            end
+            
+            subgraph "Cache Subnet (10.0.3.0/24)"
+                RedisPrimary[Azure Redis Premium<br/>P2 - 6GB<br/>Primary - Zone 1]
+                RedisSecondary[Redis Secondary<br/>Zone 2<br/>HA Enabled]
+            end
+        end
+        
+        subgraph "Service Bus Premium"
+            ServiceBusPremium[Azure Service Bus<br/>Premium Tier<br/>sb-tripgen-prod]
+            
+            subgraph "Message Queues"
+                AIQueue[ai-schedule-generation<br/>Partitioned, 16GB]
+                LocationQueue[location-search<br/>Partitioned, 16GB]  
+                NotificationQueue[notification<br/>Partitioned, 16GB]
+            end
+        end
+        
+        subgraph "Private Endpoints"
+            PostgreSQLEndpoint[PostgreSQL<br/>Private Endpoint<br/>10.0.2.10]
+            RedisEndpoint[Redis<br/>Private Endpoint<br/>10.0.3.10]
+            ServiceBusEndpoint[Service Bus<br/>Private Endpoint<br/>10.0.5.10]
+            KeyVaultEndpoint[Key Vault<br/>Private Endpoint<br/>10.0.6.10]
+        end
+        
+        subgraph "Security & Management"
+            KeyVault[Azure Key Vault<br/>Premium<br/>HSM-backed]
+            AAD[Azure Active Directory<br/>RBAC Integration]
+            Monitor[Azure Monitor<br/>+ Application Insights<br/>Log Analytics]
+        end
+        
+        %% Private Link Connections
+        UserService -->|Private Link| PostgreSQLEndpoint
+        TripService -->|Private Link| PostgreSQLEndpoint
+        AIService -->|Private Link| PostgreSQLEndpoint
+        LocationService -->|Private Link| PostgreSQLEndpoint
+        
+        PostgreSQLEndpoint --> PostgreSQLPrimary
+        PostgreSQLEndpoint --> PostgreSQLReplica
+        
+        UserService -->|Private Link| RedisEndpoint
+        TripService -->|Private Link| RedisEndpoint
+        AIService -->|Private Link| RedisEndpoint
+        LocationService -->|Private Link| RedisEndpoint
+        
+        RedisEndpoint --> RedisPrimary
+        RedisEndpoint --> RedisSecondary
+        
+        AIService -->|Private Link| ServiceBusEndpoint
+        LocationService -->|Private Link| ServiceBusEndpoint
+        TripService -->|Private Link| ServiceBusEndpoint
+        
+        ServiceBusEndpoint --> ServiceBusPremium
+        ServiceBusPremium --> AIQueue
+        ServiceBusPremium --> LocationQueue
+        ServiceBusPremium --> NotificationQueue
+        
+        %% High Availability Connections
+        PostgreSQLPrimary -.->|Replication| PostgreSQLReplica
+        PostgreSQLPrimary -.->|Auto Backup| PostgreSQLBackup
+        RedisPrimary -.->|HA Sync| RedisSecondary
+        
+        %% Security Connections
+        UserService -.->|Managed Identity| KeyVaultEndpoint
+        TripService -.->|Managed Identity| KeyVaultEndpoint
+        AIService -.->|Managed Identity| KeyVaultEndpoint
+        LocationService -.->|Managed Identity| KeyVaultEndpoint
+        
+        KeyVaultEndpoint --> KeyVault
+        
+        UserService -.->|RBAC| AAD
+        TripService -.->|RBAC| AAD
+        AIService -.->|RBAC| AAD
+        LocationService -.->|RBAC| AAD
+        
+        %% Monitoring Connections
+        UserService -.->|Telemetry| Monitor
+        TripService -.->|Telemetry| Monitor
+        AIService -.->|Telemetry| Monitor
+        LocationService -.->|Telemetry| Monitor
+    end
+    
+    %% External Integrations
+    subgraph "External Services"
+        ExternalAPI[External APIs<br/>OpenAI GPT-4 Turbo<br/>Google Maps API<br/>OpenWeatherMap API]
+    end
+    
+    %% External Connections
+    ExternalAPI -->|HTTPS/TLS 1.3| AIService
+    ExternalAPI -->|HTTPS/TLS 1.3| LocationService
+    
+    %% DevOps & CI/CD
+    subgraph "DevOps Infrastructure"
+        GitHubActions[GitHub Actions<br/>Enterprise CI/CD]
+        ArgoCD[ArgoCD<br/>GitOps Deployment<br/>HA Mode]
+        ContainerRegistry[Azure Container Registry<br/>Premium Tier<br/>Geo-replicated]
+    end
+    
+    %% DevOps Connections
+    GitHubActions -->|Build & Push| ContainerRegistry
+    ArgoCD -->|Deploy| UserService
+    ArgoCD -->|Deploy| TripService
+    ArgoCD -->|Deploy| AIService
+    ArgoCD -->|Deploy| LocationService
+    
+    %% Backup & DR
+    subgraph "Backup & Disaster Recovery"
+        BackupVault[Azure Backup Vault<br/>GRS - 99.999999999%]
+        DRSite[DR Site<br/>Secondary Region<br/>Korea Central]
+    end
+    
+    PostgreSQLPrimary -.->|Automated Backup| BackupVault
+    RedisPrimary -.->|Data Persistence| BackupVault
+    ContainerRegistry -.->|Image Backup| BackupVault
+    BackupVault -.->|Geo-replication| DRSite
+    
+    %% Styling
+    classDef azureService fill:#0078d4,stroke:#333,stroke-width:2px,color:#fff
+    classDef microservice fill:#28a745,stroke:#333,stroke-width:2px,color:#fff
+    classDef database fill:#dc3545,stroke:#333,stroke-width:2px,color:#fff
+    classDef security fill:#ffc107,stroke:#333,stroke-width:2px,color:#333
+    classDef external fill:#17a2b8,stroke:#333,stroke-width:2px,color:#fff
+    classDef devops fill:#6f42c1,stroke:#333,stroke-width:2px,color:#fff
+    classDef backup fill:#e83e8c,stroke:#333,stroke-width:2px,color:#fff
+    classDef privateEndpoint fill:#fd7e14,stroke:#333,stroke-width:2px,color:#fff
+    classDef nodePool fill:#20c997,stroke:#333,stroke-width:2px,color:#fff
+    
+    class CDN,AppGateway,ServiceBusPremium,ContainerRegistry,Monitor,AAD azureService
+    class UserService,TripService,AIService,LocationService microservice
+    class PostgreSQLPrimary,PostgreSQLReplica,PostgreSQLBackup,RedisPrimary,RedisSecondary database
+    class KeyVault,KeyVaultEndpoint security
+    class Users,ExternalAPI external
+    class GitHubActions,ArgoCD devops
+    class BackupVault,DRSite backup
+    class PostgreSQLEndpoint,RedisEndpoint,ServiceBusEndpoint privateEndpoint
+    class SystemNode1,SystemNode2,SystemNode3,AppNode1,AppNode2,AppNode3 nodePool

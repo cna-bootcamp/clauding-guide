@@ -1,0 +1,138 @@
+graph TB
+    %% 개발환경 네트워크 다이어그램
+    %% AI 기반 여행 일정 생성 서비스 - 개발환경
+
+    %% 외부 영역
+    subgraph Internet["🌐 인터넷"]
+        Developer["👨‍💻 개발자"]
+        QATester["🧪 QA팀"]
+    end
+
+    %% Azure 클라우드 영역
+    subgraph AzureCloud["☁️ Azure Cloud"]
+        
+        %% Virtual Network
+        subgraph VNet["🏢 Virtual Network (VNet)<br/>주소 공간: 10.0.0.0/16"]
+            
+            %% AKS 서브넷
+            subgraph AKSSubnet["🎯 AKS Subnet<br/>10.0.1.0/24"]
+                
+                %% Kubernetes 클러스터
+                subgraph AKSCluster["⚙️ AKS Cluster"]
+                    
+                    %% Ingress Controller
+                    subgraph IngressController["🚪 NGINX Ingress Controller"]
+                        LoadBalancer["⚖️ LoadBalancer Service<br/>(External IP)"]
+                        IngressPod["📦 Ingress Controller Pod"]
+                    end
+                    
+                    %% Application Tier
+                    subgraph AppTier["🚀 Application Tier"]
+                        UserService["👤 User Service<br/>Pod"]
+                        TripService["🗺️ Trip Service<br/>Pod"]
+                        AIService["🤖 AI Service<br/>Pod"]
+                        LocationService["📍 Location Service<br/>Pod"]
+                    end
+                    
+                    %% Database Tier
+                    subgraph DBTier["🗄️ Database Tier"]
+                        PostgreSQL["🐘 PostgreSQL<br/>Pod"]
+                        PostgreSQLStorage["💾 hostPath Volume<br/>(/data/postgresql)"]
+                    end
+                    
+                    %% Cache Tier
+                    subgraph CacheTier["⚡ Cache Tier"]
+                        Redis["🔴 Redis<br/>Pod"]
+                    end
+                    
+                    %% Cluster Internal Services
+                    subgraph ClusterServices["🔗 ClusterIP Services"]
+                        UserServiceDNS["user-service:8080"]
+                        TripServiceDNS["trip-service:8080"]
+                        AIServiceDNS["ai-service:8080"]
+                        LocationServiceDNS["location-service:8080"]
+                        PostgreSQLDNS["postgresql:5432"]
+                        RedisDNS["redis:6379"]
+                    end
+                end
+            end
+            
+            %% Service Bus 서브넷
+            subgraph ServiceBusSubnet["📨 Service Bus Subnet<br/>10.0.2.0/24"]
+                ServiceBus["📮 Azure Service Bus<br/>(Basic Tier)"]
+                
+                subgraph Queues["📬 Message Queues"]
+                    AIQueue["🤖 ai-schedule-generation"]
+                    LocationQueue["📍 location-search"]
+                    NotificationQueue["🔔 notification"]
+                end
+            end
+        end
+    end
+
+    %% 네트워크 연결 관계
+
+    %% 외부에서 클러스터로의 접근
+    Developer -->|"HTTPS:443<br/>(개발용 도메인)"| LoadBalancer
+    QATester -->|"API 호출/테스트"| LoadBalancer
+
+    %% Ingress Controller 내부 흐름
+    LoadBalancer -->|"트래픽 라우팅"| IngressPod
+
+    %% Ingress에서 Application Services로
+    IngressPod -->|"/api/users/**"| UserServiceDNS
+    IngressPod -->|"/api/trips/**"| TripServiceDNS
+    IngressPod -->|"/api/ai/**"| AIServiceDNS
+    IngressPod -->|"/api/locations/**"| LocationServiceDNS
+
+    %% ClusterIP Services에서 실제 Pod로
+    UserServiceDNS -->|"내부 로드밸런싱"| UserService
+    TripServiceDNS -->|"내부 로드밸런싱"| TripService
+    AIServiceDNS -->|"내부 로드밸런싱"| AIService
+    LocationServiceDNS -->|"내부 로드밸런싱"| LocationService
+
+    %% Application Services에서 Database로
+    UserService -->|"DB 연결<br/>TCP:5432"| PostgreSQLDNS
+    TripService -->|"DB 연결<br/>TCP:5432"| PostgreSQLDNS
+    AIService -->|"DB 연결<br/>TCP:5432"| PostgreSQLDNS
+    LocationService -->|"DB 연결<br/>TCP:5432"| PostgreSQLDNS
+
+    %% Application Services에서 Cache로
+    UserService -->|"캐시 연결<br/>TCP:6379"| RedisDNS
+    TripService -->|"캐시 연결<br/>TCP:6379"| RedisDNS
+    AIService -->|"캐시 연결<br/>TCP:6379"| RedisDNS
+    LocationService -->|"캐시 연결<br/>TCP:6379"| RedisDNS
+
+    %% ClusterIP Services에서 실제 Pod로 (Database/Cache)
+    PostgreSQLDNS -->|"DB 요청 처리"| PostgreSQL
+    RedisDNS -->|"캐시 요청 처리"| Redis
+
+    %% Storage 연결
+    PostgreSQL -->|"데이터 영속화"| PostgreSQLStorage
+
+    %% Service Bus 연결
+    AIService -->|"비동기 메시징<br/>HTTPS/AMQP"| ServiceBus
+    LocationService -->|"비동기 메시징<br/>HTTPS/AMQP"| ServiceBus
+    TripService -->|"알림 메시징<br/>HTTPS/AMQP"| ServiceBus
+
+    ServiceBus --> AIQueue
+    ServiceBus --> LocationQueue
+    ServiceBus --> NotificationQueue
+
+    %% 스타일 정의
+    classDef azureStyle fill:#0078D4,stroke:#fff,stroke-width:2px,color:#fff
+    classDef k8sStyle fill:#326CE5,stroke:#fff,stroke-width:2px,color:#fff
+    classDef appStyle fill:#28A745,stroke:#fff,stroke-width:2px,color:#fff
+    classDef dbStyle fill:#DC3545,stroke:#fff,stroke-width:2px,color:#fff
+    classDef cacheStyle fill:#FF6B35,stroke:#fff,stroke-width:2px,color:#fff
+    classDef serviceStyle fill:#6610F2,stroke:#fff,stroke-width:2px,color:#fff
+    classDef queueStyle fill:#FD7E14,stroke:#fff,stroke-width:2px,color:#fff
+
+    %% 스타일 적용
+    class AzureCloud,VNet azureStyle
+    class AKSCluster,AKSSubnet,IngressController k8sStyle
+    class AppTier,UserService,TripService,AIService,LocationService appStyle
+    class DBTier,PostgreSQL,PostgreSQLStorage dbStyle
+    class CacheTier,Redis cacheStyle
+    class ClusterServices,UserServiceDNS,TripServiceDNS,AIServiceDNS,LocationServiceDNS,PostgreSQLDNS,RedisDNS serviceStyle
+    class ServiceBus,ServiceBusSubnet,Queues,AIQueue,LocationQueue,NotificationQueue queueStyle
