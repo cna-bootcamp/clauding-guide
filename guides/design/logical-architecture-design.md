@@ -57,7 +57,7 @@
 - 아키텍처패턴  
 
 [예시]
-- 논리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_논리아키텍처.mmd
+- 논리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-논리아키텍처.mmd
 
 [결과파일]
 - design/backend/logical/logical-architecture.md

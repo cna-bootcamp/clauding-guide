@@ -68,7 +68,7 @@
 - 프로토타입
 
 [예시]
-- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_시퀀스설계서(내부).puml
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-시퀀스설계서(내부).puml
 
 [결과파일]
 - design/backend/sequence/inner/{서비스명}-{시나리오}.puml

@@ -57,7 +57,7 @@
 - PlantUML문법검사가이드
 
 [예시]
-- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_클래스설계서.puml
+- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-클래스설계서.puml
   
 [결과파일]
 - 패키지 구조도: design/backend/class/package-structure.md

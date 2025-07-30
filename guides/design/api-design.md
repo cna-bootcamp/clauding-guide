@@ -103,8 +103,8 @@ design/backend/api/
 - OpenAPI 스펙: https://swagger.io/specification/
 
 [예시]
-- swagger api yaml: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_swagger_api.yaml
-- API설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample_API%20설계서.md
+- swagger api yaml: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-swagger-api.yaml
+- API설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-API%20설계서.md
 
 [결과파일]
 - 각 서비스별로 별도의 YAML 파일 생성 

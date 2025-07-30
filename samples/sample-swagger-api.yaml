@@ -1,0 +1,657 @@
+openapi: 3.0.3
+info:
+  title: User Service API
+  description: TripGen 사용자 인증 및 프로필 관리 서비스 API
+  version: 1.0.0
+  contact:
+    name: TripGen Team
+    email: support@tripgen.com
+
+servers:
+  - url: https://api.tripgen.com/v1/users
+    description: Production server
+  - url: https://dev-api.tripgen.com/v1/users
+    description: Development server
+  - url: https://virtserver.swaggerhub.com/TRIPGEN/user-service/1.0.0
+    description: SwaggerHub API Auto Mocking
+
+tags:
+  - name: Authentication
+    description: 사용자 인증 관련 API
+  - name: Profile
+    description: 사용자 프로필 관리 API
+
+paths:
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: 회원가입
+      description: 신규 사용자 회원가입 처리
+      operationId: registerUser
+      x-user-story: UFR-USER-010
+      x-controller: UserController
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            examples:
+              default:
+                $ref: '#/components/examples/RegisterRequestExample'
+      responses:
+        '201':
+          description: 회원가입 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+              examples:
+                default:
+                  $ref: '#/components/examples/RegisterResponseExample'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: 중복된 사용자 정보
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "DUPLICATE_USER"
+                message: "이미 사용중인 아이디입니다"
+
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: 로그인
+      description: 사용자 로그인 및 토큰 발급
+      operationId: loginUser
+      x-user-story: UFR-USER-020
+      x-controller: UserController
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            examples:
+              default:
+                $ref: '#/components/examples/LoginRequestExample'
+      responses:
+        '200':
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              examples:
+                default:
+                  $ref: '#/components/examples/LoginResponseExample'
+        '401':
+          description: 인증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "INVALID_CREDENTIALS"
+                message: "아이디 또는 비밀번호를 확인해주세요"
+        '423':
+          description: 계정 잠금
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "ACCOUNT_LOCKED"
+                message: "5회 연속 로그인 실패로 계정이 30분간 잠금되었습니다"
+
+  /logout:
+    post:
+      tags:
+        - Authentication
+      summary: 로그아웃
+      description: 사용자 로그아웃 처리
+      operationId: logoutUser
+      x-user-story: UFR-USER-040
+      x-controller: UserController
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 로그아웃 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "안전하게 로그아웃되었습니다"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: 프로필 조회
+      description: 현재 로그인한 사용자의 프로필 정보 조회
+      operationId: getProfile
+      x-user-story: UFR-USER-030
+      x-controller: UserController
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 프로필 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+              examples:
+                default:
+                  $ref: '#/components/examples/UserProfileExample'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    put:
+      tags:
+        - Profile
+      summary: 프로필 수정
+      description: 사용자 프로필 정보 수정
+      operationId: updateProfile
+      x-user-story: UFR-USER-030
+      x-controller: UserController
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+            examples:
+              default:
+                $ref: '#/components/examples/UpdateProfileRequestExample'
+      responses:
+        '200':
+          description: 프로필 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+              examples:
+                default:
+                  $ref: '#/components/examples/UserProfileExample'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /profile/avatar:
+    post:
+      tags:
+        - Profile
+      summary: 프로필 이미지 업로드
+      description: 사용자 프로필 이미지 업로드
+      operationId: uploadAvatar
+      x-user-story: UFR-USER-030
+      x-controller: UserController
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 프로필 이미지 파일 (최대 5MB, JPG/PNG)
+              required:
+                - file
+      responses:
+        '200':
+          description: 이미지 업로드 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatarUrl:
+                    type: string
+                    format: uri
+                    example: "https://cdn.tripgen.com/avatars/user123-12345.jpg"
+        '400':
+          description: 잘못된 파일 형식 또는 크기
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "INVALID_FILE"
+                message: "파일 크기는 5MB 이하여야 하며, JPG 또는 PNG 형식만 지원됩니다"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /profile/password:
+    put:
+      tags:
+        - Profile
+      summary: 비밀번호 변경
+      description: 사용자 비밀번호 변경
+      operationId: changePassword
+      x-user-story: UFR-USER-030
+      x-controller: UserController
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+            examples:
+              default:
+                $ref: '#/components/examples/ChangePasswordRequestExample'
+      responses:
+        '200':
+          description: 비밀번호 변경 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "비밀번호가 성공적으로 변경되었습니다"
+        '400':
+          description: 비밀번호 규칙 위반 또는 현재 비밀번호 불일치
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "INVALID_PASSWORD"
+                message: "현재 비밀번호가 일치하지 않습니다"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /check/username/{username}:
+    get:
+      tags:
+        - Authentication
+      summary: 아이디 중복 확인
+      description: 회원가입 시 아이디 중복 확인
+      operationId: checkUsername
+      x-user-story: UFR-USER-010
+      x-controller: UserController
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 5
+            pattern: '^[a-zA-Z0-9]+$'
+          example: "tripuser123"
+      responses:
+        '200':
+          description: 사용 가능 여부 확인
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available:
+                    type: boolean
+                    description: 사용 가능 여부
+                  message:
+                    type: string
+              examples:
+                available:
+                  value:
+                    available: true
+                    message: "사용 가능한 아이디입니다"
+                unavailable:
+                  value:
+                    available: false
+                    message: "이미 사용중인 아이디입니다"
+
+  /check/email/{email}:
+    get:
+      tags:
+        - Authentication
+      summary: 이메일 중복 확인
+      description: 회원가입 시 이메일 중복 확인
+      operationId: checkEmail
+      x-user-story: UFR-USER-010
+      x-controller: UserController
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+            format: email
+          example: "user@tripgen.com"
+      responses:
+        '200':
+          description: 사용 가능 여부 확인
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available:
+                    type: boolean
+                    description: 사용 가능 여부
+                  message:
+                    type: string
+              examples:
+                available:
+                  value:
+                    available: true
+                    message: "사용 가능한 이메일입니다"
+                unavailable:
+                  value:
+                    available: false
+                    message: "이미 사용중인 이메일입니다"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - name
+        - email
+        - phone
+        - username
+        - password
+        - passwordConfirm
+        - termsAccepted
+      properties:
+        name:
+          type: string
+          minLength: 2
+          description: 사용자 이름 (한글/영문)
+          example: "김여행"
+        email:
+          type: string
+          format: email
+          description: 이메일 주소
+          example: "kimtravel@tripgen.com"
+        phone:
+          type: string
+          pattern: '^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$'
+          description: 휴대폰 번호
+          example: "010-1234-5678"
+        username:
+          type: string
+          minLength: 5
+          pattern: '^[a-zA-Z0-9]+$'
+          description: 아이디 (5자 이상 영문/숫자)
+          example: "kimtravel123"
+        password:
+          type: string
+          minLength: 8
+          pattern: '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'
+          description: 비밀번호 (8자 이상, 영문/숫자/특수문자 포함)
+          example: "TripGen123!"
+        passwordConfirm:
+          type: string
+          description: 비밀번호 확인
+          example: "TripGen123!"
+        termsAccepted:
+          type: boolean
+          description: 이용약관 동의 여부
+          example: true
+
+    RegisterResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: 생성된 사용자 ID
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        username:
+          type: string
+          description: 사용자 아이디
+          example: "kimtravel123"
+        message:
+          type: string
+          description: 결과 메시지
+          example: "회원가입이 완료되었습니다"
+
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: 사용자 아이디
+          example: "kimtravel123"
+        password:
+          type: string
+          description: 비밀번호
+          example: "TripGen123!"
+        rememberMe:
+          type: boolean
+          description: 로그인 유지 여부
+          default: false
+          example: true
+
+    LoginResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: JWT 액세스 토큰
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        refreshToken:
+          type: string
+          description: JWT 리프레시 토큰
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        tokenType:
+          type: string
+          description: 토큰 타입
+          example: "Bearer"
+        expiresIn:
+          type: integer
+          description: 액세스 토큰 만료 시간 (초)
+          example: 3600
+        user:
+          $ref: '#/components/schemas/UserProfile'
+
+    UserProfile:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: 사용자 ID
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        username:
+          type: string
+          description: 사용자 아이디
+          example: "kimtravel123"
+        name:
+          type: string
+          description: 사용자 이름
+          example: "김여행"
+        email:
+          type: string
+          format: email
+          description: 이메일 주소
+          example: "kimtravel@tripgen.com"
+        phone:
+          type: string
+          description: 휴대폰 번호
+          example: "010-1234-5678"
+        avatarUrl:
+          type: string
+          format: uri
+          description: 프로필 이미지 URL
+          example: "https://cdn.tripgen.com/avatars/default.png"
+        createdAt:
+          type: string
+          format: date-time
+          description: 가입일시
+          example: "2025-07-27T10:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: 마지막 수정일시
+          example: "2025-07-27T10:00:00Z"
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          description: 사용자 이름
+          example: "김여행"
+        phone:
+          type: string
+          pattern: '^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$'
+          description: 휴대폰 번호
+          example: "010-9876-5432"
+        email:
+          type: string
+          format: email
+          description: 이메일 주소 (변경 시 재인증 필요)
+          example: "kimtravel.new@tripgen.com"
+
+    ChangePasswordRequest:
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+        - newPasswordConfirm
+      properties:
+        currentPassword:
+          type: string
+          description: 현재 비밀번호
+          example: "TripGen123!"
+        newPassword:
+          type: string
+          minLength: 8
+          pattern: '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'
+          description: 새 비밀번호
+          example: "NewTripGen456!"
+        newPasswordConfirm:
+          type: string
+          description: 새 비밀번호 확인
+          example: "NewTripGen456!"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: 에러 코드
+        message:
+          type: string
+          description: 에러 메시지
+        timestamp:
+          type: string
+          format: date-time
+          description: 에러 발생 시간
+
+  responses:
+    BadRequest:
+      description: 잘못된 요청
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "BAD_REQUEST"
+            message: "요청 데이터가 올바르지 않습니다"
+
+    Unauthorized:
+      description: 인증 실패
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "UNAUTHORIZED"
+            message: "인증이 필요합니다"
+
+  examples:
+    RegisterRequestExample:
+      value:
+        name: "김여행"
+        email: "kimtravel@tripgen.com"
+        phone: "010-1234-5678"
+        username: "kimtravel123"
+        password: "TripGen123!"
+        passwordConfirm: "TripGen123!"
+        termsAccepted: true
+
+    RegisterResponseExample:
+      value:
+        userId: "550e8400-e29b-41d4-a716-446655440000"
+        username: "kimtravel123"
+        message: "회원가입이 완료되었습니다"
+
+    LoginRequestExample:
+      value:
+        username: "kimtravel123"
+        password: "TripGen123!"
+        rememberMe: true
+
+    LoginResponseExample:
+      value:
+        accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAwMDAiLCJ1c2VybmFtZSI6ImtpbXRyYXZlbDEyMyIsImlhdCI6MTcyNzQyNjQwMCwiZXhwIjoxNzI3NDMwMDAwfQ.dGhpcyBpcyBhIHNhbXBsZSB0b2tlbg"
+        refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAwMDAiLCJpYXQiOjE3Mjc0MjY0MDAsImV4cCI6MTcyODAzMTIwMH0.dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4"
+        tokenType: "Bearer"
+        expiresIn: 3600
+        user:
+          userId: "550e8400-e29b-41d4-a716-446655440000"
+          username: "kimtravel123"
+          name: "김여행"
+          email: "kimtravel@tripgen.com"
+          phone: "010-1234-5678"
+          avatarUrl: "https://cdn.tripgen.com/avatars/default.png"
+          createdAt: "2025-07-27T10:00:00Z"
+          updatedAt: "2025-07-27T10:00:00Z"
+
+    UserProfileExample:
+      value:
+        userId: "550e8400-e29b-41d4-a716-446655440000"
+        username: "kimtravel123"
+        name: "김여행"
+        email: "kimtravel@tripgen.com"
+        phone: "010-1234-5678"
+        avatarUrl: "https://cdn.tripgen.com/avatars/user123-profile.jpg"
+        createdAt: "2025-07-27T10:00:00Z"
+        updatedAt: "2025-07-27T15:30:00Z"
+
+    UpdateProfileRequestExample:
+      value:
+        name: "김여행"
+        phone: "010-9876-5432"
+
+    ChangePasswordRequestExample:
+      value:
+        currentPassword: "TripGen123!"
+        newPassword: "NewTripGen456!"
+        newPasswordConfirm: "NewTripGen456!"

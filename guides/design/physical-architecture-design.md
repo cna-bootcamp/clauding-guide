@@ -211,13 +211,13 @@
 - HighLevel아키텍처정의서
 
 [예시]
-- 개발환경 물리아키텍처 설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/physical-architecture-dev.md
-- 운영환경 물리아키텍처 설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/physical-architecture-prod.md
-- 마스터 물리아키텍처 설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/physical-architecture.md
-- 개발환경 물리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/physical-architecture-dev.mmd
-- 운영환경 물리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/physical-architecture-prod.mmd
-- 개발환경 네트워크 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/network-dev.mmd 
-- 운영환경 네트워크 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/network-prod.mmd 
+- 개발환경 물리아키텍처 설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/sample-physical-architecture-dev.md
+- 운영환경 물리아키텍처 설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/sample-physical-architecture-prod.md
+- 마스터 물리아키텍처 설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/sample-physical-architecture.md
+- 개발환경 물리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/sample-physical-architecture-dev.mmd
+- 운영환경 물리아키텍처 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/sample-physical-architecture-prod.mmd
+- 개발환경 네트워크 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/sample-network-dev.mmd 
+- 운영환경 네트워크 다이어그램: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/physical/sample-network-prod.mmd 
 
 [결과파일]
 - design/backend/physical/physical-architecture.md
