@@ -27,7 +27,7 @@ curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$PATH"
 ```
 
-**2.Window**
+**2.Windows**
 ```
 powershell -c "irm bun.sh/install.ps1|iex"
 ```
@@ -209,7 +209,7 @@ Claude Desktop의 '설정' 메뉴에서 확인.
 }
 ```
 
-**MCP 설정 파일 예시(Window)**
+**MCP 설정 파일 예시(Windows)**
 
 ```json
 {
@@ -288,8 +288,8 @@ Claude Desktop의 '설정' 메뉴에서 확인.
 claude mcp add-from-claude-desktop -s user
 ```
 
-**Window**
-Claude Code를 실행하고 아래 프롬프트로 동기화 batch파일을 만들어 실행니다.  
+**Windows**
+claude Code를 실행하고 아래 프롬프트로 동기화 batch파일을 만들어 실행니다.  
 ```
 아래 가이드를 참조하여 Claude Code에 MCP 설정을 추가하는 방법을 가이드 해 주십시오.
 - 가이드: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/sync_mcp.md

@@ -12,7 +12,7 @@ curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$PATH"
 ```
 
-**2.Window**
+**2.Windows**
 ```
 powershell -c "irm bun.sh/install.ps1|iex"
 ```

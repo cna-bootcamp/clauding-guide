@@ -77,7 +77,7 @@ com.unicorn.lifesub.member
 
 Package명: 
 - com.{ORG}.{ROOT}.{SERVICE}.biz
-- com.{ORG}.{ROOT}.{SERVICE}.biz
+- com.{ORG}.{ROOT}.{SERVICE}.infra
 예) com.unicorn.lifesub.mysub.biz, com.unicorn.lifesub.common
 
 변수: 

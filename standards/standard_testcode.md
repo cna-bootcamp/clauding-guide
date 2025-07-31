@@ -173,6 +173,7 @@ Red-Green-Refactor는 TDD(Test-Driven Development)를 수행하는 핵심 사이
 - 단위테스트: com.company.order.test.unit
 - 통합테스트: com.company.order.test.integration
 - E2E테스트: com.company.order.test.e2e
+```
 
 - 클래스 네이밍
 ```
