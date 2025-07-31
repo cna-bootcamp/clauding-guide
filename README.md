@@ -185,7 +185,7 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 중간 중간 자주 '/clear'명령을 사용해 주세요. 이전 대화 기록을 삭제하므로 토큰 절약에 약간(?) 도움 됩니다.   
 - 프롬프트 로딩: 
   - 프롬프트 창에 '프롬프트 로딩'이라고 입력하여 기획, 설계, 개발, 배포 명령어를 로딩합니다. 이 작업은 한번반 수행하면 됩니다.
-  - 완료 후 '.claude/commands/think/help.md', '.claude/commands/design/help.md', '.claude/commands/build/help.md', '.claude/commands/deploy/help.md'를 보면 작업 순서와 각 작업의 명령어를 확인할 수 있습니다.      
+  - 완료 후 '@thnk-help', '@design-help', '@build-help', '@deploy-help'를 입력하면 작업 순서와 각 작업의 명령어를 확인할 수 있습니다.      
 - 가이드 갱신: 
   - [Claudeing Guide](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/GUIDE.md)의 '최종 수정일시'값과 CLAUDE.md의 '[가이드]'섹션 아래에 있는 '최종 수정일시'가 다르면 갱신이 필요 합니다.  
   - 프롬프트 창에 '가이드 로딩'이라고 입력하면 갱신됩니다.  
