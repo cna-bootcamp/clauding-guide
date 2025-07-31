@@ -73,7 +73,7 @@
 1. claude 디렉토리가 없으면 생성
 2. 가이드 목록을 claude/guide.md에 다운로드
 3. 가이드 목록 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/GUIDE.md
-4. 파일을 읽어 CLAUDE.md 제일 하단에 아래와 같이 가이드 섹션을 추가. 기존에 가이드 섹션이 있으면 내용만 변경함
+4. 파일을 읽어 CLAUDE.md 제일 하단에 아래와 같이 가이드 섹션을 추가. 기존에 가이드 섹션이 있으면 먼저 삭제하고 다시 만듦 
    [가이드]
    ```
    claude/guide.md 파일 내용 
