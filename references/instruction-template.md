@@ -36,17 +36,6 @@
 
 ---
 
-[Git 연동]
-- "pull" 명령어 입력 시 Git pull 명령을 수행하고 충돌이 있을 때 최신 파일로 병합 수행  
-- "push" 또는 "푸시" 명령어 입력 시 git add, commit, push를 수행 
-- Commit Message는 한글로 함
-
-[URL링크 참조]
-- URL링크는 WebFetch가 아닌 'curl {URL} > claude/{filename}'명령으로 저장
-- 'claude'디렉토리가 없으면 생성하고 다운로드   
-- 저장된 파일을 읽어 사용함
-- 작업을 완료한 후 다운로드한 파일은 삭제함 
-
 [핵심 원칙]
 1. 병렬 처리 전략
    - **서브 에이전트 활용**: Task 도구로 서비스별 동시 작업
@@ -68,6 +57,17 @@
    - **PlantUML 문법 검사 필수**: 'PlantUML문법검사가이드'를 준용
    - **Mermaid 문법 검사 필수**: 'Mermaid문법검사가이드'를 준용   
    - **OpenAPI 문법 검사 필수**
+
+[Git 연동]
+- "pull" 명령어 입력 시 Git pull 명령을 수행하고 충돌이 있을 때 최신 파일로 병합 수행  
+- "push" 또는 "푸시" 명령어 입력 시 git add, commit, push를 수행 
+- Commit Message는 한글로 함
+
+[URL링크 참조]
+- URL링크는 WebFetch가 아닌 'curl {URL} > claude/{filename}'명령으로 저장
+- 'claude'디렉토리가 없으면 생성하고 다운로드   
+- 저장된 파일을 읽어 사용함
+- 작업을 완료한 후 다운로드한 파일은 삭제함 
 
 [가이드 로딩]
 1. claude 디렉토리가 없으면 생성
