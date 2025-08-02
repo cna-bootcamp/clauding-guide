@@ -12,6 +12,7 @@
     - [Figma MCP 설치](#figma-mcp-설치)
     - [설치 확인](#설치-확인)
   - [Claude Code에 MCP 동기화](#claude-code에-mcp-동기화)
+  - [Claude Code에 직접 설치](#claude-code에-직접-설치)
   - [참고사항/Tip](#참고사항tip)
     - [공식 Git Repository](#공식-git-repository)
 
@@ -294,6 +295,19 @@ claude Code를 실행하고 아래 프롬프트로 동기화 batch파일을 만�
 아래 가이드를 참조하여 Claude Code에 MCP 설정을 추가하는 방법을 가이드 해 주십시오.
 - 가이드: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/sync_mcp.md
 ```
+
+## Claude Code에 직접 설치 
+claude mcp add 명령을 사용하여 직접 Claude Code에 MCP서버를 추가할 수 있습니다.  
+```
+claude mcp add {연결 옵션} -s user
+```
+
+사용예) 
+```
+claude mcp add --transport http smithery-ai-github "https://server.smithery.ai/@smithery-ai/github/mcp?api_key=6bf03d02-65a9-4a0d-ac05-6d4a5b0d4343&profile=motionless-flamingo-aj9dsM"
+```
+
+{사용자홈}/.claude.json 파일에 등록됩니다. 
 
 ---
 
