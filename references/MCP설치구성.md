@@ -33,7 +33,7 @@ MCP서버는 'http'를 통해 연결할 수도 있고 PC에 설치하여 연결�
 
 ## 사전작업
 **1.bun 설치:**   
-**1.Linux/Mac**
+**1.Linux/Mac**   
 ```bash
 curl -fsSL https://bun.sh/install | bash
 ```
@@ -42,7 +42,7 @@ curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$PATH"
 ```
 
-**2.Windows**
+**2.Windows**   
 Powershell에서 아래 수행  
 ```
 powershell -c "irm bun.sh/install.ps1|iex"
