@@ -57,6 +57,10 @@ https://support.anthropic.com/ko/articles/10065433-claude-desktop-%EC%84%A4%EC%B
 ---
 
 ## 주요 MCP 이해 및 준비 작업  
+아래 MCP는 모두 필요하므로 추가해야 합니다.  
+실제 추가 작업은 이후 수행하므로 각 MCP의 역할만 이해하십시오.   
+단, Magic과 GitHub의 준비 작업은 수행하십시오.   
+  
 - Context7 MCP: 최신 개발 방식 제공하여 코드의 최신성 향상   
 https://github.com/upstash/context7
 
