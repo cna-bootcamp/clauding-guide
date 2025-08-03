@@ -54,7 +54,7 @@ docker exec mermaid-cli sh -c "echo '{\"executablePath\": \"/usr/bin/chromium-br
 ## 문법 검사 방법
 현재 OS에 맞게 수행
 
-### Linux/macOS 버전
+### Linux/macOS/Windows GitBash 버전
 **스크립트 파일(tools/check-mermaid.sh)을 이용하여 수행**
 
 1. tools/check-mermaid.sh 파일 존재 여부 확인 

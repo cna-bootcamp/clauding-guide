@@ -33,19 +33,14 @@ MCP서버는 'http'를 통해 연결할 수도 있고 PC에 설치하여 연결�
 
 ## 사전작업
 **1.bun 설치:**   
-**1.Linux/Mac**   
+Linux/Mac사용자는 기본 터미널에서 수행하고, Window사용자는 Window Terminal의 Git Bash에서 수행합니다.   
+
 ```bash
 curl -fsSL https://bun.sh/install | bash
 ```
-설정 적용: Mac은 ~/.zshrc, Linux는 ~/.bashrc에 아래 설정 추가 
+설정 적용: Mac은 ~/.zshrc, Linux와 Window는 ~/.bashrc에 추가 
 ```
 export PATH="$HOME/.bun/bin:$PATH"
-```
-
-**2.Windows**   
-Powershell에서 아래 수행  
-```
-powershell -c "irm bun.sh/install.ps1|iex"
 ```
 
 **3.Claude Desktop 설치(옵션)**    
@@ -131,13 +126,12 @@ Claude Desktop의 MCP서버 설정은 OS별로 아래 파일에 설정 합니다
 MCP 설정 파일:  
 - **Linux**: "~/.config/Claude/claude_desktop_config.json"
 - **Mac**: "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
-- **Windows**: "$env:USERPROFILE\AppData\Roaming\Claude\claude_desktop_config.json"
+- **Windows**: "$HOME/AppData/Roaming/Claude/claude_desktop_config.json"
 
 **1.설정파일 열기**    
 위 파일을 code 명령으로 엽니다.  
-Window는 Powershell에서 수행합니다.  
 ```
-code "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+code "$HOME/AppData/Roaming/Claude/claude_desktop_config.json"
 ```
 참고) Claude Desktop에서 열기  
 Claude Desktop을 열고 설정 페이지를 엽니다.  

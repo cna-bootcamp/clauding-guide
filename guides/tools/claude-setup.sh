@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-# Claude YOLO Mode Setup for Linux & macOS
+# Claude YOLO Mode Setup for Windows Git Bash, Linux & macOS
 # Automatically configures Claude Code YOLO mode (assumes Claude is installed)
 # ============================================================================
 
@@ -16,8 +16,16 @@ GRAY='\033[0;37m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
-# Emoji support check
-if locale charmap 2>/dev/null | grep -qi utf; then
+# Windows Git Bash detection
+IS_WINDOWS_GIT_BASH=false
+if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ -n "$MSYSTEM" ]]; then
+    IS_WINDOWS_GIT_BASH=true
+fi
+
+# Emoji support check - Windows Git Bash generally supports emojis
+if [ "$IS_WINDOWS_GIT_BASH" = true ]; then
+    EMOJI_SUPPORT=true
+elif locale charmap 2>/dev/null | grep -qi utf; then
     EMOJI_SUPPORT=true
 else
     EMOJI_SUPPORT=false
@@ -57,12 +65,15 @@ print_step() {
     echo -e "${CYAN}$(emoji "🔧" "[STEP]") $1${NC}"
 }
 
-print_header "$(emoji "🚀" "") Claude YOLO Mode Setup for Unix Systems"
+print_header "$(emoji "🚀" "") Claude YOLO Mode Setup for Windows Git Bash/Unix Systems"
 echo
 
 # Detect operating system and shell
 detect_os() {
-    if [[ "$OSTYPE" == "darwin"* ]]; then
+    if [ "$IS_WINDOWS_GIT_BASH" = true ]; then
+        OS="windows"
+        print_info "Detected operating system: Windows (Git Bash)"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
         OS="macos"
         print_info "Detected operating system: macOS"
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -80,7 +91,10 @@ detect_shell() {
 
     case "$CURRENT_SHELL" in
         "bash")
-            if [ "$OS" = "macos" ]; then
+            if [ "$OS" = "windows" ]; then
+                # Windows Git Bash typically uses .bashrc
+                PROFILE_FILE="$HOME/.bashrc"
+            elif [ "$OS" = "macos" ]; then
                 PROFILE_FILE="$HOME/.bash_profile"
             else
                 PROFILE_FILE="$HOME/.bashrc"
@@ -97,7 +111,9 @@ detect_shell() {
             ;;
         *)
             print_warning "Unsupported shell: $CURRENT_SHELL, defaulting to bash"
-            if [ "$OS" = "macos" ]; then
+            if [ "$OS" = "windows" ]; then
+                PROFILE_FILE="$HOME/.bashrc"
+            elif [ "$OS" = "macos" ]; then
                 PROFILE_FILE="$HOME/.bash_profile"
             else
                 PROFILE_FILE="$HOME/.bashrc"
@@ -141,6 +157,37 @@ backup_profile() {
 # Find Claude executable
 find_claude_executable() {
     print_step "Searching for Claude executable..."
+
+    # Windows-specific paths for Git Bash
+    if [ "$IS_WINDOWS_GIT_BASH" = true ]; then
+        # Check Windows specific locations first
+        local windows_paths=(
+            "$HOME/.claude/local/claude"
+            "$HOME/.claude/local/claude.exe"
+            "$HOME/AppData/Roaming/npm/claude"
+            "$HOME/AppData/Roaming/npm/claude.cmd"
+            "/c/Program Files/nodejs/claude"
+            "/c/Program Files/nodejs/claude.cmd"
+            "/c/Program Files (x86)/nodejs/claude"
+            "/c/Program Files (x86)/nodejs/claude.cmd"
+        )
+        
+        for path in "${windows_paths[@]}"; do
+            if [ -f "$path" ]; then
+                # Convert Windows path to Unix path if needed
+                CLAUDE_PATH="$path"
+                print_success "Found Claude at: $CLAUDE_PATH"
+                return 0
+            fi
+        done
+        
+        # Check if claude.cmd exists in PATH (Windows npm global install)
+        if command -v claude.cmd >/dev/null 2>&1; then
+            CLAUDE_PATH="claude.cmd"
+            print_success "Found Claude in PATH: $CLAUDE_PATH"
+            return 0
+        fi
+    fi
 
     # First check if claude is in PATH
     if command -v claude >/dev/null 2>&1; then
@@ -306,6 +353,12 @@ claude-path() {
             file_size=\$(stat -f%z "\$CLAUDE_PATH" 2>/dev/null || echo "Unknown")
             local mod_time
             mod_time=\$(stat -f%Sm "\$CLAUDE_PATH" 2>/dev/null || echo "Unknown")
+        elif [ "$OS" = "windows" ]; then
+            # Windows Git Bash stat command
+            local file_size
+            file_size=\$(stat --format=%s "\$CLAUDE_PATH" 2>/dev/null || echo "Unknown")
+            local mod_time
+            mod_time=\$(stat --format=%y "\$CLAUDE_PATH" 2>/dev/null || echo "Unknown")
         else
             local file_size
             file_size=\$(stat -c%s "\$CLAUDE_PATH" 2>/dev/null || echo "Unknown")

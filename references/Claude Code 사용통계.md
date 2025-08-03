@@ -3,18 +3,14 @@ ccusage라는 유틸리티를 사용합니다.
 
 ## 사전 작업 
 ### bun 설치:
-**1.Linux/Mac**
+Linux/Mac사용자는 기본 터미널에서 수행하고, Window사용자는 Window Terminal의 Git Bash에서 수행합니다.   
+
 ```bash
 curl -fsSL https://bun.sh/install | bash
 ```
-설정 적용: Mac은 ~/.zshrc, Linux는 ~/.bashrc에 추가 
+설정 적용: Mac은 ~/.zshrc, Linux와 Window는 ~/.bashrc에 추가 
 ```
 export PATH="$HOME/.bun/bin:$PATH"
-```
-
-**2.Windows**
-```
-powershell -c "irm bun.sh/install.ps1|iex"
 ```
 
 ## 일별/월별 사용량 보기  
