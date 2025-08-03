@@ -1,0 +1,69 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@smithery-ai/github",
+        "--key",
+        "6bf03d02-65a9-4a0d-ac05-6d4a5b0d4343",
+        "--profile",
+        "motionless-flamingo-aj9dsM"
+      ]
+    },
+    "figma-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "cursor-talk-to-figma-mcp@latest",
+        "--server=vps.sonnylab.com"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "magic": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@21st-dev/magic@latest"
+      ],
+      "env": {
+        "API_KEY": "5ec762189bd67fb2e4b3d3832cc35b80d4ff067418a6f0c872a3724d1283ab43"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+    "mcp-kakao-local": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@yunkee-lee/mcp-kakao-local",
+        "--key",
+        "6bf03d02-65a9-4a0d-ac05-6d4a5b0d4343",
+        "--profile",
+        "motionless-flamingo-aj9dsM"
+      ]
+    }
+  }
+}

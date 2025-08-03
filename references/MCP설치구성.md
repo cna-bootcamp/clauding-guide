@@ -1,40 +1,49 @@
 # MCP 설치 및 구성 방법 
 
-- [MCP 설치 및 구성 방법](#mcp-설치-및-구성-방법)
-  - [사전작업](#사전작업)
-    - [bun 설치:](#bun-설치)
-  - [주요 MCP 설치](#주요-mcp-설치)
-    - [Context7 MCP](#context7-mcp)
-    - [Sequential Thinking MCP](#sequential-thinking-mcp)
-    - [Magic MCP](#magic-mcp)
-    - [Playwright MCP](#playwright-mcp)
-    - [GitHub MCP 설치](#github-mcp-설치)
-    - [Figma MCP 설치](#figma-mcp-설치)
-    - [설치 확인](#설치-확인)
-  - [Claude Code에 MCP 동기화](#claude-code에-mcp-동기화)
-  - [Claude Code에 직접 설치](#claude-code에-직접-설치)
-  - [참고사항/Tip](#참고사항tip)
-    - [공식 Git Repository](#공식-git-repository)
+## Overview
+MCP(Model Context Protocol)는 AI와 외부 서비스(예: Goole Drive, Kakao Map 등)가 통신하기 위한 표준입니다.  
+Claude의 개발사인 Anthropic에서 제안하여 업계 표준이 되었습니다.   
+Claude Code와 같은 AI툴들이 외부서비스와 연동하려면 외부서비스가 가이드하는 방법대로 MCP 서버 연결 설정을 해야 합니다.  
+MCP서버는 'http'를 통해 연결할 수도 있고 PC에 설치하여 연결할 수도 있습니다.   
+이 가이드에서는 아래와 같은 내용을 가이드 합니다. 
+- Claude Code에 주요 MCP서버 연결  
+- Claude Desktop에 주요 MCP서버 연결 
+- Claude에 주요 MCP 서버 연결   
+- MCP포탈 이용 방법 
 
 ---
+
 ## 사전작업
-### bun 설치:
+**1.bun 설치:**   
 **1.Linux/Mac**
 ```bash
 curl -fsSL https://bun.sh/install | bash
 ```
-설정 적용: Mac은 ~/.zshrc, Linux는 ~/.bashrc에 추가 
+설정 적용: Mac은 ~/.zshrc, Linux는 ~/.bashrc에 아래 설정 추가 
 ```
 export PATH="$HOME/.bun/bin:$PATH"
 ```
 
 **2.Windows**
+Powershell에서 아래 수행  
 ```
 powershell -c "irm bun.sh/install.ps1|iex"
 ```
 
-참고) MCP 설정 파일
+**2.Claude Desktop 설치**    
+Claude Desktop에 MCP를 연결하려면 아래 사이트에서 Claude Desktop을 먼저 설치해야 합니다.   
+Claude Desktop은 온라인 Claude와 동일한 기능을 로컬에서 사용하기 위한 로컬 Claude툴입니다.  
+이 툴을 설치하면 온라인에서 할 수 없었던 로컬 파일 접근 이나 수정 작업도 할 수 있습니다.  
+https://support.anthropic.com/ko/articles/10065433-claude-desktop-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
 
+---
+
+## Claude Code에 주요 MCP서버 연결 
+
+### 주요 MCP 설치  
+
+
+MCP 설정 파일  
 - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 - **Mac**: `/Users/{user}/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `{user home}\AppData\Roaming\Claude\claude_desktop_config.json`
