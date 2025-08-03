@@ -162,8 +162,7 @@ find_claude_executable() {
     if [ "$IS_WINDOWS_GIT_BASH" = true ]; then
         # Check Windows specific locations first
         local windows_paths=(
-            "$HOME/.claude/local/claude"
-            "$HOME/.claude/local/claude.exe"
+            "$HOME/.npm-global/claude"
             "$HOME/AppData/Roaming/npm/claude"
             "$HOME/AppData/Roaming/npm/claude.cmd"
             "/c/Program Files/nodejs/claude"

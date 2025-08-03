@@ -55,6 +55,7 @@ Write-Host "`nSearching for Claude executable..." -ForegroundColor Cyan
 # Function to find Claude executable
 function Find-ClaudeExecutable {
     $searchPaths = @(
+        "$env:USERPROFILE\.npm-global",
         "$env:APPDATA\npm",
         "$env:PROGRAMFILES\nodejs",
         "$env:PROGRAMFILES\nodejs\node_modules\.bin",
