@@ -7,7 +7,7 @@
   - [Claude Code에 주요 MCP서버 연결](#claude-code에-주요-mcp서버-연결)
     - [주요 MCP 연결](#주요-mcp-연결)
     - [확인](#확인)
-  - [Claude Desktop에 주요 MCP서버 연결](#claude-desktop에-주요-mcp서버-연결)
+  - [Claude Desktop에 주요 MCP서버 연결(옵션)](#claude-desktop에-주요-mcp서버-연결옵션)
   - [MCP포탈 이용 방법](#mcp포탈-이용-방법)
     - [GitHub MCP 설치](#github-mcp-설치)
     - [Google Map (옵션)](#google-map-옵션)
@@ -126,7 +126,7 @@ claude mcp list
 
 ---
 
-## Claude Desktop에 주요 MCP서버 연결 
+## Claude Desktop에 주요 MCP서버 연결(옵션)  
 Claude Desktop의 MCP서버 설정은 OS별로 아래 파일에 설정 합니다.  
 MCP 설정 파일:  
 - **Linux**: "~/.config/Claude/claude_desktop_config.json"
