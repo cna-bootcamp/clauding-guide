@@ -20,7 +20,8 @@ docker logs plantuml
 ```
 
 ## 문법 검사 방법
-현재 OS에 맞게 수행 
+현재 OS에 맞게 수행.
+단, Windows는 Claude Code가 실행된 터미널의 종류를 찾아 GitBash와 Powershell일 때 다르게 처리합니다.   
 
 ### Linux/macOS/Windows GitBash 버전
 
