@@ -57,20 +57,20 @@ https://support.anthropic.com/ko/articles/10065433-claude-desktop-%EC%84%A4%EC%B
 ---
 
 ## 주요 MCP 이해 및 준비 작업  
-- Context7 MCP: 최신 개발 방식 제공하여 코드의 최신성 향상 
+- Context7 MCP: 최신 개발 방식 제공하여 코드의 최신성 향상   
 https://github.com/upstash/context7
 
-- Sequential Thinking MCP: AI가 논리적 작업 순서를 설계하도록 지원  
+- Sequential Thinking MCP: AI가 논리적 작업 순서를 설계하도록 지원    
 https://mcp.so/server/sequentialthinking/modelcontextprotocol
 
-- Magic MCP: UI 디자인을 지원 
+- Magic MCP: UI 디자인을 지원   
   - https://github.com/21st-dev/magic-mcp
   - API Key 생성 필요: https://21st.dev/magic/console 에서 'Setup Magic MCP' 버튼 클릭
 
-- Playwright MCP: UI테스트를 지원. 웹브라우저를 실행하여 스스로 테스트나 분석을 수행할 수 있음. 
+- Playwright MCP: UI테스트를 지원. 웹브라우저를 실행하여 스스로 테스트나 분석을 수행할 수 있음.   
 https://github.com/microsoft/playwright-mcp
 
-- GitHub MCP: GitHub Repository 연동 
+- GitHub MCP: GitHub Repository 연동     
   - **※ 접근할 Organization에 'Smithery AI'를 추가해야 함**
   - https://smithery.ai/ 접근하여 회원가입 후 로그인  
   - 우측 상단의 '[Deploy Server]' 클릭 후 GitHub 로그인
@@ -78,7 +78,7 @@ https://github.com/microsoft/playwright-mcp
   - 'Add Github Account' 선택하여 접근할 Organization 추가
     ![](images/2025-08-03-09-27-54.png)  
 
-- Figma MCP: UI/UX 설계 툴인 Figma 연동 
+- Figma MCP: UI/UX 설계 툴인 Figma 연동   
 
 
 ---
