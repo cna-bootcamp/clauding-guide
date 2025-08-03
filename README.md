@@ -27,24 +27,7 @@
 ## 사전준비 
 - [Claude Code와 SuperClaude 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/01.install-claude-code.md)
 - [Claude Code 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/02.setup-claude-code.md)
-- Claude Instruction 생성. 
-  - YOLO모드 전환: YOLO모드는 사용자에게 중간 중간 확인받지 않고 Claude Code가 바로 수행하는 옵션입니다.   
-    ```
-    claude-yolo
-    ```
-    'claude-normal'이나 'claude-safe'로 다른 모드로 전환할 수 있습니다.  
-    'claude-help'로 다른 명령을 볼 수 있습니다.   
-
-  - 프로젝트 디렉토리로 이동하여 claude 또는 cy 명령으로 Claude Code 실행 
-  - [프로젝트 설정 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)를 참조하여 수행  
-  - Project 루트 디렉토리에 CLAUDE.md 생성 확인  
-  - Claude Code를 종료하고 다시 시작 
-    ```
-    /exit 
-    ```
-    ```
-    cy 또는 claude 
-    ```
+- [프로젝트 Instruction 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)
 
 **Tip) IDE 통합 안될 때**: 
 작업관리자에서 Claude 프로세스 모두 종료하고 다시 시도 합니다.   
@@ -56,6 +39,8 @@
 ---
 
 ## 사전지식  
+CLAUDE.md파일의 설정에 대한 주요 사전지식입니다.   
+
 ### 역할과 작업 약어 이해 
 SuperClaude 명령어와 파라미터가 복잡하기 때문에 기획, 설계, 개발, 배포에서 사용하는 작업들을   
 약어로 만들어서 CLAUDE.md에 만들었습니다.    
