@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "TalkToFigma": {
+    "figma-mcp": {
       "command": "bunx",
       "args": [
         "cursor-talk-to-figma-mcp@latest",
@@ -43,21 +43,6 @@
         "/c",
         "npx",
         "@playwright/mcp@latest"
-      ]
-    },
-    "mcp-kakao-local": {
-      "command": "cmd",
-      "args": [
-        "/c",
-        "npx",
-        "-y",
-        "@smithery/cli@latest",
-        "run",
-        "@yunkee-lee/mcp-kakao-local",
-        "--key",
-        "6bf03d02-65a9-4a0d-ac05-6d4a5b0d4343",
-        "--profile",
-        "motionless-flamingo-aj9dsM"
       ]
     }
   }

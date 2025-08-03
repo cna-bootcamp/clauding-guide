@@ -1,18 +1,5 @@
 {
   "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@smithery/cli@latest",
-        "run",
-        "@smithery-ai/github",
-        "--key",
-        "6bf03d02-65a9-4a0d-ac05-6d4a5b0d4343",
-        "--profile",
-        "motionless-flamingo-aj9dsM"
-      ]
-    },
     "figma-mcp": {
       "command": "npx",
       "args": [
@@ -50,19 +37,6 @@
       "args": [
         "-y",
         "@playwright/mcp@latest"
-      ]
-    },
-    "mcp-kakao-local": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@smithery/cli@latest",
-        "run",
-        "@yunkee-lee/mcp-kakao-local",
-        "--key",
-        "6bf03d02-65a9-4a0d-ac05-6d4a5b0d4343",
-        "--profile",
-        "motionless-flamingo-aj9dsM"
       ]
     }
   }
