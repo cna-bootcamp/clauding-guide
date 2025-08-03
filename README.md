@@ -25,7 +25,7 @@
 **경고) 이 가이드는 토큰을 매우 많이 사용합니다. Max Plan(최소 5배 Plan)으로 업그레이드 할 것을 권고합니다.**
 
 ## 사전준비 
-- [기본 프로그램 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md)
+- [기본 프로그램 설치(1)](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md)
 - [Claude Code와 SuperClaude 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/01.install-claude-code.md)
 - [Claude Code 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/02.setup-claude-code.md)
 - [프로젝트 Instruction 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)
@@ -172,6 +172,11 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 - [유저스토리 작성하기](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/02.think-prompt.md) 
   
 ### 설계하기 
+**1.사전 설치**   
+설계하기 부터는 추가로 아래 링크의 프로그램들을 설치하고 시작 하십시오.     
+[기본 프로그램 설치(2)](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare2.md)
+
+**2.설계 프롬프트**   
 [설계 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/03.design-prompt.md)
 
 ### 개발하기
