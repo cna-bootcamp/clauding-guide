@@ -21,9 +21,8 @@ docker logs plantuml
 
 ## 문법 검사 방법
 현재 OS에 맞게 수행.
-단, Windows는 Claude Code가 실행된 터미널의 종류를 찾아 GitBash와 Powershell일 때 다르게 처리합니다.   
 
-### Linux/macOS/Windows GitBash 버전
+### Linux/macOS 버전
 
 1. tools/check-plantuml.sh 파일 존재 여부 확인 
 2. 스크립트 파일이 없으면 "PlantUML문법검사기(Linux/Mac)"를 tools/check-plantuml.sh 파일로 다운로드하여 스크립트 파일을 만듦
