@@ -29,13 +29,6 @@
 - [Claude Code 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/02.setup-claude-code.md)
 - [프로젝트 Instruction 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)
 
-**Tip) IDE 통합 안될 때**: 
-작업관리자에서 Claude 프로세스 모두 종료하고 다시 시도 합니다.   
-![](references/images/2025-07-27-08-52-18.png)   
-  
-가끔 오래 쓰다보면 IDE와의 연결이 끊깁니다. 
-이땐 모든 IDE를 종료하고 다시 시작하면 해결됩니다.  
-
 ---
 
 ## 사전지식  
