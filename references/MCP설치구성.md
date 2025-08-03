@@ -48,7 +48,7 @@ Powershell에서 아래 수행
 powershell -c "irm bun.sh/install.ps1|iex"
 ```
 
-**2.Claude Desktop 설치**    
+**3.Claude Desktop 설치(옵션)**    
 Claude Desktop에 MCP를 연결하려면 아래 사이트에서 Claude Desktop을 먼저 설치해야 합니다.   
 Claude Desktop은 온라인 Claude와 동일한 기능을 로컬에서 사용하기 위한 로컬 Claude툴입니다.  
 이 툴을 설치하면 온라인에서 할 수 없었던 로컬 파일 접근 이나 수정 작업도 할 수 있습니다.  
