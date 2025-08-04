@@ -217,9 +217,9 @@
 - 데이터베이스설치계획서 
   - build/database/plan/db-plan-{service-name}-dev.md
   - build/database/plan/db-plan-{service-name}-prod.md
-- 캐시설치계획서
-  - build/database/plan/cache-plan-{service-name}-dev.md
-  - build/database/plan/cache-plan-{service-name}-prod.md
+- 캐시설치계획서: 
+  - build/mq/mq-plan-dev.md
+  - build/mq/mq-plan-prod.md
 - MQ설치계획서 
   - build/database/plan/mq-plan-{service-name}-dev.md
   - build/database/plan/mq-plan-{service-name}-prod.md
@@ -230,8 +230,8 @@
   - build/database/exec/mq-exec-{service-name}-dev.md
   - build/database/exec/mq-exec-{service-name}-prod.md
 - MQ설치결과서 
-  - build/database/exec/mq-exec-{service-name}-dev.md
-  - build/database/exec/mq-exec-{service-name}-prod.md
+  - build/mq/mq-exec-dev.md
+  - build/mq/mq-exec-prod.md
 
 ## 프롬프트 약어 
 ## 역할 약어 
