@@ -108,10 +108,10 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/mq-install.md
   - 파일명: mq-install.md
 
-- 백엔드코딩가이드
+- 백엔드개발가이드
   - 설명: 백엔드 개발 가이드 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/coding-backend.md
-  - 파일명: coding-backend.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/dev-backend.md
+  - 파일명: dev-backend.md
 
 ---
 
