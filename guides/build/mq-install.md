@@ -12,6 +12,6 @@
 - MQ설치계획서
 
 [결과파일]
-- build/database/exec/cache-exec-{service-name}-{설치대상환경}.md
+- build/mq/exec/cache-exec-{service-name}-{설치대상환경}.md
 - {service-name}은 영어로 작성  
 - {설치대상환경}은 dev 또는 prod로 함
