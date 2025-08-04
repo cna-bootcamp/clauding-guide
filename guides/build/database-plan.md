@@ -14,6 +14,8 @@
 - 그 외 데이터베이스 설치에 필요한 항목은 '물리아키텍처'와 일치해야 함  
 - "백킹서비스설치방법"을 참조하여 작성  
 - Kubernetes에 배포 시에는 Workload Controller 유형을 'StatefulSet'으로 함   
+- 설치 대상 클라우드 플랫폼은 이미 로그인되어 있고 Kubernetes도 연결되어 있음  
+- Kubernetes에 배포 시에는 기본 StorageClass를 찾아 기술  
 <작성순서>
 - 준비:
   - 물리아키텍처, 데이터설계서, 백킹서비스설치방법 분석 및 이해 
