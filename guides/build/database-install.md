@@ -20,8 +20,8 @@
   - '<병렬처리>'가이드대로 병렬 수행 
   - 각 서비스별로 데이터베이스와 캐시DB 설치 가이드 작성 
   - 결과: 
-    - {service-name}-db.md
-    - {service-name}-cache.md
+    - db-{service-name}-{설치대상환경}.md
+    - cache-{service-name}-{설치대상환경}.md
 - 검토:
   - <작성원칙> 준수 검토
   - 스쿼드 팀원 리뷰: 누락 및 개선 사항 검토
@@ -38,6 +38,7 @@
 - 데이터설계서
 
 [결과파일]
-- build/database/{service-name}-db.md
-- build/database/{service-name}-cache.md
+- build/database/db-{service-name}-{설치대상환경}.md
+- build/database/cache-{service-name}-{설치대상환경}.md
 - {service-name}은 영어로 작성  
+- {설치대상환경}은 dev 또는 prod로 함
