@@ -90,7 +90,7 @@
 
 - 데이터베이스설치가이드
   - 설명: 데이터베이스 설치 방법 안내 요청 시 참조 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/build/database-install.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/database-install.md
   - 파일명: database-install.md
 
 - MessageQueue설치가이드
