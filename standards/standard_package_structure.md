@@ -59,14 +59,14 @@ com.unicorn.lifesub.member
 
 클린 아키텍처 패키지 구조 
 
-├── {SERVICE}-biz
+├── biz
 │   ├── usecase
 │   │   ├── in
 │   │   ├── out
 │   ├── service
 │   └── domain
 │   └── dto
-├── {SERVICE}-infra
+├── infra
 │   ├── controller
 │   ├── dto
 │   ├── gateway
