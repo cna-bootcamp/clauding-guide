@@ -261,8 +261,8 @@
 - "@backing-service": /sc:implement @devops @back --think-hard  @complex-flag
 - "@dev-backend": /sc:implement @back --think-hard @complex-flag
 - "@dev-front": /sc:implement @front --think-hard @complex-flag
-- "@dev-testcode": /sc:test @back @qa --think @complex-flag
-- "@test-front": /sc:test @qa @front --play --think @complex-flag
+- "@test-backend": /sc:test @back @qa --think @complex-flag
+- "@test-front": /sc:test @front @qa --play --think @complex-flag
 - "@cicd": /sc:implement @devops @archi @back --think @complex-flag
 - "@document": /sc:document --think @scribe @complex-flag
 - "@fix": /sc:troubleshoot --think --seq 
