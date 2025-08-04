@@ -113,6 +113,11 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/dev-backend.md
   - 파일명: dev-backend.md
 
+- 백엔드테스트가이드 
+  - 설명: 백엔드 E2E테스트 코드 작성 및 테스트 가이드 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/test-backend.md
+  - 파일명: test-backend.md
+  
 ---
 
 ## 참조 문서
@@ -238,6 +243,7 @@
   - develop/mq/mq-exec-dev.md
   - develop/mq/mq-exec-prod.md
 - 백엔드개발결과서: develop/dev/dev-backend.md
+- 백엔드테스트결과서: develop/dev/test-backend.md
 
 ## 프롬프트 약어 
 ## 역할 약어 
