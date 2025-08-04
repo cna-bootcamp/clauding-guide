@@ -24,7 +24,7 @@
     - '테스트코드표준'을 준용하여 각 API별 E2E테스트 코드 작성하여 테스트  
     - 백킹서비스는 설치된 서비스를 로컬에서 연결하여 수행 
     - Kubernetes에 배포된 백킹서비스는 port forward하여 연결  
-  - 개발 결과 설명: code-backend.md
+  - 개발 결과 설명: dev-backend.md
 - 검토:
   - <작성원칙> 준수 검토
   - 스쿼드 팀원 리뷰: 누락 및 개선 사항 검토
@@ -49,4 +49,4 @@
 - 테스트코드표준
   
 [결과파일]
-- build/code/code-backend.md
+- build/dev/dev-backend.md
