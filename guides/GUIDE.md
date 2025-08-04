@@ -237,6 +237,7 @@
 - MQ설치결과서 
   - build/mq/mq-exec-dev.md
   - build/mq/mq-exec-prod.md
+- 백엔드개발결과서: build/dev/dev-backend.md
 
 ## 프롬프트 약어 
 ## 역할 약어 
