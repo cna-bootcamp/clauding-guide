@@ -47,4 +47,4 @@
 - 테스트코드표준
   
 [결과파일]
-- build/dev/dev-backend.md
+- develop/dev/dev-backend.md

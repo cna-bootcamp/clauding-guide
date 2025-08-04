@@ -90,27 +90,27 @@
 
 - 데이터베이스설치계획서가이드
   - 설명: 데이터베이스 설치 방법 안내 요청 시 참조 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/database-plan.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/database-plan.md
   - 파일명: database-plan.md
 
 - 데이터베이스설치가이드
   - 설명: 데이터베이스 설치 방법 안내 요청 시 참조 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/database-install.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/database-install.md
   - 파일명: database-install.md
 
 - MQ설치게획서가이드
   - 설명: Message Queue  설치 방법 안내 요청 시 참조 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/mq-plan.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/mq-plan.md
   - 파일명: mq-plan.md
 
 - MQ설치가이드
   - 설명: Message Queue  설치 방법 안내 요청 시 참조 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/mq-install.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/mq-install.md
   - 파일명: mq-install.md
 
 - 백엔드개발가이드
   - 설명: 백엔드 개발 가이드 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/dev-backend.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/dev-backend.md
   - 파일명: dev-backend.md
 
 ---
@@ -220,24 +220,24 @@
 - HighLevel아키텍처정의서: design/high-level-architecture.md
 - 물리아키텍처: design/backend/physical/*
 - 데이터베이스설치계획서 
-  - build/database/plan/db-plan-{service-name}-dev.md
-  - build/database/plan/db-plan-{service-name}-prod.md
+  - develop/database/plan/db-plan-{service-name}-dev.md
+  - develop/database/plan/db-plan-{service-name}-prod.md
 - 캐시설치계획서: 
-  - build/mq/mq-plan-dev.md
-  - build/mq/mq-plan-prod.md
+  - develop/mq/mq-plan-dev.md
+  - develop/mq/mq-plan-prod.md
 - MQ설치계획서 
-  - build/database/plan/mq-plan-{service-name}-dev.md
-  - build/database/plan/mq-plan-{service-name}-prod.md
+  - develop/database/plan/mq-plan-{service-name}-dev.md
+  - develop/database/plan/mq-plan-{service-name}-prod.md
 - 데이터베이스설치결과서
-  - build/database/exec/db-exec-dev.md
-  - build/database/exec/db-exec-prod.md
+  - develop/database/exec/db-exec-dev.md
+  - develop/database/exec/db-exec-prod.md
 - 캐시설치결과서 
-  - build/database/exec/cache-exec-{service-name}-dev.md
-  - build/database/exec/cache-exec-{service-name}-prod.md
+  - develop/database/exec/cache-exec-{service-name}-dev.md
+  - develop/database/exec/cache-exec-{service-name}-prod.md
 - MQ설치결과서 
-  - build/mq/mq-exec-dev.md
-  - build/mq/mq-exec-prod.md
-- 백엔드개발결과서: build/dev/dev-backend.md
+  - develop/mq/mq-exec-dev.md
+  - develop/mq/mq-exec-prod.md
+- 백엔드개발결과서: develop/dev/dev-backend.md
 
 ## 프롬프트 약어 
 ## 역할 약어 

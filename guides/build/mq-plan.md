@@ -33,7 +33,7 @@
 - 백킹서비스설치방법
 
 [결과파일]
-- build/mq/mq-plan-{설치대상환경}.md
+- develop/mq/mq-plan-{설치대상환경}.md
 - {service-name}은 영어로 작성  
 - {설치대상환경}은 dev 또는 prod로 함
 
