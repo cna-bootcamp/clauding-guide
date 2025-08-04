@@ -204,6 +204,15 @@
 - 데이터설계서: design/backend/database/*
 - HighLevel아키텍처정의서: design/high-level-architecture.md
 - 물리아키텍처: design/backend/physical/*
+- 데이터베이스설치계획서 
+  - build/database/db-{service-name}-dev.md
+  - build/database/db-{service-name}-prod.md
+- 캐시설치계획서
+  - build/database/cache-{service-name}-dev.md
+  - build/database/cache-{service-name}-prod.md
+- MQ설치계획서 
+  - build/database/mq-{service-name}-dev.md
+  - build/database/mq-{service-name}-prod.md
 
 ## 프롬프트 약어 
 ## 역할 약어 
