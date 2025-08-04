@@ -88,12 +88,22 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/04.build-prompt.md 
   - 파일명: build-prompt.md
 
+- 데이터베이스설치계획서가이드
+  - 설명: 데이터베이스 설치 방법 안내 요청 시 참조 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/database-plan.md
+  - 파일명: database-plan.md
+
 - 데이터베이스설치가이드
   - 설명: 데이터베이스 설치 방법 안내 요청 시 참조 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/database-install.md
   - 파일명: database-install.md
 
-- MessageQueue설치가이드
+- MQ설치게획서가이드
+  - 설명: Message Queue  설치 방법 안내 요청 시 참조 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/mq-plan.md
+  - 파일명: mq-plan.md
+
+- MQ설치가이드
   - 설명: Message Queue  설치 방법 안내 요청 시 참조 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/build/mq-install.md
   - 파일명: mq-install.md
@@ -205,14 +215,23 @@
 - HighLevel아키텍처정의서: design/high-level-architecture.md
 - 물리아키텍처: design/backend/physical/*
 - 데이터베이스설치계획서 
-  - build/database/db-{service-name}-dev.md
-  - build/database/db-{service-name}-prod.md
+  - build/database/plan/db-plan-{service-name}-dev.md
+  - build/database/plan/db-plan-{service-name}-prod.md
 - 캐시설치계획서
-  - build/database/cache-{service-name}-dev.md
-  - build/database/cache-{service-name}-prod.md
+  - build/database/plan/cache-plan-{service-name}-dev.md
+  - build/database/plan/cache-plan-{service-name}-prod.md
 - MQ설치계획서 
-  - build/database/mq-{service-name}-dev.md
-  - build/database/mq-{service-name}-prod.md
+  - build/database/plan/mq-plan-{service-name}-dev.md
+  - build/database/plan/mq-plan-{service-name}-prod.md
+- 데이터베이스설치결과서
+  - build/database/exec/db-exec-{service-name}-dev.md
+  - build/database/exec/db-exec-{service-name}-prod.md
+- 캐시설치결과서 
+  - build/database/exec/mq-exec-{service-name}-dev.md
+  - build/database/exec/mq-exec-{service-name}-prod.md
+- MQ설치결과서 
+  - build/database/exec/mq-exec-{service-name}-dev.md
+  - build/database/exec/mq-exec-{service-name}-prod.md
 
 ## 프롬프트 약어 
 ## 역할 약어 
