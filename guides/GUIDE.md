@@ -85,8 +85,8 @@
 ## 개발 가이드
 - 개발실행프롬프트
   - 설명: 각 개발 단계 실행을 위한 프롬프트 모음
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/04.build-prompt.md 
-  - 파일명: build-prompt.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/04.develop-prompt.md 
+  - 파일명: develop-prompt.md
 
 - 데이터베이스설치계획서가이드
   - 설명: 데이터베이스 설치 방법 안내 요청 시 참조 
@@ -313,5 +313,5 @@
 ## 작업 단계 가이드 약어  
 - "@think-help": "기획실행프롬프트 내용을 터미널에 출력"
 - "@design-help": "설계실행프롬프트 내용을 터미널에 출력"
-- "@build-help": "개발실행프롬프트 내용을 터미널에 출력"
+- "@develop-help": "개발실행프롬프트 내용을 터미널에 출력"
 - "@deploy-help": "배포실행프롬프트 내용을 터미널에 출력"
