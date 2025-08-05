@@ -15,7 +15,7 @@
 - 실행:
   - 실행 및 오류 수정
     - 각 서비스별를 서브에이젼트로 병렬 수행   
-    - IntelliJ의 서비스 실행프로파일 작성 
+    - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성. 이미 있으면 덮어씀 
     - 백킹서비스 연결 확인
       - Kubernetes에 배포된 데이터베이스는 LoadBalacer유형의 Service가 이미 있는지 검사. 없으면 생성. 
       - 그 외 백킹 서비스 연결 확인 
@@ -26,6 +26,45 @@
     - 모든 API를 테스트하고 필요 시 소스를 수정하여 오류를 해결  
     - 모든 오류가 해결될때까지 오류 수정과 웹브라우저에서 확인 과정을 반복  
   - 결과: test-backend.md
+<실행프로파일 작성 가이드>
+- .idea/workspace.xml에 작성
+- 환경변수는 application.yml의 환경변수 이름과 일치해야 함 
+- 예시
+```
+<component name="RunManager">
+<configuration name="user-service" type="GradleRunConfiguration"       
+factoryName="Gradle">
+<ExternalSystemSettings>
+  <option name="env">
+	<map>
+	  <entry key="{환경변수Key}" value="{환경변수 value}" />
+	  ...
+	</map>
+  </option>
+  <option name="executionName" />
+  <option name="externalProjectPath" value="$PROJECT_DIR$" />        
+  <option name="externalSystemIdString" value="GRADLE" />
+  <option name="scriptParameters" value="" />
+  <option name="taskDescriptions">
+	<list />
+  </option>
+  <option name="taskNames">
+	<list>
+	  <option value="{service-name}:bootRun" />
+	</list>
+  </option>
+  <option name="vmOptions" />
+</ExternalSystemSettings>
+<ExternalSystemDebugServerProcess>true</ExternalSystemDebugServe     
+rProcess>
+<ExternalSystemReattachDebugProcess>true</ExternalSystemReattach     
+DebugProcess>
+<DebugAllEnabled>false</DebugAllEnabled>
+<RunAsTest>false</RunAsTest>
+<method v="2" />
+</configuration>
+```
+
 [참고자료]
 - 데이터베이스설치결과서
 - 캐시설치결과서
