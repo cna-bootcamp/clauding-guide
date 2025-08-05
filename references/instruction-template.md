@@ -79,7 +79,7 @@
 - 작업유형별 수행 가이드 표시 명령 작성 
   - .claude/commands/{작업유형}/help.md
   - command: "/{작업유형}:help"
-  - 아래 예시와 같이 작업 순서를 터미널에 표시하도록 함  
+  - 작업 순서를 터미널에 표시하도록 함  
     ```
     ---
     command: "/think:help"
