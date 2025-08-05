@@ -207,6 +207,11 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/check-mermaid.sh
   - 파일명: check-mermaid.sh
 
+- IntelliJ서비스실행기
+  - 설명: IntelliJ에 등록된 실행프로파일을 이용하여 서비스 실행  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/tools/run-intellij-service-profile.py
+  - 파일명: run-intellij-service-profile.py
+
 ---
 
 ## 산출물 디렉토리 

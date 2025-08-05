@@ -15,14 +15,10 @@
 - 실행:
   - 실행 및 오류 수정
     - 각 서비스별를 서브에이젼트로 병렬 수행   
-    - 백킹서비스 연결 확인
-      - Kubernetes에 배포된 데이터베이스는 LoadBalacer유형의 Service가 이미 있는지 검사. 없으면 생성. 
-      - 그 외 백킹 서비스 연결 확인 
     - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성
-      - 백킹서비스 연결 확인 결과를 바탕으로 정확하게 작성 
-      - 이미 있으면 덮어씀 
-    - application.yml에 사용된 환경변수를 생성
     - 서비스 실행 및 오류 수정 
+      - 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
+      - python 또는 python3 명령으로 실행: 예) python tools/run-intellij-service-profile.py {service-name} 
     - 오류 수정 후 필요 시 실행파일의 환경변수를 올바르게 변경  
   - 'curl'명령을 이용한 테스트 및 오류 수정
     - 서비스 의존관계를 고려하여 테스트 순서 결정 
@@ -40,7 +36,13 @@
   - kill -9 {Process number}
 <실행프로파일 작성 가이드>
 - .idea/workspace.xml에 작성
-- 환경변수는 application.yml의 환경변수 이름과 일치해야 함 
+- Kubernetes에 배포된 데이터베이스는 LoadBalacer유형의 Service가 이미 있는지 검사. 없으면 생성. 
+- 그 외 백킹 서비스 연결 확인 
+- 배포된 객체에 접근하여 인증 정보까지 정확히 확인 
+- application.yml에 사용된 환경변수 읽기. 만약 하드코딩 되어 있으면 환경변수로 변환  
+- application.yaml의 환경변수와 일치하도록 환경변수 설정 
+- 백킹서비스 연결 확인 결과를 바탕으로 정확한 값을 지정  
+- 이미 있으면 덮어씀 
 - 예시
 ```
 <component name="RunManager">
