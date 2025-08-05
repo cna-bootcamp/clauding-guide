@@ -70,12 +70,41 @@
 - 작업을 완료한 후 다운로드한 파일은 삭제함 
 
 [가이드 로딩]
-1. claude 디렉토리가 없으면 생성
-2. 가이드 목록을 claude/guide.md에 다운로드
-3. 가이드 목록 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/GUIDE.md
-4. 파일을 읽어 CLAUDE.md 제일 하단에 아래와 같이 가이드 섹션을 추가. 기존에 가이드 섹션이 있으면 먼저 삭제하고 다시 만듦 
+- claude 디렉토리가 없으면 생성
+- 가이드 목록을 claude/guide.md에 다운로드
+- 가이드 목록 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/GUIDE.md
+- 파일을 읽어 CLAUDE.md 제일 하단에 아래와 같이 가이드 섹션을 추가. 기존에 가이드 섹션이 있으면 먼저 삭제하고 다시 만듦 
    [가이드]
    ```
    claude/guide.md 파일 내용 
    ```  
-5. 파일을 삭제
+- 파일을 삭제
+
+---
+
+[프롬프트 로딩]
+'프롬프트 로딩'이라고 입력하면 CLAUDE.md에서 '실행프롬프트'가 포함된 가이드를 찾아 아래 작업을 하는 명령어를 생성 
+- '실행프롬프트'앞에 작업유형별로 .claude/commands/{작업유형} 디렉토리를 생성 
+- 실행 프롬프트 파일을 claude디렉토리에 다운로드 하여 내용에 있는 작업별로 .claude/commands/{작업유형}/{작업}.md로 명령어를 생성
+- command는 각 작업의 'command'항목에 지정된 명령어로 작성  
+- 동일 기능의 명령이 있으면 내용 변경이 있을때만 업데이트  
+- 작업유형별 수행 가이드 표시 명령 작성 
+  - .claude/commands/{작업유형}/help.md
+  - command: "/{작업유형}:help"
+  - 아래 예시와 같이 작업 순서를 터미널에 표시하도록 함  
+   ```
+    ---
+    command: "/think:help"
+    ---
+
+    기획 작업 순서
+
+    1단계: 서비스 기획
+    /think:planning
+    - AI활용 서비스 기획 가이드를 참고하여 서비스를 기획합니다
+
+    2단계: 유저스토리 작성
+    /think:userstory
+    - 유저스토리작성방법을 준용하여 작성합니다
+    - 마이크로서비스로 나누어 작성합니다
+   ```
