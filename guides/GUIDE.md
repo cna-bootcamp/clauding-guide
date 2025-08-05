@@ -246,7 +246,7 @@
 - 백엔드테스트결과서: develop/dev/test-backend.md
 
 ## 프롬프트 약어 
-## 역할 약어 
+### 역할 약어 
 - "@archi": "--persona-architect"
 - "@front": "--persona-front"
 - "@back": "--persona-backend"
@@ -256,7 +256,7 @@
 - "@devops": "--persona-devops"
 - "@scribe": "--persona-scriber"
 
-## 작업 약어 
+### 작업 약어 
 - "@complex-flag": --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
 - "@userstory": /sc:document @scribe @archi --think --wave-strategy systematic
@@ -277,13 +277,11 @@
 - "@analyze": /sc:analyze --think --seq 
 - "@explain": /sc:explain --think --seq --answer-only 
 
-## 파일 약어 
+### 파일 약어 
 - "@error": debug/error.png파일을 의미함 
 - "@info": debug/info.png파일을 의미함
 
---- 
-
-## 작업 단계 가이드 약어  
+### 작업 단계 가이드 약어  
 - "@think-help": "기획실행프롬프트 내용을 터미널에 출력"
 - "@design-help": "설계실행프롬프트 내용을 터미널에 출력"
 - "@develop-help": "개발실행프롬프트 내용을 터미널에 출력"
