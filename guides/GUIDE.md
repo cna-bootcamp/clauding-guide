@@ -271,7 +271,7 @@
 - "@test-front": /sc:test @front @qa --play --think @complex-flag
 - "@cicd": /sc:implement @devops @archi @back --think @complex-flag
 - "@document": /sc:document --think @scribe @complex-flag
-- "@fix": /sc:troubleshoot --think --seq 
+- "@fix": /sc:troubleshoot --think @complex-flag
 - "@estimate": /sc:estimate --think-hard @complex-flag
 - "@improve": /sc:improve --think @complex-flag
 - "@analyze": /sc:analyze --think --seq 
