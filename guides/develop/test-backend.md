@@ -17,22 +17,22 @@
   - 서비스 의존관계를 고려하여 테스트 순서 결정 
   - 순서에 따라 순차적으로 각 서비스의 Controller에서 API 스펙 확인 후 API 테스트 
   - API경로와 DTO클래스를 확인하여 정확한 request data 구성  
-  - 테스트 데이터는 영어 이용 
-  - 서비스 실행 방법 
-    - 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
-    - python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
-      nohup python3 tools/run-intellij-service-profile.py {service-name} > debug/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
-    - 서비스 실행은 다른 방법 사용하지 말고 **반드시 python 프로그램 이용** 
-  - 서비스 재시작 시에는 '<서비스 중지 방법>'을 참조하여 중지 후 재시작
-  - 모든 API를 테스트하고 필요 시 소스를 수정하여 오류를 해결  
-  - 모든 오류가 해결될때까지 오류 수정과 curl 테스트 과정을 반복  
+  - 소스 수정 후 테스트 절차 
+    - 컴파일 및 오류 수정: {프로젝트 루트}/gradlew {service-name}:compileJava
+    - 컴파일 성공 후 서비스 재시작 요청: 서비스 시작은 인간에게 요청 
+    - 만약 직접 서비스를 실행하려면 '<서비스 시작 방법>'으로 수행  
+  - 서비스 중지는 '<서비스 중지 방법>'을 참조 수행  
   - 설정 Manifest 수정 시 민감 정보는 기본값으로 지정하지 않고 '<실행프로파일 작성 가이드>'를 참조하여 실행 프로파일에 값을 지정함 
-  - 테스트 완료 후 서비스 중지 
   - 결과: test-backend.md
 <실행프로파일 작성 가이드>
 - .idea/workspace.xml에 작성
 - application.yml에 사용된 환경변수 읽기. 만약 하드코딩 되어 있으면 환경변수로 변환  
 - application.yaml의 환경변수와 일치하도록 환경변수 설정 
+<서비스 시작 방법>
+- 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
+- python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
+  nohup python3 tools/run-intellij-service-profile.py {service-name} > debug/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
+- 서비스 실행은 다른 방법 사용하지 말고 **반드시 python 프로그램 이용**
 <서비스 중지 방법>
 - Window
   - netstat -ano | findstr :{PORT}
