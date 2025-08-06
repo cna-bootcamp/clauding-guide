@@ -1,0 +1,81 @@
+# 서비스실행파일작성가이드 
+  
+[요청사항]  
+- <수행원칙>을 준용하여 수행
+- <수행순서>에 따라 수행
+- [결과파일] 안내에 따라 파일 작성 
+
+[가이드]
+<수행원칙>
+- 설정 Manifest(src/main/resources/application*.yml)의 각 항목의 값은 하드코딩하지 않고 환경변수 처리 
+- Kubernetes에 배포된 데이터베이스는 LoadBalacer유형의 Service를 만들어 연결   
+<수행순서>
+- 준비:
+  - 데이터베이스설치결과서, 캐시설치결과서, MQ설치결과서에 대한 분석 및 이해  
+- 실행:
+  - 각 서비스별를 서브에이젼트로 병렬 수행   
+  - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성
+  - 서비스 실행 및 오류 수정 
+    - 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
+    - python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
+      nohup python3 tools/run-intellij-service-profile.py {service-name} > debug/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
+    - 서비스 실행은 다른 방법 사용하지 말고 **반드시 python 프로그램 이용** 
+  - 오류 수정 후 필요 시 실행파일의 환경변수를 올바르게 변경  
+  - 서비스 정상 시작 확인 후 서비스 중지 
+  - 결과: 화면에만 표시 
+<서비스 중지 방법>
+- Window
+  - netstat -ano | findstr :{PORT}
+  - powershell "Stop-Process -Id {Process number} -Force"
+- Linux/Mac
+  - netstat -ano | grep {PORT}
+  - kill -9 {Process number}
+<실행프로파일 작성 가이드>
+- .idea/workspace.xml에 작성
+- Kubernetes에 배포된 데이터베이스는 LoadBalacer유형의 Service가 이미 있는지 검사. 없으면 생성. 
+- 그 외 백킹 서비스 연결 확인 
+- 배포된 객체에 접근하여 인증 정보까지 정확히 확인 
+- application.yml에 사용된 환경변수 읽기. 만약 하드코딩 되어 있으면 환경변수로 변환  
+- application.yaml의 환경변수와 일치하도록 환경변수 설정 
+- 백킹서비스 연결 확인 결과를 바탕으로 정확한 값을 지정  
+- 이미 있으면 덮어씀 
+- 예시
+```
+<component name="RunManager">
+<configuration name="user-service" type="GradleRunConfiguration"       
+factoryName="Gradle">
+<ExternalSystemSettings>
+  <option name="env">
+	<map>
+	  <entry key="{환경변수Key}" value="{환경변수 value}" />
+	  ...
+	</map>
+  </option>
+  <option name="executionName" />
+  <option name="externalProjectPath" value="$PROJECT_DIR$" />        
+  <option name="externalSystemIdString" value="GRADLE" />
+  <option name="scriptParameters" value="" />
+  <option name="taskDescriptions">
+	<list />
+  </option>
+  <option name="taskNames">
+	<list>
+	  <option value="{service-name}:bootRun" />
+	</list>
+  </option>
+  <option name="vmOptions" />
+</ExternalSystemSettings>
+<ExternalSystemDebugServerProcess>true</ExternalSystemDebugServe     
+rProcess>
+<ExternalSystemReattachDebugProcess>true</ExternalSystemReattach     
+DebugProcess>
+<DebugAllEnabled>false</DebugAllEnabled>
+<RunAsTest>false</RunAsTest>
+<method v="2" />
+</configuration>
+```
+
+[참고자료]
+- 데이터베이스설치결과서
+- 캐시설치결과서
+- MQ설치결과서

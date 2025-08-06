@@ -113,8 +113,13 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/dev-backend.md
   - 파일명: dev-backend.md
 
+- 서비스실행프로파일작성가이드 
+  - 설명: 백엔드 서비스 실행 프로파일 작성 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/make-run-profile.md
+  - 파일명: make-run-profile.md
+
 - 백엔드테스트가이드 
-  - 설명: 백엔드 E2E테스트 코드 작성 및 테스트 가이드 
+  - 설명: 백엔드 테스트 가이드 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/test-backend.md
   - 파일명: test-backend.md
   
