@@ -18,12 +18,14 @@
     - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성
     - 서비스 실행 및 오류 수정 
       - 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
-      - python 또는 python3 명령으로 실행: 예) python tools/run-intellij-service-profile.py {service-name} 
+      - python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
+        nohup python3 tools/run-intellij-service-profile.py {service-name} > debug/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
       - 서비스 실행은 다른 방법 사용하지 말고 반드시 python 프로그램 이용 
     - 오류 수정 후 필요 시 실행파일의 환경변수를 올바르게 변경  
   - 'curl'명령을 이용한 테스트 및 오류 수정
     - 서비스 의존관계를 고려하여 테스트 순서 결정 
     - 순서에 따라 순차적으로 각 서비스의 Controller에서 API 스펙 확인 후 API 테스트 
+    - DTO클래스를 확인하여 정확한 request data 구성  
     - 테스트 데이터는 영어 이용 
     - 서비스 재시작 시에는 '<서비스 중지 방법>'을 참조하여 중지 후 재시작
     - 모든 API를 테스트하고 필요 시 소스를 수정하여 오류를 해결  
