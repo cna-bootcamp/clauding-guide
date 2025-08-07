@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Tripgen Service Runner Script
-Reads execution profiles from .idea/workspace.xml and runs services accordingly.
+Reads execution profiles from {service-name}/.run/{service-name}.run.xml and runs services accordingly.
 
 Usage:
     python run-config.py <service-name>
@@ -34,69 +34,82 @@ def get_project_root():
     return Path(__file__).parent.parent.absolute()
 
 
-def parse_workspace_xml(project_root):
-    """Parse workspace.xml file to extract execution profile information"""
-    workspace_xml_path = project_root / '.idea' / 'workspace.xml'
+def parse_run_configurations(project_root, service_name=None):
+    """Parse run configuration files from .run directories"""
+    configurations = {}
     
-    if not workspace_xml_path.exists():
-        print(f"[ERROR] Cannot find workspace.xml file: {workspace_xml_path}")
-        return {}
+    if service_name:
+        # Parse specific service configuration
+        run_config_path = project_root / service_name / '.run' / f'{service_name}.run.xml'
+        if run_config_path.exists():
+            config = parse_single_run_config(run_config_path, service_name)
+            if config:
+                configurations[service_name] = config
+        else:
+            print(f"[ERROR] Cannot find run configuration: {run_config_path}")
+    else:
+        # Find all service directories
+        service_dirs = ['user-service', 'location-service', 'trip-service', 'ai-service']
+        for service in service_dirs:
+            run_config_path = project_root / service / '.run' / f'{service}.run.xml'
+            if run_config_path.exists():
+                config = parse_single_run_config(run_config_path, service)
+                if config:
+                    configurations[service] = config
     
+    return configurations
+
+
+def parse_single_run_config(config_path, service_name):
+    """Parse a single run configuration file"""
     try:
-        tree = ET.parse(workspace_xml_path)
+        tree = ET.parse(config_path)
         root = tree.getroot()
         
-        # Find RunManager component
-        run_manager = root.find('.//component[@name="RunManager"]')
-        if run_manager is None:
-            print("[ERROR] Cannot find RunManager component")
-            return {}
+        # Find configuration element
+        config = root.find('.//configuration[@type="GradleRunConfiguration"]')
+        if config is None:
+            print(f"[WARNING] No Gradle configuration found in {config_path}")
+            return None
         
-        configurations = {}
+        # Extract environment variables
+        env_vars = {}
+        env_option = config.find('.//option[@name="env"]')
+        if env_option is not None:
+            env_map = env_option.find('map')
+            if env_map is not None:
+                for entry in env_map.findall('entry'):
+                    key = entry.get('key')
+                    value = entry.get('value')
+                    if key and value:
+                        env_vars[key] = value
         
-        # Find Gradle execution configurations
-        for config in run_manager.findall('.//configuration[@type="GradleRunConfiguration"]'):
-            config_name = config.get('name')
-            if not config_name:
-                continue
-            
-            # Extract environment variables
-            env_vars = {}
-            env_option = config.find('.//option[@name="env"]')
-            if env_option is not None:
-                env_map = env_option.find('map')
-                if env_map is not None:
-                    for entry in env_map.findall('entry'):
-                        key = entry.get('key')
-                        value = entry.get('value')
-                        if key and value:
-                            env_vars[key] = value
-            
-            # Extract task names
-            task_names = []
-            task_names_option = config.find('.//option[@name="taskNames"]')
-            if task_names_option is not None:
-                task_list = task_names_option.find('list')
-                if task_list is not None:
-                    for option in task_list.findall('option'):
-                        value = option.get('value')
-                        if value:
-                            task_names.append(value)
-            
-            if env_vars or task_names:
-                configurations[config_name] = {
-                    'env_vars': env_vars,
-                    'task_names': task_names
-                }
+        # Extract task names
+        task_names = []
+        task_names_option = config.find('.//option[@name="taskNames"]')
+        if task_names_option is not None:
+            task_list = task_names_option.find('list')
+            if task_list is not None:
+                for option in task_list.findall('option'):
+                    value = option.get('value')
+                    if value:
+                        task_names.append(value)
         
-        return configurations
+        if env_vars or task_names:
+            return {
+                'env_vars': env_vars,
+                'task_names': task_names,
+                'config_path': str(config_path)
+            }
+        
+        return None
     
     except ET.ParseError as e:
-        print(f"[ERROR] workspace.xml parsing error: {e}")
-        return {}
+        print(f"[ERROR] XML parsing error in {config_path}: {e}")
+        return None
     except Exception as e:
-        print(f"[ERROR] workspace.xml reading error: {e}")
-        return {}
+        print(f"[ERROR] Error reading {config_path}: {e}")
+        return None
 
 
 def get_gradle_command(project_root):
@@ -182,8 +195,10 @@ def list_available_services(configurations):
     for service_name, config in configurations.items():
         if config['task_names']:
             print(f"  [SERVICE] {service_name}")
+            if 'config_path' in config:
+                print(f"     +-- Config: {config['config_path']}")
             for task in config['task_names']:
-                print(f"     +-- {task}")
+                print(f"     +-- Task: {task}")
             print(f"     +-- {len(config['env_vars'])} environment variables")
         print()
 
@@ -221,9 +236,9 @@ Examples:
     project_root = get_project_root()
     print(f"[INFO] Project root: {project_root}")
     
-    # Parse workspace.xml
-    print("[INFO] Reading workspace.xml file...")
-    configurations = parse_workspace_xml(project_root)
+    # Parse run configurations
+    print("[INFO] Reading run configuration files...")
+    configurations = parse_run_configurations(project_root)
     
     if not configurations:
         print("[ERROR] No execution configurations found")
@@ -245,6 +260,12 @@ Examples:
     
     # Find service
     service_name = args.service_name
+    
+    # Try to parse specific service configuration if not found
+    if service_name not in configurations:
+        print(f"[INFO] Trying to find configuration for '{service_name}'...")
+        configurations = parse_run_configurations(project_root, service_name)
+        
     if service_name not in configurations:
         print(f"[ERROR] Cannot find '{service_name}' service")
         list_available_services(configurations)

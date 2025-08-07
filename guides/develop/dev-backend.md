@@ -22,7 +22,7 @@
 - 실행:  
   - common 모듈 개발  
   - 각 서비스별로 '<병렬처리>'가이드대로 동시 개발
-  - swagger page에 'JWT Authorization' 버튼이 나오도록 함 
+  - swagger page에 'Authorization' 버튼이 나오도록 함 
   - 컴파일이나 테스트 코드 작성은 하지 않음    
   - 개발 결과 설명: dev-backend.md
 - 검토:
