@@ -320,3 +320,12 @@ Claude Code가 실행 프로파일을 업데이트할 때 모든 정보가 정�
 
 ![](images/2025-08-07-09-31-45.png)  
 
+
+**4.API테스트**      
+'@test-api'를 앞에 붙여 테스트를 요청하면 API 스펙을 정확히 확인하여 테스트 하게 됩니다.  
+
+```
+@test-api recommendations API를 테스트 해요.
+
+토큰: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTQ1MjI4ODMsImV4cCI6MTc1NDYwOTI4MywidHlwZSI6ImFjY2VzcyJ9.mQVnFKUDtMa426Qn25_2UMj8uABJ85uFwVrgdEsulZI
+```
