@@ -278,7 +278,7 @@
 - "@dev-backend": /sc:implement @back --think-hard @complex-flag
 - "@dev-front": /sc:implement @front --think-hard @complex-flag
 - "@test-backend": /sc:test @back @qa --think @complex-flag 
-- "@test-api": /sc:test @back @qa --think API경로와 DTO를 분석하여 정확하게 요청하여 테스트  
+- "@test-api": /sc:test @back @qa --think 1) 소스 수정 후 컴파일하고 서버 시작 요청. 2) API경로와 DTO를 분석하여 정확하게 요청하여 테스트  
 - "@test-front": /sc:test @front @qa --play --think @complex-flag
 - "@cicd": /sc:implement @devops @archi @back --think @complex-flag
 - "@document": /sc:document --think @scribe @complex-flag
