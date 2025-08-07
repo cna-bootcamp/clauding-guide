@@ -329,3 +329,12 @@ Claude Code가 실행 프로파일을 업데이트할 때 모든 정보가 정�
 
 토큰: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTQ1MjI4ODMsImV4cCI6MTc1NDYwOTI4MywidHlwZSI6ImFjY2VzcyJ9.mQVnFKUDtMa426Qn25_2UMj8uABJ85uFwVrgdEsulZI
 ```
+
+**5.버그픽스는 AI, 서버재시작은 사람이 수행**           
+AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합니다.    
+서버재시작은 본인이 하겠다고 프롬프트에 말해 주세요.   
+'/develop-test-backend'명령어에는 이미 이 프롬프트가 있지만 가끔 AI가 서버를 시작하려고 합니다.    
+프롬프트 예시)
+```
+이제 테스트를 시작하는데 컴파일까지는 네가 하고 서버 시작은 나한테 요청해 주세요.   
+```
