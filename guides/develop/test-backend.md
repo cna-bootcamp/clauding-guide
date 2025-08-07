@@ -26,9 +26,11 @@
   - 실행 결과 로그은 'debug' 디렉토리 하위에 생성 
   - 결과: test-backend.md
 <실행프로파일 작성 가이드>
-- .idea/workspace.xml에 작성
-- application.yml에 사용된 환경변수 읽기. 만약 하드코딩 되어 있으면 환경변수로 변환  
-- application.yaml의 환경변수와 일치하도록 환경변수 설정 
+- {service-name}/.run/{service-name}.run.xml 파일로 작성
+- Kubernetes에 배포된 데이터베이스의 LoadBalancer Service 확인:
+  - kubectl get svc -n {namespace} | grep LoadBalancer 명령으로 LoadBalancer IP 확인
+  - 각 서비스별 데이터베이스의 LoadBalancer External IP를 DB_HOST로 사용
+  - 캐시(Redis)의 LoadBalancer External IP를 REDIS_HOST로 사용
 <서비스 시작 방법>
 - 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
 - python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
