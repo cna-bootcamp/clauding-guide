@@ -18,6 +18,10 @@
   - kubectl get svc -n tripgen-dev | grep LoadBalancer 실행하여 External IP 목록 확인
 - 실행:
   - 각 서비스별를 서브에이젼트로 병렬 수행   
+  - 설정 Manifest 수정
+    - 하드코딩 되어 있는 값이 있으면 환경변수로 변환
+    - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함     
+    - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정 
   - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성
     - LoadBalancer External IP를 DB_HOST, REDIS_HOST로 설정
     - MQ 연결 정보를 application.yml의 환경변수명에 맞춰 설정
@@ -57,7 +61,6 @@
   - 데이터베이스설치결과서에서 각 서비스별 DB 인증 정보 확인
   - 캐시설치결과서에서 각 서비스별 Redis 인증 정보 확인
   - LoadBalancer의 External IP를 호스트로 사용 (내부 DNS 아님)
-- application.yml에 사용된 환경변수 읽기. 만약 하드코딩 되어 있으면 환경변수로 변환  
 - application.yaml의 환경변수와 일치하도록 환경변수 설정 
 - application.yaml의 민감 정보는 기본값으로 지정하지 않고 실제 백킹서비스 정보로 지정
 - 백킹서비스 연결 확인 결과를 바탕으로 정확한 값을 지정  
