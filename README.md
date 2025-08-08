@@ -315,6 +315,11 @@ CLAUDE.md에 'Lessons Learned' 섹션을 추가하고
 실수를 했을 때 재실수를 방지하기 위한 지침을 추가하세요.   
 ```
 
+AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니다.  
+```
+소스를 수정하면 컴파일까지 하고 서버 재시작을 사람에게 요청해야 합니다. lessons learned 에 추가하세요.
+```
+
 **context7 MCP**        
 최신 개발 Best practice를 참조하여 개발할 수 있습니다.  
 context7 MCP를 이용하면 됩니다.   
