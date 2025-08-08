@@ -310,15 +310,23 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 **Lessons Learned 등록하게 하기**     
 Claude Code는 완벽하지 않아 시행착오를 자꾸합니다.   
 이를 방지하기 위해 아래와 같이 'CLAUDE.md'에 재실수를 방지하기 위한 추가 지침을 하도록 합니다.  
+
 ```
 CLAUDE.md에 'Lessons Learned' 섹션을 추가하고 
 실수를 했을 때 재실수를 방지하기 위한 지침을 추가하세요.   
 ```
-
+  
 AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니다.  
+예1)
 ```
 소스를 수정하면 컴파일까지 하고 서버 재시작을 사람에게 요청해야 합니다. lessons learned 에 추가하세요.
 ```
+예2)
+실행을 'ESC'로 멈추고 지침 추가를 요청.  
+```
+잠깐 환경설정값은 applicaiton.yml이 아니라 실행프로파일을 점검해야 합니다. lessons learned에 추가해. 주고 계속해줘요.
+```
+
 
 **context7 MCP**        
 최신 개발 Best practice를 참조하여 개발할 수 있습니다.  
