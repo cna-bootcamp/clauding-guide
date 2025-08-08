@@ -307,14 +307,22 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 사람의 개입이 필요하다고 판단되면 'ESC'를 눌러 수행을 잠시 중단하게 하고 프롬프팅을 해서 작업 수정 요청합니다.   
 그리고 계속 진행해도 되면 '계속'이라고 입력합니다.    
 
-**1.context7 MCP**        
+**Lessons Learned 등록하게 하기**     
+Claude Code는 완벽하지 않아 시행착오를 자꾸합니다.   
+이를 방지하기 위해 아래와 같이 'CLAUDE.md'에 재실수를 방지하기 위한 추가 지침을 하도록 합니다.  
+```
+CLAUDE.md에 'Lessons Learned' 섹션을 추가하고 
+실수를 했을 때 재실수를 방지하기 위한 지침을 추가하세요.   
+```
+
+**context7 MCP**        
 최신 개발 Best practice를 참조하여 개발할 수 있습니다.  
 context7 MCP를 이용하면 됩니다.   
 개발명령어(/develop-dev-backend, /develop-fix-backend, develop-test-backend)에 이미 '-c7'이라는 옵션이 있습니다.   
 이 명령어를 사용하지 않고 프롬프트에서 수정이나 개선을 요청할 때는 이 옵션을 명시해 줘야 합니다.   
 예) -c7 Google Place API를 이용하여 주변 주차장 정보를 찾도록 해주세요.  
 
-**2.실행 프로파일 작성**     
+**실행 프로파일 작성**     
 '/develop-make-run-profile' 명령으로 IntelliJ의 서비스 실행 프로파일을 작성할 수 있습니다.    
 {service}/.run/{service}.run.xml에 등록됩니다.    
 등록이 되면 서비스탭에 나타납니다.    
@@ -322,7 +330,7 @@ context7 MCP를 이용하면 됩니다.
 먼저 실행구성을 클릭하고 'Gradle'이나 'Maven' 등 빌드툴을 선택해야 표시됩니다.   
 ![](images/2025-08-07-09-24-30.png)    
 
-**3.API테스트**      
+**API테스트**      
 '@test-api'를 앞에 붙여 테스트를 요청하면 API 스펙을 정확히 확인하여 테스트 하게 됩니다.  
 
 ```
@@ -331,7 +339,7 @@ context7 MCP를 이용하면 됩니다.
 토큰: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTQ1MjI4ODMsImV4cCI6MTc1NDYwOTI4MywidHlwZSI6ImFjY2VzcyJ9.mQVnFKUDtMa426Qn25_2UMj8uABJ85uFwVrgdEsulZI
 ```
 
-**5.버그픽스는 AI, 서버재시작은 사람이 수행**           
+**버그픽스는 AI, 서버재시작은 사람이 수행**           
 AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합니다.    
 서버재시작은 본인이 하겠다고 프롬프트에 말해 주세요.   
 '/develop-test-backend'명령어에는 이미 이 프롬프트가 있지만 가끔 AI가 서버를 시작하려고 합니다.    
@@ -350,14 +358,14 @@ AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합�
 user service를 중단하세요.  
 ```
 
-**6.깊게 고민하게 하기**    
+**깊게 고민하게 하기**    
 잘 문제를 못풀면 깊게 고민하는 옵션을 프롬프트에 추가할 수 있습니다.  
 고민을 얼마나 깊게 할 지에 따라 --think, --think-hard, --ultra-think가 있습니다.  
 ```
 --think 
 ```
 
-**6.리팩토링**   
+**리팩토링**   
 한 서비스 개발이 끝나면 리팩토링 요청을 합니다.  
 주의할 것은 이 작업 후 문제가 생길 수 있으므로 백업하거나 git push를 하십시오.  
 ```
