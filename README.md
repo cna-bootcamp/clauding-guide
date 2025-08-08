@@ -327,6 +327,22 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 잠깐 환경설정값은 applicaiton.yml이 아니라 실행프로파일을 점검해야 합니다. lessons learned에 추가해. 주고 계속해줘요.
 ```
 
+**서버 로그 디버깅 하기**       
+application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 설정하도록 되어 있습니다.  
+만약 안되어 있으면 추가하도록 요청하세요.   
+```
+# Logging Configuration
+logging:
+  ...
+  file:
+    name: ${LOG_FILE:logs/trip-service.log}
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7
+      total-size-cap: 100MB
+```
+서버 시작 시 에러나 테스트 시 런타임 에러가 나면 이 로그를 보고 원인을 분석해서 해결하도록 요청하세요.  
 
 **context7 MCP**        
 최신 개발 Best practice를 참조하여 개발할 수 있습니다.  
