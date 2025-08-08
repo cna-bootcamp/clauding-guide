@@ -282,7 +282,7 @@
 - "@run-back": 
   - 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
   - python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
-    nohup python3 tools/run-intellij-service-profile.py {service-name} > debug/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
+    nohup python3 tools/run-intellij-service-profile.py {service-name} > logs/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
 - "@test-front": /sc:test @front @qa --play --think @complex-flag
 - "@cicd": /sc:implement @devops @archi @back --think @complex-flag
 - "@document": /sc:document --think @scribe @complex-flag

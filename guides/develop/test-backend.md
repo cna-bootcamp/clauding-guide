@@ -34,7 +34,7 @@
 <서비스 시작 방법>
 - 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
 - python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
-  nohup python3 tools/run-intellij-service-profile.py {service-name} > debug/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
+  nohup python3 tools/run-intellij-service-profile.py {service-name} > logs/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
 - 서비스 실행은 다른 방법 사용하지 말고 **반드시 python 프로그램 이용**
 <서비스 중지 방법>
 - Window
