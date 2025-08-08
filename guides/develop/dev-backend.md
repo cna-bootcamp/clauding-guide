@@ -28,6 +28,7 @@
     - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정
     - 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
     - 개발모드의 DDL_AUTO값은 update로 함 
+    - JWT Secret Key는 모든 서비스가 동일해야 함 
   - 임시로 Todo상태로 남기지 말고 완벽하게 개발 
   - swagger page에 'Authorization' 버튼이 나오도록 함 
   - 테스트 코드 작성은 하지 않음     

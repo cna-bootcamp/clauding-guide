@@ -61,6 +61,8 @@
   - 데이터베이스설치결과서에서 각 서비스별 DB 인증 정보 확인
   - 캐시설치결과서에서 각 서비스별 Redis 인증 정보 확인
   - LoadBalancer의 External IP를 호스트로 사용 (내부 DNS 아님)
+- 개발모드의 DDL_AUTO값은 update로 함 
+- JWT Secret Key는 모든 서비스가 동일해야 함
 - application.yaml의 환경변수와 일치하도록 환경변수 설정 
 - application.yaml의 민감 정보는 기본값으로 지정하지 않고 실제 백킹서비스 정보로 지정
 - 백킹서비스 연결 확인 결과를 바탕으로 정확한 값을 지정  
