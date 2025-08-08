@@ -22,6 +22,7 @@
     - 하드코딩 되어 있는 값이 있으면 환경변수로 변환
     - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함     
     - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정 
+    - '<로그설정>'을 참조하여 Log 파일 설정
   - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성
     - LoadBalancer External IP를 DB_HOST, REDIS_HOST로 설정
     - MQ 연결 정보를 application.yml의 환경변수명에 맞춰 설정
@@ -40,6 +41,19 @@
 - Linux/Mac
   - netstat -ano | grep {PORT}
   - kill -9 {Process number}
+<로그설정>
+- **application.yml 로그 파일 설정**:
+   ```yaml
+   logging:
+     file:
+       name: ${LOG_FILE:logs/trip-service.log}
+     logback:
+       rollingpolicy:
+         max-file-size: 10MB
+         max-history: 7
+         total-size-cap: 100MB
+   ```
+
 <실행프로파일 작성 가이드>
 - {service-name}/.run/{service-name}.run.xml 파일로 작성
 - Kubernetes에 배포된 데이터베이스의 LoadBalancer Service 확인:
