@@ -11,7 +11,7 @@
 - Kubernetes에 배포된 데이터베이스는 LoadBalacer유형의 Service를 만들어 연결   
 <테스트순서>
 - 준비:
-  - 설정 Manifest(src/main/resources/application*.yml)와 실행 프로파일(.idea/workspace.xml 내부에 있음)의 일치여부 검사 및 수정   
+  - 설정 Manifest(src/main/resources/application*.yml)와 실행 프로파일({service-name}.run.xml 내부에 있음)의 일치여부 검사 및 수정   
 - 실행:
   - 'curl'명령을 이용한 테스트 및 오류 수정
   - 서비스 의존관계를 고려하여 테스트 순서 결정 
@@ -23,7 +23,7 @@
     - 만약 직접 서비스를 실행하려면 '<서비스 시작 방법>'으로 수행  
   - 서비스 중지는 '<서비스 중지 방법>'을 참조 수행  
   - 설정 Manifest 수정 시 민감 정보는 기본값으로 지정하지 않고 '<실행프로파일 작성 가이드>'를 참조하여 실행 프로파일에 값을 지정함 
-  - 실행 결과 로그은 'debug' 디렉토리 하위에 생성 
+  - 실행 결과 로그는 'logs' 디렉토리 하위에 생성 
   - 결과: test-backend.md
 <실행프로파일 작성 가이드>
 - {service-name}/.run/{service-name}.run.xml 파일로 작성
