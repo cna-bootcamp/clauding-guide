@@ -22,9 +22,11 @@
 - 실행:  
   - '<병렬처리>'가이드대로 병렬 수행 
   - 각 서비스별로 데이터베이스 설치 계획서와 캐시 설치 계획서 작성 
+  - 데이터베이스는 서비스별로 분리 구성
+  - 캐시는 모든 서비스가 공유하도록 구성 
   - 결과: 
     - db-plan-{service-name}-{설치대상환경}.md
-    - cache-plan-{service-name}-{설치대상환경}.md
+    - cache-plan-{설치대상환경}.md
 - 검토:
   - <작성원칙> 준수 검토
   - 스쿼드 팀원 리뷰: 누락 및 개선 사항 검토
@@ -45,6 +47,6 @@ https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/sa
 
 [결과파일]
 - develop/database/plan/db-plan-{service-name}-{설치대상환경}.md
-- develop/database/plan/cache-plan-{service-name}-{설치대상환경}.md
+- develop/database/plan/cache-plan-{설치대상환경}.md
 - {service-name}은 영어로 작성  
 - {설치대상환경}은 dev 또는 prod로 함
