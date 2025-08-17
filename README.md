@@ -328,6 +328,12 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 잠깐 환경설정값은 applicaiton.yml이 아니라 실행프로파일을 점검해야 합니다. lessons learned에 간략하고 명확하게 추가해주고 계속해줘요.
 ```
 
+**계획 세우게 하기**    
+개발이나 리팩토링을 실제 수행하기 전에 계획을 먼저 세우게 하고 검토하는 것이 좋습니다.  
+```
+@plan 'AsyncProcessingServie'클래스에서 공통함수를 분리할 계획을 세우세요.  
+```
+
 **서버 로그 디버깅 하기**       
 application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 설정하도록 되어 있습니다.  
 만약 안되어 있으면 추가하도록 요청하세요.   
