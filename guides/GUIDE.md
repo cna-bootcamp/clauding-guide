@@ -274,6 +274,7 @@
 - "@prototype": /sc:implement @front --answer-only 
 - "@design-pattern": /sc:design @archi --think-hard @complex-flag
 - "@architecture": /sc:design @archi @back @refact --think-hard  @complex-flag
+- "@plan": --plan --think
 - "@backing-service": /sc:implement @devops @back --think-hard  @complex-flag
 - "@dev-backend": /sc:implement @back --think-hard @complex-flag
 - "@dev-front": /sc:implement @front --think-hard @complex-flag
