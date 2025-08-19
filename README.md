@@ -337,13 +337,19 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 추가/수정된 코드가 검증이 필요하다고 판단되면 클로드에게 단위테스트코드를 작성하라고 요청하십시오.   
 그리고 그 단위테스트 코드를 직접 수행하여 코드에 문제가 없는지 검증 시키십시오.    
 이때 실제와 동일한 sample 데이터를 제공하여 정확도를 높이는게 좋습니다.  
-sample 데이터를 직접 만들기 어려우면 클래스나 DTO를 제시하여 그 구조대로 샘플을 만들라고 하세요.  
-sample 데이터는 재사용할 수 있으므로 resource디렉토리 같은 곳에 파일로 만들어 참조하게 하는게 좋습니다.  
 
 ```
-지금 추가한 코드를 단위 테스트 코드를 작성해 검증 합시다.
+지금 추가한 코드를 '테스트코드표준'를 준용하여 단위 테스트 코드를 작성해 검증 합시다.
 'ScheduleGenerationMessageRequest'객체는 resource/mq_dailyrequest.json을 이용하세요.  
 ```
+
+sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.    
+코드에 sample데이터를 특정 디렉토리에 남기도록 요청해서 만드세요. 
+```
+선택영역 밑에 scheduleJson과 promptRequest의 값을 파일로 만들어요.            
+resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
+```
+
 
 **서버 로그 디버깅 하기**       
 application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 설정하도록 되어 있습니다.  
