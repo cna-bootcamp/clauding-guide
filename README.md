@@ -350,7 +350,6 @@ sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.
 resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
 ```
 
-
 **서버 로그 디버깅 하기**       
 application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 설정하도록 되어 있습니다.  
 만약 안되어 있으면 추가하도록 요청하세요.   
@@ -418,9 +417,9 @@ user service를 중단하세요.
 --think 
 ```
 
-**리팩토링**   
-한 서비스 개발이 끝나면 리팩토링 요청을 합니다.  
-주의할 것은 이 작업 후 문제가 생길 수 있으므로 백업하거나 git push를 하십시오.  
+**이전 git commit 참고 또는 복원하기**   
+개발하다 보면 이전 commit 소스를 찾아 참고하거나 복원해야할 경우가 있습니다. 
+이때 commit id를 제공하여 작업을 수행할 수 있습니다.    
 ```
-@refact as @back location-service의 불필요한 클래스들을 정리해줘요.
+원격 commit 'abb2a9d'에서 찾아서 API '일자별 일정 재생성' API와 관련 리소스 클래스를 복원해요.
 ```
