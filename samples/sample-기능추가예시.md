@@ -94,4 +94,10 @@ claude/trip-recommendation-api-plan.md을 기반으로 개발을 진행하고 �
 컴파일 완료 후 서비스 시작을 나에게 요청하세요. 
 ```
 
+예시)
+```
+아래 개선사항 추가요. 
+│- API 설명에 dayIndex, activityIndex 설명 추가
+│- 캐시 사용: key=날짜와 장소명, TTL=1일 
+```
 
