@@ -76,6 +76,7 @@ API2: 여행정보 기반 추천
 - API1만 설계
 - ai-service의 기존 구조와 설정을 파악한 후 설계 
 - 테스트 코드는 작성 안함 
+- 설계 후 구현은 나에게 검토 받은 후 시작
 [참고자료]
 - tripgen/claude/recommendation.md
 ```
