@@ -300,6 +300,8 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 ```
 
 개발을 할 때는 계획-수행-테스트의 과정으로 하십시오.   
+아래 예시를 참조하세요.  
+https://github.com/cna-bootcamp/clauding-guide/blob/main/samples/sample-%EA%B8%B0%EB%8A%A5%EC%B6%94%EA%B0%80%EC%98%88%EC%8B%9C.md
 
 
 **테스트**       
