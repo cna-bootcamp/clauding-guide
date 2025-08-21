@@ -33,14 +33,14 @@ API1: 장소정보 기반 추천
 API2: 여행정보 기반 추천
 1) input
 - tripId: 여행 ID
-- dayIndex: 여행일 순서(0부터 시작)
-- activityIndex: 여행활동 순서(0부터 시작)
+- dayIndex: 여행일 순서(1부터 시작)
+- activityIndex: 여행활동 순서(1부터 시작)
 
 2) 처리
 - tripId로 생성된 일정 정보를 찾음: /api/v1/trips/{tripId}/latest-schedule 참조
 - data.scheduleData값을 GeneratedScheduleResponse DTO이용하여 객체 생성
-    - dayIndex로 해당되는 여행일의 'schedules[dayIndex].weatherConsideration' 구함
-    - activityIndex로 장소를 찾음. 'schedules[dayIndex].activities[activityIndex]'
+    - dayIndex로 해당되는 여행일의 'schedules[dayIndex-1].weatherConsideration' 구함
+    - activityIndex로 장소를 찾음. 'schedules[dayIndex-1].activities[activityIndex-1]'
 - data.requestData값을 ScheduleGenerationMessageRequest DTO이용하여 객체 생성
     - {DTO객채}.members 정보를 찾음.
 - 구한 날씨정보, 장소정보, 멤버 정보를 고려하여 장소에 대한 추천 이유와 유용한 정보/팁 제공을 Claude에 요청
