@@ -89,6 +89,7 @@ API2: 여행정보 기반 추천
 
 예시)
 ```
+@dev-backend 
 claude/trip-recommendation-api-plan.md을 기반으로 개발을 진행하고 완료 후 컴파일 하세요. 
 컴파일 완료 후 서비스 시작을 나에게 요청하세요. 
 ```
