@@ -259,7 +259,7 @@
   - develop/mq/mq-exec-prod.md
 - 백엔드개발결과서: develop/dev/dev-backend.md
 - 백엔드테스트결과서: develop/dev/test-backend.md
-- 프론트엔드설계서: design/frontend/*
+- 프론트엔드설계서: design/frontend/frontend-design.md
 
 ## 프롬프트 약어 
 ### 역할 약어 
