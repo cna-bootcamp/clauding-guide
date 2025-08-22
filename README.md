@@ -10,16 +10,29 @@
   - [프로젝트 단계별 Claude Code 이용](#프로젝트-단계별-claude-code-이용)
     - [시작하기](#시작하기)
     - [서비스 기획 하기](#서비스-기획-하기)
-    - [설계하기](#설계하기)
-    - [개발하기](#개발하기)
-    - [배포하기](#배포하기)
-    - [단계별 작업 방법 Tip](#단계별-작업-방법-tip)
-      - [유용한 공통 Tip](#유용한-공통-tip)
+      - [작업 방법 가이드](#작업-방법-가이드)
       - [프로토타입 개발](#프로토타입-개발)
+    - [설계하기](#설계하기)
+      - [작업 방법 가이드](#작업-방법-가이드-1)
       - [시퀀스 설계](#시퀀스-설계)
       - [API 설계](#api-설계)
       - [클래스 설계](#클래스-설계)
-      - [백엔드 개발/테스트](#백엔드-개발테스트)
+    - [개발하기](#개발하기)
+      - [작업 방법 가이드](#작업-방법-가이드-2)
+      - [백엔드 개발/테스트 팁](#백엔드-개발테스트-팁)
+    - [배포하기](#배포하기)
+    - [유용한 Tip](#유용한-tip)
+      - [공통 Tip](#공통-tip)
+      - [**Lessons Learned 등록하게 하기**](#lessons-learned-등록하게-하기)
+      - [**계획 세우게 하기**](#계획-세우게-하기)
+      - [**단위테스트 코드 작성시켜 검증하기**](#단위테스트-코드-작성시켜-검증하기)
+      - [**서버 로그 디버깅 하기**](#서버-로그-디버깅-하기)
+      - [**context7 MCP 이용**](#context7-mcp-이용)
+      - [**실행 프로파일 작성**](#실행-프로파일-작성)
+      - [**API테스트**](#api테스트)
+      - [**버그픽스는 AI, 서버재시작은 사람이 수행**](#버그픽스는-ai-서버재시작은-사람이-수행)
+      - [**깊게 고민하게 하기**](#깊게-고민하게-하기)
+      - [**이전 git commit 참고 또는 복원하기**](#이전-git-commit-참고-또는-복원하기)
 
 ---
 
@@ -172,62 +185,9 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
   - 프롬프트 창에 '가이드 로딩'이라고 입력하면 갱신됩니다.  
 
 ### 서비스 기획 하기
+#### 작업 방법 가이드  
 - [서비스 기획 가이드](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/think/think-guide.md)  
 - [유저스토리 작성하기](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/02.think-prompt.md) 
-  
-### 설계하기 
-**1.사전 설치**   
-설계하기 부터는 추가로 아래 링크의 프로그램들을 설치하고 시작 하십시오.     
-[기본 프로그램 설치(2)](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare2.md)
-
-**2.설계 프롬프트**   
-[설계 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/03.design-prompt.md)
-
-### 개발하기
-[개발 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/04.develop-prompt.md)
-
-### 배포하기
-[배포 프롬프트]()
-
-### 단계별 작업 방법 Tip
-#### 유용한 공통 Tip
-- 작업 중단 시키기: 
-  - 작업 중 ESC를 누르면 진행중인 작업이 중단됩니다.
-  - 다시 시작하려면 '계속'이라고 입력. 또는 특정 단계명을 입력하여 계속하게 함.
-    예) 아래와 같은 단계로 구성되어 있었고 5번째 단계에서 ESC로 취소한 경우  
-    '외부 시퀀스 다이어그램 작성 (주요 플로우별)'의 처음부터 시작   
-    ```
-    Update Todos
-    ⎿  ☒ 공통설계원칙 가이드 다운로드 및 분석       
-      ☒ 외부시퀀스설계가이드 다운로드 및 분석
-      ☒ 유저스토리 분석 및 주요 플로우 도출
-      ☒ API 설계서 확인 및 연계
-      ☐ 외부 시퀀스 다이어그램 작성 (주요 플로우별)
-      ☐ 회원가입/로그인 플로우 다이어그램 작성
-      ☐ 여행 일정 생성 플로우 다이어그램 작성
-      ☐ 주변 장소 검색 플로우 다이어그램 작성
-      ☐ PlantUML 문법 검증
-      ☐ 일정 재생성 플로우 다이어그램 작성
-      ☐ 일정 내보내기 플로우 다이어그램 작성
-    ```
-  - 완전히 중단하려면 '/clear'를 수행    
-- 병렬 작업 시키기:
-  - CLAUDE.md의 '[핵심원칙]'섹션에 병렬 처리 전략이 있으므로 병렬 처리가 됨  
-  - 만약 병렬처리를 안하면 '서브 에이젼트로 병렬처리'라는 프롬프트를 추가하면 됨   
-
-- 프롬프트에 이미지 제공 방법   
-  - CLAUDE.md에 정의된 아래 약어 이용  
-    - @error: debug/error.png 
-    - @info: debug/info.png  
-  - 사용방법
-    - 에러 화면인지 정보 제공 화면인지에 따라 화면을 캡처하여 파일로 저장  
-    - 프롬프트팅에 약어를 이용   
-  - 사용예시
-    ```
-    @fix as @front 
-    아래 오류를 해결해 주세요. see @error 
-    [오류내용] 
-    ```
 
 #### 프로토타입 개발
 - 수동 테스트 요청 
@@ -252,6 +212,15 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
   ```
   모두 잘 수정 되었네요. 고생 했어요. 이제 브라우저를 종료해요. 
   ```
+
+### 설계하기 
+#### 작업 방법 가이드
+**1.사전 설치**   
+설계하기 부터는 추가로 아래 링크의 프로그램들을 설치하고 시작 하십시오.     
+[기본 프로그램 설치(2)](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare2.md)
+
+**2.설계 프롬프트**   
+[설계 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/03.design-prompt.md)
 
 #### 시퀀스 설계
 - 프로토타입을 먼저 보여주고 설계를 하는것도 좋습니다. 현재 가이드에는 그렇게 되어 있습니다.  
@@ -292,7 +261,11 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 서브 에이젼트를 병렬로 수행하여 동시에 수행하세요.
 ```
 
-#### 백엔드 개발/테스트 
+### 개발하기
+#### 작업 방법 가이드
+[개발 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/04.develop-prompt.md)
+
+#### 백엔드 개발/테스트 팁
 한꺼번에 모든 서비스를 개발하면 누락되는것이 많을 수 있습니다.   
 각 서비스별로 개발하는게 좋습니다.   
 만약 서비스가 복잡하면 각 기능단위로 개발하는게 더 좋습니다.     
@@ -313,7 +286,50 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/samples/sample-%EA%B8%B
 사람의 개입이 필요하다고 판단되면 'ESC'를 눌러 수행을 잠시 중단하게 하고 프롬프팅을 해서 작업 수정 요청합니다.   
 그리고 계속 진행해도 되면 '계속'이라고 입력합니다.    
 
-**Lessons Learned 등록하게 하기**     
+### 배포하기
+[배포 프롬프트]()
+
+### 유용한 Tip
+#### 공통 Tip
+- 작업 중단 시키기: 
+  - 작업 중 ESC를 누르면 진행중인 작업이 중단됩니다.
+  - 다시 시작하려면 '계속'이라고 입력. 또는 특정 단계명을 입력하여 계속하게 함.
+    예) 아래와 같은 단계로 구성되어 있었고 5번째 단계에서 ESC로 취소한 경우  
+    '외부 시퀀스 다이어그램 작성 (주요 플로우별)'의 처음부터 시작   
+    ```
+    Update Todos
+    ⎿  ☒ 공통설계원칙 가이드 다운로드 및 분석       
+      ☒ 외부시퀀스설계가이드 다운로드 및 분석
+      ☒ 유저스토리 분석 및 주요 플로우 도출
+      ☒ API 설계서 확인 및 연계
+      ☐ 외부 시퀀스 다이어그램 작성 (주요 플로우별)
+      ☐ 회원가입/로그인 플로우 다이어그램 작성
+      ☐ 여행 일정 생성 플로우 다이어그램 작성
+      ☐ 주변 장소 검색 플로우 다이어그램 작성
+      ☐ PlantUML 문법 검증
+      ☐ 일정 재생성 플로우 다이어그램 작성
+      ☐ 일정 내보내기 플로우 다이어그램 작성
+    ```
+  - 완전히 중단하려면 '/clear'를 수행    
+- 병렬 작업 시키기:
+  - CLAUDE.md의 '[핵심원칙]'섹션에 병렬 처리 전략이 있으므로 병렬 처리가 됨  
+  - 만약 병렬처리를 안하면 '서브 에이젼트로 병렬처리'라는 프롬프트를 추가하면 됨   
+
+- 프롬프트에 이미지 제공 방법   
+  - CLAUDE.md에 정의된 아래 약어 이용  
+    - @error: debug/error.png 
+    - @info: debug/info.png  
+  - 사용방법
+    - 에러 화면인지 정보 제공 화면인지에 따라 화면을 캡처하여 파일로 저장  
+    - 프롬프트팅에 약어를 이용   
+  - 사용예시
+    ```
+    @fix as @front 
+    아래 오류를 해결해 주세요. see @error 
+    [오류내용] 
+    ```
+
+#### **Lessons Learned 등록하게 하기**     
 Claude Code는 완벽하지 않아 시행착오를 자꾸합니다.   
 이를 방지하기 위해 아래와 같이 'CLAUDE.md'에 재실수를 방지하기 위한 추가 지침을 하도록 합니다.  
 그냥 등록하라고 하면 너무 길게 등록하므로 '간략하고 명확하게' 등록하라고 합니다.  
@@ -334,13 +350,13 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 잠깐 환경설정값은 applicaiton.yml이 아니라 실행프로파일을 점검해야 합니다. lessons learned에 간략하고 명확하게 추가해주고 계속해줘요.
 ```
 
-**계획 세우게 하기**    
+#### **계획 세우게 하기**    
 개발이나 리팩토링을 실제 수행하기 전에 계획을 먼저 세우게 하고 검토하는 것이 좋습니다.  
 ```
 @plan 'AsyncProcessingServie'클래스에서 공통함수를 분리할 계획을 세우세요.  
 ```
 
-**단위테스트 코드 작성시켜 검증하기**     
+#### **단위테스트 코드 작성시켜 검증하기**     
 추가/수정된 코드가 검증이 필요하다고 판단되면 클로드에게 단위테스트코드를 작성하라고 요청하십시오.   
 그리고 그 단위테스트 코드를 직접 수행하여 코드에 문제가 없는지 검증 시키십시오.    
 이때 실제와 동일한 sample 데이터를 제공하여 정확도를 높이는게 좋습니다.  
@@ -357,7 +373,7 @@ sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.
 resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
 ```
 
-**서버 로그 디버깅 하기**       
+#### **서버 로그 디버깅 하기**       
 application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 설정하도록 되어 있습니다.  
 만약 안되어 있으면 추가하도록 요청하세요.   
 ```
@@ -374,14 +390,14 @@ logging:
 ```
 서버 시작 시 에러나 테스트 시 런타임 에러가 나면 이 로그를 보고 원인을 분석해서 해결하도록 요청하세요.  
 
-**context7 MCP**        
+#### **context7 MCP 이용**        
 최신 개발 Best practice를 참조하여 개발할 수 있습니다.  
 context7 MCP를 이용하면 됩니다.   
 개발명령어(/develop-dev-backend, /develop-fix-backend, develop-test-backend)에 이미 '-c7'이라는 옵션이 있습니다.   
 이 명령어를 사용하지 않고 프롬프트에서 수정이나 개선을 요청할 때는 이 옵션을 명시해 줘야 합니다.   
 예) -c7 Google Place API를 이용하여 주변 주차장 정보를 찾도록 해주세요.  
 
-**실행 프로파일 작성**     
+#### **실행 프로파일 작성**     
 '/develop-make-run-profile' 명령으로 IntelliJ의 서비스 실행 프로파일을 작성할 수 있습니다.    
 {service}/.run/{service}.run.xml에 등록됩니다.    
 등록이 되면 서비스탭에 나타납니다.    
@@ -389,7 +405,7 @@ context7 MCP를 이용하면 됩니다.
 먼저 실행구성을 클릭하고 'Gradle'이나 'Maven' 등 빌드툴을 선택해야 표시됩니다.   
 ![](images/2025-08-07-09-24-30.png)    
 
-**API테스트**      
+#### **API테스트**      
 '@test-api'를 앞에 붙여 테스트를 요청하면 API 스펙을 정확히 확인하여 테스트 하게 됩니다.  
 
 ```
@@ -398,7 +414,19 @@ context7 MCP를 이용하면 됩니다.
 토큰: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTQ1MjI4ODMsImV4cCI6MTc1NDYwOTI4MywidHlwZSI6ImFjY2VzcyJ9.mQVnFKUDtMa426Qn25_2UMj8uABJ85uFwVrgdEsulZI
 ```
 
-**버그픽스는 AI, 서버재시작은 사람이 수행**           
+하지만 가끔 제대로 수행 못하는 경우가 있습니다.  
+이때는 아래와 같이 swagger page에서 curl 명령어를 복사하여 제공하세요.  
+```
+로그아웃 API 를 테스트 하고 에러를 고쳐주세요.
+
+curl -X 'POST' \
+  'http://localhost:8081/api/v1/users/logout' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTU4MzU2MTMsImV4cCI6MTc1NTkyMjAxMywidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoib25kYWwiLCJhdXRob3JpdHkiOiJVU0VSIn0.qM3x9jm4IbQbJ7M3rpuaoAKtOuOv9WP6ERc5fGLBJEw' \
+  -d ''
+```
+
+#### **버그픽스는 AI, 서버재시작은 사람이 수행**           
 AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합니다.    
 서버재시작은 본인이 하겠다고 프롬프트에 말해 주세요.   
 '/develop-test-backend'명령어에는 이미 이 프롬프트가 있지만 가끔 AI가 서버를 시작하려고 합니다.    
@@ -418,14 +446,14 @@ AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합�
 user service를 중단하세요.  
 ```
 
-**깊게 고민하게 하기**    
+#### **깊게 고민하게 하기**    
 잘 문제를 못풀면 깊게 고민하는 옵션을 프롬프트에 추가할 수 있습니다.  
 고민을 얼마나 깊게 할 지에 따라 --think, --think-hard, --ultra-think가 있습니다.  
 ```
 --think 
 ```
 
-**이전 git commit 참고 또는 복원하기**   
+#### **이전 git commit 참고 또는 복원하기**   
 개발하다 보면 이전 commit 소스를 찾아 참고하거나 복원해야할 경우가 있습니다. 
 이때 commit id를 제공하여 작업을 수행할 수 있습니다.    
 ```
