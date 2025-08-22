@@ -232,6 +232,7 @@
 - 아키텍처패턴: design/pattern/architecture-pattern.md
 - 논리아키텍처: design/backend/logical/*
 - API설계서: design/backend/api/*
+- API명세서: design/backend/api/spec/*
 - 외부시퀀스설계서: design/backend/sequence/outer/{플로우명}.puml
 - 내부시퀀스설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
 - 클래스설계서: design/backend/class/*

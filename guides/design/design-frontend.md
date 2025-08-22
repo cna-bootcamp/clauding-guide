@@ -11,17 +11,13 @@
 - 각 백엔드서비스 API 스펙과 반드시 일치
 - *모바일 화면 크기에 맞게 "넓이"와 "높이"를 최적화*
 - *이미지 크기는 화면에 맞게 적절하게 조정*
-- 프로토타입은 참고용이므로 백엔드 API스펙 분석결과에 따라 재설계
+- 프로토타입은 참고용이므로 백엔드 API명세서 분석결과에 따라 재설계
 
 <설계순서>
 - 준비:
   - 유저스토리, UI/UX설계서, 스타일가이드 분석 및 이해
-  - 프로토타입을 웹브라우저에 열어 화면구성과 사용자 플로우 이해 
-  - API스펙 분석: 각 백엔드 서비스 Swagger Page를 curl로 다운로드하여 분석 및 이해
-    - user service: http://localhost:8081/v3/api-docs 
-    - location service: http://localhost:8082/v3/api-docs
-    - trip service: http://localhost:8083/v3/api-docs
-    - ai service: http://localhost:8084/v3/api-docs
+  - 프로토타입을 **웹브라우저에 열어** 화면구성과 사용자 플로우 이해 
+  - API명세서 분석 및 이해: "[API명세서 주소]"섹션의 정보를 이용하여 'design/backend/api/spec'폴더에 다운로드하여 분석
 - 설계:
   <병렬처리> 안내에 따라 병렬 수행 가능한 설계는 동시 수행
   - 1단계: 정보 아키텍처 설계
@@ -31,8 +27,8 @@
     - **데이터 흐름 설계**: 컴포넌트 간 데이터 전달 방식
   - 2단계: UI/UX 설계
     - UI프레임워크 선택: MUI(Material-UI), Ant Design, Chakra UI, Mantine, React Bootstrap 등
-    - UI/UX설계서 업데이트: API스펙 분석 결과 반영 
-    - 스타일가이드 업데이트: API스펙 분석 결과 반영
+    - UI/UX설계서 업데이트: API명세서 분석 결과 반영 
+    - 스타일가이드 업데이트: API명세서 분석 결과 반영
     - 요구사항  
       - 각 화면에 Back 아이콘 버튼과 화면 타이틀 표시
       - 하단 네비게이션 바 아이콘화: 홈, 새여행, 주변장소검색, 여행보기
@@ -155,7 +151,7 @@
 - UI/UX설계서
 - 스타일가이드
 - 프로토타입
-- 백엔드 API스펙
+- 백엔드 API명세서
 
 [결과파일]
 - 프론트엔드설계서: design/frontend/ 하위에 작성
