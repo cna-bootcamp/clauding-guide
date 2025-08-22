@@ -46,8 +46,7 @@
 - [Claude Code와 SuperClaude 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/01.install-claude-code.md)
 - [Claude Code 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/02.setup-claude-code.md)
 - [프로젝트 Instruction 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)
-  - 백엔드 프로젝트와 프론트엔드 프로젝트에서 모두 수행
-
+  
 ---
 
 ## 사전지식  
@@ -326,13 +325,20 @@ API명세서는 design/backend/api/spec디렉토리에 생성됩니다.
 팀원 여러분, 프론트엔드설계서를 검토해 주세요.  
 ```
 
-4)팀원의견 반영
+4)팀원의견 반영   
 ```
 팀원의견을 반영하여 프론트엔드설계서를 갱신해 주세요. 
 단, 백엔드에서 지원 않하는 기능은 반영하지 마세요. 
 ```
 
 ##### 프론트엔드 개발
+1)프로젝트 디렉토리 생성 및 Instruction 설정    
+[프로젝트 Instruction 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)가이드에 따라 프론트엔드 프로젝트 디렉토리 생성 및 Instruction 설정 수행  
+
+2)개발
+```
+/develop-dev-front
+```
 
 
 ### 배포하기
