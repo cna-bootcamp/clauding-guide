@@ -31,10 +31,10 @@
 - **검증 단계 필수**: 병렬 처리 후 통합 검증
 
 [참고자료]
-- 유저스토리
-- UI/UX설계서
-- 스타일가이드
-- 프로토타입
-- API명세서
-- 프론트엔드설계서
+- 유저스토리: ../tripgen/design/userstory.md
+- UI/UX설계서: ../tripgen/design/uiux/uiux.md
+- 스타일가이드: ../tripgen/design/uiux/style-guide.md
+- 프로토타입: ../tripgen/design/uiux/prototype/*.html
+- API명세서: ../tripgen/design/backend/api/spec/*
+- 프론트엔드설계서: ../tripgen/design/frontend/frontend-design.md
 
