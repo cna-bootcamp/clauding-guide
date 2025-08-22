@@ -80,6 +80,11 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/physical-architecture-design.md
   - 파일명: physical-architecture-design.md
 
+- 프론트엔드설계가이드
+  - 설명: 프론트엔드 설계 방법 안내 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/design-frontend.md
+  - 파일명: design-frontend.md
+
 ---
 
 ## 개발 가이드
@@ -254,6 +259,7 @@
   - develop/mq/mq-exec-prod.md
 - 백엔드개발결과서: develop/dev/dev-backend.md
 - 백엔드테스트결과서: develop/dev/test-backend.md
+- 프론트엔드설계서: design/frontend/*
 
 ## 프롬프트 약어 
 ### 역할 약어 
