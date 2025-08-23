@@ -389,8 +389,13 @@ npm run dev
 ```
 
 직접 브라우저로 열어 런타임 에러를 수정하게 할 수도 있습니다.  
+예시)
 ``` 
 -play http://localhost:3000번으로 접근하여 에러가 있으면 수정해요. 
+```
+```
+'http://localhost:3000/dashboard'을 웹브라우저로 열어 직접 확인해봐요.
+id: hiondal, pw: 0sri1234$ 
 ```
 
 ### 배포하기
