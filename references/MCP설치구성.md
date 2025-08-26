@@ -116,7 +116,7 @@ Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽
 그래서 로컬에 Figma MCP서버를 설치해서 연동하는 방법으로 설명합니다.   
 
 1)Figma Client설치    
-
+  
 ![](images/2025-08-26-16-48-35.png)
 
 2)Figma MCP 서버 설치    
