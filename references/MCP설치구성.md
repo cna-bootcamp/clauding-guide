@@ -241,7 +241,7 @@ Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 
 ![](images/2025-08-03-10-35-59.png)
 
 
-참고) Figma MCP 설치
+**참고) Figma MCP 설치**   
 Claude Desktop에 Figma MCP 설정은 아래와 같이 하면 됩니다.    
 먼저 아래 링크에서 1)~3)번 수행을 먼저 해야 합니다.     
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98%ED%95%84%EC%88%98
