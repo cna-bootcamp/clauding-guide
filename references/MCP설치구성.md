@@ -8,6 +8,8 @@
     - [주요 MCP 연결](#주요-mcp-연결)
     - [Figma MCP 설치(필수)](#figma-mcp-설치필수)
   - [Claude Desktop에 주요 MCP서버 연결(옵션)](#claude-desktop에-주요-mcp서버-연결옵션)
+    - [주요 MCP 연결](#주요-mcp-연결-1)
+    - [Figma MCP 설치](#figma-mcp-설치)
   - [MCP포탈 이용 방법](#mcp포탈-이용-방법)
     - [GitHub MCP 설치](#github-mcp-설치)
     - [Google Map (옵션)](#google-map-옵션)
@@ -210,6 +212,7 @@ Claude Code 프롬프트에서 이 채널ID를 제공하여 작업합니다.
 ---
 
 ## Claude Desktop에 주요 MCP서버 연결(옵션)  
+### 주요 MCP 연결 
 Claude Desktop의 MCP서버 설정은 OS별로 아래 파일에 설정 합니다.  
 MCP 설정 파일:  
 - **Linux**: "~/.config/Claude/claude_desktop_config.json"
@@ -251,7 +254,7 @@ Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 
 ![](images/2025-08-03-10-35-59.png)
 
 
-**참고) Figma MCP 설치**   
+### Figma MCP 설치
 Claude Desktop에 Figma MCP 설정은 아래와 같이 하면 됩니다.    
 먼저 아래 링크에서 1)~3)번 수행을 먼저 해야 합니다.     
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98%ED%95%84%EC%88%98
