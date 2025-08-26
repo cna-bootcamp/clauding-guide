@@ -6,10 +6,10 @@
   - [주요 MCP 이해 및 준비 작업](#주요-mcp-이해-및-준비-작업)
   - [Claude Code에 주요 MCP서버 연결](#claude-code에-주요-mcp서버-연결)
     - [주요 MCP 연결](#주요-mcp-연결)
-    - [Figma MCP 설치(필수)](#figma-mcp-설치필수)
+    - [Figma MCP 설치](#figma-mcp-설치)
   - [Claude Desktop에 주요 MCP서버 연결(옵션)](#claude-desktop에-주요-mcp서버-연결옵션)
     - [주요 MCP 연결](#주요-mcp-연결-1)
-    - [Figma MCP 설치](#figma-mcp-설치)
+    - [Figma MCP 설치](#figma-mcp-설치-1)
   - [MCP포탈 이용 방법](#mcp포탈-이용-방법)
     - [GitHub MCP 설치](#github-mcp-설치)
     - [Google Map (옵션)](#google-map-옵션)
@@ -112,12 +112,12 @@ code ~/.claude.json
 
 만약 'mcpServers'항목이 이미 있다면 그 안의 각 MCP설정을 확인하여 잘 설정해야 합니다.  
 
-### Figma MCP 설치(필수)
+### Figma MCP 설치
 Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽을 수 있도록 하는 강력한 기능을 제공합니다.   
 참고로 유투브나 블로그에 여러 방법이 있는데 지금은 동작 안하는 방법이 많습니다.   
 그래서 로컬에 Figma MCP서버를 설치해서 연동하는 방법으로 설명합니다.   
 
-1)Figma MCP 서버 설치    
+**1)Figma MCP 서버 설치**    
 아무곳에나 설치해도 되지만 홈디렉토리 밑에 설치하는게 제일 낫습니다.  
 ```
 cd ~
@@ -140,7 +140,7 @@ Figma MCP의 소켓서버를 실행합니다.
 bun socket
 ```
 
-2)Figma 플러그인 설치 
+**2)Figma 플러그인 설치**    
 두가지 방법이 있습니다.  
 온라인 Figma에 설치하는 방법과 데스크탑에 설치하는 방법입니다.   
 사용하는 Figma에 따라 플러그인을 설치하세요.    
@@ -169,7 +169,7 @@ Figma Desktop을 실행합니다.
 
 ![](images/2025-08-26-17-07-43.png)  
 
-3)Claude Code에 MCP설정을 추가합니다.   
+**3)Claude Code에 MCP설정을 추가**     
 사용자홈 디렉토리 하위에 '.claude.json'파일을 편집기에서 오픈 합니다.    
 파일 끝 부분으로 가서 '"mcpServers"을 찾아 아래와 같이 MCP설정을 추가힙니다.   
 
@@ -198,12 +198,12 @@ Window:
 ![](images/2025-08-26-17-40-55.png)
 
 
-4)연결 확인         
+**4)연결 확인**            
 ```
 claude mcp list 
 ```
 
-5)Figma MCP 사용법     
+**5)Figma MCP 사용법**     
 5-1)온라인 Figma 사용 시 
 연동할 객체를 선택합니다.    
 그리고 'Cursor Talk to Figma MCP Plugin'을 실행합니다.
@@ -214,7 +214,7 @@ claude mcp list
 그리고 'Claude MCP Plugin'을 실행합니다.   
 ![](images/2025-08-26-17-17-39.png)  
 
-6)클로드에서 사용하기    
+**6)클로드에서 사용하기**    
 창 가운데에 있는 채널ID를 복사합니다.    
 예시)
 ```
