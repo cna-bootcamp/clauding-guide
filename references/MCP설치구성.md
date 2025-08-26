@@ -117,11 +117,7 @@ Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽
 참고로 유투브나 블로그에 여러 방법이 있는데 지금은 동작 안하는 방법이 많습니다.   
 그래서 로컬에 Figma MCP서버를 설치해서 연동하는 방법으로 설명합니다.   
 
-1)Figma Client설치    
-  
-![](images/2025-08-26-16-48-35.png)
-
-2)Figma MCP 서버 설치    
+1)Figma MCP 서버 설치    
 아무곳에나 설치해도 되지만 홈디렉토리 밑에 설치하는게 제일 낫습니다.  
 ```
 cd ~
@@ -144,7 +140,22 @@ Figma MCP의 소켓서버를 실행합니다.
 bun socket
 ```
 
-3)Figma Desktop앱에 플로그인 설치      
+2)Figma 플러그인 설치 
+두가지 방법이 있습니다.  
+온라인 Figma에 설치하는 방법과 데스크탑에 설치하는 방법입니다.   
+사용하는 Figma에 따라 플러그인을 설치하세요.    
+
+2-1)온라인 Figma에 플러그인 설치    
+![](images/2025-08-26-18-21-37.png)  
+
+![](images/2025-08-26-18-22-09.png)  
+
+
+2-2)Figma Client설치    
+  
+![](images/2025-08-26-16-48-35.png)
+
+2-3)Figma Desktop앱에 플로그인 설치      
 Figma Desktop을 실행합니다.    
 연동할 파일을 오픈합니다.   
 아래 그림과 같이 'Import from manifest '을 실행합니다.   
@@ -193,10 +204,17 @@ claude mcp list
 ```
 
 5)Figma MCP 사용법     
-Figma Desktop에서 연동할 객체를 선택합니다.    
+5-1)온라인 Figma 사용 시 
+연동할 객체를 선택합니다.    
+그리고 'Cursor Talk to Figma MCP Plugin'을 실행합니다.
+![](images/2025-08-26-18-24-00.png)  
+
+5-2)Figma Desktop 사용 시
+연동할 객체를 선택합니다.    
 그리고 'Claude MCP Plugin'을 실행합니다.   
 ![](images/2025-08-26-17-17-39.png)  
 
+6)클로드에서 사용하기    
 창 가운데에 있는 채널ID를 복사합니다.    
 예시)
 ```
