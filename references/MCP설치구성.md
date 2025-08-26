@@ -145,23 +145,23 @@ bun socket
 온라인 Figma에 설치하는 방법과 데스크탑에 설치하는 방법입니다.   
 사용하는 Figma에 따라 플러그인을 설치하세요.    
 
-2-1)온라인 Figma에 플러그인 설치    
+2-1)옵션1: 온라인 Figma에 플러그인 설치    
 ![](images/2025-08-26-18-21-37.png)  
 
 ![](images/2025-08-26-18-22-09.png)  
 
 
-2-2)Figma Client설치    
+2-2)옵션2: Figma Desktop에 플러그인 설치 
+-Figma Client설치    
   
 ![](images/2025-08-26-16-48-35.png)
 
-2-3)Figma Desktop앱에 플로그인 설치      
+-Figma Desktop앱에 플로그인 설치      
 Figma Desktop을 실행합니다.    
 연동할 파일을 오픈합니다.   
 아래 그림과 같이 'Import from manifest '을 실행합니다.   
 '~/claude-talk-to-figma-mcp/src/claude_mcp_plugin/manifest.json'을 선택합니다.   
 ![](images/2025-08-26-16-58-51.png)
-
 
 설치된 플러그인을 찾아서 실행해 봅니다.    
 잘 연결이 되는지 확인합니다.   
@@ -169,7 +169,7 @@ Figma Desktop을 실행합니다.
 
 ![](images/2025-08-26-17-07-43.png)  
 
-4)Claude Code에 MCP설정을 추가합니다.   
+3)Claude Code에 MCP설정을 추가합니다.   
 사용자홈 디렉토리 하위에 '.claude.json'파일을 편집기에서 오픈 합니다.    
 파일 끝 부분으로 가서 '"mcpServers"을 찾아 아래와 같이 MCP설정을 추가힙니다.   
 
@@ -274,7 +274,7 @@ Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 
 
 ### Figma MCP 설치
 Claude Desktop에 Figma MCP 설정은 아래와 같이 하면 됩니다.    
-먼저 아래 링크에서 1)~3)번 수행을 먼저 해야 합니다.     
+먼저 아래 링크에서 1)~2)번 수행을 먼저 해야 합니다.     
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98%ED%95%84%EC%88%98
 
 그리고 MCP설정 파일에 아래 내용을 추가하십시오.   
