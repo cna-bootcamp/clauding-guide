@@ -256,6 +256,11 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4
 }
 ```
 
+프롬프트 창에서 아래와 같이 사용할 수 있습니다.   
+```
+피그마 체널 'pyrrzgaq'에 접속하여 이벤트스토밍결과를 아티팩트로 정리
+```
+
 ---
 
 ## MCP포탈 이용 방법 
