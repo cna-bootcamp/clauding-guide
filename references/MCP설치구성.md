@@ -133,8 +133,8 @@ bun install
 ```
 
 빌드합니다.   
-macOS/Linux: bun run build
-Windows: bun run build:win
+macOS/Linux: bun run build   
+Windows: bun run build:win   
 
 Figma MCP를 실행합니다.   
 ```
