@@ -124,7 +124,7 @@ Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽
 ```
 cd ~
 ```
-
+  
 소스를 다운로드 하고 설치합니다.   
 ```
 git clone https://github.com/arinspunk/claude-talk-to-figma-mcp.git
