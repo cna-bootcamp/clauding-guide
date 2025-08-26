@@ -146,7 +146,9 @@ bun socket
 Figma Desktop을 실행합니다.    
 연동할 파일을 오픈합니다.   
 아래 그림과 같이 'Import from manifest '을 실행합니다.   
+'~/claude-talk-to-figma-mcp/src/claude_mcp_plugin/manifest.json'을 선택합니다.   
 ![](images/2025-08-26-16-58-51.png)
+
 
 설치된 플러그인을 찾아서 실행해 봅니다.    
 잘 연결이 되는지 확인합니다.   
