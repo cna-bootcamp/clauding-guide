@@ -160,16 +160,16 @@ Figma Desktop을 실행합니다.
 
 파일 끝 부분으로 가서 '"mcpServers"을 찾아 아래와 같이 MCP설정을 추가힙니다.   
 ```
-    "ClaudeTalkToFigma": {
-      "type": "stdio",
-      "command": "cmd",
-      "args": [
-        "/c",
-        "npx",
-        "-y",
-        "claude-talk-to-figma-mcp@latest"
-      ]
-    }
+"ClaudeTalkToFigma": {
+  "type": "stdio",
+  "command": "cmd",
+  "args": [
+    "/c",
+    "npx",
+    "-y",
+    "claude-talk-to-figma-mcp@latest"
+  ]
+}
 ```
 예시)
 ![](images/2025-08-26-17-40-55.png)
@@ -239,6 +239,19 @@ Claude Desktop이 실행 중이면 종료 합니다.
 Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 확인합니다.   
 추가한 MCP서버 목록이 보이고 각 MCP서버를 선택하였을 때 'running'이라고 나와야 합니다.   
 ![](images/2025-08-03-10-35-59.png)
+
+
+참고) Figma MCP 설치
+Claude Desktop에 Figma MCP 설정은 아래와 같이 하면 됩니다.    
+
+```
+"ClaudeTalkToFigma": {
+  "command": "npx",
+  "args": [
+    "claude-talk-to-figma-mcp@latest"
+  ]
+}
+```
 
 ---
 
