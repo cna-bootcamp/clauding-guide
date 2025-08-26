@@ -155,9 +155,6 @@ Figma Desktop을 실행합니다.
 
 4)Claude Code에 MCP설정을 추가합니다.   
 사용자홈 디렉토리 하위에 '.claude.json'파일을 편집기에서 오픈 합니다.    
-
-![](images/2025-08-26-17-13-23.png)
-
 파일 끝 부분으로 가서 '"mcpServers"을 찾아 아래와 같이 MCP설정을 추가힙니다.   
 ```
 "ClaudeTalkToFigma": {
@@ -243,7 +240,10 @@ Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 
 
 참고) Figma MCP 설치
 Claude Desktop에 Figma MCP 설정은 아래와 같이 하면 됩니다.    
+먼저 아래 링크에서 1)~3)번 수행을 먼저 해야 합니다.     
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98%ED%95%84%EC%88%98
 
+그리고 MCP설정 파일에 아래 내용을 추가하십시오.   
 ```
 "ClaudeTalkToFigma": {
   "command": "npx",
