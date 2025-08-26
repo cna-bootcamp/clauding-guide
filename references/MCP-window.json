@@ -1,12 +1,5 @@
 {
   "mcpServers": {
-    "figma-mcp": {
-      "command": "bunx",
-      "args": [
-        "cursor-talk-to-figma-mcp@latest",
-        "--server=vps.sonnylab.com"
-      ]
-    },
     "context7": {
       "command": "cmd",
       "args": [

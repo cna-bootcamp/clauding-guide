@@ -1,13 +1,5 @@
 {
   "mcpServers": {
-    "figma-mcp": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "cursor-talk-to-figma-mcp@latest",
-        "--server=vps.sonnylab.com"
-      ]
-    },
     "context7": {
       "command": "npx",
       "args": [
