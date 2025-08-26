@@ -136,9 +136,10 @@ bun install
 macOS/Linux: bun run build   
 Windows: bun run build:win   
 
-Figma MCP를 실행합니다.   
+Figma MCP의 소켓서버를 실행합니다.   
+이 서버를 통해 AI와 Figma가 통신합니다.    
 ```
-
+bun socket
 ```
 
 3)Figma Desktop앱에 플로그인 설치      
