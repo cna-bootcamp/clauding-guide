@@ -161,12 +161,18 @@ Figma Desktop을 실행합니다.
 파일 끝 부분으로 가서 '"mcpServers"을 찾아 아래와 같이 MCP설정을 추가힙니다.   
 ```
     "ClaudeTalkToFigma": {
-      "command": "bunx",
-      "args": ["claude-talk-to-figma-mcp@latest"]
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "claude-talk-to-figma-mcp@latest"
+      ]
     }
 ```
 예시)
-![](images/2025-08-26-17-15-16.png)   
+![](images/2025-08-26-17-40-55.png)
 
 
 4)연결 확인         
