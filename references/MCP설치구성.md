@@ -6,15 +6,13 @@
   - [주요 MCP 이해 및 준비 작업](#주요-mcp-이해-및-준비-작업)
   - [Claude Code에 주요 MCP서버 연결](#claude-code에-주요-mcp서버-연결)
     - [주요 MCP 연결](#주요-mcp-연결)
-    - [확인](#확인)
+    - [Figma MCP 설치(필수)](#figma-mcp-설치필수)
   - [Claude Desktop에 주요 MCP서버 연결(옵션)](#claude-desktop에-주요-mcp서버-연결옵션)
   - [MCP포탈 이용 방법](#mcp포탈-이용-방법)
     - [GitHub MCP 설치](#github-mcp-설치)
     - [Google Map (옵션)](#google-map-옵션)
     - [온라인 Claude에 추가 (옵션)](#온라인-claude에-추가-옵션)
     - [주의사항](#주의사항)
-  - [추가 MCP 설치](#추가-mcp-설치)
-    - [Figma MCP 설치(필수)](#figma-mcp-설치필수)
   - [MCP서버 삭제](#mcp서버-삭제)
 
 ---
@@ -112,12 +110,86 @@ code ~/.claude.json
 
 만약 'mcpServers'항목이 이미 있다면 그 안의 각 MCP설정을 확인하여 잘 설정해야 합니다.  
 
-### 확인 
-터미널에서 설치된 MCP List를 확인합니다.  
+### Figma MCP 설치(필수)
+Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽을 수 있도록 하는 강력한 기능을 제공합니다.   
+참고로 유투브나 블로그에 여러 방법이 있는데 지금은 동작 안하는 방법이 많습니다.   
+그래서 로컬에 Figma MCP서버를 설치해서 연동하는 방법으로 설명합니다.   
+
+1)Figma Client설치    
+
+![](images/2025-08-26-16-48-35.png)
+
+2)Figma MCP 서버 설치    
+아무곳에나 설치해도 되지만 홈디렉토리 밑에 설치하는게 제일 낫습니다.  
+```
+cd ~
+```
+
+소스를 다운로드 하고 설치합니다.   
+```
+git clone https://github.com/arinspunk/claude-talk-to-figma-mcp.git
+cd claude-talk-to-figma-mcp
+bun install
+```
+
+빌드합니다.   
+macOS/Linux: bun run build
+Windows: bun run build:win
+
+Figma MCP를 실행합니다.   
+```
+
+```
+
+3)Figma Desktop앱에 플로그인 설치      
+Figma Desktop을 실행합니다.    
+연동할 파일을 오픈합니다.   
+아래 그림과 같이 'Import from manifest '을 실행합니다.   
+![](images/2025-08-26-16-58-51.png)
+
+설치된 플러그인을 찾아서 실행해 봅니다.    
+잘 연결이 되는지 확인합니다.   
+![](images/2025-08-26-17-06-34.png) 
+
+![](images/2025-08-26-17-07-43.png)  
+
+4)Claude Code에 MCP설정을 추가합니다.   
+사용자홈 디렉토리 하위에 '.claude.json'파일을 편집기에서 오픈 합니다.    
+
+![](images/2025-08-26-17-13-23.png)
+
+파일 끝 부분으로 가서 '"mcpServers"을 찾아 아래와 같이 MCP설정을 추가힙니다.   
+```
+    "ClaudeTalkToFigma": {
+      "command": "bunx",
+      "args": ["claude-talk-to-figma-mcp@latest"]
+    }
+```
+예시)
+![](images/2025-08-26-17-15-16.png)   
+
+
+4)연결 확인         
 ```
 claude mcp list 
 ```
-![](images/2025-08-03-10-17-47.png)
+
+5)Figma MCP 사용법     
+Figma Desktop에서 연동할 객체를 선택합니다.    
+그리고 'Claude MCP Plugin'을 실행합니다.   
+![](images/2025-08-26-17-17-39.png)  
+
+창 가운데에 있는 채널ID를 복사합니다.    
+예시)
+```
+Connected to server on port 3055 in channel: l966iq7b
+```
+
+Claude Code 프롬프트에서 이 채널ID를 제공하여 작업합니다.   
+예시)
+```
+피그마채널 'l966iq7b'에 접근하여 이벤트스토밍결과를 마크다운파일로 정리하세요.   
+```
 
 ---
 
@@ -167,6 +239,7 @@ Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 
 ## MCP포탈 이용 방법 
 여러 사이트가 있는데 그 중에 가장 많이 사용하는 곳은 Smithery(스미써리: 대장간)입니다.  
 https://smithery.ai/
+주의할 점은 개인이 올릴 수 있고 Smithery서버를 통해 사용하기 때문에 동작하다가 안될 수 있다는 것입니다.   
 
 GitHub와 Figma MCP 추가를 이 사이트를 이용해서 추가해 보겠습니다.   
 
@@ -255,37 +328,6 @@ sonnylazuardi-cursor-talk-to-figma-mcp: npx -y @smithery/cli@latest run @sonnyla
 ```
 claude mcp remove sonnylazuardi-cursor-talk-to-figma-mcp -s user
 ```
-
----
-
-## 추가 MCP 설치   
-
-### Figma MCP 설치(필수)
-Figma MCP는 여러 방법으로 연동을 할 수 있는데 가장 간단한 방법으로 연동하겠습니다.   
-
-**설치**   
-```
-claude mcp add TalkToFigma -- bunx cursor-talk-to-figma-mcp@latest -s user
-```
-
-**연결 확인**      
-```
-claude mcp list 
-```
-
-**Figma MCP 사용법**   
-- Figma에서 'Cursor Talk To Figma MCP Plugin' 설치
-![](images/2025-07-23-19-21-28.png) 
-- 연동할 Figma 객체 선택 후 플러그인 실행
-![](images/2025-07-23-19-22-02.png)  
-- 연동 서버 실행
-  맨 아래에 있는 'bunx cursor-talk-to-figma-socket'을 터미널에서 실행   
-  ![](images/2025-08-03-11-52-25.png)  
-  다시 연동할 Figma 객체를 선택한 후 플러그인을 실행합니다.  
-- 플러그인 창에서 채널 ID 복사. 이 플러그인 창을 닫지 않고 그대로 둠
-  ![](images/2025-07-23-19-22-26.png) 
-- Claude Desktop 또는 Claude Code에서 프롬프팅
-  ![](images/2025-07-23-19-22-49.png)  
 
 ---
 
