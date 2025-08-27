@@ -45,11 +45,28 @@ export PATH="$HOME/.bun/bin:$PATH"
 ```
 
 **3.Claude Desktop 설치(옵션)**    
+**1)Claude Desktop 설치**    
 Claude Desktop에 MCP를 연결하려면 아래 사이트에서 Claude Desktop을 먼저 설치해야 합니다.   
 Claude Desktop은 온라인 Claude와 동일한 기능을 로컬에서 사용하기 위한 로컬 Claude툴입니다.  
 이 툴을 설치하면 온라인에서 할 수 없었던 로컬 파일 접근 이나 수정 작업도 할 수 있습니다.  
 https://support.anthropic.com/ko/articles/10065433-claude-desktop-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
 
+**2)bun설치**        
+
+Linux/Mac: 
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+Window:
+```
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+설정 적용: Mac은 ~/.zshrc, Linux와 Window는 ~/.bashrc에 추가 
+```
+export PATH="$HOME/.bun/bin:$PATH"
+```
 ---
 
 ## 주요 MCP 이해 및 준비 작업  
