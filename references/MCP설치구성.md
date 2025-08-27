@@ -43,7 +43,7 @@ curl -fsSL https://bun.sh/install | bash
 ```
 export PATH="$HOME/.bun/bin:$PATH"
 ```
-
+  
 **3.Claude Desktop 설치(옵션)**    
 **1)Claude Desktop 설치**    
 Claude Desktop에 MCP를 연결하려면 아래 사이트에서 Claude Desktop을 먼저 설치해야 합니다.   
