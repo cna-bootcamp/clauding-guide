@@ -234,11 +234,12 @@ Claude Code 프롬프트에서 이 채널ID를 제공하여 작업합니다.
 
 ## Claude Desktop에 주요 MCP서버 연결(옵션)  
 ### 사전준비
-1)Git설치
+1)Git설치    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-client-%EC%84%A4%EC%B9%98
-2)Node설치
+   
+2)Node설치    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#nodejs-%EC%84%A4%EC%B9%98
-
+   
 ### 주요 MCP 연결 
 Claude Desktop의 MCP서버 설정은 OS별로 아래 파일에 설정 합니다.  
 MCP 설정 파일:  
