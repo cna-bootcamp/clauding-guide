@@ -8,6 +8,7 @@
     - [주요 MCP 연결](#주요-mcp-연결)
     - [Figma MCP 설치](#figma-mcp-설치)
   - [Claude Desktop에 주요 MCP서버 연결(옵션)](#claude-desktop에-주요-mcp서버-연결옵션)
+    - [사전준비](#사전준비)
     - [주요 MCP 연결](#주요-mcp-연결-1)
     - [Figma MCP 설치](#figma-mcp-설치-1)
     - [Filesystem MCP 설치](#filesystem-mcp-설치)
@@ -51,22 +52,6 @@ Claude Desktop은 온라인 Claude와 동일한 기능을 로컬에서 사용하
 이 툴을 설치하면 온라인에서 할 수 없었던 로컬 파일 접근 이나 수정 작업도 할 수 있습니다.  
 https://support.anthropic.com/ko/articles/10065433-claude-desktop-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
 
-**2)bun설치**        
-
-Linux/Mac: 
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
-
-Window:
-```
-powershell -c "irm bun.sh/install.ps1 | iex"
-```
-
-설정 적용: Mac은 ~/.zshrc, Linux와 Window는 ~/.bashrc에 추가 
-```
-export PATH="$HOME/.bun/bin:$PATH"
-```
 ---
 
 ## 주요 MCP 이해 및 준비 작업  
@@ -248,6 +233,12 @@ Claude Code 프롬프트에서 이 채널ID를 제공하여 작업합니다.
 ---
 
 ## Claude Desktop에 주요 MCP서버 연결(옵션)  
+### 사전준비
+1)Git설치
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-client-%EC%84%A4%EC%B9%98
+2)Node설치
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#nodejs-%EC%84%A4%EC%B9%98
+
 ### 주요 MCP 연결 
 Claude Desktop의 MCP서버 설정은 OS별로 아래 파일에 설정 합니다.  
 MCP 설정 파일:  
