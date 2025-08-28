@@ -7,16 +7,12 @@
 
 [가이드]
 <개발원칙>
-- 프론트엔드설계서를 기반으로 개발 
+- UI/UX설계서, 스타일가이드, 정보아키텍처, API매핑설계서를 기반으로 개발 
 - API명세서와 반드시 일치
-- 프로토타입은 참고용이므로 백엔드 API명세서 분석결과를 준용
 
 <개발순서>
 - 준비:
-  - 유저스토리, UI/UX설계서, 스타일가이드 분석 및 이해 
-  - 프론트엔드설계서 분석 및 이해
-  - API명세서 분석 및 이해
-  - 프로토타입을 **웹브라우저에 열어** 화면구성과 사용자 플로우 이해 
+  - UI/UX설계서, 스타일가이드, 정보아키텍처, API매핑설계서 분석 및 이해 
 - 개발:
   <병렬처리> 안내에 따라 병렬 수행 가능한 개발은 동시 수행
 
@@ -31,10 +27,8 @@
 - **검증 단계 필수**: 병렬 처리 후 통합 검증
 
 [참고자료]
-- 유저스토리: ../tripgen/design/userstory.md
-- UI/UX설계서: ../tripgen/design/uiux/uiux.md
-- 스타일가이드: ../tripgen/design/uiux/style-guide.md
-- 프로토타입: ../tripgen/design/uiux/prototype/*.html
-- API명세서: ../tripgen/design/backend/api/spec/*
-- 프론트엔드설계서: ../tripgen/design/frontend/frontend-design.md
-
+- UI/UX설계서: design/frontend/uiux-design.md
+- 스타일가이드: design/frontend/style-guide.md
+- 정보아키텍처: design/frontend/ia.md
+- API매핑설계서: design/frontend/api-mapping.md
+- API명세서: design/api/*.json
