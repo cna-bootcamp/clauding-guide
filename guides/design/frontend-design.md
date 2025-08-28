@@ -18,6 +18,7 @@
   - "[백엔드시스템]"섹션의 정보를 이용하여 API명세서를 다운로드하여 분석 및 이해
     (다운로드 디렉토리: desing/frontend/api)
   - "[요구사항]" 섹션을 읽어 화면 요구사항 이해
+
 - 설계:
   - 1. **UI/UX 설계**
     - 1.1 UI프레임워크 선택: MUI, Ant Design, Chakra UI, Mantine, React Bootstrap 등    
