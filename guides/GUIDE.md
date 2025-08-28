@@ -82,8 +82,8 @@
 
 - 프론트엔드설계가이드
   - 설명: 프론트엔드 설계 방법 안내 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/design-frontend.md
-  - 파일명: design-frontend.md
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/frontend-design.md
+  - 파일명: frontend-design.md
 
 ---
 
