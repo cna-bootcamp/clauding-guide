@@ -14,9 +14,9 @@
 
 <설계순서>
 - 준비:
-  - 프로토타입 분석 및 이해  
-  - "[백엔드시스템]"섹션의 정보를 이용하여 API명세서를 'desing/frontend/api'에 다운로드하여 분석 및 이해
-  - "[요구사항]" 섹션을 읽어 화면 요구사항 이해
+  - 프로토타입 분석: '../{시스템}/design/uiux/prototype'디렉토리의 모든 파일을 'design/prototype' 디렉토리로 복사하고 분석 및 이해 
+  - API 분석: "[백엔드시스템]"섹션의 정보를 이용하여 API명세서를 'design/api'에 다운로드하여 분석 및 이해
+  - 화면요구사항 분석: "[요구사항]" 섹션을 읽어 화면 요구사항 이해
 
 - 설계:
   - 1. **UI/UX 설계**
@@ -65,8 +65,8 @@
       - API 요청데이타와 API 응답데이터 예시 
 
 [참고자료]
-- 프로토타입: ../{시스템}/design/uiux/prototype/*
-- API명세서: design/frontend/api/*.json
+- 프로토타입: design/prototype/*
+- API명세서: design/api/*.json
 
 [결과파일]
 - UI/UX설계서: design/frontend/uiux-design.md
