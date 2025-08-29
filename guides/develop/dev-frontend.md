@@ -2,8 +2,10 @@
 
 [요청사항]
 - <개발원칙>을 준용하여 개발
-- <개발순서>에 따라 개발
-- [결과파일] 안내에 따라 파일 작성
+- <개발순서>에 따라 아래 3단계로 개발
+  - '0. 준비'를 수행하고 완료 후 다음 단계 진행여부를 사용자에게 확인  
+  - '1. 기술스택 결정 ~ 5. 공통 컴포넌트 개발'까지 숳애하고 완료 후 다음 단계 진행여부를 사용자에게 확인   
+  - '6. 각 페이지별 구현'은 사용자와 함께 각 페이지를 개발  
 
 [가이드]
 <개발원칙>
@@ -11,20 +13,146 @@
 - API명세서와 반드시 일치
 
 <개발순서>
-- 준비:
+- 0. 준비
   - UI/UX설계서, 스타일가이드, 정보아키텍처, API매핑설계서 분석 및 이해 
-- 개발:
-  <병렬처리> 안내에 따라 병렬 수행 가능한 개발은 동시 수행
-
-- 검토:
-  - <개발원칙> 준수 검토
-  - 스쿼드 팀원 리뷰: 누락 및 개선 사항 검토
-  - 수정 사항 선택 및 반영
-
-<병렬처리>
-- **의존성 분석 선행**: 병렬 처리 전 반드시 의존성 파악
-- **순차 처리 필요시**: 무리한 병렬화보다는 안전한 순차 처리
-- **검증 단계 필수**: 병렬 처리 후 통합 검증
+  - API명세서 분석 및 이해
+  - 프로토타입을 웹브라우저에서 모바일사이즈로 열어 각 화면 분석  
+- 1. 기술스택 결정
+  - 개발 프레임워크과 버전 선택: {개발프레임워크}
+  - UI라이브러리와 버전 선택: {UI라이브러리}
+  - 상태관리 라이브러리 선택: 
+  - 상태 관리 라이브러리 선택
+    - 클라이언트 상태 관리: Redux/Zustand/Context API 중 선택
+    - 서버 상태 관리: React Query/SWR/Apollo 중 선택 
+  - 빌드 도구 선택: Vite/Webpack/Create React App 중 선택
+  - 개발 서버 포트: 3000
+- 2. 프로젝트 초기 설정
+  - 2.1 프로젝트 생성 및 구조 설정
+    - 프로젝트 설정 확인
+      - 현재 디렉토리를 프로젝트 루트로 사용
+      - 현재 존재하는 디렉토리/파일은 그대로 유지하면서 작업   
+      - package.json 파일 존재 확인
+      - TypeScript 설정 확인 및 완료 (TypeScript 사용시)
+      - ESLint/Prettier 설정 확인 및 완료
+    - 폴더 구조 생성: 정보아키텍처대로 작성 
+    - 설정 파일 생성
+      - vite.config.ts/webpack.config.js
+      - tsconfig.json (TypeScript 사용시)
+      - .env.example
+  - 2.2 의존성 설치 및 설정
+    - 핵심 의존성 설치
+      - 프레임워크 관련: 예) react, react-dom
+      - 라우팅: 예) react-router-dom
+      - 상태 관리: 예) @reduxjs/toolkit, react-redux
+      - API 통신: 예) axios, react-query
+      - UI 라이브러리: 예) @mui/material
+    - 개발 의존성 설치
+      - TypeScript 사용시: typescript, @types/react
+      - 린팅: eslint, @typescript-eslint/parser
+      - 스타일링: styled-components/emotion
+    - 설정 완료 검증  
+      - npm run dev 실행 성공
+      - 브라우저에서 기본 페이지 로딩 확인
+- 3. 기반 시스템 구축
+  - 3.1 스타일 시스템 구축: '스타일가이드'대로 구축
+    - CSS 변수 시스템 구축
+      - /src/styles/variables.css 생성
+      - 컬러 팔레트 CSS 변수 정의
+      - 타이포그래피 변수 정의
+      - 간격(spacing) 시스템 정의  
+    - 테마 설정
+      - 기본 테마 객체 생성
+      - 컬러/타이포그래피 커스터마이징
+      - 반응형 브레이크포인트 설정  
+    - 글로벌 스타일 적용
+      - CSS Reset/Normalize
+      - 기본 폰트 및 색상 적용
+      - 반응형 기본 설정 
+  - 3.2 라우팅 시스템 구축: '정보아키텍처' 참조
+    - 기본 라우터 설정
+      - BrowserRouter/HashRouter 설정
+      - 기본 라우트 구조 정의
+      - 404 페이지 설정
+    - 보호된 라우트 구현 (인증 필요시)
+      - PrivateRoute 컴포넌트 생성
+      - 인증 상태 체크 로직
+      - 로그인 리다이렉트 처리 
+    - 네비게이션 컴포넌트
+      - Header/Sidebar 네비게이션
+      - 모바일 네비게이션 (필요시)
+      - 활성 상태 표시
+  - 3.3 상태 관리 시스템 구축      
+    - 스토어 초기 설정
+      - 루트 스토어 생성
+      - 기본 슬라이스 생성 (auth, ui 등)
+      - 미들웨어 설정 (redux-thunk 등)   
+    - 타입 정의
+      - RootState 타입 정의
+      - AppDispatch 타입 정의
+      - 각 슬라이스별 State 타입 정의 
+    - Provider 설정
+      - App 컴포넌트에 Provider 래핑
+      - 개발 도구 설정 (Redux DevTools)
+- 4. API 연동 시스템 구축: 'API명세서'와 'API매핑설계서' 참조 
+  - 4.1 API 기본 설정
+    - 환경 설정 파일 생성
+      - public/runtime-env.js (런타임 설정)
+      - .env 파일 설정
+      - API 기본 URL 설정      
+    - API 설정 모듈 생성
+      - /src/services/api/config.ts
+      - 각 서비스별 BASE_URL 정의
+      - 공통 헤더/타임아웃 설정      
+    - Axios 클라이언트 생성
+      - /src/services/api/client.ts
+      - 서비스별 클라이언트 인스턴스 생성
+      - 공통 설정 적용
+  - 4.2 API 인터셉터 구현
+    - 요청 인터셉터
+      - 인증 토큰 자동 추가
+      - 공통 헤더 설정
+      - 요청 로깅 (개발 환경)        
+    - 응답 인터셉터
+      - 공통 에러 처리
+      - 토큰 만료 처리
+      - 응답 데이터 정규화        
+    - 에러 처리
+      - 네트워크 오류 처리
+      - HTTP 상태 코드별 처리
+      - 사용자 친화적 에러 메시지
+  - 4.3 API 서비스 함수 구현
+    - 타입 정의
+      - API 요청/응답 인터페이스 정의
+      - /src/types/api.ts
+      - 각 도메인별 타입 파일 생성
+    - 서비스 함수 구현
+      - /src/services/[domain]/[domain]Api.ts
+      - CRUD 기본 함수들 구현
+      - 에러 처리 포함
+    - React Query 훅 구현
+      - /src/hooks/use[Domain].ts
+      - 캐싱 전략 설정
+      - 로딩/에러 상태 관리
+- 5. 공통 컴포넌트 개발: '프로토타입' 참조
+  - UI 기본 컴포넌트
+    - Button, Input, Modal 등
+    - Loading, Error 컴포넌트
+    - Layout 컴포넌트 
+  - 비즈니스 공통 컴포넌트
+    - Header, Footer, Sidebar
+    - 인증 관련 컴포넌트
+    - 에러 바운더리
+  - 폼 관리 컴포넌트
+    - React Hook Form 설정
+    - 유효성 검사 스키마
+    - 공통 폼 컴포넌트
+- 6. 각 페이지별 구현: 각 페이지별로 아래 순서를 반복하면서 개발 
+  - **구현할 페이지의 프로토타입을 웹브라우저에서 모바일 사이즈로 재확인**  
+  - 사용자가 제공한 정보를 이용하여 API의 요청과 응답 데이터 파악  
+  - API와 연동하여 페이지 개발 
+  - 빌드 및 에러 해결 
+  - 사용자에게 페이지 테스트 요청
+  - 에러 해결 및 개선 사항 적용 
 
 [참고자료]
 - UI/UX설계서: design/frontend/uiux-design.md
@@ -32,3 +160,5 @@
 - 정보아키텍처: design/frontend/ia.md
 - API매핑설계서: design/frontend/api-mapping.md
 - API명세서: design/api/*.json
+- 프로토타입: design/prototype/*
+
