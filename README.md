@@ -36,8 +36,6 @@
     - [유용한 Tip](#유용한-tip)
       - [공통 Tip](#공통-tip)
       - [Lessons Learned 등록하게 하기](#lessons-learned-등록하게-하기)
-      - [계획 세우게 하기](#계획-세우게-하기)
-      - [(백엔드)단위테스트 코드 작성시켜 검증하기](#백엔드단위테스트-코드-작성시켜-검증하기)
       - [context7 MCP 이용](#context7-mcp-이용)
       - [깊게 고민하게 하기](#깊게-고민하게-하기)
       - [이전 git commit 참고 또는 복원하기](#이전-git-commit-참고-또는-복원하기)
@@ -579,7 +577,7 @@ AKS기준으로 작성되었으며 다른 클라우드의 Kubernetes서비스는
   db와 redis가 사용하는 포트를 찾습니다.   
   ![](images/2025-09-01-17-33-15.png)
 
-- 
+- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/tree/main?tab=readme-ov-file#azure-%EB%B0%A9%ED%99%94%EB%B2%BD-%EC%98%A4%ED%94%88) 참고하여 포트 오픈 
 
 
 **팁) 데이터베이스 제거**    
@@ -694,40 +692,99 @@ user-service 실행 시 에러가 발생합니다.
 서버 로그를 분석하여 해결하세요.   
 ```
 
-**5.API별 개발**          
+**6.방화벽 오픈**    
+API swagger 페이지 접속을 위해 방화벽 오픈 작업을 합니다.   
+
+- 오픈할 포트 찾기 
+각 서비스의 실행 프로파일에서 'SERVER_PORT'값을 확인
+![](images/2025-09-01-17-43-08.png)   
+![](images/2025-09-01-17-44-19.png)
+
+- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/tree/main?tab=readme-ov-file#azure-%EB%B0%A9%ED%99%94%EB%B2%BD-%EC%98%A4%ED%94%88) 참고하여 오픈  
+
+**7.API별 개발**          
 각 API별로 (AI)API 테스트 -> (AI)코드수정 및 컴파일 -> (사람)서버 재시작의 과정을 반복하면서 완성해 나갑니다.   
 가장 먼저 완성해야할 API는 '로그인'입니다.   
-로그인API를 예로 해서 API별 개발을 설명하겠습니다.    
 
+로그인API를 예로 해서 API별 개발을 설명하겠습니다.    
 0)사용자등록   
 로그인API는 사용자 등록이 먼저 되어야 하므로 사용자 등록을 요청합니다.    
 다른 API는 이 단계는 불필요합니다.   
 ```
-user-service를 위한 db를 
+user-service를 위한 db pod를 찾아 아래 사용자를 등록해 주세요.  
+- id: trip01
+- name: 트립01
+- pw: P@ssw0rd$
 ```
 
 1)Swagger페이지 접속 및 설정 
 'http://localhost:{서비스별 포트}/swagger-ui.html'으로 접속합니다.   
+로그인 API를 수행합니다.   
+![](images/2025-09-01-17-57-51.png)   
 
-1)API테스트 요청 
-swagger 페이지에서 테스트 명령을 복사하여 제공합니다.   
 
+2)에러 발생 시 API명령을 제공하여 에러 수정 요청   
+
+![](images/2025-09-01-17-58-20.png)  
 
 예시)
 ```
-로그아웃 API 를 테스트 하고 에러를 고쳐주세요.
+로그인 API 를 테스트 하고 에러를 고쳐주세요.
 
 curl -X 'POST' \
-  'http://localhost:8081/api/v1/users/logout' \
+  'http://localhost:8081/api/v1/users/login' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTU4MzU2MTMsImV4cCI6MTc1NTkyMjAxMywidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoib25kYWwiLCJhdXRob3JpdHkiOiJVU0VSIn0.qM3x9jm4IbQbJ7M3rpuaoAKtOuOv9WP6ERc5fGLBJEw' \
-  -d ''
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "trip01",
+  "password": "P@ssw0rd$",
+  "rememberMe": true
+}'
 ```
 
+3)코드수정 및 컴파일    
+AI가 코드를 수정하고 컴파일까지 하는것을 모니터링 합니다.   
+엉뚱한 수행을 하려고 하면 'ESC'를 눌러 중지시키고 프롬프트에 새로운 요청을 합니다.   
 
+코드 수정 후 컴파일을 제대로 하는지 확인합니다.   
+서버를 시작하려고 하면 즉시 중단시키고 CLAUDE.md의 가이드대로 서버 시작은 사용자에게 요청해야 한다고 말해 줍니다.   
 
+4)서비스 재시작    
+'서비스'탭에서 서비스를 재시작 합니다.   
+중단하고 시작하는게 좋습니다.      
+![](images/2025-09-01-18-03-25.png)  
 
-개발을 할 때는 계획-수행-테스트의 과정으로 하십시오.   
+5)재 테스트를 요청
+
+```
+서버 재시작 했어요. 다시 테스트 하세요. 
+```
+
+'1) ~ 5)' 작업을 각 API별로 수행하십시오.   
+
+  
+인증이 필요한 API는 아래와 같이 사전 작업을 한 후 수행하세요.   
+1)토큰복사    
+로그인API 수행 결과에서 accessToken값 복사   
+![](images/2025-09-01-18-06-58.png)
+
+2)인증처리
+
+![](images/2025-09-01-18-07-34.png)
+
+![](images/2025-09-01-18-08-05.png)
+
+3)API 테스트
+아래 예와 같이 Authorization 헤더에 토큰값이 셋팅되어야 합니다.   
+```
+curl -X 'GET' \
+  'http://localhost:8081/api/v1/users/check/email/user01%40tripgen.com' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxYTFhNDViNi1lZmU5LTRjMjMtOWI2Yi05NTgwYmExNWNhZDkiLCJpYXQiOjE3NTY3MTcwNzYsImV4cCI6MTc1NjgwMzQ3NiwidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoidHJpcDAxIiwiYXV0aG9yaXR5IjoiVVNFUiJ9.ht7mmEtZyuba5FXnjtEByDFAQGTXI3Uwb3PLrJyQH8A'
+```
+
+**8.복잡한 기능 개발**         
+복잡한 기능을 개발을 할 때는 계획-수행-테스트의 과정으로 하십시오.   
 아래 예시를 참조하세요.  
 https://github.com/cna-bootcamp/clauding-guide/blob/main/samples/sample-%EA%B8%B0%EB%8A%A5%EC%B6%94%EA%B0%80%EC%98%88%EC%8B%9C.md
 
@@ -735,16 +792,27 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/samples/sample-%EA%B8%B
 AI가 엉뚱하게 개발하는 경우가 가끔 있기 때문입니다.   
 이때는 빨리 ESC로 중단하고 올바른 방법을 안내해줘야 합니다.   
 
-**테스트**       
-백엔드 테스트도 각 서비스별로 하나씩 테스트하는게 좋습니다.   
-각 서비스별로 **각 API를 하나 하나 테스트** 합니다.   
-이때 AI에게 맡겨만 두지 말고 **진행상황을 꼭 모니터링**해야 합니다.   
-왜냐하면 중간에 엉뚱하게 바꾸거나 임시코드를 만들거나 가이드와 다르게 수행하는 경우가 종종 있기 때문입니다.    
-사람의 개입이 필요하다고 판단되면 'ESC'를 눌러 수행을 잠시 중단하게 하고 프롬프팅을 해서 작업 수정. 요청합니다.   
-그리고 계속 진행해도 되면 '계속'이라고 입력합니다.    
+팁) 단위테스트 코드 작성시켜 검증하기      
+추가/수정된 코드가 검증이 필요하다고 판단되면 클로드에게 단위테스트코드를 작성하라고 요청하십시오.   
+그리고 그 단위테스트 코드를 직접 수행하여 코드에 문제가 없는지 검증 시키십시오.    
+이때 실제와 동일한 sample 데이터를 제공하여 정확도를 높이는게 좋습니다.  
 
+예시)  
+```
+지금 추가한 코드를 '테스트코드표준'를 준용하여 단위 테스트 코드를 작성해 검증 합시다.
+'ScheduleGenerationMessageRequest'객체는 resource/mq_dailyrequest.json을 이용하세요.  
+```
+
+sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.    
+코드에 sample데이터를 특정 디렉토리에 남기도록 요청해서 만드세요.  
+
+예시)  
+파일 생성 부분을 소스에서 선택하여 코드를 추가할 곳을 지정할 수 있습니다.   
+```
+선택한 라인 밑에 scheduleJson과 promptRequest의 값을 파일로 만드는 코드를 추가해요.             
+resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
+```
   
-
 
 | [Top](#목차) |
 
@@ -978,37 +1046,6 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 실수가 포착되면 실행을 'ESC'로 멈추고 지침 추가를 요청.  
 ```
 잠깐 환경설정값은 applicaiton.yml이 아니라 실행프로파일을 점검해야 합니다. lessons learned에 간략하고. 명확하게 추가해주고 계속해줘요.
-```
-
-| [Top](#목차) |
-
----
-
-#### 계획 세우게 하기    
-개발이나 리팩토링을 실제 수행하기 전에 계획을 먼저 세우게 하고 검토하는 것이 좋습니다.  
-```
-@plan 'AsyncProcessingServie'클래스에서 공통함수를 분리할 계획을 세우세요.  
-```
-
-| [Top](#목차) |
-
----
-
-#### (백엔드)단위테스트 코드 작성시켜 검증하기    
-추가/수정된 코드가 검증이 필요하다고 판단되면 클로드에게 단위테스트코드를 작성하라고 요청하십시오.   
-그리고 그 단위테스트 코드를 직접 수행하여 코드에 문제가 없는지 검증 시키십시오.    
-이때 실제와 동일한 sample 데이터를 제공하여 정확도를 높이는게 좋습니다.  
-
-```
-지금 추가한 코드를 '테스트코드표준'를 준용하여 단위 테스트 코드를 작성해 검증 합시다.
-'ScheduleGenerationMessageRequest'객체는 resource/mq_dailyrequest.json을 이용하세요.  
-```
-
-sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.    
-코드에 sample데이터를 특정 디렉토리에 남기도록 요청해서 만드세요. 
-```
-선택영역 밑에 scheduleJson과 promptRequest의 값을 파일로 만들어요.            
-resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
 ```
 
 | [Top](#목차) |
