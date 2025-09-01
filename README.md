@@ -26,8 +26,8 @@
       - [8.High Level 아키텍처 정의서 작성](#8high-level-아키텍처-정의서-작성)
       - [9.물리 아키텍처 설계](#9물리-아키텍처-설계)
     - [백엔드 개발](#백엔드-개발)
-      - [백킹서비스 설치 가이드](#백킹서비스-설치-가이드)
-      - [백엔드 개발/테스트 팁](#백엔드-개발테스트-팁)
+      - [백킹서비스 설치](#백킹서비스-설치)
+      - [백엔드 개발/테스트](#백엔드-개발테스트)
     - [프론트엔드 설계](#프론트엔드-설계)
     - [프론트엔드 개발](#프론트엔드-개발)
     - [배포하기](#배포하기)
@@ -438,11 +438,71 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 ---
 
 ### 백엔드 개발
-#### 백킹서비스 설치 가이드
+#### 백킹서비스 설치
 아래 링크의 프롬프트를 이용하여 백킹서비스를 설치합니다.   
 [개발 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/04.develop-prompt.md)
 
-#### 백엔드 개발/테스트 팁
+**1.데이터베이스 설치**    
+1)데이터베이스 설치 계획서 작성    
+'develop/database/plan' 디렉토리에 개발환경과 운영환경의 설치계획서가 생성됩니다.  
+```
+/develop-db-guide
+```
+2)데이터베이스 설치 수행    
+데이터베이스를 계획서에 따라 설치합니다.   
+'[설치정보]' 섹션에 설치정보를 제공해줘야 합니다.   
+설치결과 레포트가 'develop/database/exec' 디렉토리에 생성됩니다.   
+
+예시)
+```
+/develop-db-install
+[설치정보]
+- 설치대상환경: 개발환경
+- AKS Resource Group: rg-digitalgarage-01
+- AKS Name: aks-digitalgarage-01
+- Namespace: tripgen-dev
+```
+
+**팁) 데이터베이스 제거**    
+설치된 데이터베이스를 모두 제거하려면 아래 프롬프트를 이용합니다.   
+
+```
+/develop-db-remove
+```
+
+**2.MQ 설치**    
+1)설치계획서 작성    
+Message Queue 설치계획서 작성을 요청합니다.    
+결과는 'develop/mq/mq-plan-{대상환경}.md' 파일로 생성됩니다.   
+
+```
+/develop-mq-guide
+```
+
+2)MQ설치    
+Message Queue 설치를 요청합니다.   
+'[설치정보]' 섹션에 설치정보를 제공해줘야 합니다.   
+결과는 'develop/mq/mq-exec-{대상환경}.md' 파일로 생성됩니다.   
+
+예제)
+```
+/develop-mq-install
+[설치정보]
+- 설치대상환경: 개발환경
+- Resource Group: rg-digitalgarage-01
+- Namespace: tripgen-dev
+```
+
+**팁) MQ 제거**    
+설치된 MQ를 모두 제거하려면 아래 프롬프트를 이용합니다.   
+
+```
+/develop-mq-remove
+```
+
+---
+
+#### 백엔드 개발/테스트
 한꺼번에 모든 서비스를 개발하면 누락되는것이 많을 수 있습니다.   
 각 **서비스별-API별로 개발**하는게 좋습니다.   
   
