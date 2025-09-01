@@ -208,14 +208,14 @@ Event Storming을 Figma의 FigJam을 이용하여 수행합니다.
 - Claude 활용한 보완  
 Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행합니다.  
 
-**1.사전준비: [MCP 설치/MCP Plugin 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98)**
+  **1)사전준비: [MCP 설치/MCP Plugin 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98)**
   
-**2.Claude Desktop 또는 Claude Code에서 프롬프팅**   
-예시)
-```
-Figma 채널'cgqs7jzi'의 이벤트 스토밍 결과를 읽어 아래를 수행해 주십시오.                                                                                 │
-  - 도메인 이벤트를 분석하여 추가가 필요한 이벤트를 추천 
-```
+  **2)Claude Desktop 또는 Claude Code에서 프롬프팅**   
+  예시)
+  ```
+  Figma 채널'cgqs7jzi'의 이벤트 스토밍 결과를 읽어 아래를 수행해 주십시오.                                                                                 │
+    - 도메인 이벤트를 분석하여 추가가 필요한 이벤트를 추천 
+  ```
 
 #### 3.유저스토리 작성   
 피그마로 이벤트스토밍을 수행한 경우 아래와 같이 Figma MCP를 이용하여 유저스토리 초안을 빠르게 만듭니다.   
