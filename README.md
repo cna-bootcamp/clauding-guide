@@ -26,6 +26,7 @@
       - [7.데이터 설계](#7데이터-설계)
       - [8.High Level 아키텍처 정의서 작성](#8high-level-아키텍처-정의서-작성)
       - [9.물리 아키텍처 설계](#9물리-아키텍처-설계)
+    - [클라우드 환경 설정](#클라우드-환경-설정)
     - [백엔드 개발](#백엔드-개발)
       - [백킹서비스 설치](#백킹서비스-설치)
       - [백엔드 개발/테스트](#백엔드-개발테스트)
@@ -34,15 +35,13 @@
     - [배포하기](#배포하기)
     - [유용한 Tip](#유용한-tip)
       - [공통 Tip](#공통-tip)
-      - [**Lessons Learned 등록하게 하기**](#lessons-learned-등록하게-하기)
-      - [**계획 세우게 하기**](#계획-세우게-하기)
-      - [**(백엔드)단위테스트 코드 작성시켜 검증하기**](#백엔드단위테스트-코드-작성시켜-검증하기)
-      - [**(백엔드)서버 로그 디버깅 하기**](#백엔드서버-로그-디버깅-하기)
-      - [**context7 MCP 이용**](#context7-mcp-이용)
-      - [**(백엔드)API테스트**](#백엔드api테스트)
-      - [**(백엔드)버그픽스는 AI, 서버 재시작은 사람이 수행**](#백엔드버그픽스는-ai-서버-재시작은-사람이-수행)
-      - [**깊게 고민하게 하기**](#깊게-고민하게-하기)
-      - [**이전 git commit 참고 또는 복원하기**](#이전-git-commit-참고-또는-복원하기)
+      - [Lessons Learned 등록하게 하기](#lessons-learned-등록하게-하기)
+      - [계획 세우게 하기](#계획-세우게-하기)
+      - [(백엔드)단위테스트 코드 작성시켜 검증하기](#백엔드단위테스트-코드-작성시켜-검증하기)
+      - [context7 MCP 이용](#context7-mcp-이용)
+      - [깊게 고민하게 하기](#깊게-고민하게-하기)
+      - [이전 git commit 참고 또는 복원하기](#이전-git-commit-참고-또는-복원하기)
+      - [Azure 방화벽 오픈](#azure-방화벽-오픈)
 
 ---
 
@@ -511,10 +510,44 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
+### 클라우드 환경 설정
+개발을 위해서는 사전에 클라우드 환경설정이 완료되어야 합니다.   
+Azure외의 클라우드 플랫폼은 Claude나 Perplexity를 이용하여 작업합니다.  
+
+가이드를 참고하여 아래 작업만 하십시오. 
+- Azure 구독
+- 리소스 프로바이더 등록
+- 리소스그룹 생성
+- Azure CLI 설치 및 로그인
+- 기본 configuratioon 셋팅 
+- AKS/ACR생성
+
+https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
+
+| [Top](#목차) |
+
+---
+
 ### 백엔드 개발
 #### 백킹서비스 설치
-아래 링크의 프롬프트를 이용하여 백킹서비스를 설치합니다.   
-[개발 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/04.develop-prompt.md)
+**0.사전작업**   
+터미널을 열고 데이터베이스를 배포할 클라우드플랫폼에 로그인하고 Kubernetes 인증 정보를 가져옵니다.   
+각 클라우드플랫폼별 CLI와 Kubernetes 인증정보를 갖고 오는 방법은 claude나 perplexity에 문의하세요.    
+
+예를 들어 Azure는 아래와 같이 작업합니다.   
+- Azure 로그인   
+```
+az login 
+```
+
+- AKS(Azure Kubernetes Service) 인증정보 획득    
+```
+az aks get-credentials [-g {리소스그룹}] -n {AKS명} -f ~/.kube/config
+```
+예시)
+```
+az aks get-credentials -n dg0100-aks -f ~/.kube/config
+```
 
 **1.데이터베이스 설치**    
 1)데이터베이스 설치 계획서 작성    
@@ -536,6 +569,18 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 - AKS Name: aks-digitalgarage-01
 - Namespace: tripgen-dev
 ```
+
+
+3)방화벽오픈    
+데이터베이스를 로컬에서 접속할 수 있도록 방화벽 포트를 오픈합니다.    
+AKS기준으로 작성되었으며 다른 클라우드의 Kubernetes서비스는 Claude나 perplexsity에 문의하여 작업하세요.    
+
+- 오픈할 포트 찾기
+  db와 redis가 사용하는 포트를 찾습니다.   
+  ![](images/2025-09-01-17-33-15.png)
+
+- 
+
 
 **팁) 데이터베이스 제거**    
 설치된 데이터베이스를 모두 제거하려면 아래 프롬프트를 이용합니다.   
@@ -574,14 +619,114 @@ Message Queue 설치를 요청합니다.
 /develop-mq-remove
 ```
 
+
 | [Top](#목차) |
 
 ---
 
 #### 백엔드 개발/테스트
-한꺼번에 모든 서비스를 개발하면 누락되는것이 많을 수 있습니다.   
-각 **서비스별-API별로 개발**하는게 좋습니다.   
-  
+ 
+**1.초안개발**        
+설계 결과를 참조하여 모든 백엔드서비스를 개발 요청합니다.    
+간단한 기능은 제대로 개발하나 복잡한 기능은 TODO로 남겨놓는 경우도 많습니다.  
+```
+/develop-dev-backend
+```
+
+개발가이드에따라 컴파일까지는 수행하고 오류가 있으면 해결할 겁니다.   
+AI가 서버를 실행하려고 ESC를 눌러 중단시키십시오.    
+
+**2.실행 프로파일 작성**    
+서비스를 실행하기 위한 실행 프로파일을 작성 요청합니다.    
+각 서비스에 생성된 application.yml을 분석하여 환경변수까지 등록된 IntelliJ의 서비스 실행 프로파일이 작성됩니다.       
+결과는 {service}/.run/{service}.run.xml로 생성됩니다.    
+
+```
+/develop-make-run-profile
+```
+
+등록이 되면 서비스탭에 나타납니다.    
+![](images/2025-08-07-09-23-54.png)  
+먼저 실행구성을 클릭하고 'Gradle'이나 'Maven' 등 빌드툴을 선택해야 표시됩니다.   
+![](images/2025-08-07-09-24-30.png)    
+
+**3.로그파일 설정 하기**       
+application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 되어 있지 않다면 추가하도록 요청하세요.   
+서버 시작 시 에러나 테스트 시 런타임 에러가 나면 이 로그를 보고 원인을 분석하도록 요청하기 위해서 로그파일을 만듭니다.    
+예제)
+```
+아래 예제와 같이 각 서비스의 로그를 남기도록 설정을 추가하세요.    
+# Logging Configuration
+logging:
+  ...
+  file:
+    name: ${LOG_FILE:logs/trip-service.log}
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7
+      total-size-cap: 100MB
+```
+
+**4.서버 재시작은 사람이 수행하게 하기**           
+AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합니다.    
+서버재시작은 사람이 하겠다고 Lessons Learned에 등록하게 주세요.
+
+```
+CLAUDE.md에 Lessons Learned 섹션을 만들고, 아래 예시처럼 개발 워크플로우를 등록하세요.   
+
+예시)
+# Lessons Learned 
+## 개발 워크플로우 
+- **❗ 핵심 원칙**: 코드 수정 → 컴파일 → 사람에게 서버 시작 요청 → 테스트
+- **소스 수정**: Spring Boot는 코드 변경 후 반드시 컴파일 + 재시작 필요
+- **컴파일**: 최상위 루트에서 `./gradlew {service-name}:compileJava` 명령 사용
+- **서버 시작**: AI가 직접 서버를 시작하지 말고 반드시 사람에게 요청할것
+```
+
+**5.런타임에러 해결**         
+'서비스'탭에서 서비스를 실행합니다.   
+에러가 나면 AI에게 로그를 분석하여 에러를 해결하도록 요청합니다.    
+
+예제)  
+```
+user-service 실행 시 에러가 발생합니다.   
+서버 로그를 분석하여 해결하세요.   
+```
+
+**5.API별 개발**          
+각 API별로 (AI)API 테스트 -> (AI)코드수정 및 컴파일 -> (사람)서버 재시작의 과정을 반복하면서 완성해 나갑니다.   
+가장 먼저 완성해야할 API는 '로그인'입니다.   
+로그인API를 예로 해서 API별 개발을 설명하겠습니다.    
+
+0)사용자등록   
+로그인API는 사용자 등록이 먼저 되어야 하므로 사용자 등록을 요청합니다.    
+다른 API는 이 단계는 불필요합니다.   
+```
+user-service를 위한 db를 
+```
+
+1)Swagger페이지 접속 및 설정 
+'http://localhost:{서비스별 포트}/swagger-ui.html'으로 접속합니다.   
+
+1)API테스트 요청 
+swagger 페이지에서 테스트 명령을 복사하여 제공합니다.   
+
+
+예시)
+```
+로그아웃 API 를 테스트 하고 에러를 고쳐주세요.
+
+curl -X 'POST' \
+  'http://localhost:8081/api/v1/users/logout' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTU4MzU2MTMsImV4cCI6MTc1NTkyMjAxMywidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoib25kYWwiLCJhdXRob3JpdHkiOiJVU0VSIn0.qM3x9jm4IbQbJ7M3rpuaoAKtOuOv9WP6ERc5fGLBJEw' \
+  -d ''
+```
+
+
+
+
 개발을 할 때는 계획-수행-테스트의 과정으로 하십시오.   
 아래 예시를 참조하세요.  
 https://github.com/cna-bootcamp/clauding-guide/blob/main/samples/sample-%EA%B8%B0%EB%8A%A5%EC%B6%94%EA%B0%80%EC%98%88%EC%8B%9C.md
@@ -599,13 +744,6 @@ AI가 엉뚱하게 개발하는 경우가 가끔 있기 때문입니다.
 그리고 계속 진행해도 되면 '계속'이라고 입력합니다.    
 
   
-**실행 프로파일 작성**     
-'/develop-make-run-profile' 명령으로 IntelliJ의 서비스 실행 프로파일을 작성할 수 있습니다.    
-{service}/.run/{service}.run.xml에 등록됩니다.    
-등록이 되면 서비스탭에 나타납니다.    
-![](images/2025-08-07-09-23-54.png)  
-먼저 실행구성을 클릭하고 'Gradle'이나 'Maven' 등 빌드툴을 선택해야 표시됩니다.   
-![](images/2025-08-07-09-24-30.png)    
 
 
 | [Top](#목차) |
@@ -821,7 +959,7 @@ Tip)3000번 포트로 실행 안되는 경우.
 
 ---
 
-#### **Lessons Learned 등록하게 하기**     
+#### Lessons Learned 등록하게 하기     
 Claude Code는 완벽하지 않아 시행착오를 자꾸합니다.   
 이를 방지하기 위해 아래와 같이 'CLAUDE.md'에 재실수를 방지하기 위한 추가 지침을 하도록 합니다.  
 그냥 등록하라고 하면 너무 길게 등록하므로 '간략하고 명확하게' 등록하라고 합니다.  
@@ -846,7 +984,7 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 
 ---
 
-#### **계획 세우게 하기**    
+#### 계획 세우게 하기    
 개발이나 리팩토링을 실제 수행하기 전에 계획을 먼저 세우게 하고 검토하는 것이 좋습니다.  
 ```
 @plan 'AsyncProcessingServie'클래스에서 공통함수를 분리할 계획을 세우세요.  
@@ -856,7 +994,7 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 
 ---
 
-#### **(백엔드)단위테스트 코드 작성시켜 검증하기**     
+#### (백엔드)단위테스트 코드 작성시켜 검증하기    
 추가/수정된 코드가 검증이 필요하다고 판단되면 클로드에게 단위테스트코드를 작성하라고 요청하십시오.   
 그리고 그 단위테스트 코드를 직접 수행하여 코드에 문제가 없는지 검증 시키십시오.    
 이때 실제와 동일한 sample 데이터를 제공하여 정확도를 높이는게 좋습니다.  
@@ -877,28 +1015,7 @@ resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.
 
 ---
 
-#### **(백엔드)서버 로그 디버깅 하기**       
-application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 설정하도록 되어 있습니다.  
-만약 안되어 있으면 추가하도록 요청하세요.   
-```
-# Logging Configuration
-logging:
-  ...
-  file:
-    name: ${LOG_FILE:logs/trip-service.log}
-  logback:
-    rollingpolicy:
-      max-file-size: 10MB
-      max-history: 7
-      total-size-cap: 100MB
-```
-서버 시작 시 에러나 테스트 시 런타임 에러가 나면 이 로그를 보고 원인을 분석해서 해결하도록 요청하세요.  
-
-| [Top](#목차) |
-
----
-
-#### **context7 MCP 이용**        
+#### context7 MCP 이용       
 최신 개발 Best practice를 참조하여 개발할 수 있습니다.  
 context7 MCP를 이용하면 됩니다.   
 개발명령어(/develop-dev-backend, /develop-fix-backend, develop-test-backend)에 이미 '-c7'이라는 옵션이 있습니다.   
@@ -909,56 +1026,7 @@ context7 MCP를 이용하면 됩니다.
 
 ---
 
-#### **(백엔드)API테스트**      
-'@test-api'를 앞에 붙여 테스트를 요청하면 API 스펙을 정확히 확인하여 테스트 하게 됩니다.  
-
-```
-@test-api recommendations API를 테스트 해요.
-
-토큰: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTQ1MjI4ODMsImV4cCI6MTc1NDYwOTI4MywidHlwZSI6ImFjY2VzcyJ9.mQVnFKUDtMa426Qn25_2UMj8uABJ85uFwVrgdEsulZI
-```
-
-하지만 가끔 제대로 수행 못하는 경우가 있습니다.  
-이때는 아래와 같이 swagger page에서 curl 명령어를 복사하여 제공하세요.  
-```
-로그아웃 API 를 테스트 하고 에러를 고쳐주세요.
-
-curl -X 'POST' \
-  'http://localhost:8081/api/v1/users/logout' \
-  -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTU4MzU2MTMsImV4cCI6MTc1NTkyMjAxMywidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoib25kYWwiLCJhdXRob3JpdHkiOiJVU0VSIn0.qM3x9jm4IbQbJ7M3rpuaoAKtOuOv9WP6ERc5fGLBJEw' \
-  -d ''
-```
-
-| [Top](#목차) |
-
----
-
-#### **(백엔드)버그픽스는 AI, 서버 재시작은 사람이 수행**           
-AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합니다.    
-서버재시작은 본인이 하겠다고 프롬프트에 말해 주세요.   
-'/develop-test-backend'명령어에는 이미 이 프롬프트가 있지만 가끔 AI가 서버를 시작하려고 합니다.    
-프롬프트 예시)
-```
-이제 테스트를 시작하는데 컴파일까지는 네가 하고 서버 시작은 나한테 요청해 주세요.   
-```
-
-만약, 프롬프트에 서비스 직접 실행을 요청할 때는 '@run-back' 약어 사용.
-특별한 경우가 아니면 사람이 시작하는게 편하고 빠릅니다.    
-```
-@run-back user-service
-```
-
-서버가 시작되어 있어 포트 충돌이 나면 중단해달라고 요청하고 실행 프로파일로 시작함. 
-```
-user service를 중단하세요.  
-```
-
-| [Top](#목차) |
-
----
-
-#### **깊게 고민하게 하기**    
+#### 깊게 고민하게 하기  
 잘 문제를 못풀면 깊게 고민하는 옵션을 프롬프트에 추가할 수 있습니다.  
 고민을 얼마나 깊게 할 지에 따라 --think, --think-hard, --ultra-think가 있습니다.  
 ```
@@ -969,12 +1037,35 @@ user service를 중단하세요.
 
 ---
 
-#### **이전 git commit 참고 또는 복원하기**   
+#### 이전 git commit 참고 또는 복원하기  
 개발하다 보면 이전 commit 소스를 찾아 참고하거나 복원해야할 경우가 있습니다. 
 이때 commit id를 제공하여 작업을 수행할 수 있습니다.    
 ```
 원격 commit 'abb2a9d'에서 찾아서 API '일자별 일정 재생성' API와 관련 리소스 클래스를 복원해요.
 ```
+
+| [Top](#목차) |
+
+---
+
+#### Azure 방화벽 오픈
+
+- 데이터베이스가 배포된 AKS찾기   
+![](images/2025-09-01-17-22-07.png)
+
+- 노드풀 클릭: 기본 생성되는 노드풀 이름은 보통 'nodepool1'임.  
+![](images/2025-09-01-17-24-30.png)
+
+- 서브넷 클릭 
+  ![](images/2025-09-01-17-25-43.png)
+
+- 보안그룹 클릭 
+  ![](images/2025-09-01-17-26-23.png)
+
+- 방화벽 포트 추가 :  
+  ![](images/2025-09-01-17-26-59.png)
+  
+  ![](images/2025-09-01-17-28-01.png)  
 
 | [Top](#목차) |
 

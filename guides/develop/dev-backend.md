@@ -29,6 +29,7 @@
     - 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
     - 개발모드의 DDL_AUTO값은 update로 함 
     - JWT Secret Key는 모든 서비스가 동일해야 함 
+  - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성  
   - 임시로 Todo상태로 남기지 말고 완벽하게 개발 
   - swagger page에 'Authorization' 버튼이 나오도록 함 
   - 테스트 코드 작성은 하지 않음     
@@ -42,6 +43,14 @@
 - **의존성 분석 선행**: 병렬 처리 전 반드시 의존성 파악
 - **순차 처리 필요시**: 무리한 병렬화보다는 안전한 순차 처리
 - **검증 단계 필수**: 병렬 처리 후 통합 검증
+
+<Build.gradle 구성 최적화>
+- **중앙 버전 관리**: 루트 build.gradle의 `ext` 블록에서 모든 외부 라이브러리 버전 통일 관리
+- **Spring Boot BOM 활용**: Spring Boot/Cloud에서 관리하는 라이브러리는 버전 명시 불필요 (자동 호환성 보장)
+- **Common 모듈 설정**: `java-library` + Spring Boot 플러그인 조합, `bootJar` 비활성화로 일반 jar 생성
+- **서비스별 최적화**: 공통 의존성(API 문서화, 테스트 등)은 루트에서 일괄 적용
+- **JWT 버전 통일**: 라이브러리 버전 변경시 API 호환성 확인 필수 (`parserBuilder()` → `parser()`)
+- **dependency-management 적용**: 모든 서브프로젝트에 Spring BOM 적용으로 버전 충돌 방지
 
 [참고자료]
 - 유저스토리
