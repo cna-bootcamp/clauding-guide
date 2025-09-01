@@ -1,13 +1,14 @@
-# Claude를 활용한 서비스 기획, 설계, 개발, 배포 가이드  
+# Claude를 활용한 서비스 기획, 설계, 개발, 배포 가이드
+
+**⚠️ 법적 고지**    
+본 가이드의 모든 내용은 저작자의 동의없이 상업적 목적으로 사용할 수 없으며, 개인 학습 목적으로만 사용 가능합니다.   
+(저작자: 이해경, 유니콘주식회사 대표, hiondal@gmail.com)  
+
 ## 목차  
 - [Claude를 활용한 서비스 기획, 설계, 개발, 배포 가이드](#claude를-활용한-서비스-기획-설계-개발-배포-가이드)
   - [목차](#목차)
   - [사전준비](#사전준비)
-  - [사전지식](#사전지식)
-    - [역할과 작업 약어 이해](#역할과-작업-약어-이해)
-    - [작업과 약어 사용 프롬프트 예시](#작업과-약어-사용-프롬프트-예시)
-    - [프로젝트 단계별 사용 프롬프트](#프로젝트-단계별-사용-프롬프트)
-    - [기타 중요한 지침](#기타-중요한-지침)
+  - [프로젝트 생성 및 Instruction 설정](#프로젝트-생성-및-instruction-설정)
   - [유용한 Tip](#유용한-tip)
     - [공통 Tip](#공통-tip)
     - [Lessons Learned 등록하게 하기](#lessons-learned-등록하게-하기)
@@ -50,146 +51,15 @@
 - [기본 프로그램 설치(1)](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md)
 - [Claude Code와 SuperClaude 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/01.install-claude-code.md)
 - [Claude Code 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/02.setup-claude-code.md)
-- [프로젝트 Instruction 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)
 
 | [Top](#목차) |
 
 ---
 
-## 사전지식  
-CLAUDE.md파일의 설정에 대한 주요 사전지식입니다.   
+## 프로젝트 생성 및 Instruction 설정   
+아래 가이드를 참고하여 프로젝트 디렉토리를 만들고 Instruction를 설정합니다.    
 
-### 역할과 작업 약어 이해 
-SuperClaude 명령어와 파라미터가 복잡하기 때문에 기획, 설계, 개발, 배포에서 사용하는 작업들을   
-약어로 만들어서 CLAUDE.md에 만들었습니다.    
-위 '프로젝트 Instruction 설정'작업을 하면 생성됩니다.    
-프로젝트 루트의 CLAUDE.md 맨 아래에 있습니다.   
-작업 뿐 아니라 역할에 대한 약어도 있습니다.    
-약어에 대한 의미는 아래 'SuperClaude 명령어 및 파라미터 목록' 문서를 참고하면 됩니다.  
-아래 링크의 마지막 부분을 참고하세요.  
-
-[역할과 작업 약어](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/GUIDE.md)
-
-| [Top](#목차) |
-
----
-
-### 작업과 약어 사용 프롬프트 예시   
-vscode나 IntelliJ와 통합된 Claude Code에서 수행하면 편합니다.  
-
-**1.웹브라우저 연동**     
-'프로토타입'의 위치가 CLAUDE.md에 정의되어 있으므로 그 하위에서 '대시보드'가 포함된 html파일을   
-웹브라우저에 자동으로 열어 내용을 분석합니다.  
-'--play'는 프론트엔드 테스트를 해주는 Playwright라는 MCP를 사용하라는 옵션입니다.  
-```
-@analyze as @front --play 프로토타입의 대시보드 화면을 브라우저에서 열어 분석
-```
-
-아래와 같이 복합적으로 사용도 가능합니다. 
-- 프론트엔드 역할로 웹브라우저에서 '여행지 설정'화면을 띄워 분석  
-- 현재 열린 파일에서 유저스토리 ID로 찾아 내용을 이해 
-- 화면 분석 결과를 바탕으로 해당되는 유저스토리 ID를 직접 수정  
-```
-@analyze as @front --play 프로토타입의 여행지설정 화면을 브라우저에서 열어 분석하고,  
-@improve as @scribe 유저스토리 'UFR-TRIP-040'을 수정해 줘요.
-```
-
-테스트까지 한꺼번에 요청하는 예입니다.  
-```
-@improve as @front 'UFR-LOC-030'에 명시된 대로 프로토타입 '장소상세정보'화면의 리뷰 및 평점을 수정해 주세요.
-@analyze as @front --play 먼저 장소상세정보 화면을 웹브라우저에서 열어 리뷰 부분을 분석한 후 수정 바랍니다.
-@test-front 수정 후에는 웹브라우저에서 테스트 까지 해주세요.
-```
-
-모바일 화면 크기로 변환하여 여러 페이지를 테스트 할 수도 있습니다. 
-```
-@test-front 프로토타입을 웹브라우저의 모바일 화면크기로 테스트 해주십시오. 대시보드 화면부터 시작하십시오.    
-```
-
-**2.평가요청**   
-'@estimate'명령 약어와 역할 약어를 이용하여 어떤 평가를 하게 할 수 있음 
-
-백엔드 개발자와 프론트엔드 개발자가 현재 열린 파일의 유저스토리를 검토하여 스코어를 평가  
-```
-@estimate as @back and @front 모든 유저스토리에 대해 스코어를 재평가해 주세요
-```
-
-Product Owner로서 현재 열린 파일의 유저스토리를 검토하여 비즈니스 중요도를 평가  
-역할 약어에 없어도 'PO'라는 말이 CLAUDE.md의 팀 멤버에 있기 때문에 잘 수행됩니다.   
-```
-@estimate as PO 모든 유저스토리의 비즈니스 중요도를 재평가해 주세요
-```
-
-**3.분석요청**   
-
-백엔드 개발자와 프론트엔드 개발자로서 열린 파일의 유저스토리의 기술검토를 수행합니다.  
-```
-@analyze as @back and @front 모든 유저스토리의 기술적 실현 가능성을 검토해 주세요
-```
-
-**4.설명요청**   
-아키텍트에게 GIN 인덱스에 대한 설명을 요청합니다.   
-```
-@explain as @archi GIN인덱스에 대한 설명해줘요.
-```
-
-참고) ClaudeCode/SuperClaude 명령과 파라미터
-- [Claude Code 명령어 및 파라미터](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/Claude%20Code%20%EB%AA%85%EB%A0%B9%EC%96%B4%20%EB%B0%8F%20%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0.md)
-- [SuperClaude 명령어 및 파라미터 목록](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/SuperClaude%20%EB%AA%85%EB%A0%B9%EC%96%B4%20%EB%B0%8F%20%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%20%EB%AA%A9%EB%A1%9D.md)
-
-| [Top](#목차) |
-
----
-
-### 프로젝트 단계별 사용 프롬프트 
-이 약어들을 이용하여 각 단계별로 작업하는 프롬프트는 아래에 있습니다.  
-- [기획 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/02.think-prompt.md)
-- [설계 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/03.design-prompt.md)
-- [개발 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/04.develop-prompt.md)
-- [배포 프롬프트]()
-
-**1.프로젝트 단계별 가이드**.   
-CLAUDE.md에는 각 프로젝트 단계별로 사용되는 가이드의 URL이 정의되어 있습니다.   
-프로젝트 단계별 사용하는 프롬프트는 이 가이드를 참조하도록 되어 있습니다.   
-예를 들어 아래와 같이 'UI/UX설계가이드'의 URL이 정의되어 있기 때문에   
-프롬프트에 'UI/UX설계가이드'를 참조하라고 하면 이 URL이 claude/uiux-design.md 디렉토리에 다운로드 되어  
-Claude Code가 사용하게 됩니다.  
-```
-- UI/UX설계가이드
-  - 설명: UI/UX 설계 방법 안내 
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/uiux-design.md
-  - 파일명: uiux-design.md
-```
-
-**2.산출물 디렉토리 약어 이해**.   
-CLAUDE.md에는 각 단계별 산출물의 위치가 정의되어 있습니다.   
-프롬프트에서 산출물 이름만 입력하면 Claude Code는 그 위치를 알 수 있게 됩니다. 
-
-| [Top](#목차) |
-
----
-
-### 기타 중요한 지침
-CLAUDE.md에는 중요한 지침들이 더 있습니다.     
-- Git연동: '[Git 연동]' 섹션 참조   
-  Claude Code에 아래 명령을 사용하여 Git과 연동 합니다. 
-  - pull: 원격 Git Repo에서 pull을 수행하고 충돌 시 최신 파일로 자동 병합합니다.   
-  - push 또는 푸시: 변경사항을 비교하여 자동으로 commit message를 만들고 원격 Git Repo에 푸시합니다.  
-- URL링크 처리: '[URL링크 참조]' 섹션 참조   
-  Claude는 URL링크가 있으면 기본적으로 WebFetch라는 툴로 다운로드 합니다.   
-  문제는 **원본 그대로 다운로드 하지 않고** 자기가 요약 또는 변형한다는 것입니다.  
-  그래서 이 지침을 제공하여 curl명령으로 파일을 다운로드 해서 사용하도록 가이드 하는 것입니다.   
-- 핵심원칙: '[핵심 원칙]' 섹션 참조   
-  - 서브 에이젼트를 만들어 병렬 처리하게 함으로써 처리 속도를 높이도록 합니다.  
-  - PlantUML 스크립트와 OpenAPI swagger 파일을 만들면 반드시 검사까지 하도록 합니다.  
-- 가이드 로딩: '[가이드 로딩]' 섹션 참조  
-  - CLAUDE.md에 있는 가이드('[가이드] 섹션 하위에 있음')를 갱신하는 지침입니다.   
-  - 가이드를 표준화하여 공통으로 사용하기 위한 지침입니다.  
-  - 프롬프트에 '가이드 로딩'이라고 입력하면 원격 Repository의 가이드를 다시 다운로드 하여 CLAUDE.md를 갱신합니다.    
-  
-| [Top](#목차) |
-
----
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md
 
 ## 유용한 Tip
 ### 공통 Tip
@@ -356,9 +226,34 @@ Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행
 피그마로 이벤트스토밍을 수행한 경우 아래와 같이 Figma MCP를 이용하여 유저스토리 초안을 빠르게 만듭니다.   
 기획 구체화는 Claude Code에서 수행합니다.  이 이후의 작업은 Claude Code에서 수행합니다.   
 
-- [MCP 설치/MCP Plugin 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98)를 먼저 수행   
+- 백엔드 프로젝트 디렉토리 생성 및 프로젝트 Instruction 설정
+  이미 수행하였다면 Skip 하십시오.  
+  https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md
+
+- Claude Code 시작하기   
+  작업 디렉토리 이동  
+  ```
+  cd ~/home/workspace/{백엔드 디렉토리}  
+  ```
+
+  YOLO모드로 전환   
+  ```
+  claude-yolo
+  ```
+
+  Claude Code 시작: 터미널에서 시작하거나 IntelliJ에서 시작합니다.  
+  IntelliJ 내부에서 Claude Code 시작: 작업이 더 편해 권장      
+  ![](images/2025-09-01-22-25-58.png)   
+
+  터미널에서 시작
+  ```
+  claude 
+  ```
+
+
 - 이벤트스토밍결과 선택 및 MCP Plugin 수행: 피그마에서 이벤트스토밍결과를 선택하고 우측 마우스 버튼에서 'Cursor Talk to Figma MCP Plugin' 수행  
 ![](images/2025-09-01-15-31-35.png)
+
 - 프롬프팅
   MCP 플러그인에서 제공한 채널ID를 제공하여 요청합니다.   
   예제)
