@@ -10,7 +10,9 @@
   - [프로젝트 단계별 Claude Code 이용](#프로젝트-단계별-claude-code-이용)
     - [시작하기](#시작하기)
     - [서비스 기획 하기](#서비스-기획-하기)
-      - [작업 방법 가이드](#작업-방법-가이드)
+      - [상위수준기획](#상위수준기획)
+      - [기획 구체화](#기획-구체화)
+      - [유저스토리 작성](#유저스토리-작성)
       - [프로토타입 개발](#프로토타입-개발)
     - [백엔드 설계](#백엔드-설계)
       - [0.사전 설치](#0사전-설치)
@@ -192,10 +194,44 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
   - 프롬프트 창에 '가이드 로딩'이라고 입력하면 갱신됩니다.  
 
 ### 서비스 기획 하기
-#### 작업 방법 가이드  
-아래 서비스 기획 가이드를 참고하여 상위수준의 기획, 이벤트스토밍을 통한 기획 구체화, 유저스토리 작성까지 수행합니다.    
-- [서비스 기획 가이드](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/think/think-guide.md)  
+#### 상위수준기획
+Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니다.   
+[서비스 기획하기](https://github.com/cna-bootcamp/aiguide/blob/main/AI%ED%99%9C%EC%9A%A9%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
+
+#### 기획 구체화 
+DDD 전략설계 방법인 Event Storming기법을 이용하여 기획을 구체화 합니다.   
+
+- 팀원들과 Event Storming 수행  
+Event Storming을 Figma의 FigJam을 이용하여 수행합니다. 
+![](design/think/images/2025-07-26-15-24-23.png) 
+
+- Claude 활용한 보완  
+Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행합니다.  
+
+**1.사전준비: [MCP 설치/MCP Plugin 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98)**:   
   
+**2.Claude Desktop 또는 Claude Code에서 프롬프팅**   
+예시)
+```
+Figma 채널'cgqs7jzi'의 이벤트 스토밍 결과를 읽어 아래를 수행해 주십시오.                                                                                 │
+  - 도메인 이벤트를 분석하여 추가가 필요한 이벤트를 추천 
+```
+
+#### 유저스토리 작성   
+피그마로 이벤트스토밍을 수행한 경우 아래와 같이 Figma MCP를 이용하여 유저스토리 초안을 빠르게 만듭니다.   
+
+- [MCP 설치/MCP Plugin 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98)를 먼저 수행   
+- 이벤트스토밍결과 선택 및 MCP Plugin 수행: 피그마에서 이벤트스토밍결과를 선택하고 우측 마우스 버튼에서 'Cursor Talk to Figma MCP Plugin' 수행  
+![](images/2025-09-01-15-31-35.png)
+- 프롬프팅
+  MCP 플러그인에서 제공한 채널ID를 제공하여 요청합니다.   
+  예제)
+  ```
+  /think-userstory
+  [요구사항]
+  피그마 채널ID 'abcde'에 접속하여 분석
+  ```
+
 #### 프로토타입 개발
 **1.UI/UX설계**   
 아래 명령을 수행합니다.    
