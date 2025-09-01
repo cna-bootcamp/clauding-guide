@@ -145,6 +145,11 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/references/유저스토리작성방법.md
   - 파일명: userstory-writing.md
 
+- 유저스토리예제
+  - 설명: 유저스토리 예제
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-%EC%9C%A0%EC%A0%80%EC%8A%A4%ED%86%A0%EB%A6%AC.md
+  - 파일명: sample-userstory.md
+
 - 클라우드아키텍처패턴요약표
   - 설명: 클라우드 디자인 패턴 요약표 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/references/Cloud%20Design%20Patterns(%EA%B0%9C%EC%9A%94).md

@@ -12,28 +12,33 @@
     - [서비스 기획 하기](#서비스-기획-하기)
       - [작업 방법 가이드](#작업-방법-가이드)
       - [프로토타입 개발](#프로토타입-개발)
-    - [설계하기](#설계하기)
-      - [작업 방법 가이드](#작업-방법-가이드-1)
-      - [시퀀스 설계](#시퀀스-설계)
-      - [API 설계](#api-설계)
-      - [클래스 설계](#클래스-설계)
-    - [개발하기](#개발하기)
-      - [작업 방법 가이드](#작업-방법-가이드-2)
+    - [백엔드 설계](#백엔드-설계)
+      - [0.사전 설치](#0사전-설치)
+      - [1.클라우드 아키텍처 패턴 선정](#1클라우드-아키텍처-패턴-선정)
+      - [2.논리아키텍처 설계](#2논리아키텍처-설계)
+      - [3.외부 시퀀스 설계](#3외부-시퀀스-설계)
+      - [4.내부 시퀀스 설계](#4내부-시퀀스-설계)
+      - [5.API설계](#5api설계)
+      - [6.클래스 설계](#6클래스-설계)
+      - [7.데이터 설계](#7데이터-설계)
+      - [8.High Level 아키텍처 정의서 작성](#8high-level-아키텍처-정의서-작성)
+      - [9.물리 아키텍처 설계](#9물리-아키텍처-설계)
+    - [백엔드 개발](#백엔드-개발)
+      - [백킹서비스 설치 가이드](#백킹서비스-설치-가이드)
       - [백엔드 개발/테스트 팁](#백엔드-개발테스트-팁)
-      - [프론트엔드 개발/테스트 팁](#프론트엔드-개발테스트-팁)
-        - [프론트엔드설계서 작성](#프론트엔드설계서-작성)
-        - [프론트엔드 개발](#프론트엔드-개발)
+    - [프론트엔드 설계](#프론트엔드-설계)
+    - [프론트엔드 개발](#프론트엔드-개발)
     - [배포하기](#배포하기)
     - [유용한 Tip](#유용한-tip)
       - [공통 Tip](#공통-tip)
       - [**Lessons Learned 등록하게 하기**](#lessons-learned-등록하게-하기)
       - [**계획 세우게 하기**](#계획-세우게-하기)
-      - [**단위테스트 코드 작성시켜 검증하기**](#단위테스트-코드-작성시켜-검증하기)
-      - [**서버 로그 디버깅 하기**](#서버-로그-디버깅-하기)
+      - [**(백엔드)단위테스트 코드 작성시켜 검증하기**](#백엔드단위테스트-코드-작성시켜-검증하기)
+      - [**(백엔드)서버 로그 디버깅 하기**](#백엔드서버-로그-디버깅-하기)
       - [**context7 MCP 이용**](#context7-mcp-이용)
-      - [**실행 프로파일 작성**](#실행-프로파일-작성)
-      - [**API테스트**](#api테스트)
-      - [**버그픽스는 AI, 서버재시작은 사람이 수행**](#버그픽스는-ai-서버재시작은-사람이-수행)
+      - [**(백엔드)실행 프로파일 작성**](#백엔드실행-프로파일-작성)
+      - [**(백엔드)API테스트**](#백엔드api테스트)
+      - [**(백엔드)버그픽스는 AI, 서버 재시작은 사람이 수행**](#백엔드버그픽스는-ai-서버-재시작은-사람이-수행)
       - [**깊게 고민하게 하기**](#깊게-고민하게-하기)
       - [**이전 git commit 참고 또는 복원하기**](#이전-git-commit-참고-또는-복원하기)
 
@@ -188,10 +193,64 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
 
 ### 서비스 기획 하기
 #### 작업 방법 가이드  
+아래 서비스 기획 가이드를 참고하여 상위수준의 기획, 이벤트스토밍을 통한 기획 구체화, 유저스토리 작성까지 수행합니다.    
 - [서비스 기획 가이드](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/think/think-guide.md)  
-- [유저스토리 작성하기](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/02.think-prompt.md) 
-
+  
 #### 프로토타입 개발
+**1.UI/UX설계**   
+아래 명령을 수행합니다.    
+```
+/design-uiux
+```
+
+UI/UX설계서와 스타일가이드가 생성됩니다.      
+- UI/UX설계서: design/uiux/uiux.md
+- 스타일가이드: design/uiux/style-guide.md 
+
+**2.프로토타입 개발 요청**    
+아래 명령을 수행합니다.    
+``` 
+/design-prototype
+```
+프로토타입 파일들이 아래와 같은 형식으로 생성됩니다.   
+design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html    
+
+**3.프로토타입 테스트**    
+```
+/design-test-prototype
+```
+
+**4.프로토타입 버그픽스**       
+예시)
+```
+/design-fix-prototype
+[오류내용]
+- 이메일 형식 검사가 제대로 안됨  
+```
+
+**5.프로토타입 개선**    
+추가 또는 개선사항을 요청합니다.   
+
+예시)
+```
+/design-improve-prototype
+[개선내용]
+- 암호 보이기/숨기기 기능 추가  
+```
+
+**6.유저스토리 업데이트**    
+모든 프로토타입을 완성한 후에 변경사항을 유저스토리에 업데이트 하도록 요청 합니다.   
+```
+/design-improve-userstory
+```
+
+**7.UI/UX설계서와 스타일가이드 업데이트**     
+변경된 유저스토리에 따라 UI/UX설계서와 스타일가이드도 업데이트 요청 합니다.   
+```
+/design-update-uiux
+```
+
+**8.유용한 팁**   
 - 수동 테스트 요청 
   가이드에는 프로토타입 개발 완료 후 자동으로 웹브라우저에서 테스트하라고 되어 있는데, 안할 수 있음.  
   아래 프롬프트로 수행 요청을 합니다.  
@@ -215,203 +274,320 @@ CLAUDE.md에는 중요한 지침들이 더 있습니다.
   모두 잘 수정 되었네요. 고생 했어요. 이제 브라우저를 종료해요. 
   ```
 
-### 설계하기 
-#### 작업 방법 가이드
-**1.사전 설치**   
+### 백엔드 설계 
+#### 0.사전 설치
 설계하기 부터는 추가로 아래 링크의 프로그램들을 설치하고 시작 하십시오.     
 [기본 프로그램 설치(2)](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare2.md)
-
-**2.설계 프롬프트**   
+  
+아래 설계 프롬프트에 있는 순서대로 '클라우드 아키텍처 패턴 선정' 부터 '물리 아키텍처 설계'까지 수행 합니다.   
 [설계 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/03.design-prompt.md)
 
-#### 시퀀스 설계
-- 프로토타입을 먼저 보여주고 설계를 하는것도 좋습니다. 현재 가이드에는 그렇게 되어 있습니다.  
-- 시퀀스 설계 결과 검토 시 
-관련된 프로토타입 화면을 보고 개선하라고 하는게 좋습니다.  
-예)
+
+#### 1.클라우드 아키텍처 패턴 선정   
+적용할 클라우드 아키텍처 패턴을 추천받고 검토합니다.   
+결과는 'design/pattern/architecture-pattern.md'에 생성됩니다.   
 ```
-프로토타입 기본설정 화면을 웹브라우저로 띄워서 확인한 후 계속 해 주세요.
+/design-pattern
 ```
+
+#### 2.논리아키텍처 설계
+논리 아키텍처를 설계하고 검토합니다.   
+결과는 'design/backend/logical' 디렉토리에 생성됩니다.   
+```
+/design-logical
+```
+
+#### 3.외부 시퀀스 설계  
+각 서비스 사이, 서비스와 외부시스템 사이의 인터페이스를 외부 시퀀스로 설계합니다.   
+결과는 '/design/backend/outer' 디렉토리에 생성됩니다.  
+```
+/design-seq-outer
+```
+
+#### 4.내부 시퀀스 설계
+각 서비스 내부의 처리 흐름을 내부 시퀀스로 설계합니다.   
+결과는 '/design/backend/inner' 디렉토리에 생성됩니다.   
+```
+/design-seq-inner
+```
+
+- 설계 개선 시 프로토타입 활용
+  관련된 프로토타입 화면을 보고 개선하라고 하는게 좋습니다.  
+  예)
+  ```
+  프로토타입 기본설정 화면을 웹브라우저로 띄워서 확인한 후 계속 해 주세요.
+  ```
 
 - 설계서 리뷰와 수정이 끝나면 설계간의 일관성 검사를 요청함 
-```
-@analyze @archi @back @front --ultrathink 외부/내부 시퀀스 설계를 꼼꼼히 리뷰하여 설계간의 일관성과 충돌 여부를 검사해 주세요.
-```
-- 분석결과에서 적용이 필요한 부분 수정 요청
-예)
-```
-긴급개선사항 API 엔드포인트 통일, 캐싱 TTL 표준화, 상태 값 통일만 적용 바랍니다.
-```
+  ```
+  @analyze @archi @back @front --think 외부/내부 시퀀스 설계를 꼼꼼히 리뷰하여 설계간의 일관성과 충돌 여부를 검사해 주세요.
+  ```
 
-#### API 설계
+  분석결과에서 적용이 필요한 부분 수정 요청
+  예)
+  ```
+  긴급개선사항 API 엔드포인트 통일, 캐싱 TTL 표준화, 상태 값 통일만 적용 바랍니다.
+  ```
+
+#### 5.API설계   
+각 서비스의 API를 설계합니다.  
+결과는 '/design/backend/api' 디렉토리에 생성됩니다.   
+생성된 swagger 파일(확장자가 yaml)을 'https://editor.swagger.io/'에 붙여서 테스트 하면서 검토합니다.   
+```
+/design-api
+```
 
 설계서 리뷰와 수정이 끝나면 시퀀스설계서와의 일관성 검사를 요청합니다.  
 ```
-@analyze as @archi @back @front --ultrathink 외부시퀀스설계서와 내부시퀀스설계서의 설계 결과와 일관성 검사를 해주세요.
+@analyze as @archi @back @front --think 외부시퀀스설계서와 내부시퀀스설계서의 설계 결과와 일관성 검사를 해주세요.
 ```
 
-#### 클래스 설계
-클래스간의 Dependency와 Association 관계가 제대로 표현 안된 경우 개선 요청합니다. 
+#### 6.클래스 설계
+각 서비스의 클래스 설계를 합니다.
+아래 예제와 같이 설계를 위한 정보를 프롬프트에 제공합니다. 
+결과는 'design/backend/class' 디렉토리에 생성됩니다.   
+예제)
 ```
-@improve as @back 클래스 관계 Dependency와 Association이 제대로 표현 안되어 있으니 개선 바랍니다. 
-서브 에이젼트를 병렬로 수행하여 동시에 수행하세요.
+/design-class
+[클래스설계 정보]
+- 패키지 그룹: com.unicorn.tripgen
+- 설계 아키텍처 패턴 
+  - User: Layered 
+  - Trip: Clean
+  - Location: Layered 
+  - AI: Layered
 ```
 
-간단 클래스설계서({서비스명}-simple.puml)가 가이드대로 잘 생성이 안된 경우, 수정 요청합니다. 
+- 클래스간의 Dependency와 Association 관계가 제대로 표현 안된 경우 개선 요청합니다. 
+  ```
+  @improve as @back 클래스 관계 Dependency와 Association이 제대로 표현 안되어 있으니 개선 바랍니다. 
+  서브 에이젼트를 병렬로 수행하여 동시에 수행하세요.
+  ```
+
+- 간단 클래스설계서({서비스명}-simple.puml)가 가이드대로 잘 생성이 안된 경우, 수정 요청합니다. 
+  ```
+  클래스설계가이드의 간단 클래스설계서 규칙을 다시 읽고 잘못된것을 고쳐줘요.
+  서브 에이젼트를 병렬로 수행하여 동시에 수행하세요.
+  ```
+
+#### 7.데이터 설계
+데이터설계를 합니다.  
+결과는 'design/backend/database' 디렉토리에 생성됩니다.  
 ```
-클래스설계가이드의 간단 클래스설계서 규칙을 다시 읽고 잘못된것을 고쳐줘요.
-서브 에이젼트를 병렬로 수행하여 동시에 수행하세요.
+/design-data
 ```
 
-### 개발하기
-#### 작업 방법 가이드
+#### 8.High Level 아키텍처 정의서 작성
+지금까지 설계를 바탕으로 상위 수준의 종합적인 아키텍처 정의서를 작성합니다.    
+'CLOUD' 항목에 사용할 클라우드플랫폼 제공자를 Azure, AWS, Google과 같이 입력합니다.   
+결과는 'design/high-level-architecture.md'에 생성됩니다.   
+예시)
+```
+/design-physical
+- CLOUD: Azure
+```
+
+#### 9.물리 아키텍처 설계
+클라우드 플랫폼에 배포하기 위한 물리 아키텍처를 설계합니다.   
+'CLOUD' 항목에 사용할 클라우드플랫폼 제공자를 Azure, AWS, Google과 같이 입력합니다.   
+결과는 'design/backend/physical' 디렉토리에 생성됩니다.    
+물리 아키텍처는 개발환경과 운영환경으로 나누어 설계됩니다. 
+
+예시)
+```
+/design-physical
+- CLOUD: Azure
+```
+
+---
+
+### 백엔드 개발
+#### 백킹서비스 설치 가이드
+아래 링크의 프롬프트를 이용하여 백킹서비스를 설치합니다.   
 [개발 프롬프트](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/04.develop-prompt.md)
 
 #### 백엔드 개발/테스트 팁
 한꺼번에 모든 서비스를 개발하면 누락되는것이 많을 수 있습니다.   
-각 서비스별로 개발하는게 좋습니다.   
-만약 서비스가 복잡하면 각 기능단위로 개발하는게 더 좋습니다.     
-```
-@develop as @back user-service를 개발해 주세요.  
-```
-
+각 **서비스별-API별로 개발**하는게 좋습니다.   
+  
 개발을 할 때는 계획-수행-테스트의 과정으로 하십시오.   
 아래 예시를 참조하세요.  
 https://github.com/cna-bootcamp/clauding-guide/blob/main/samples/sample-%EA%B8%B0%EB%8A%A5%EC%B6%94%EA%B0%80%EC%98%88%EC%8B%9C.md
 
+개발 진행 과정을 꼭 지켜보셔야 합니다.   
+AI가 엉뚱하게 개발하는 경우가 가끔 있기 때문입니다.   
+이때는 빨리 ESC로 중단하고 올바른 방법을 안내해줘야 합니다.   
 
 **테스트**       
 백엔드 테스트도 각 서비스별로 하나씩 테스트하는게 좋습니다.   
 각 서비스별로 **각 API를 하나 하나 테스트** 합니다.   
 이때 AI에게 맡겨만 두지 말고 **진행상황을 꼭 모니터링**해야 합니다.   
 왜냐하면 중간에 엉뚱하게 바꾸거나 임시코드를 만들거나 가이드와 다르게 수행하는 경우가 종종 있기 때문입니다.    
-사람의 개입이 필요하다고 판단되면 'ESC'를 눌러 수행을 잠시 중단하게 하고 프롬프팅을 해서 작업 수정 요청합니다.   
+사람의 개입이 필요하다고 판단되면 'ESC'를 눌러 수행을 잠시 중단하게 하고 프롬프팅을 해서 작업 수정. 요청합니다.   
 그리고 계속 진행해도 되면 '계속'이라고 입력합니다.    
 
-#### 프론트엔드 개발/테스트 팁
-##### 프론트엔드설계서 작성
+---
 
-1)프론트엔드설계서 작성 요청   
+### 프론트엔드 설계
+**1.준비작업**  
+1)작업 디렉토리 작성  
+{사용자홈}/home/workspace 밑에 작성합니다.   
+예시)
+```
+mkdir -p ~/home/workspace/tripgen-front 
+```
+vscode에서 오픈합니다.   
+예시)  
+```
+cd ~/home/workspace/tripgen-front
+code . 
+```
+
+2)CLAUDE.md 생성    
+아래 내용으로 CLAUDE.md 파일을 만듭니다.   
+```
+# 프론트엔드 가이드
+
+[Git 연동]
+- "pull" 명령어 입력 시 Git pull 명령을 수행하고 충돌이 있을 때 최신 파일로 병합 수행  
+- "push" 또는 "푸시" 명령어 입력 시 git add, commit, push를 수행 
+- Commit Message는 한글로 함
+
+[URL링크 참조]
+- URL링크는 WebFetch가 아닌 'curl {URL} > claude/{filename}'명령으로 저장
+- 'claude'디렉토리가 없으면 생성하고 다운로드   
+- 저장된 파일을 읽어 사용함
+
+## 산출물 디렉토리 
+- 유저스토리: design/userstory.md
+- 프로토타입: design/prototype/*
+- API명세서: design/api/*.json
+- UI/UX설계서: design/frontend/uiux-design.md
+- 스타일가이드: design/frontend/style-guide.md
+- 정보아키텍처: design/frontend/ia.md
+- API매핑설계서: design/frontend/api-mapping.md
+
+## 가이드 
+- 프론트엔드설계가이드
+  - 설명: 프론트엔드 설계 방법 안내 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/frontend-design.md
+  - 파일명: frontend-design.md
+- 프론트엔드개발가이드
+  - 설명: 프론트엔드 개발 가이드 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/dev-frontend.md
+  - 파일명: dev-frontend.md   
+
+## 작업약어
+- "@design-front": /sc:design --persona-front --think --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
+- "@dev-front": /sc:implement --persona-front --think --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
+- "@plan": --plan --think
+
+## Lessons Learned
+**프론트엔드 개발 절차**:
+- 개발가이드의 "6. 각 페이지별 구현" 단계에서는 빌드 및 에러 해결까지만 수행
+- 개발서버(`npm run dev`) 실행은 항상 사용자가 직접 수행
+- 개발자는 빌드(`npm run build`) 성공까지만 확인하고 서버 실행을 사용자에게 요청
+- 개발자가 임의로 서버를 실행하고 테스트하지 않고 사용자 확인 후 진행
+
+**프로토타입 분석 및 테스트**:
+- 프로토타입 HTML 파일은 반드시 Playwright MCP를 사용하여 모바일 화면(375x812)에서 확인
+- 프로토타입의 모든 인터랙션과 액션을 실제로 클릭하여 동작 확인 필요
+```
+
+3)유저스토리와 프로토타입 복사      
+백엔드개발 시 만든 유저스토리와 프로토타입을 아래 디렉토리에 복사합니다.   
+- 유저스토리: design/userstory.md
+- 프로토타입: design/prototype/*
+
+**2.프론트엔드 설계 요청**       
 프론트엔드설계서 작성 시 API명세서를 참조하므로 백엔드를 실행하고 swagger api docs페이지 주소를 제공합니다.  
-API명세서는 design/backend/api/spec디렉토리에 생성됩니다.   
-프론트엔드설계서는 design/frontend/frontend-design.md 파일로 생성됩니다.  
+API명세서는 design/api 디렉토리에 생성됩니다.   
+프론트엔드설계서는 아래와 같이 생성됩니다.
+- UI/UX설계서: design/frontend/uiux-design.md
+- 스타일가이드: design/frontend/style-guide.md
+- 정보아키텍처: design/frontend/ia.md
+- API매핑설계서: design/frontend/api-mapping.md
+  
+예시) 백엔드시스템과 요구사항은 본인 프로그램에 맞게 수정해야 합니다.  
+```
+@design-front
+'프론트엔드설계가이드'를 준용하여 프론트엔드설계서를 작성해 주세요.
+[백엔드시스템]
+- 마이크로서비스: user-service, location-service, trip-service, ai-service 
+- API문서
+  - user service: http://localhost:8081/v3/api-docs
+  - location service: http://localhost:8082/v3/api-docs
+  - trip service: http://localhost:8083/v3/api-docs
+  - ai service: http://localhost:8084/v3/api-docs
+[요구사항]
+- 각 화면에 Back 아이콘 버튼과 화면 타이틀 표시
+- 하단 네비게이션 바 아이콘화: 홈, 새여행, 주변장소검색, 여행보기
+```
+
+**3.설계서 검토후 수정 요청**       
+설계서를 검토하고 수정 요청을 합니다.  
+
+### 프론트엔드 개발
+[프론트엔드개발가이드](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/develop/dev-frontend.md)를 이용하여 개발 합니다.   
+아래와 같이 가이드에 있는것처럼 0~5단계까지는 AI가 수행하고 6단계 부터는 같이 각 화면별로 개발합니다.  
+- '0. 준비'를 수행하고 완료 후 다음 단계 진행여부를 사용자에게 확인  
+- '1. 기술스택 결정 ~ 5. 공통 컴포넌트 개발'까지 숳애하고 완료 후 다음 단계 진행여부를 사용자에게 확인   
+- '6. 각 페이지별 구현'은 사용자와 함께 각 페이지를 개발  
+
+**1.기본개발 요청(0단계~5단계)**  
+개발요청 프롬프트는 아래와 같습니다.  
+'개발정보'는 본인 프로그램에 맞게 수정해야 합니다.    
+```
+@dev-front
+"프론트엔드개발가이드"에 따라 개발해 주세요.   
+[개발정보]
+- 개발프레임워크: Typescript + React 18
+- UI프레임워크: MUI v5
+- 상태관리: Redux Toolkit
+- 라우팅: React Router v6
+- API통신: Axios
+- 스타일링: MUI + styled-components
+- 빌드도구: Vite
+```
+
+**2.각 페이지별 개발**   
+각 페이지별 구현은 요청->테스트->수정->완성의 단계로 수행합니다.   
+1)개발요청   
+개발 요청시에는 유저스토리, 프로토타입, 관련 API테스트 명령을 제공합니다.   
 예시)
 ```
-/design-frontend
-[API명세서 주소]
-- user service: http://localhost:8081/v3/api-docs
-- location service: http://localhost:8082/v3/api-docs
-- trip service: http://localhost:8083/v3/api-docs
-- ai service: http://localhost:8084/v3/api-docs
+대시보드 화면을 개발합시다.   
+1. 유저스토리: UFR-TRIP-010
+2. 프로토타입: 02-대시보드.html. '프로토타입 분석 및 테스트'대로 분석 
+3. API: 제공한 API 실행 명령을 이용하여 요청/응답 데이터 구조를 분석 
+1) 상태별 여행목록 구하기: 
+tripStatus: planning, ongoing, completed
+curl -X 'GET' \
+  'http://localhost:8083/api/v1/trips?tripStatus=planning&sort=latest&page=1&size=3' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2YTAxOTBjYi1jZWIxLTQxYTMtODYwMy1mMGZmY2QzMWIxODEiLCJpYXQiOjE3NTY0OTIxMjYsImV4cCI6MTc1NjU3ODUyNiwidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoiaGlvbmRhbCIsImF1dGhvcml0eSI6IlVTRVIifQ.v-c7A_GyxoB_6Xro4G0kY874XWFhNh5FYXLWIEv_Izg'
+2) 사용자 기본정보 구하기
+curl -X 'GET' \
+  'http://localhost:8081/api/v1/users/profile' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjA0NGNkYy04YTMxLTRkZWUtYmQ5Yi04YjNlMTdhYTcyNWQiLCJpYXQiOjE3NTY0Njk0NzksImV4cCI6MTc1NjU1NTg3OSwidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoib25kYWwiLCJhdXRob3JpdHkiOiJVU0VSIn0.5MBzkDUUUmiYOouod3Pg66JGwuYoYGbgZ8zVxd2O1bA'
 ```
 
-2)검토후 수정 요청   
-예시)
-```
-프론트엔드설계서 검토의견
-- 2.1 사이트맵
-  - 메인영역에 로그아웃 추가
-  - 질문: 프로필 변경, 암호변경은 사이트맵에 추가할 필요 없나요?   
-- 3.2 UI/UX 설계서 업데이트
-  - API명세서에 정의된 모든 API가 반영되었는지 점검 
-  - AI일정생성 화면: 실시간 상태 확인이 AI service의 API임을 명확히 함
-- 7.1 API 클라이언트 설정
-  - getBaseURL: 'localhost:{포트}' 대신에 '${gatewayHost}'를 사용해야 함
-  - 7.2 백엔드 API 경로 정보: 각 서비스 엔드포인트 변수는 필요 없음. 위 getBaseURL함수 이용 
-```
-
-3)팀원리뷰 요청   
-```
-팀원 여러분, 프론트엔드설계서를 검토해 주세요.  
-```
-
-4)팀원의견 반영   
-```
-팀원의견을 반영하여 프론트엔드설계서를 갱신해 주세요. 
-단, 백엔드에서 지원 않하는 기능은 반영하지 마세요. 
-```
-
-##### 프론트엔드 개발
-1)프로젝트 디렉토리 생성 및 Instruction 설정    
-[프로젝트 Instruction 설정](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md)가이드에 따라 프론트엔드 프로젝트 디렉토리 생성 및 Instruction 설정 수행  
-
-2)개발   
-```
-/develop-dev-front
-```
-
-3)검토    
-검토계획 수립
-```
-@plan \
-프론트엔드설계서를 다시 꼼꼼히 보고 누락되거나 개선된것이 있는지 찾으세요.
-그리고 개선계획서를 claude 디렉토리 밑에 생성하세요. 
-- 슈도코드를 포함하여 상세하게 작성 
-- 계획서만 작성하고 개발은 검토후 진행
-```
-
-4)검토결과 반영   
-검토결과에서 제외할 부분을 명시하여 추가 개발 요청 
-
-예시)
-```
-프론트엔드 계선 계획서를 보고 누락된 주요 기능을 개발하세요. '제외'항목은 제외하고 개발.   
-### 1.2 누락된 주요 기능
-
-#### 설계서에 명시되었으나 미구현된 항목: '제외'항목은 추가 개발하지 않음  
-  1. **React Query 설정 및 적용** ⚠️
-  2. **PWA 설정 (오프라인 지원)** ⚠️ => 제외
-  3. **국제화(i18n) 시스템** ⚠️ => 제외 
-  4. **드래그 앤 드롭 기능** (일정 재배치) ⚠️
-  5. **Web Vitals 모니터링** ⚠️ => 제외
-  6. **에러 바운더리 고도화** ⚠️ => 제외
-  7. **이미지 최적화 (LazyImage)** ⚠️
-  8. **폼 유효성 검증 시스템** ⚠️ => 제외
-  9. **테스트 코드** ⚠️ => 제외
-  10. **Storybook 설정** ⚠️ => 제외
-```
-
-5)API명세서 일치 확인   
-API명세서랑 다른 부분을 점검하고 수정하도록 합니다. 
-```
-각 API의 path, request, response를  API명세서를 다시 보고 틀린걸 수정하세요.
-```
-
-6)빌드 및 에러 수정 요청    
-```
-프로그램을 빌드하고 에러를 잡아주세요.  
-```
-
-7)실행 및 에러 수정 요청    
-아래 명령으로 로컬에서 실행하고 웹브라우저에서 오픈한 후 런타임 에러를 수정하세요.   
+2)테스트/수정/완료    
+개발된 페이지를 테스트하고 프롬프트로 수정 요청을 하여 완성해 나갑니다.   
+터미널에서 아래 명령으로 개발서버를 시작합니다.  
 ```
 npm run dev
 ```
+브라우저에서 'http://localhost:3000'을 접속하여 테스트 합니다.   
 
-직접 브라우저로 열어 런타임 에러를 수정하게 합니다.    
-예시)
-``` 
--play http://localhost:3000번으로 접근하여 에러가 있으면 수정해요. 
+Tip)3000번 포트로 실행 안되는 경우.  
+아래 프롬프트로 기존 개발서버를 중단시킨후 다시 개발서버를 시작합니다.   
 ```
-```
-'http://localhost:3000/dashboard'을 웹브라우저로 열어 직접 확인해봐요.
-id: hiondal, pw: 0sri1234$ 
+3000번 포트로 실행중인 개발서버를 중단하세요.  
 ```
 
-8)개선하기    
-Plan -> Do -> See(Test)의 절차로 진행하십시오.  
-바로 수정을 요청하면 잘못 수정할 경우가 많으므로 계획을 세우게 하고 검토해 주고    
-실행한 후 테스트하는 것이 안전하고 시간을 절약합니다.   
-
-계획요청 예시)
-```
-@plan \
-API '/api/v1/trips/basic-setup'의 request 구조와 지금 화면이 맞지를 않네요. \
-수정계획을 claude/ 디렉토리에 작성하세요.  
-[요구사항]
-- 멤버 등록 시 이름, 나이, 성별, 건강상태, 장소선호를 입력받아야 함
-```
-
+---
 
 ### 배포하기
 [배포 프롬프트]()
@@ -443,18 +619,8 @@ API '/api/v1/trips/basic-setup'의 request 구조와 지금 화면이 맞지를 
   - 만약 병렬처리를 안하면 '서브 에이젼트로 병렬처리'라는 프롬프트를 추가하면 됨   
 
 - 프롬프트에 이미지 제공 방법   
-  - CLAUDE.md에 정의된 아래 약어 이용  
-    - @error: debug/error.png 
-    - @info: debug/info.png  
-  - 사용방법
-    - 에러 화면인지 정보 제공 화면인지에 따라 화면을 캡처하여 파일로 저장  
-    - 프롬프트팅에 약어를 이용   
-  - 사용예시
-    ```
-    @fix as @front 
-    아래 오류를 해결해 주세요. see @error 
-    [오류내용] 
-    ```
+  제공할 이미지를 클립보드에 복사한 후 프롬프트창에 붙여 넣습니다.   
+  맥은 'CTRL-V'키, 윈도우는 'ALT-V' 키를 이용하여 붙입니다.   
 
 #### **Lessons Learned 등록하게 하기**     
 Claude Code는 완벽하지 않아 시행착오를 자꾸합니다.   
@@ -469,12 +635,12 @@ CLAUDE.md에 'Lessons Learned' 섹션을 추가하고
 AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니다.  
 예1)
 ```
-소스를 수정하면 컴파일까지 하고 서버 재시작을 사람에게 요청해야 합니다. lessons learned 에 간략하고 명확하게 추가하세요.
+소스를 수정하면 컴파일까지 하고 서버 재시작을 사람에게 요청해야 합니다. lessons learned 에 간략하고. 명확하게 추가하세요.
 ```
 예2)
-실행을 'ESC'로 멈추고 지침 추가를 요청.  
+실수가 포착되면 실행을 'ESC'로 멈추고 지침 추가를 요청.  
 ```
-잠깐 환경설정값은 applicaiton.yml이 아니라 실행프로파일을 점검해야 합니다. lessons learned에 간략하고 명확하게 추가해주고 계속해줘요.
+잠깐 환경설정값은 applicaiton.yml이 아니라 실행프로파일을 점검해야 합니다. lessons learned에 간략하고. 명확하게 추가해주고 계속해줘요.
 ```
 
 #### **계획 세우게 하기**    
@@ -483,7 +649,7 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 @plan 'AsyncProcessingServie'클래스에서 공통함수를 분리할 계획을 세우세요.  
 ```
 
-#### **단위테스트 코드 작성시켜 검증하기**     
+#### **(백엔드)단위테스트 코드 작성시켜 검증하기**     
 추가/수정된 코드가 검증이 필요하다고 판단되면 클로드에게 단위테스트코드를 작성하라고 요청하십시오.   
 그리고 그 단위테스트 코드를 직접 수행하여 코드에 문제가 없는지 검증 시키십시오.    
 이때 실제와 동일한 sample 데이터를 제공하여 정확도를 높이는게 좋습니다.  
@@ -500,7 +666,7 @@ sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.
 resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
 ```
 
-#### **서버 로그 디버깅 하기**       
+#### **(백엔드)서버 로그 디버깅 하기**       
 application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 설정하도록 되어 있습니다.  
 만약 안되어 있으면 추가하도록 요청하세요.   
 ```
@@ -524,7 +690,7 @@ context7 MCP를 이용하면 됩니다.
 이 명령어를 사용하지 않고 프롬프트에서 수정이나 개선을 요청할 때는 이 옵션을 명시해 줘야 합니다.   
 예) -c7 Google Place API를 이용하여 주변 주차장 정보를 찾도록 해주세요.  
 
-#### **실행 프로파일 작성**     
+#### **(백엔드)실행 프로파일 작성**     
 '/develop-make-run-profile' 명령으로 IntelliJ의 서비스 실행 프로파일을 작성할 수 있습니다.    
 {service}/.run/{service}.run.xml에 등록됩니다.    
 등록이 되면 서비스탭에 나타납니다.    
@@ -532,7 +698,7 @@ context7 MCP를 이용하면 됩니다.
 먼저 실행구성을 클릭하고 'Gradle'이나 'Maven' 등 빌드툴을 선택해야 표시됩니다.   
 ![](images/2025-08-07-09-24-30.png)    
 
-#### **API테스트**      
+#### **(백엔드)API테스트**      
 '@test-api'를 앞에 붙여 테스트를 요청하면 API 스펙을 정확히 확인하여 테스트 하게 됩니다.  
 
 ```
@@ -553,7 +719,7 @@ curl -X 'POST' \
   -d ''
 ```
 
-#### **버그픽스는 AI, 서버재시작은 사람이 수행**           
+#### **(백엔드)버그픽스는 AI, 서버 재시작은 사람이 수행**           
 AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합니다.    
 서버재시작은 본인이 하겠다고 프롬프트에 말해 주세요.   
 '/develop-test-backend'명령어에는 이미 이 프롬프트가 있지만 가끔 AI가 서버를 시작하려고 합니다.    
@@ -577,7 +743,7 @@ user service를 중단하세요.
 잘 문제를 못풀면 깊게 고민하는 옵션을 프롬프트에 추가할 수 있습니다.  
 고민을 얼마나 깊게 할 지에 따라 --think, --think-hard, --ultra-think가 있습니다.  
 ```
---think 
+--think 왜 로그인 에러가 나는지 원인을 찾아요.  
 ```
 
 #### **이전 git commit 참고 또는 복원하기**   
@@ -586,5 +752,3 @@ user service를 중단하세요.
 ```
 원격 commit 'abb2a9d'에서 찾아서 API '일자별 일정 재생성' API와 관련 리소스 클래스를 복원해요.
 ```
-
-

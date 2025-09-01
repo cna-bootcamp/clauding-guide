@@ -147,6 +147,7 @@
     - 유효성 검사 스키마
     - 공통 폼 컴포넌트
 - 6. 각 페이지별 구현: 'UI/UX설계서'의 '2. 화면 목록 정의'에 정의된 순서로 아래 단계로 개발 
+  - 사용자가 제공한 페이지 관련된 유저스토리 파악 
   - 구현할 페이지의 프로토타입을 웹브라우저에서 모바일 사이즈로 재확인(playwright MCP 이용)  
   - 사용자가 제공한 정보를 이용하여 API의 요청과 응답 데이터 파악  
   - API와 연동하여 페이지 개발 
@@ -161,4 +162,5 @@
 - API매핑설계서: design/frontend/api-mapping.md
 - API명세서: design/api/*.json
 - 프로토타입: design/prototype/*
+- 유저스토리: design/userstory.md
 
