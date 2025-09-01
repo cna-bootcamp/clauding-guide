@@ -317,11 +317,12 @@ context7 MCP를 이용하면 됩니다.
 ## 프로젝트 단계별 수행 가이드  
 
 ### 서비스 기획 하기
-서비스 기획은 Claude Desktop에서 수행합니다.   
 
 #### 1.상위수준기획
 Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니다.   
 [서비스 기획하기](https://github.com/cna-bootcamp/aiguide/blob/main/AI%ED%99%9C%EC%9A%A9%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
+
+상위수준 서비스 기획은 온라인Claude 또는 Claude Desktop에서 수행합니다.   
 
 | [Top](#목차) |
 
@@ -329,6 +330,7 @@ Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니�
 
 #### 2.기획 구체화 
 DDD 전략설계 방법인 Event Storming기법을 이용하여 기획을 구체화 합니다.   
+기획 구체화는 Figma에서 수행합니다.  
 
 - 팀원들과 Event Storming 수행  
 Event Storming을 Figma의 FigJam을 이용하여 수행합니다. 
@@ -352,6 +354,7 @@ Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행
 
 #### 3.유저스토리 작성   
 피그마로 이벤트스토밍을 수행한 경우 아래와 같이 Figma MCP를 이용하여 유저스토리 초안을 빠르게 만듭니다.   
+기획 구체화는 Claude Code에서 수행합니다.  이 이후의 작업은 Claude Code에서 수행합니다.   
 
 - [MCP 설치/MCP Plugin 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98)를 먼저 수행   
 - 이벤트스토밍결과 선택 및 MCP Plugin 수행: 피그마에서 이벤트스토밍결과를 선택하고 우측 마우스 버튼에서 'Cursor Talk to Figma MCP Plugin' 수행  
@@ -364,6 +367,8 @@ Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행
   [요구사항]
   피그마 채널ID 'abcde'에 접속하여 분석
   ```
+- 유저스토리 검토/수정
+  'design/userstory.md'파일로 생성된 유저스토리를 검토하고 수정합니다.  
 
 | [Top](#목차) |
 
