@@ -930,6 +930,15 @@ API명세서는 design/api 디렉토리에 생성됩니다.
 - '1. 기술스택 결정 ~ 5. 공통 컴포넌트 개발'까지 숳애하고 완료 후 다음 단계 진행여부를 사용자에게 확인   
 - '6. 각 페이지별 구현'은 사용자와 함께 각 페이지를 개발  
 
+**0.방화벽 오픈**      
+백엔드서비스 접속을 위해 방화벽 오픈 작업을 합니다.   
+
+- 오픈할 포트 찾기 
+'npm run dev'를 수행했을 때 표시되는 포트를 확인합니다.   
+보통 3000번 포트입니다.   
+
+- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/tree/main?tab=readme-ov-file#azure-%EB%B0%A9%ED%99%94%EB%B2%BD-%EC%98%A4%ED%94%88) 참고하여 3000번 포트 오픈  
+  
 **1.기본개발 요청(0단계~5단계)**  
 개발요청 프롬프트는 아래와 같습니다.  
 '개발정보'는 본인 프로그램에 맞게 수정해야 합니다.    
@@ -956,13 +965,13 @@ API명세서는 design/api 디렉토리에 생성됩니다.
 1. 유저스토리: UFR-TRIP-010
 2. 프로토타입: 02-대시보드.html. '프로토타입 분석 및 테스트'대로 분석 
 3. API: 제공한 API 실행 명령을 이용하여 요청/응답 데이터 구조를 분석 
-1) 상태별 여행목록 구하기: 
+4) 상태별 여행목록 구하기: 
 tripStatus: planning, ongoing, completed
 curl -X 'GET' \
   'http://localhost:8083/api/v1/trips?tripStatus=planning&sort=latest&page=1&size=3' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2YTAxOTBjYi1jZWIxLTQxYTMtODYwMy1mMGZmY2QzMWIxODEiLCJpYXQiOjE3NTY0OTIxMjYsImV4cCI6MTc1NjU3ODUyNiwidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoiaGlvbmRhbCIsImF1dGhvcml0eSI6IlVTRVIifQ.v-c7A_GyxoB_6Xro4G0kY874XWFhNh5FYXLWIEv_Izg'
-2) 사용자 기본정보 구하기
+1) 사용자 기본정보 구하기
 curl -X 'GET' \
   'http://localhost:8081/api/v1/users/profile' \
   -H 'accept: */*' \
