@@ -208,7 +208,7 @@ Event Storming을 Figma의 FigJam을 이용하여 수행합니다.
 - Claude 활용한 보완  
 Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행합니다.  
 
-**1.사전준비: [MCP 설치/MCP Plugin 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98)**:   
+**1.사전준비: [MCP 설치/MCP Plugin 설치](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98)**
   
 **2.Claude Desktop 또는 Claude Code에서 프롬프팅**   
 예시)
