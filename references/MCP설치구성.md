@@ -6,11 +6,12 @@
   - [주요 MCP 이해 및 준비 작업](#주요-mcp-이해-및-준비-작업)
   - [Claude Code에 주요 MCP서버 연결](#claude-code에-주요-mcp서버-연결)
     - [주요 MCP 연결](#주요-mcp-연결)
-    - [Figma MCP 설치](#figma-mcp-설치)
-  - [Claude Desktop에 주요 MCP서버 연결(옵션)](#claude-desktop에-주요-mcp서버-연결옵션)
+    - [Magic MCP 설치(옵션)](#magic-mcp-설치옵션)
+    - [Figma MCP 설치(필수)](#figma-mcp-설치필수)
+  - [Claude Desktop에 주요 MCP서버 연결](#claude-desktop에-주요-mcp서버-연결)
     - [사전준비](#사전준비)
     - [주요 MCP 연결](#주요-mcp-연결-1)
-    - [Figma MCP 설치](#figma-mcp-설치-1)
+    - [Figma MCP 설치](#figma-mcp-설치)
     - [Filesystem MCP 설치](#filesystem-mcp-설치)
   - [MCP포탈 이용 방법](#mcp포탈-이용-방법)
     - [GitHub MCP 설치](#github-mcp-설치)
@@ -56,7 +57,8 @@ https://support.anthropic.com/ko/articles/10065433-claude-desktop-%EC%84%A4%EC%B
 ## 주요 MCP 이해 및 준비 작업  
 아래 MCP는 모두 필요하므로 추가해야 합니다.  
 실제 추가 작업은 이후 수행하므로 각 MCP의 역할만 이해하십시오.   
-단, Magic과 GitHub의 준비 작업은 수행하십시오.   
+context7, Sequential Thinking, Playwright는 필수로 설치하십시오.  
+Magic과 GitHub는 설치 안해도 됩니다. 
   
 - Context7 MCP: 최신 개발 방식 제공하여 코드의 최신성 향상   
 https://github.com/upstash/context7
@@ -64,23 +66,12 @@ https://github.com/upstash/context7
 - Sequential Thinking MCP: AI가 논리적 작업 순서를 설계하도록 지원    
 https://mcp.so/server/sequentialthinking/modelcontextprotocol
 
-- Magic MCP: UI 디자인을 지원   
-  - https://github.com/21st-dev/magic-mcp
-  - API Key 생성 필요: https://21st.dev/magic/console 에서 'Setup Magic MCP' 버튼 클릭
+- Magic MCP: 화면설계 지원   
 
 - Playwright MCP: UI테스트를 지원. 웹브라우저를 실행하여 스스로 테스트나 분석을 수행할 수 있음.   
 https://github.com/microsoft/playwright-mcp
 
 - GitHub MCP: GitHub Repository 연동     
-  - **※ 접근할 Organization에 'Smithery AI'를 추가해야 함**
-  - https://smithery.ai/ 접근하여 회원가입 후 로그인  
-  - 우측 상단의 '[Deploy Server]' 클릭 후 GitHub 로그인
-    ![](images/2025-08-03-09-27-22.png)  
-  - 'Add Github Account' 선택하여 접근할 Organization 추가
-    ![](images/2025-08-03-09-27-54.png)  
-
-- Figma MCP: UI/UX 설계 툴인 Figma 연동   
-
 
 ---
 
@@ -102,19 +93,74 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-window.j
 **2.MCP 설정값 추가**      
 터미널을 열고 이 파일을 열어 MCP설정을 추가합니다.  
 ```
-code ~/.claude.json
+cd ~
+code .claude.json
 ```
-맨 아래줄 "}" 전 라이 끝에 콤마 추가   
+
+'mcpServers' 항목이 이미 있는지 찾습니다.   
+1)'mcpServers'항목이 없는 경우  
+맨 아래줄 "}" 전 라인 끝에 콤마 추가   
 ![](images/2025-08-03-10-14-07.png)
 
 위에서 복사한 설정값 붙여넣기   
 ![](images/2025-08-03-10-15-09.png) 
 
 파일을 저장합니다.  
+2)'mcpServers'항목이 있는 경우 
+'mcpServers' 안의 기존 MCP설정 끝에 추가합니다.  
 
-만약 'mcpServers'항목이 이미 있다면 그 안의 각 MCP설정을 확인하여 잘 설정해야 합니다.  
+**3.설치확인**        
+아래 명령으로 설치 및 연결 확인을 합니다.   
+```
+claude mcp list 
+```
 
-### Figma MCP 설치
+---
+
+### Magic MCP 설치(옵션)
+'.claude.json' 파일의 'mcpServers' 안에 아래 Magic MCP 설정을 추가합니다.  
+API Key는 아래 주소에서 생성하여 지정합니다.   
+- https://github.com/21st-dev/magic-mcp
+- API Key 생성 필요: https://21st.dev/magic/console 에서 'Setup Magic MCP' 버튼 클릭
+
+Window:
+```
+"magic": {
+  "command": "cmd",
+  "args": [
+    "/c",
+    "npx",
+    "-y",
+    "@21st-dev/magic@latest"
+  ],
+  "env": {
+    "API_KEY": "{API Key}"
+  }
+}
+```
+
+Linux/Mac:
+```
+"magic": {
+  "command": "npx",
+  "args": [
+    "-y",
+    "@21st-dev/magic@latest"
+  ],
+  "env": {
+    "API_KEY": "{API Key}"
+  }
+}
+```
+
+파일 저장 후 아래 명령으로 설치를 확인합니다.   
+```
+claude mcp list 
+```
+
+---
+
+### Figma MCP 설치(필수)
 Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽을 수 있도록 하는 강력한 기능을 제공합니다.   
 참고로 유투브나 블로그에 여러 방법이 있는데 지금은 동작 안하는 방법이 많습니다.   
 그래서 로컬에 Figma MCP서버를 설치해서 연동하는 방법으로 설명합니다.   
@@ -231,7 +277,7 @@ Claude Code 프롬프트에서 이 채널ID를 제공하여 작업합니다.
 
 ---
 
-## Claude Desktop에 주요 MCP서버 연결(옵션)  
+## Claude Desktop에 주요 MCP서버 연결
 ### 사전준비
 1)Git설치    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-client-%EC%84%A4%EC%B9%98
@@ -247,11 +293,6 @@ MCP 설정 파일:
 - **Windows**: "$HOME/AppData/Roaming/Claude/claude_desktop_config.json"
 
 **1.설정파일 열기**    
-위 파일을 code 명령으로 엽니다.  
-```
-code "$HOME/AppData/Roaming/Claude/claude_desktop_config.json"
-```
-참고) Claude Desktop에서 열기  
 Claude Desktop을 열고 설정 페이지를 엽니다.  
 설정 페이지는 좌측 하단에서 로그인 사용자명을 선택하고 '설정'을 클릭합니다.  
 ![](images/2025-08-03-10-29-16.png)  
@@ -368,6 +409,7 @@ https://smithery.ai/
 GitHub와 Figma MCP 추가를 이 사이트를 이용해서 추가해 보겠습니다.   
 
 ### GitHub MCP 설치
+**1.GitHub MCP 설치**       
 https://smithery.ai/ 에서 'GitHub'를 검색합니다.  
 
 ![](images/2025-08-03-10-46-23.png)
@@ -400,6 +442,16 @@ claude mcp add --transport http smithery-ai-github "https://server.smithery.ai/@
 ```
 claude mcp list 
 ```
+
+**2.GitHub에서 접근 허용**        
+- **※ 접근할 Organization에 'Smithery AI'를 추가해야 함**
+- https://smithery.ai/ 접근하여 회원가입 후 로그인  
+- 우측 상단의 '[Deploy Server]' 클릭 후 GitHub 로그인
+  ![](images/2025-08-03-09-27-22.png)  
+- 'Add Github Account' 선택하여 접근할 Organization 추가
+  ![](images/2025-08-03-09-27-54.png)  
+
+---
 
 ### Google Map (옵션)
 위 GitHub MCP 추가와 동일한 방법으로 'google map' MCP를 찾아 추가합니다.  
