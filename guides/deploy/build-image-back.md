@@ -29,7 +29,7 @@
   ```
 
 - Dockerfile 생성   
-  아래 내용으로 deployment/container/Dockerfile 생성  
+  아래 내용으로 deployment/container/Dockerfile-backend 생성  
   ```
   # Build stage
   FROM openjdk:23-oraclelinux8 AS builder
@@ -39,8 +39,8 @@
 
   # Run stage
   FROM openjdk:23-slim
-  ENV USERNAME k8s
-  ENV ARTIFACTORY_HOME /home/${USERNAME}
+  ENV USERNAME=k8s
+  ENV ARTIFACTORY_HOME=/home/${USERNAME}
   ENV JAVA_OPTS=""
 
   # Add a non-root user
@@ -61,7 +61,7 @@
 - 컨테이너 이미지 생성    
   아래 명령으로 각 서비스 빌드. shell 파일을 생성하지 말고 command로 수행.    
   ```
-  DOCKER_FILE=deployment/container/Dockerfile
+  DOCKER_FILE=deployment/container/Dockerfile-backend
   service={서비스명}
 
   docker build \
