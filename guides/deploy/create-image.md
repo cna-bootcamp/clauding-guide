@@ -2,7 +2,6 @@
 
 [요청사항]  
 - 백엔드 각 서비스를의 컨테이너 이미지 생성
-- 프론트엔드 서비스의 컨테이너 이미지 생성
 
 [작업순서]
 - 백엔드 컨테이너 이미지 생성     
@@ -10,55 +9,67 @@
     ```
     cd {백엔드 디렉토리}
     ```  
-1.1 실행Jar 파일 설정   
-- 서비스명은 settings.gradle에서 확인 
-- 실행Jar 파일명을 서비스명과 일치하도록 build.gradle에 설정 합니다.   
-```
-bootJar {
-    archiveFileName = 'user-service.jar'
-}
-```
+  - 서비스명 확인
+    서비스명은 settings.gradle에서 확인 
+    
+    예시) include 'common'하위의 4개가 서비스명임.  
+    ```
+    rootProject.name = 'tripgen'
 
-1.1 Dockerfile생성  
-아래 내용으로 deployment/container/Dockerfile 생성  
-```
-# Build stage
-FROM openjdk:23-oraclelinux8 AS builder
-ARG BUILD_LIB_DIR
-ARG ARTIFACTORY_FILE
-COPY ${BUILD_LIB_DIR}/${ARTIFACTORY_FILE} app.jar
+    include 'common'
+    include 'user-service'
+    include 'location-service'
+    include 'ai-service'
+    include 'trip-service'
+    ```  
 
-# Run stage
-FROM openjdk:23-slim
-ENV USERNAME k8s
-ENV ARTIFACTORY_HOME /home/${USERNAME}
-ENV JAVA_OPTS=""
+  - 실행Jar 파일 설정   
+    실행Jar 파일명을 서비스명과 일치하도록 build.gradle에 설정 합니다.   
+    ```
+    bootJar {
+        archiveFileName = '{서비스명}.jar'
+    }
+    ```
 
-# Add a non-root user
-RUN adduser --system --group ${USERNAME} && \
-    mkdir -p ${ARTIFACTORY_HOME} && \
-    chown ${USERNAME}:${USERNAME} ${ARTIFACTORY_HOME}
+  - Dockerfile생성  
+    아래 내용으로 deployment/container/Dockerfile 생성  
+    ```
+    # Build stage
+    FROM openjdk:23-oraclelinux8 AS builder
+    ARG BUILD_LIB_DIR
+    ARG ARTIFACTORY_FILE
+    COPY ${BUILD_LIB_DIR}/${ARTIFACTORY_FILE} app.jar
 
-WORKDIR ${ARTIFACTORY_HOME}
-COPY --from=builder app.jar app.jar
-RUN chown ${USERNAME}:${USERNAME} app.jar
+    # Run stage
+    FROM openjdk:23-slim
+    ENV USERNAME k8s
+    ENV ARTIFACTORY_HOME /home/${USERNAME}
+    ENV JAVA_OPTS=""
 
-USER ${USERNAME}
+    # Add a non-root user
+    RUN adduser --system --group ${USERNAME} && \
+        mkdir -p ${ARTIFACTORY_HOME} && \
+        chown ${USERNAME}:${USERNAME} ${ARTIFACTORY_HOME}
 
-ENTRYPOINT [ "sh", "-c" ]
-CMD ["java ${JAVA_OPTS} -jar app.jar"]
-```
+    WORKDIR ${ARTIFACTORY_HOME}
+    COPY --from=builder app.jar app.jar
+    RUN chown ${USERNAME}:${USERNAME} app.jar
 
-1.2 컨테이너 이미지 생성   
+    USER ${USERNAME}
 
-```
-DOCKER_FILE=deployment/container/Dockerfile
-service={service}
+    ENTRYPOINT [ "sh", "-c" ]
+    CMD ["java ${JAVA_OPTS} -jar app.jar"]
+    ```
 
-docker build \
-  --platform linux/amd64 \
-  --build-arg BUILD_LIB_DIR="${service}/build/libs" \
-  --build-arg ARTIFACTORY_FILE="${service}.jar" \
-  -f ${DOCKER_FILE} \
-  -t ${service}:latest .
-```
+  - 컨테이너 이미지 생성   
+    ```
+    DOCKER_FILE=deployment/container/Dockerfile
+    service={서비스명}
+
+    docker build \
+      --platform linux/amd64 \
+      --build-arg BUILD_LIB_DIR="${서비스명}/build/libs" \
+      --build-arg ARTIFACTORY_FILE="${서비스명}.jar" \
+      -f ${DOCKER_FILE} \
+      -t ${서비스명}:latest .
+    ```
