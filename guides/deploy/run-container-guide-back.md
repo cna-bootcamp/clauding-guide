@@ -131,12 +131,24 @@
   ```
   docker ps | grep {서비스명}
   ```
-- 재배포 시 컨테이너 이미지 삭제 방법 작성 
-  - 컨테이너 중지 
+- 재배포 방법 작성
+  - 컨테이너 이미지 재생성 
+    로컬에서 아래 명령으로 재생성 
+    ```
+    /deploy-build-image-back 
+    ```
+  - 컨테이너 이미지 푸시  
+    로컬에서 수행  
+    ```
+    docker tag {서비스명}:latest {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
+    docker push {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
+    ```     
+  - 컨테이너 중지
+    VM 접속 후 수행   
     ```
     docker stop {서비스명}
     ```
-  - 컨테이너 이미지 삭제 
+  - 컨테이너 이미지 삭제  
     ```
     docker rmi {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
     ``` 
