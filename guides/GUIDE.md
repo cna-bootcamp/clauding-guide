@@ -308,7 +308,7 @@
   - python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
     nohup python3 tools/run-intellij-service-profile.py {service-name} > logs/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
 - "@test-front": /sc:test @front @qa --play --think @complex-flag
-- "@cicd": /sc:implement @devops @archi @back --think @complex-flag
+- "@cicd": /sc:implement @devops --think @complex-flag
 - "@document": /sc:document --think @scribe @complex-flag
 - "@fix": /sc:troubleshoot --think @complex-flag
 - "@estimate": /sc:estimate --think-hard @complex-flag
