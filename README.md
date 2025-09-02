@@ -1007,7 +1007,30 @@ Tip)3000번 포트로 실행 안되는 경우.
 ### 컨테이너로 배포하기
 
 #### 컨테이너 이미지 빌드 
+**1.백엔드 컨테이너 이미지 빌드**        
+IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
+프롬프트에 아래 명령으로 이미지를 빌드합니다.   
+수행결과는 deployment/container/build-image.md 파일로 생성됩니다.   
 
+```
+/deploy-build-image-back
+```
+아래 명령으로 생성된 이미지를 확인합니다.   
+```
+docker images 
+```
+
+**2.프론트엔드 컨테이너 이미지 빌드**        
+vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
+프롬프트에 아래 명령으로 이미지를 빌드합니다.   
+수행결과는 deployment/container/build-image.md 파일로 생성됩니다.  
+```
+/deploy-build-image-front
+```
+아래 명령으로 생성된 이미지를 확인합니다.   
+```
+docker images 
+```
 
 | [Top](#목차) |
 
@@ -1019,6 +1042,12 @@ Tip)3000번 포트로 실행 안되는 경우.
 아래 가이드대로 VM을 생성하고 필요한 툴을 설치하십시오.  
 
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/04.setup-vm.md
+
+**2.컨테이너 이미지 푸시**       
+ACR(Azure Container Registry)에 빌드한 이미지를 푸시합니다.   
+```
+
+```
 
 
 | [Top](#목차) |

@@ -1,0 +1,62 @@
+# 백엔드 컨테이너 실행 가이드
+
+[요청사항]  
+- 백엔드 각 서비스를의 컨테이너 이미지를 컨테이너로 실행
+- 실제 컨테이너 수행 및 검증까지 완료
+- '[결과파일]'에 수행한 명령어를 포함하여 컨테이너 실행 과정 생성 
+
+[작업순서]
+- 서비스명 확인   
+  서비스명은 settings.gradle에서 확인 
+  
+  예시) include 'common'하위의 4개가 서비스명임.  
+  ```
+  rootProject.name = 'tripgen'
+
+  include 'common'
+  include 'user-service'
+  include 'location-service'
+  include 'ai-service'
+  include 'trip-service'
+  ```  
+- 생성된 컨테이너 이미지 확인   
+  아래 명령으로 모든 서비스의 컨테이너 이미 생성 확인  
+  ```
+  docker images | grep {서비스명}
+  ``` 
+
+- 환경변수 확인    
+  '{서비스명}/.run/{서비스명}.run.xml' 을 읽어 각 서비스의 환경변수 찾음.      
+  "env.map"의 각 entry의 key와 value가 환경변수임.   
+    
+  예제) SERVER_PORT=8081, DB_HOST=20.249.137.175가 환경변수임 
+  ```
+  <component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="ai-service" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="env">
+          <map>
+            <entry key="SERVER_PORT" value="8084" />
+            <entry key="DB_HOST" value="20.249.137.175" />
+  ```
+
+- 컨테이너 실행  
+  아래 명령으로 컨테이너를 실행합니다.  
+  shell 파일을 만들지 말고 command로 수행.     
+  모든 환경변수에 대해 '-e' 파라미터로 환경변수값을 넘깁니다.     
+  ```
+  SERVER_PORT={환경변수의 SERVER_PORT값}
+
+  docker run -d --name {서비스명} --rm -p ${SERVER_PORT}:${SERVER_PORT} \
+  -e {환경변수 KEY}={환경변수 VALUE} 
+  {서비스명}:latest
+  ```
+
+- 실행된 컨테이너 확인   
+  아래 명령으로 모든 서비스의 컨테이너가 실행 되었는지 확인   
+  ```
+  docker ps | grep {서비스명}
+  ```
+
+[결과파일]
+deployment/container/run-container.md
