@@ -1005,13 +1005,20 @@ Tip)3000번 포트로 실행 안되는 경우.
 ---
 
 ### 컨테이너로 배포하기
+
 #### 컨테이너 이미지 빌드 
+
 
 | [Top](#목차) |
 
 ---
 
 #### 컨테이너 실행 
+**1.VM 생성 및 필요툴 설치**    
+컨테이너 실행은 VM에서 수행합니다.  
+아래 가이드대로 VM을 생성하고 필요한 툴을 설치하십시오.  
+
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/04.setup-vm.md
 
 
 | [Top](#목차) |
