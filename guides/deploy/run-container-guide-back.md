@@ -65,18 +65,18 @@
   az acr credential show --name {ACR명}
   ```
 
-  예시) ID=dg0200cr, 암호=abcde    
+  예시) ID=dg0200cr, 암호={암호}    
   ```
   $ az acr credential show --name dg0200cr 
   {
     "passwords": [
       {
         "name": "password",
-        "value": "abcde"
+        "value": "{암호}"
       },
       {
         "name": "password2",
-        "value": "12345"
+        "value": "{암호2}"
       }
     ],
     "username": "dg0200cr"
