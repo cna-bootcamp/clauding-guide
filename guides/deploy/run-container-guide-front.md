@@ -81,8 +81,13 @@
 - VM 접속 방법 안내
   - Linux/Mac은 기본 터미널을 실행하고 Window는 Window Terminal을 실행하도록 안내   
   - 터미널에서 아래 명령으로 VM에 접속하도록 안내  
+    최초 한번 Private key파일의 모드를 변경.  
     ```
-    chmod 400 {VM.KEY파일} 
+    chmod 400 {VM.KEY파일}
+    ``` 
+    
+    private key를 이용하여 접속.  
+    ``` 
     ssh -i {VM.KEY파일} {VM.USERID}@{VM.IP}
     ``` 
   - 접속 후 docker login 방법 안내   
