@@ -105,6 +105,10 @@
     chmod 400 {VM.KEY파일} 
     ssh -i {VM.KEY파일} {VM.USERID}@{VM.IP}
     ``` 
+  - 접속 후 docker login 방법 안내   
+    ```
+    docker login {ACR명}.azurecr.io -u {ID} -p {암호}
+    ```
 
 - 컨테이너 실행 명령 생성    
   아래 명령으로 컨테이너를 실행하는 명령을 생성합니다.    
