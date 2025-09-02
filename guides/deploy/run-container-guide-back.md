@@ -65,14 +65,14 @@
   az acr credential show --name {ACR명}
   ```
 
-  예시) ID=dg0200cr, 암호=8Fd9/heysqn4sJS+myHkt/CVk0Zw7jE4DTd9M+pRj6+ACRBukRsv    
+  예시) ID=dg0200cr, 암호=8Fd9...    
   ```
   $ az acr credential show --name dg0200cr 
   {
     "passwords": [
       {
         "name": "password",
-        "value": "8Fd9/heysqn4sJS+myHkt/CVk0Zw7jE4DTd9M+pRj6+ACRBukRsv"
+        "value": "8Fd9..."
       },
       {
         "name": "password2",
