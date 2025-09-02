@@ -27,7 +27,7 @@
   }
   ```
 
-- Dockerfile생성   
+- Dockerfile 생성   
   아래 내용으로 deployment/container/Dockerfile 생성  
   ```
   # Build stage
@@ -69,6 +69,11 @@
     --build-arg ARTIFACTORY_FILE="${서비스명}.jar" \
     -f ${DOCKER_FILE} \
     -t ${서비스명}:latest .
+  ```
+- 생성된 이미지 확인   
+  아래 명령으로 모든 서비스의 이미지가 빌드되었는지 확인   
+  ```
+  docker images | grep {서비스명}
   ```
 
 [결과파일]
