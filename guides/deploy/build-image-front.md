@@ -59,16 +59,18 @@
   # Build stage
   FROM node:20-slim AS builder
   ARG PROJECT_FOLDER
-  ENV NODE_ENV=production
+  ENV NODE_ENV=development
 
   WORKDIR /app
 
   # Install dependencies
   COPY ${PROJECT_FOLDER}/package*.json ./
-  RUN npm ci --only=production
+  RUN npm ci
 
   # Build application
   COPY ${PROJECT_FOLDER} .
+  # Fix rollup optional dependencies issue
+  RUN rm -rf node_modules package-lock.json && npm install
   RUN npm run build
 
   # Run stage
@@ -81,7 +83,7 @@
   RUN adduser -S nginx || true
 
   # Copy build files
-  COPY --from=builder /app/build /usr/share/nginx/html
+  COPY --from=builder /app/dist /usr/share/nginx/html
 
   # Copy and process nginx configuration
   COPY ${BUILD_FOLDER}/nginx.conf /etc/nginx/templates/default.conf.template
