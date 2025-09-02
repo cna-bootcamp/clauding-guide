@@ -9,7 +9,7 @@
     ```
     cd {백엔드 디렉토리}
     ```  
-  - 서비스명 확인
+  - 서비스명 확인   
     서비스명은 settings.gradle에서 확인 
     
     예시) include 'common'하위의 4개가 서비스명임.  
@@ -31,7 +31,7 @@
     }
     ```
 
-  - Dockerfile생성  
+  - Dockerfile생성   
     아래 내용으로 deployment/container/Dockerfile 생성  
     ```
     # Build stage
@@ -61,7 +61,7 @@
     CMD ["java ${JAVA_OPTS} -jar app.jar"]
     ```
 
-  - 컨테이너 이미지 생성   
+  - 컨테이너 이미지 생성    
     ```
     DOCKER_FILE=deployment/container/Dockerfile
     service={서비스명}
