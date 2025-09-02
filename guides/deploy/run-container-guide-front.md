@@ -130,5 +130,16 @@
   docker ps | grep {서비스명}
   ```
 
+- 재배포 시 컨테이너 이미지 삭제 방법 작성 
+  - 컨테이너 중지 
+    ```
+    docker stop {서비스명}
+    ```
+  - 컨테이너 이미지 삭제 
+    ```
+    docker rmi {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
+    ``` 
+  - 컨테이너 재실행 
+
 [결과파일]
 deployment/container/run-container-guide.md
