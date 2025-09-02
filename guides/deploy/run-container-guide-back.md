@@ -76,7 +76,7 @@
       },
       {
         "name": "password2",
-        "value": "X3Nd+2oVSwOMz2ikXyGuLGQjxUJRVXFkVyv+2DOdpa+ACRAo7LPW"
+        "value": "X3Nd+..."
       }
     ],
     "username": "dg0200cr"
