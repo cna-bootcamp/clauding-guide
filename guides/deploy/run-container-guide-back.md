@@ -102,6 +102,7 @@
   - Linux/Mac은 기본 터미널을 실행하고 Window는 Window Terminal을 실행하도록 안내   
   - 터미널에서 아래 명령으로 VM에 접속하도록 안내  
     ```
+    chmod 400 {VM.KEY파일} 
     ssh -i {VM.KEY파일} {VM.USERID}@{VM.IP}
     ``` 
 
