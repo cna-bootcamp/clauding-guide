@@ -59,7 +59,8 @@
   ```
 
 - 컨테이너 이미지 생성    
-  아래 명령으로 각 서비스 빌드. shell 파일을 생성하지 말고 command로 수행.    
+  아래 명령으로 각 서비스 빌드. shell 파일을 생성하지 말고 command로 수행.   
+  서브에이젼트를 생성하여 병렬로 수행.   
   ```
   DOCKER_FILE=deployment/container/Dockerfile-backend
   service={서비스명}
