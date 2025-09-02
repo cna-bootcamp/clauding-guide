@@ -144,14 +144,14 @@
   - 설명: 프론트엔드 컨테이너 이미지 작성 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/build-image-front.md
   - 파일명: build-image-front.md   
-- 백엔드컨테이너실행가이드
-  - 설명: 백엔드 컨테이너 실행 가이드  
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/run-container-back.md
-  - 파일명: run-container-back.md   
-- 프론트엔드컨테이너실행가이드
-  - 설명: 프론트엔드 컨테이너 실행 가이드  
-  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/run-container-front.md
-  - 파일명: run-container-front.md
+- 백엔드컨테이너실행방법가이드
+  - 설명: 백엔드 컨테이너 실행방법 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/run-container-guide-back.md
+  - 파일명: run-container-guide-back.md   
+- 프론트엔드컨테이너실행방법가이드
+  - 설명: 프론트엔드 컨테이너 실행방법 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/run-container-guide-front.md
+  - 파일명: run-container-guide-front.md
     
 ## 참조 문서
 - 프로젝트지침템플릿
