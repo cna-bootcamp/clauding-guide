@@ -132,7 +132,14 @@
   - 설명: 프론트엔드 개발 가이드 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/dev-frontend.md
   - 파일명: dev-frontend.md   
+
 ---
+
+## 배포 가이드
+- 백엔드컨테이너이미지작성가이드
+  - 설명: 백엔드 컨테이너 이미지 작성 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/build-image-back.md
+  - 파일명: build-image-back.md   
 
 ## 참조 문서
 - 프로젝트지침템플릿
