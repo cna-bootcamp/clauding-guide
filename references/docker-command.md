@@ -17,28 +17,30 @@
 
 ## 핵심 명령어: 이미지 빌드/푸시/컨테이너 실행
 
+https://github.com/cna-bootcamp/clauding-guide/blob/main/README.md#%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%EB%A1%9C-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0
+
 
 | [Top](#목차) |
 
 ---
 
 ## **컨테이너 중지/시작/삭제**  
-각 컨테이너를 중지해 보십시오.   
+프론트엔드 컨테이너를 중지해 보십시오.   
 ```
-docker stop lifesub-web member mysub recommend
+docker stop tripgen-front
 ```
 컨테이너가 중지되면 프로세스가 사라지는게 아니라 중지만 됩니다.   
 중지된 컨테이너 프로세스를 보려면 ?   
 네, docker ps -a 로 보면 됩니다.   
-해볼까요? 어라! 아무것도 안보이네요.  
 ```
 docker ps -a 
 ```
-  
+
+하지만 tripgen-front앱이 안보일겁니다.   
 왜 그럴까요?   
 컨테이너 실행할 때 옵션을 찬찬히 볼까요?   
 ```
-docker run -d --name member --rm -p 8081:8081 \
+docker run -d --name tripgen-front --rm -p 8081:8081 \
 ....
 
 ```
@@ -48,33 +50,15 @@ docker run -d --name member --rm -p 8081:8081 \
 '--rm'옵션 때문입니다.  
 이 옵션을 지우고 다시 실행하고 다시 중지 해 봅시다.  
 ```
-docker run -d --name member -p 8081:8081 \
--e POSTGRES_HOST=${POSTGRES_HOST} \
--e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
--e ALLOWED_ORIGINS=http://${VM_HOST}:18080 \
---network lifesub-network \
-member:latest
+SERVER_PORT=3000
 
-docker run -d --name mysub -p 8082:8082 \
--e POSTGRES_HOST=${POSTGRES_HOST} \
--e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
--e ALLOWED_ORIGINS=http://${VM_HOST}:18080 \
---network lifesub-network \
-mysub:latest
-
-docker run -d --name recommend -p 8083:8083 \
--e POSTGRES_HOST=${POSTGRES_HOST} \
--e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
--e ALLOWED_ORIGINS=http://${VM_HOST}:18080 \
---network lifesub-network \
-recommend:latest
-
-docker run -d --name lifesub-web -p 18080:18080 \
-lifesub-web:latest
+docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
+  -v ~/tripgen-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
+  acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest
 ```
 
 ```
-docker stop lifesub-web member mysub recommend
+docker stop tripgen-front
 docker ps -a
 ```
 이젠 'EXIT'상태의 컨테이너가 보일겁니다.   
@@ -82,7 +66,7 @@ docker ps -a
 
 중지된 컨테이너를 다시 시작해 봅시다.   
 ```
-docker start lifesub-web member mysub recommend
+docker start tripgen-front
 docker ps
 ```
 
@@ -91,14 +75,23 @@ docker ps
   
 다시 중지시키고 이번엔 완전히 삭제 해 봅시다.  
 ```
-docker stop lifesub-web member mysub recommend
+docker stop tripgen-front
 docker ps -a
 ```
 
 docker rm으로 영구 삭제 합니다.  
 ```
-docker rm lifesub-web member mysub recommend
+docker rm tripgen-front
 docker ps -a
+```
+
+다시 컨테이너를 실행합니다.   
+```
+SERVER_PORT=3000
+
+docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
+  -v ~/tripgen-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
+  acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest
 ```
 
 | [Top](#목차) |
@@ -106,12 +99,31 @@ docker ps -a
 ---
 
 ## **이미지 지우기**  
-4개 이미지가 더 이상 필요 없다고 가정해 봅시다.  
 이미지를 지우려면 docker rmi 명령을 사용하면 됩니다.   
 이미지를 정리 안하면 스토리지를 차지하기 때문에 정기적으로 지우는게 좋습니다.  
-member, mysub은 다음 실습에 사용하므로 나머지 이미지만 삭제해 봅시다.  
+tripgen-front 이미지만 삭제해 보겠습니다.     
 ```
-docker rmi lifesub-web recommend
+docker images | grep tripgen-front
+```
+
+Repository:tag 또는 Image ID로 삭제하면 됩니다.   
+예시)
+```
+docker rmi acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest  
+```
+```
+docker rmi c732e60b5e0e
+```
+
+이 이미지로 컨테이너가 실행되고 있으므로 삭제가 안될겁니다.   
+컨테이너를 중지합니다.   
+```
+docker stop tripgen-front
+docker rm tripgen-front
+```
+
+그리고 다시 이미지를 삭제한 후 삭제 여부를 확인합니다.  
+```
 docker images 
 ```
 
@@ -129,21 +141,15 @@ docker tag를 사용해서 만든 이미지가 있으면 잘 안지워질때가 
 docker container prune 입니다.   
 테스트를 위해 '--rm'옵션 없이 컨테이너를 실행하고 중지하십시오.   
 ```
-docker run -d --name member -p 8081:8081 \
--e POSTGRES_HOST=${POSTGRES_HOST} \
--e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
--e ALLOWED_ORIGINS=http://${VM_HOST}:18080 \
---network lifesub-network \
-member:latest
+SERVER_PORT=3000
 
-docker run -d --name mysub -p 8082:8082 \
--e POSTGRES_HOST=${POSTGRES_HOST} \
--e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
--e ALLOWED_ORIGINS=http://${VM_HOST}:18080 \
---network lifesub-network \
-mysub:latest
+docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
+  -v ~/tripgen-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
+  acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest
+```
 
-docker stop member mysub
+```
+docker stop tripgen-front
 docker ps -a
 ```
 
@@ -163,28 +169,34 @@ docker ps -a
 ## **컨테이너로 명령 실행 하기**  
 컨테이너 안에 원하는 파일이 있는지, 환경변수는 잘 생성되었는지 보고 싶을 수 있습니다.  
 이때 컨테이너 내부로 명령을 보내야 하는데 이때 docker exec 를 사용합니다.  
-우선 member서비스를 다시 실행하고 테스트 해 보죠.  
+우선 프론트엔드 서비스를 다시 실행하고 테스트 해 보죠.  
 ```
-docker run -d --name member -p 8081:8081 \
--e POSTGRES_HOST=${POSTGRES_HOST} \
--e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
--e ALLOWED_ORIGINS=http://${VM_HOST}:18080 \
---network lifesub-network \
-member:latest
+SERVER_PORT=3000
+
+docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
+  -v ~/tripgen-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
+  acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest
 ```
 
+아래와 같은 문법으로 사용합니다.   
+```
 docker exec -it {container name / id} {command} 
 ```
-docker exec -it member env
-docker exec -it member ls -al /
+
+아래와 같이 테스트 해 봅니다.   
+```
+docker exec -it tripgen-front env
+docker exec -it tripgen-front ls -al /
 ```
 
 이걸 응용해서 컨테이너 안으로 들어갈 수도 있습니다.   
-'bash'를 지원 안하면 'sh'을 사용하십시오.   
+'bash' 또는 'sh'을 사용하십시오.   
 ```
-docker exec -it member bash
+docker exec -it tripgen-front sh
 ls -al
 ```
+
+컨테이너 밖으로 나오려면 'exit'를 입력하면 됩니다.  
 
 | [Top](#목차) |
 
@@ -193,12 +205,26 @@ ls -al
 ## **파일 복사하기**  
 컨테이너 내부로 파일을 복사하거나, 반대로 컨테이너 내의 파일을 밖으로 복사할 수 있습니다.  
 docker cp {소스 경로} {타겟경로}의 문법으로 사용하며, 컨테이너의 경로는 {컨테이너명/id:경로}형식으로 지정합니다.   
-```
-cd ~/workspace/lifesub
 
-docker exec -it member mkdir -p /tmp
-docker cp member/build.gradle member:/tmp/build.gradle
-docker exec -it member ls -al /tmp
+테스트할 디렉토리로 이동합니다.   
+```
+cd ~/home
+```
+
+테스트 할 파일을 하나 만듭니다.   
+```
+echo "hello" > hello.txt
+```
+
+컨테이너 내부에 tmp 디렉토리를 만들고 만든 파일을 복사합니다.    
+```
+docker exec -it tripgen-front mkdir -p /tmp
+docker cp hello.txt tripgen-front:/tmp/hello.txt
+```
+
+복사가 되었는지 확인합니다.   
+```
+docker exec -it tripgen-front cat /tmp/hello.txt
 ```
 
 반대로 컨테이너 안의 파일을 복사해 볼까요?
