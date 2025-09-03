@@ -1037,18 +1037,76 @@ docker images
 ---
 
 #### 컨테이너 실행 
+
 **1.VM 생성 및 필요툴 설치**    
 컨테이너 실행은 VM에서 수행합니다.  
 아래 가이드대로 VM을 생성하고 필요한 툴을 설치하십시오.  
 
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/04.setup-vm.md
 
-**2.컨테이너 이미지 푸시**       
-ACR(Azure Container Registry)에 빌드한 이미지를 푸시합니다.   
+
+**2.백엔드 컨테이너 실행 가이드 작성 및 실행**           
+IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
+
+1)컨테이너 실행 가이드 작성 요청    
+프롬프트에 아래 명령으로 컨테이너 실행 가이드를 작성 요청 합니다.   
+수행결과는 deployment/container/run-container-guide.md 파일로 생성됩니다.   
+'[실행정보]'에 정확한 값을 제공합니다.   
+
+예시) 
+```
+/deploy-run-container-guide-back
+[실행정보]
+- ACR명: acrdigitalgarage01
+- VM
+  - KEY파일: ~/home/bastion-dg0500
+  - USERID: azureuser
+  - IP: 4.230.5.6
+```
+실행이 완료되면 프롬프트에 '푸시'라고 입력하여 원격 Git Repo에 푸시합니다.   
+  
+2)컨테이너 실행     
+웹브라우저에서 실행가이드를 오픈하여 안내대로 아래 작업을 수행합니다.    
+- 이미지를 ACR에 푸시할 수 있도록 이미지 태깅
+- ACR로그인 및 이미지 푸시  
+- VM 접속
+- 컨테이너 실행    
+
+아래 명령으로 컨테이너가 실행되었는지 확인합니다.   
+```
+docker ps
 ```
 
-```
+**2.프론트엔드 컨테이너 실행 가이드 작성 및 실행**        
+vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
+프롬프트에 아래 명령으로 이미지를 빌드합니다.   
+수행결과는 deployment/container/run-container-guide.md 파일로 생성됩니다.   
+'[실행정보]'에 정확한 값을 제공합니다.   
 
+예시) 
+```
+/deploy-run-container-guide-front
+[실행정보]
+- 시스템명: tripgen
+- ACR명: acrdigitalgarage01
+- VM
+  - KEY파일: ~/home/bastion-dg0500
+  - USERID: azureuser
+  - IP: 4.230.5.6
+```
+실행이 완료되면 프롬프트에 '푸시'라고 입력하여 원격 Git Repo에 푸시합니다.   
+  
+2)컨테이너 실행     
+웹브라우저에서 실행가이드를 오픈하여 안내대로 아래 작업을 수행합니다.    
+- 이미지를 ACR에 푸시할 수 있도록 이미지 태깅
+- ACR로그인 및 이미지 푸시  
+- VM 접속
+- 컨테이너 실행    
+
+아래 명령으로 컨테이너가 실행되었는지 확인합니다.   
+```
+docker ps
+```
 
 | [Top](#목차) |
 
