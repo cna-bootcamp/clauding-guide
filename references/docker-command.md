@@ -229,7 +229,11 @@ docker exec -it tripgen-front cat /tmp/hello.txt
 
 반대로 컨테이너 안의 파일을 복사해 볼까요?
 ```
-docker cp member:/home/k8s/app.jar ./member.jar
+docker cp tripgen-front:/tmp/hello.txt hello2.txt
+```
+
+파일이 복사되었는지 확인합니다.    
+```
 ls -al
 ```
 
