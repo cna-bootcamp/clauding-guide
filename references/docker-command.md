@@ -244,19 +244,33 @@ ls -al
 ## **이미지 압축하기/압축파일에서 이미지 로딩하기**  
 폐쇄망안으로 컨테이너 이미지를 반입할 때 많이 사용합니다.   
 인터넷망에서 이미지를 압축파일로 만들어 반입한 후 내부망에서 이미지를 압축파일로 부터 로딩하는 방법입니다.  
+
+아래 예시와 같이 docker save 명령을 이용하여 이미지를 압축파일로 만듭니다.    
+예시)
 ```
-docker save mysub:latest -o mysub.tar
-ls -al mysub.tar
+docker save acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest -o tripgen-front.tar  
+```
+```
+docker save c732e60b5e0e -o tripgen-front.tar
 ```
 
+이미지 로딩 테스트를 위해 이미지를 삭제합니다.    
+컨테이너가 실행중이므로 중지/삭제 후 이미지를 삭제합니다.  
 ```
-docker rmi mysub
-docker images mysub 
+docker stop tripgen-front
+docker rm tripgen-front 
 ```
 
+이미지를 삭제합니다.   
 ```
-docker load -i mysub.tar
-docker images mysub
+docker rmi tripgen-front
+docker images tripgen-front
+```
+
+docker load 명령으로 이미지를 로딩합니다.    
+```
+docker load -i tripgen-front.tar
+docker images tripgen-front 
 ```
 
 | [Top](#목차) |
@@ -267,19 +281,12 @@ docker images mysub
 더 이상 안 사용하는 이미지를 남기면 스토리지만 낭비됩니다.  
 그렇다고 일일히 찾기도 힘들죠.  
 이때 쓸 수 있는 명령이 docker image prune -a 입니다.  
-이미지를 사용하는 컨테이너가 있으면 안되기 때문에 모든 컨테이너를 삭제합니다.  
-```
-docker stop $(docker ps -q)
-```
 
-```
-docker container prune
-```
 
+위에서 tripgen-front 컨테이너를 중지했고 이미지만 남겨져 있으므로   
+아래 명령을 수행하면 tripgen-front 이미지가 삭제될겁니다.   
 ```
-docker images
 docker image prune -a
-docker images
 ```
 
 | [Top](#목차) |
