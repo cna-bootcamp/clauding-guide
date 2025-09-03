@@ -297,27 +297,40 @@ docker image prune -a
 서버 사이드에서 컨테이너 간 통신을 위해 가상의 통신망을 이용할 수 있습니다.  
 docker의 network 객체로 가상의 통신망을 만들고 컨테이너 실행 시   
 동일한 network 객체를 사용하면 컨테이너간 컨테이너 이름으로 통신할 수 있게 됩니다.   
-member 서비스의 database를 K8S에 배포한 DB를 사용하지 않고,  
-Docker 컨테이너로 실행한 DB를 사용하도록 해 보겠습니다.   
 
-Database배포 전에 생성한 컨테이너간 통신을 위한 네트워크 객체를 확인합니다.  
+Docker Network 객체를 아래 명령으로 만드세요.   
+예제)
+```
+docker network create tripgen
+```
+
+생성된 네트워크 객체는 아래 명령으로 조회할 수 있습니다.   
 ```
 docker network ls
 ```
 
-POSTGRES_HOST는 k8s의 DB pod가 아니라 위에서 실행한 container 이름으로 지정합니다.   
+아래 예제와 같이 컨테이너 실행 시 --network 파라미터로 네트워크 이름을 명시합니다.   
 ```
-docker run -d --name member -p 8081:8081 \
--e POSTGRES_HOST=postgres-lifesub \
--e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
--e ALLOWED_ORIGINS=http://${VM_HOST}:18080 \
---network lifesub-network \
-member:latest
+docker run -d \
+  --name tripgen-redis \
+  -p 6379:6379 \
+  -v redis-data:/data \
+  --restart unless-stopped \
+  --network tripgen \
+  redis
 ```
 
-웹 브라우저를 열고 member 서비스의 swagger page를 엽니다.  
-http://localhost:8081/swagger-ui.html   
+서비스 Pod도 실행할 때 --network 파라미터로 동일 네트워크 이름을 지정합니다.   
+서비스 Pod에서 이제 REDIS_HOST를 지정할 때 컨테이너의 이름으로 지정할 수 있습니다.    
 
+예시) 
+```
+docker run -d --name user-service -p 8081:8081 \
+-e REDIS_HOST=tripgen-redis \
+...
+--network tripgen \
+user-service:latest
+```
 
 | [Top](#목차) |
 
