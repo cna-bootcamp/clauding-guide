@@ -56,7 +56,12 @@
       PASSWORD=$(az acr credential show -n ${ACR명} --query "passwords[0].value" -o tsv)
       ```       
   - Ingress 매니페스트 작성: ingress.yaml 
+    - Ingress Host: ingress controller 서비스 객체의 External IP를 구함 
+      ```
+      kubectl get svc ingress-nginx-controller -n ingress-nginx  
+      ``` 
     - ingressClassName: nginx
+    - host: {시스템명}.{Ingress Host}.nip.io
     - path: 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정   
     - pathType: Prefix
     - backend.service.name: {서비스명}
