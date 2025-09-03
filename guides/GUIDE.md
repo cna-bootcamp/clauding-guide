@@ -152,7 +152,7 @@
   - 설명: 프론트엔드 컨테이너 실행방법 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/run-container-guide-front.md
   - 파일명: run-container-guide-front.md
-- 백엔드쿠버네티스배포가이드
+- 백엔드배포가이드
   - 설명: 백엔드 서비스를 쿠버네티스 클러스터에 배포하는 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-k8s-back.md
   - 파일명: deploy-k8s-back.md  
