@@ -90,7 +90,7 @@
       - {리소스(CPU)}: 요청값/최대값
       - {리소스(메모리)}: 요청값/최대값
     - Probe:  
-      - Startup Probe: Database 연결 체크  
+      - Startup Probe: Actuator '/actuator/health'로 지정
       - Readiness Probe: Actuator '/actuator/health/rediness'로 지정  
       - Liveness Probe: Actuator '/actuator/health/liveness'로 지정 
       - initialDelaySeconds, periodSeconds, failureThreshold를 Probe에 맞게 적절히 지정 
