@@ -89,8 +89,7 @@
     - resources: 
       - {리소스(CPU)}: 요청값/최대값
       - {리소스(메모리)}: 요청값/최대값
-    - Probe: 
-      - 각 서비스의 Actuator 설정 확인하여 health.livenessState.enabled와 health.readinessState.enabled를 true로 함  
+    - Probe:  
       - Startup Probe: Database 연결 체크  
       - Readiness Probe: Actuator '/actuator/health/rediness'로 지정  
       - Liveness Probe: Actuator '/actuator/health/liveness'로 지정 
