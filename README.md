@@ -42,6 +42,9 @@
     - [컨테이너로 배포하기](#컨테이너로-배포하기)
       - [컨테이너 이미지 빌드](#컨테이너-이미지-빌드)
       - [컨테이너 실행](#컨테이너-실행)
+      - [컨테이너 명령어 실습](#컨테이너-명령어-실습)
+    - [쿠버네티스에 배포하기](#쿠버네티스에-배포하기)
+      - [ingress controller 추가](#ingress-controller-추가)
 
 ---
 
@@ -1106,6 +1109,120 @@ vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행�
 아래 명령으로 컨테이너가 실행되었는지 확인합니다.   
 ```
 docker ps
+```
+
+| [Top](#목차) |
+
+---
+
+#### 컨테이너 명령어 실습  
+
+아래 링크를 새 탭으로 열어 기타 Docker 명령어를 실습합니다.   
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/docker-command.md
+
+
+| [Top](#목차) |
+
+---
+
+### 쿠버네티스에 배포하기
+
+#### ingress controller 추가
+Ingress Controller는 Simple한 API Gateway입니다.   
+  
+쿠버네티스 설치 시 Ingress Controller가 기본으로 설치 안되기 때문에 먼저 그거부터 설치해야 합니다.  
+Ingress Controller 중 가장 많이 사용하는 nginx ingress controller를 추가합니다.  
+
+작업 디렉토리를 먼저 만듭니다.    
+로컬 터미널에서 작업합니다.   
+```
+mkdir -p ~/install/ingress-controller && cd ~/install/ingress-controller 
+```
+
+helm으로 설치할 겁니다.   
+따라서 helm repository 부터 추가해야겠죠?  
+```
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update 
+```
+
+아래 내용으로 ingress-values.yaml 파일을 만듭니다.  
+appProtocol 옵션을 비활성해야 제대로 생성이 됩니다.  
+```
+controller:
+  replicaCount: 1
+  service:
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+    loadBalancerIP: ""
+    
+    #해당 포트가 어떤 애플리케이션 프로토콜을 사용하는지 명시적으로 지정하는 옵션 비활성화
+    #targetPort를 named port("http", "https")로 매핑하려고 시도해서 
+    #Ingress Nginx Controller pod의 container port는 숫자(80, 443)로 정의되어 있어서 매핑이 실패 
+    appProtocol: false  
+    
+  config:
+    use-forwarded-headers: "true"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+```
+
+ingress-nginx 네임 스페이스에 설치 합니다.    
+```
+helm upgrade -i ingress-nginx -f ingress-values.yaml \
+-n ingress-nginx --create-namespace ingress-nginx/ingress-nginx 
+```
+
+제대로 생성되었는지 체크해 봅니다.   
+```
+k get svc -n ingress-nginx
+k get po -n ingress-nginx
+```
+
+잠깐 ingress controller가 어떻게 외부의 요청을 내부로 연결할까요?  
+ingress controller 파드는 준실시간으로 ingress object들의 설정을 읽어 내부의 nginx.conf파일에 업데이트 합니다.  
+외부에서는 ingress-nginx-controller의 L/B IP로 접근합니다.  
+이 트래픽 요청의 Host와 경로에 따라 적절한 서비스 오브젝트로 proxying합니다.    
+결론적으로 외부의 트래픽을 내부로 전달하는 것은 인그레스 오브젝트가 아니라 인그레스 컨트롤러 파드드인것입니다.  
+![](images/2025-09-03-21-15-51.png)
+  
+내친김에 ingress controller pod의 nginx.conf 내용도 볼까요? 
+아직 ingress 오브젝트를 만들지 않았기 때문에 지금은 실습 못하지만,  
+이 실습이 완료된 후에 한번 직접 확인해 보십시오.  
+```
+k get po -n ingress-nginx
+
+k exec -it {ingress controller pod}  -n ingress-nginx -- bash
+ingress-nginx-controller-5d9dcdb7b8-dx65z:/etc/nginx$ cat nginx.conf | more
+```
+
+스페이스를 눌러 내려가다 보면 아래 예와 같은 설정이 있는걸 확인할 수 있을겁니다.  
+보시면 아시겠죠? ingress 오브젝트 'backend-ingress'의 설정이 그대로 반영되어 있습니다.   
+```
+## start server _
+server {
+    ...
+    location ~* "^/recommend(/|$)(.*)" {
+
+        set $namespace      "${ID}-lifesub-ns";
+        set $ingress_name   "backend-ingress";
+        set $service_name   "recommend";
+        set $service_port   "80";
+        set $location_path  "/recommend(/|${literal_dollar})(.*)";
+        ...
+ 
+        # Custom Response Headers
+        rewrite "(?i)/recommend(/|$)(.*)" /$2 break;
+        proxy_pass http://upstream_balancer;
+    }
+    ...
+}
 ```
 
 | [Top](#목차) |

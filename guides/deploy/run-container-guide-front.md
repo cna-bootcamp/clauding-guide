@@ -96,7 +96,7 @@
     ```
 
 - 런타임 환경변수 파일 생성 방법 안내      
-  - public/runtime-env.js파일을 읽음  
+  - public/runtime-env.js파일을 읽어 그 안의 설정을 모두 포함    
   예제)
   ```
   window.ENV = {
@@ -113,6 +113,9 @@
     // App Configuration
     APP_NAME: 'TripGen',
     APP_VERSION: '1.0.0'
+
+    // API Timeout Configuration (ms)
+    API_TIMEOUT: 30000
   };
   ```
   - 'localhost'를 {VM.IP}로 변경하여 '~/{서비스명}/public/runtime-env.js'파일로 생성하는 방법 안내  
