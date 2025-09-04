@@ -129,13 +129,13 @@
       - Liveness Probe: Actuator '/actuator/health/liveness'로 지정 
       - initialDelaySeconds, periodSeconds, failureThreshold를 Probe에 맞게 적절히 지정 
 
-- 체크 리스트로 수행결과 검증(Skip 하지 말것)
+- 체크 리스트로 수행결과 검증: 반드시 수행하고 그 결과를 배포 가이드에 포함 
   - 객체이름 네이밍룰 준수 여부
   - Database와 Redis의 Host명을 Service 객체로 했는가?
   - JWT_SECRET을 openssl 명령으로 생성해서 지정했는가?
   - 매니페스트 파일 안에 환경변수를 사용하지 않고 실제 값을 지정 했는가?
   - Image Pull Secret에 USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정 했는가?
-  - **필수**: Ingress Controller External IP 확인 및 매니페스트에 반영 확인
+  - Ingress Controller External IP 확인 및 매니페스트에 반영 확인
     kubectl get svc ingress-nginx-controller -n ingress-nginx        
     EXTERNAL-IP 컬럼의 실제 값이 ingress.yaml의 host에 정확하게 설정되었는지 재확인할 것
   - Ingress의 path는 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정했는가?
@@ -143,7 +143,8 @@
   - REDIS_DATABASE는 각 서비스마다 다르게 지정했는가?
   - ConfigMap과 Secret은 'env'대신에 'envFrom'을 사용하였는가?
 
-- 배포 가이드
+- 배포 가이드 작성
+  - 배포가이드 검증 결과
   - 사전확인 방법 가이드 
     - Azure 로그인 상태 확인
       ```
@@ -164,7 +165,6 @@
     ``` 
   - 객체 생성 확인 가이드
 
-- 배포 가이드 작성
 
 [결과파일]
 - 배포방법 가이드: deployment/k8s/deploy-k8s-guide.md
