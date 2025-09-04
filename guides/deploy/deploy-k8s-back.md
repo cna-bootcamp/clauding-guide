@@ -125,7 +125,7 @@
 - 배포 가이드 작성
 
 [결과파일]
-- 배포결과 레포트: deployment/k8s/deploy-k8s.md
+- 배포방법 가이드: deployment/k8s/deploy-k8s-guide.md
 - 공통 매니페스트 파일: deployment/k8s/common/*
 - 서비스별 매니페스트 파일: deployment/k8s/{서비스명}/*
 
