@@ -66,13 +66,14 @@
       ```   
     - USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정    
   - Ingress 매니페스트 작성: ingress.yaml 
-    - **중요**: Ingress Host는 반드시 아래 명령으로 실제 External IP를 확인하여 사용할 것
+    - **중요**: Ingress Host는 반드시 아래 명령으로 실제 External IP를 확인하여 사용할 것.
+      {Ingress External IP}는 실제 확인한 EXTERNAL-IP값.   
       ```  
       kubectl get svc ingress-nginx-controller -n ingress-nginx   
       ```     
       출력 예시: EXTERNAL-IP 컬럼에서 실제 IP 확인 (예:20.214.196.128)
     - ingressClassName: nginx
-    - host: {시스템명}-api.{실제확인한External-IP}.nip.io
+    - host: {시스템명}-api.{Ingress External IP}.nip.io
       **잘못된 예**: tripgen-api.임의IP.nip.io ❌
       **올바른 예**: tripgen-api.20.214.196.128.nip.io ✅
 
@@ -92,7 +93,7 @@
       ``` 
     - REDIS_DATABASE는 각 서비스별 ConfigMap에 지정
     - 주의) Database는 공통 ConfigMap/Secret으로 작성 금지
-    - 공통 ConfigMap에 CORS_ALLOWED_ORIGINS 설정: 'http://localhost:*,http://{시스템명}.*.nip.io'
+    - 공통 ConfigMap에 CORS_ALLOWED_ORIGINS 설정: 'http://localhost:*,http://{시스템명}.{Ingress External IP}.nip.io'
   
 - 서비스별 매니페스트 작성: deployment/k8s/{서비스명}/ 디렉토리 하위에 작성  
   - ConfigMap과 Secret 매니페스트 작성   
