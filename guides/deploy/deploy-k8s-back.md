@@ -153,6 +153,7 @@
       ai-service | REDIS_TIMEOUT | cm-common | 5000
       ai-service | SERVER_PORT | cm-ai-service | 8084
       ``` 
+    - 누락된 환경변수가 있으면 추가 
 
 - 배포 가이드 작성
   - 배포가이드 검증 결과
