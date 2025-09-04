@@ -47,7 +47,15 @@
   - 공통 Secret의 JWT_SECRET 값은 반드시 openssl명령으로 생성하여 지정 
   - 매니페스트 파일 안에 환경변수를 사용하지 말고 실제 값을 지정  
     예) host: "tripgen.${INGRESS_IP}.nip.io" => host: "tripgen.4.1.2.3.nip.io"
-
+  - 객체이름 네이밍룰
+    - 공통 ConfigMap: cm-common
+    - 공통 Secret: secret-common
+    - 서비스별 ConfigMap: cm-{서비스명}
+    - 서비스별 Secret: secret-{서비스명}
+    - Ingress: {시스템명}
+    - Service: {서비스명}
+    - Deployment: {서비스명}
+  
 - 공통 매니페스트 작성: deployment/k8s/common/ 디렉토리 하위에 작성   
   - Image Pull Secret 매니페스트 작성: secret-imagepull.yaml  
     - name: {시스템명}
@@ -104,6 +112,7 @@
     - ImagePullPolicy: Always
     - ImagePullSecrets: {시스템명}
     - image: {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest 
+    - ConfigMap과 Secret은 'env'대신에 'envFrom'을 사용하여 지정 
     - envFrom: 
       - configMapRef: 공통 ConfigMap 'cm-common'과 각 서비스 ConfigMap 'cm-{서비스명}'을 지정  
       - secretRef: 공통 Secret 'secret-common'과 각 서비스 Secret 'secret-{서비스명}'을 지정 
