@@ -66,12 +66,16 @@
       ```   
     - USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정    
   - Ingress 매니페스트 작성: ingress.yaml 
-    - Ingress Host: ingress controller 서비스 객체의 External IP를 구함 
-      ```
-      kubectl get svc ingress-nginx-controller -n ingress-nginx  
-      ``` 
+    - **중요**: Ingress Host는 반드시 아래 명령으로 실제 External IP를 확인하여 사용할 것
+      ```  
+      kubectl get svc ingress-nginx-controller -n ingress-nginx   
+      ```     
+      출력 예시: EXTERNAL-IP 컬럼에서 실제 IP 확인 (예:20.214.196.128)
     - ingressClassName: nginx
-    - host: {시스템명}.{Ingress Host}.nip.io. 실제 Ingress Host값을 지정
+    - host: {시스템명}.{실제확인한External-IP}.nip.io
+      **잘못된 예**: tripgen.임의IP.nip.io ❌
+      **올바른 예**: tripgen.20.214.196.128.nip.io ✅
+
     - path: 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정   
     - pathType: Prefix
     - backend.service.name: {서비스명}
@@ -131,7 +135,9 @@
   - JWT_SECRET을 openssl 명령으로 생성해서 지정했는가?
   - 매니페스트 파일 안에 환경변수를 사용하지 않고 실제 값을 지정 했는가?
   - Image Pull Secret에 USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정 했는가?
-  - Ingress Host의 값은 ingress controller 서비스 객체의 External IP를 사용했는가?
+  - **필수**: Ingress Controller External IP 확인 및 매니페스트에 반영 확인
+    kubectl get svc ingress-nginx-controller -n ingress-nginx        
+    EXTERNAL-IP 컬럼의 실제 값이 ingress.yaml의 host에 정확하게 설정되었는지 재확인할 것
   - Ingress의 path는 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정했는가?
   - 보안이 필요한 환경변수는 Secret 매니페스트로 지정했는가?
   - REDIS_DATABASE는 각 서비스마다 다르게 지정했는가?
