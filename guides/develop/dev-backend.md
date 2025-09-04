@@ -29,7 +29,7 @@
     - 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
     - 개발모드의 DDL_AUTO값은 update로 함 
     - JWT Secret Key는 모든 서비스가 동일해야 함 
-    - '[Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정 
+    - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정 
   - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성  
   - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
   - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
@@ -72,8 +72,19 @@
 
 ---
 
-[Actuaotr,OpenAPI Documentation,Loggings 표준]
+[JWT, CORS, Actuaotr,OpenAPI Documentation,Loggings 표준]
 ```
+# JWT 
+security:
+  jwt:
+    secret: ${JWT_SECRET:}
+    access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:3600}  
+    refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800} 
+
+# CORS Configuration
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:*}
+
 # Actuator
 management:
   endpoints:

@@ -72,9 +72,9 @@
       ```     
       출력 예시: EXTERNAL-IP 컬럼에서 실제 IP 확인 (예:20.214.196.128)
     - ingressClassName: nginx
-    - host: {시스템명}.{실제확인한External-IP}.nip.io
-      **잘못된 예**: tripgen.임의IP.nip.io ❌
-      **올바른 예**: tripgen.20.214.196.128.nip.io ✅
+    - host: {시스템명}-api.{실제확인한External-IP}.nip.io
+      **잘못된 예**: tripgen-api.임의IP.nip.io ❌
+      **올바른 예**: tripgen-api.20.214.196.128.nip.io ✅
 
     - path: 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정   
     - pathType: Prefix
@@ -92,6 +92,7 @@
       ``` 
     - REDIS_DATABASE는 각 서비스별 ConfigMap에 지정
     - 주의) Database는 공통 ConfigMap/Secret으로 작성 금지
+    - 공통 ConfigMap에 CORS_ALLOWED_ORIGINS 설정: 'http://localhost:*,http://{시스템명}.*.nip.io'
   
 - 서비스별 매니페스트 작성: deployment/k8s/{서비스명}/ 디렉토리 하위에 작성  
   - ConfigMap과 Secret 매니페스트 작성   

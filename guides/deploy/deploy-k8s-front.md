@@ -26,7 +26,7 @@
   - 파드수: 2
   - 리소스(CPU): 256m/1024m
   - 리소스(메모리): 256Mi/1024Mi
-  - Gateway Host: http://tripgen.20.214.196.128.nip.io
+  - Gateway Host: http://tripgen-api.20.214.196.128.nip.io
   ``` 
   
 - 서비스명 확인   
@@ -40,10 +40,11 @@
 
 - 매니페스트 작성 주의사항
   - namespace는 명시: {네임스페이스}값 이용
-  - Ingress 매니페스트는 작성하지 않음 
   - 객체이름 네이밍룰
+    - Ingress: {서비스명}
     - ConfigMap: cm-{서비스명}
     - Service: {서비스명}
+    - Secret: {서비스명}
     - Deployment: {서비스명}
     
 - 매니페스트 작성: deployment/k8s/ 디렉토리 하위에 작성  
@@ -54,12 +55,27 @@
       예시) 
       AUTH_API_URL: 'http://localhost:8081/api' 
       -> AUTH_API_URL: 'http://tripgen.20.214.196.128.nip.io/api'
-  
+
+  - Ingress 매니페스트 작성
+    - **중요**: Ingress Host는 반드시 아래 명령으로 실제 External IP를 확인하여 사용할 것
+      ```  
+      kubectl get svc ingress-nginx-controller -n ingress-nginx   
+      ```     
+      출력 예시: EXTERNAL-IP 컬럼에서 실제 IP 확인 (예:20.214.196.128)
+    - ingressClassName: nginx
+    - host: {시스템명}.{실제확인한 External-IP}.nip.io
+      **잘못된 예**: tripgen.임의IP.nip.io ❌
+      **올바른 예**: tripgen.20.214.196.128.nip.io ✅
+    - path: '/'
+    - pathType: Prefix
+    - backend.service.name: {서비스명}
+    - backend.service.port.number: 80    
+
   - Service 매니페스트 작성  
     - name: {서비스명}
     - port: 80
     - targetPort: 80  
-    - type: LoadBalancer
+    - type: ClusterIP
   
   - Deployment 매니페스트 작성  
     - name: {서비스명}
@@ -80,6 +96,9 @@
       
 - 체크 리스트로 수행결과 검증: 반드시 수행하고 그 결과를 배포 가이드에 포함 
   - 객체이름 네이밍룰 준수 여부
+  - Ingress Controller External IP 확인 및 매니페스트에 반영 확인
+    kubectl get svc ingress-nginx-controller -n ingress-nginx        
+    EXTERNAL-IP 컬럼의 실제 값이 ingress.yaml의 host에 정확하게 설정되었는지 재확인할 것 
   - Image명이 '{ACR명}.azurecr.io/{시스템명}/{서비스명}:latest' 형식인지 재확인 
   - ConfigMap 'cm-{서비스명}'의 data 내용 확인 
     - key는 runtime-env.js인가?
@@ -106,6 +125,7 @@
     ``` 
   - 객체 생성 확인 가이드
 
+  - 
 [결과파일]
 - 배포방법 가이드: deployment/k8s/deploy-k8s-guide.md
 - 매니페스트 파일: deployment/k8s/*
