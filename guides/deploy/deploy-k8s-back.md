@@ -78,6 +78,7 @@
       ```
       kubectl get svc
       ``` 
+    - REDIS_DATABASE는 각 서비스별 ConfigMap에 지정
     - 주의) Database는 공통 ConfigMap/Secret으로 작성 금지
   
 - 서비스별 매니페스트 작성: deployment/k8s/{서비스명}/ 디렉토리 하위에 작성  
