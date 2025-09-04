@@ -156,6 +156,10 @@
   - 설명: 백엔드 서비스를 쿠버네티스 클러스터에 배포하는 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-k8s-back.md
   - 파일명: deploy-k8s-back.md  
+- 프론트엔드배포가이드
+  - 설명: 프론트엔드 서비스를 쿠버네티스 클러스터에 배포하는 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-k8s-front.md
+  - 파일명: deploy-k8s-front.md  
 
 ## 참조 문서
 - 프로젝트지침템플릿
