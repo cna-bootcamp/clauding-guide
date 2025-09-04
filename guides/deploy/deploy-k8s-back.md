@@ -81,6 +81,7 @@
     - pathType: Prefix
     - backend.service.name: {서비스명}
     - backend.service.port.number: 80
+    - **중요**: annotation에 'nginx.ingress.kubernetes.io/rewrite-target' 설정 절대 하지 말것.     
   
   - 공통 ConfigMap과 Secret 매니페스트 작성  
     - 각 서비스의 실행 프로파일({서비스명}/.run/{서비스명}.run.xml)을 읽어 공통된 환경변수를 추출.   
@@ -93,7 +94,7 @@
       ``` 
     - REDIS_DATABASE는 각 서비스별 ConfigMap에 지정
     - 주의) Database는 공통 ConfigMap/Secret으로 작성 금지
-    - 공통 ConfigMap에 CORS_ALLOWED_ORIGINS 설정: 'http://localhost:*,http://{시스템명}.{Ingress External IP}.nip.io'
+    - 공통 ConfigMap에 CORS_ALLOWED_ORIGINS 설정: 'http://localhost:8081,http://localhost:8082,http://localhost:8083,http://localhost:8084,http://{시스템명}.{Ingress External IP}.nip.io'
   
 - 서비스별 매니페스트 작성: deployment/k8s/{서비스명}/ 디렉토리 하위에 작성  
   - ConfigMap과 Secret 매니페스트 작성   
