@@ -73,7 +73,7 @@
 
   - Service 매니페스트 작성  
     - name: {서비스명}
-    - port: 80
+    - port: 8080
     - targetPort: 80  
     - type: ClusterIP
   
