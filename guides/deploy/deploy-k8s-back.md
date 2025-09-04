@@ -138,6 +138,7 @@
   - JWT_SECRET을 openssl 명령으로 생성해서 지정했는가?
   - 매니페스트 파일 안에 환경변수를 사용하지 않고 실제 값을 지정 했는가?
   - Image Pull Secret에 USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정 했는가?
+  - Image명이 '{ACR명}.azurecr.io/{시스템명}/{서비스명}:latest' 형식인지 재확인 
   - Ingress Controller External IP 확인 및 매니페스트에 반영 확인
     kubectl get svc ingress-nginx-controller -n ingress-nginx        
     EXTERNAL-IP 컬럼의 실제 값이 ingress.yaml의 host에 정확하게 설정되었는지 재확인할 것
