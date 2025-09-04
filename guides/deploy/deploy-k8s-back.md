@@ -145,6 +145,13 @@
   - 보안이 필요한 환경변수는 Secret 매니페스트로 지정했는가?
   - REDIS_DATABASE는 각 서비스마다 다르게 지정했는가?
   - ConfigMap과 Secret은 'env'대신에 'envFrom'을 사용하였는가?
+  - 실행 프로파일 매핑 테이블로 누락된 환경변수 체크  
+    - 서비스명 | 환경변수 | 지정 객체명 | 환경변수값의 컬럼으로 작성하여 체크  
+      예시) 
+      ```
+      ai-service | REDIS_TIMEOUT | cm-common | 5000
+      ai-service | SERVER_PORT | cm-ai-service | 8084
+      ``` 
 
 - 배포 가이드 작성
   - 배포가이드 검증 결과
