@@ -146,14 +146,28 @@
   - REDIS_DATABASE는 각 서비스마다 다르게 지정했는가?
   - ConfigMap과 Secret은 'env'대신에 'envFrom'을 사용하였는가?
   - (중요) 실행 프로파일 매핑 테이블로 누락된 환경변수 체크  
-    - 각 서비스의 실행 프로파일에 정의된 **모든 환경변수에 대해 체크** 
-    - 서비스명 | 환경변수 | 지정 객체명 | 환경변수값의 컬럼으로 작성하여 체크  
-      예시) 
+    - **필수**: 각 서비스의 실행 프로파일({서비스명}/.run/{서비스명}.run.xml)에 정의된 **전체 환경변수를 빠짐없이 체크**
+    - **체크 방법**: 
+      1. 각 {서비스명}.run.xml 파일에서 `<entry key="환경변수명" value="값"/>` 형태로 정의된 **모든** 환경변수 추출
+      2. 추출된 환경변수 **전체**를 대상으로 매핑 테이블 작성 (일부만 하면 안됨)
+      3. 서비스명 | 환경변수 | 지정 객체명 | 환경변수값 컬럼으로 **전체 환경변수** 체크
+    - **매핑 테이블 예시** (전체 환경변수 기준):
       ```
-      ai-service | REDIS_TIMEOUT | cm-common | 5000
+      user-service | SERVER_PORT | cm-user-service | 8081
+      user-service | DB_HOST | secret-user-service | user-db-service  
+      user-service | DB_PASSWORD | secret-user-service | tripgen_user_123
+      user-service | REDIS_DATABASE | cm-user-service | 0
+      user-service | JWT_SECRET | secret-common | (base64 encoded)
+      user-service | CACHE_TTL | cm-user-service | 1800
+      location-service | SERVER_PORT | cm-location-service | 8082
+      location-service | GOOGLE_API_KEY | secret-location-service | (base64 encoded)
+      location-service | REDIS_DATABASE | cm-location-service | 1
+      ai-service | CLAUDE_API_KEY | secret-ai-service | (base64 encoded)
       ai-service | SERVER_PORT | cm-ai-service | 8084
-      ``` 
-    - 누락된 환경변수가 있으면 추가 
+      ... (실행프로파일의 모든 환경변수 나열)
+      ```
+    - **주의**: 일부 환경변수만 체크하면 누락 발생, 반드시 **실행프로파일 전체** 환경변수 대상으로 수행
+    - 누락된 환경변수가 발견되면 해당 ConfigMap/Secret에 추가 
 
 - 배포 가이드 작성
   - 배포가이드 검증 결과
