@@ -127,7 +127,7 @@
   ```
   SERVER_PORT=3000
 
-  docker run -d --name {서비스명} --rm -p ${SERVER_PORT}:80 \
+  docker run -d --name {서비스명} --rm -p ${SERVER_PORT}:8080 \
   -v ~/{서비스명}/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js 
   {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
   ```

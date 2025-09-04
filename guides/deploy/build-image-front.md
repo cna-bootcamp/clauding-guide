@@ -23,7 +23,7 @@
   아래 내용으로 deployment/container/nginx.conf 파일 생성   
   ```
   server {
-      listen 80;
+      listen 8080;
       server_name localhost;
       
       location / {
@@ -119,7 +119,7 @@
     --platform linux/amd64 \
     --build-arg PROJECT_FOLDER="." \
     --build-arg BUILD_FOLDER="deployment/container" \
-    --build-arg EXPORT_PORT="80" \
+    --build-arg EXPORT_PORT="8080" \
     -f ${DOCKER_FILE} \
     -t {서비스명}:latest .
   ```
