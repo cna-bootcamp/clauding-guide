@@ -92,6 +92,7 @@
       ```
       kubectl get svc
       ```
+    - REDIS_DATABASE는 실행 프로파일에 지정된 값으로 서비스별 ConfigMap에 지정 
   - Service 매니페스트 작성  
     - name: {서비스명}
     - port: 80
