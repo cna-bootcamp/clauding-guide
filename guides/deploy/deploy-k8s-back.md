@@ -126,7 +126,7 @@
       - initialDelaySeconds, periodSeconds, failureThreshold를 Probe에 맞게 적절히 지정 
 
 - 체크 리스트로 수행결과 검증(Skip 하지 말것)
-  - 객체이름 네이밍룰을 준수 여부
+  - 객체이름 네이밍룰 준수 여부
   - Database와 Redis의 Host명을 Service 객체로 했는가?
   - JWT_SECRET을 openssl 명령으로 생성해서 지정했는가?
   - 매니페스트 파일 안에 환경변수를 사용하지 않고 실제 값을 지정 했는가?
