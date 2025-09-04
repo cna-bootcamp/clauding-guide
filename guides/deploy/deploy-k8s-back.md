@@ -46,7 +46,9 @@
   - Database와 Redis의 Host명은 Service 객체 이름으로 함
   - Secret 변수 값은 'stringData'를 사용하여 평문으로 지정
   - 공통 Secret의 JWT_SECRET 값은 반드시 openssl명령으로 생성하여 지정 
-  
+  - 매니페스트 파일 안에 환경변수를 사용하지 말고 실제 값을 지정  
+    예) host: "tripgen.${INGRESS_IP}.nip.io" => host: "tripgen.4.1.2.3.nip.io"
+
 - 공통 매니페스트 작성: deployment/k8s/common/ 디렉토리 하위에 작성   
   - Image Pull Secret 매니페스트 작성: secret-imagepull.yaml  
     - name: {시스템명}
@@ -54,14 +56,15 @@
       ```
       USERNAME=$(az acr credential show -n ${ACR명} --query "username" -o tsv)
       PASSWORD=$(az acr credential show -n ${ACR명} --query "passwords[0].value" -o tsv)
-      ```       
+      ```   
+    - USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정    
   - Ingress 매니페스트 작성: ingress.yaml 
     - Ingress Host: ingress controller 서비스 객체의 External IP를 구함 
       ```
       kubectl get svc ingress-nginx-controller -n ingress-nginx  
       ``` 
     - ingressClassName: nginx
-    - host: {시스템명}.{Ingress Host}.nip.io
+    - host: {시스템명}.{Ingress Host}.nip.io. 실제 Ingress Host값을 지정
     - path: 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정   
     - pathType: Prefix
     - backend.service.name: {서비스명}
