@@ -143,6 +143,7 @@
   - Ingress Controller External IP 확인 및 매니페스트에 반영 확인
     kubectl get svc ingress-nginx-controller -n ingress-nginx        
     EXTERNAL-IP 컬럼의 실제 값이 ingress.yaml의 host에 정확하게 설정되었는지 재확인할 것
+  - Ingress 매니페스트의 각 서비스 backend.service.port.number와 Service 매니페스트의 port가 "80"으로 동일한가 ?   
   - Ingress의 path는 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정했는가?
   - 보안이 필요한 환경변수는 Secret 매니페스트로 지정했는가?
   - REDIS_DATABASE는 각 서비스마다 다르게 지정했는가?
