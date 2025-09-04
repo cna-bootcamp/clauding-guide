@@ -125,7 +125,7 @@
       - Liveness Probe: Actuator '/actuator/health/liveness'로 지정 
       - initialDelaySeconds, periodSeconds, failureThreshold를 Probe에 맞게 적절히 지정 
 
-- 체크 리스트
+- 체크 리스트로 수행결과 검증(Skip 하지 말것)
   - 객체이름 네이밍룰을 준수 여부
   - Database와 Redis의 Host명을 Service 객체로 했는가?
   - JWT_SECRET을 openssl 명령으로 생성해서 지정했는가?
