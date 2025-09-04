@@ -74,9 +74,10 @@
   
 - 서비스별 매니페스트 작성: deployment/k8s/{서비스명}/ 디렉토리 하위에 작성  
   - ConfigMap과 Secret 매니페스트 작성   
-    - 각 서비스의 실행 프로파일({서비스명}/.run/{서비스명}.run.xml)을 읽어 환경변수를 추출. 공통 환경변수는 제외.     
-    - 보안이 필요한 환경변수는 Secret 매니페스트로 작성: secret-{서비스명}.yaml(name:{서비스명})
-    - 그 외 일반 환경변수 매니페스트 작성: cm-{서비스명}.yaml(name:{서비스명})
+    - 각 서비스의 실행 프로파일({서비스명}/.run/{서비스명}.run.xml)을 읽어 환경변수를 추출. 
+    - cm-common.yaml과 secret-common.yaml에 있는 공통 환경변수는 중복해서 작성하면 안됨     
+    - 보안이 필요한 환경변수는 Secret 매니페스트로 작성: secret-{서비스명}.yaml(name:cm-{서비스명})
+    - 그 외 일반 환경변수 매니페스트 작성: cm-{서비스명}.yaml(name:secret-{서비스명})
   - Service 매니페스트 작성  
     - name: {서비스명}
     - port: 80
@@ -89,8 +90,8 @@
     - ImagePullSecrets: {시스템명}
     - image: {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest 
     - envFrom: 
-      - configMapRef: cm-common, {서비스명}
-      - secretRef: secret-common, {서비스명}
+      - configMapRef: 공통 ConfigMap 'cm-common'과 각 서비스 ConfigMap 'cm-{서비스명}'을 지정  
+      - secretRef: 공통 Secret 'secret-common'과 각 서비스 Secret 'secret-{서비스명}'을 지정 
     - resources: 
       - {리소스(CPU)}: 요청값/최대값
       - {리소스(메모리)}: 요청값/최대값
