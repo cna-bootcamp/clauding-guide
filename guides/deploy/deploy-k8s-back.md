@@ -45,7 +45,7 @@
   - namespace는 명시: {네임스페이스}값 이용
   - Database와 Redis의 Host명은 Service 객체 이름으로 함
   - Secret 변수 값은 'stringData'를 사용하여 평문으로 지정
-  - JWT Secret Key는 openssl명령으로 생성하여 지정 
+  - 공통 Secret의 JWT_SECRET 값은 반드시 openssl명령으로 생성하여 지정 
   
 - 공통 매니페스트 작성: deployment/k8s/common/ 디렉토리 하위에 작성   
   - Image Pull Secret 매니페스트 작성: secret-imagepull.yaml  
