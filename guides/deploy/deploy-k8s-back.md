@@ -44,7 +44,6 @@
 - 매니페스트 작성 주의사항
   - namespace는 명시: {네임스페이스}값 이용
   - Database와 Redis의 Host명은 Service 객체 이름으로 함
-  - Secret 변수 값은 'stringData'를 사용하여 평문으로 지정
   - 공통 Secret의 JWT_SECRET 값은 반드시 openssl명령으로 생성하여 지정 
   - 매니페스트 파일 안에 환경변수를 사용하지 말고 실제 값을 지정  
     예) host: "tripgen.${INGRESS_IP}.nip.io" => host: "tripgen.4.1.2.3.nip.io"
@@ -74,6 +73,12 @@
     - 각 서비스의 실행 프로파일({서비스명}/.run/{서비스명}.run.xml)을 읽어 공통된 환경변수를 추출.   
     - 보안이 필요한 환경변수는 Secret 매니페스트로 작성: secret-common.yaml(name:cm-common)
     - 그 외 일반 환경변수 매니페스트 작성: cm-common.yaml(name:secret-common)
+    - Redis HOST명은 IP가 아닌 Service 객체명으로 함. 
+      아래 명령으로 'redis'가 포함된 서비스 객체를 찾고 'ClusterIP'유형인 서비스명을 Host명으로 사용  
+      ```
+      kubectl get svc
+      ``` 
+    - 주의) Database는 공통 ConfigMap/Secret으로 작성 금지
   
 - 서비스별 매니페스트 작성: deployment/k8s/{서비스명}/ 디렉토리 하위에 작성  
   - ConfigMap과 Secret 매니페스트 작성   
@@ -81,6 +86,11 @@
     - cm-common.yaml과 secret-common.yaml에 있는 공통 환경변수는 중복해서 작성하면 안됨     
     - 보안이 필요한 환경변수는 Secret 매니페스트로 작성: secret-{서비스명}.yaml(name:cm-{서비스명})
     - 그 외 일반 환경변수 매니페스트 작성: cm-{서비스명}.yaml(name:secret-{서비스명})
+    - Database HOST명은 IP가 아닌 Service 객체명으로 함.   
+      아래 명령으로 '{서비스명}'과 'db'가 포함된 서비스 객체를 찾고 'ClusterIP'유형인 서비스명을 Host명으로 사용  
+      ```
+      kubectl get svc
+      ```
   - Service 매니페스트 작성  
     - name: {서비스명}
     - port: 80
