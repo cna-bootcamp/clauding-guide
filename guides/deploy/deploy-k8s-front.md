@@ -69,7 +69,7 @@
     - path: '/'
     - pathType: Prefix
     - backend.service.name: {서비스명}
-    - backend.service.port.number: 80    
+    - backend.service.port.number: 8080    
 
   - Service 매니페스트 작성  
     - name: {서비스명}
