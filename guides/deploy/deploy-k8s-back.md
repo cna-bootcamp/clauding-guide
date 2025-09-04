@@ -47,6 +47,7 @@
   - 공통 Secret의 JWT_SECRET 값은 반드시 openssl명령으로 생성하여 지정 
   - 매니페스트 파일 안에 환경변수를 사용하지 말고 실제 값을 지정  
     예) host: "tripgen.${INGRESS_IP}.nip.io" => host: "tripgen.4.1.2.3.nip.io"
+  - Secret 매니페스트에서 'data' 대신 'stringData'를 사용  
   - 객체이름 네이밍룰
     - 공통 ConfigMap: cm-common
     - 공통 Secret: secret-common
@@ -138,6 +139,7 @@
     'kubectl get svc | grep redis' 명령으로 재확인 
   - Database Host명을 ClusterIP타입의 Service 객체로 했는가?
     'kubectl get svc | grep {서비스명}' 명령으로 재확인 
+  - Secret 매니페스트에서 'data' 대신 'stringData'를 사용 했는가?  
   - JWT_SECRET을 openssl 명령으로 생성해서 지정했는가?
   - 매니페스트 파일 안에 환경변수를 사용하지 않고 실제 값을 지정 했는가?
   - Image Pull Secret에 USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정 했는가?
