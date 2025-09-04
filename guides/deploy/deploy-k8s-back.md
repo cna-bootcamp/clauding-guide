@@ -88,7 +88,7 @@
     - Redis HOST명은 IP가 아닌 Service 객체명으로 함. 
       아래 명령으로 'redis'가 포함된 서비스 객체를 찾고 'ClusterIP'유형인 서비스명을 Host명으로 사용  
       ```
-      kubectl get svc
+      kubectl get svc | grep redis
       ``` 
     - REDIS_DATABASE는 각 서비스별 ConfigMap에 지정
     - 주의) Database는 공통 ConfigMap/Secret으로 작성 금지
@@ -102,7 +102,7 @@
     - Database HOST명은 IP가 아닌 Service 객체명으로 함.   
       아래 명령으로 '{서비스명}'과 'db'가 포함된 서비스 객체를 찾고 'ClusterIP'유형인 서비스명을 Host명으로 사용  
       ```
-      kubectl get svc
+      kubectl get svc | grep {서비스명}
       ```
     - REDIS_DATABASE는 실행 프로파일에 지정된 값으로 서비스별 ConfigMap에 지정 
   - Service 매니페스트 작성  
@@ -131,7 +131,10 @@
 
 - 체크 리스트로 수행결과 검증: 반드시 수행하고 그 결과를 배포 가이드에 포함 
   - 객체이름 네이밍룰 준수 여부
-  - Database와 Redis의 Host명을 Service 객체로 했는가?
+  - Redis Host명을 ClusterIP 타입의 Service 객체로 했는가? 
+    'kubectl get svc | grep redis' 명령으로 재확인 
+  - Database Host명을 ClusterIP타입의 Service 객체로 했는가?
+    'kubectl get svc | grep {서비스명}' 명령으로 재확인 
   - JWT_SECRET을 openssl 명령으로 생성해서 지정했는가?
   - 매니페스트 파일 안에 환경변수를 사용하지 않고 실제 값을 지정 했는가?
   - Image Pull Secret에 USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정 했는가?
