@@ -2,8 +2,8 @@
 
 [요청사항]  
 - 백엔드 서비스를 쿠버네티스에 배포하기 위한 매니페스트 파일 작성 
-- 매니페스트 파일을 이용하여 실제 배포 및 검증까지 완료
-- '[결과파일]'에 매니페스트와 수행한 명령어를 포함하여 배포 과정 레포트 생성 
+- 매니페스트 파일 작성까지만 하고 실제 배포는 수행방법만 가이드  
+- '[결과파일]'에 수행한 명령어를 포함하여 배포 가이드 레포트 생성 
 
 [작업순서]
 - 실행정보 확인   
@@ -101,8 +101,8 @@
       - Liveness Probe: Actuator '/actuator/health/liveness'로 지정 
       - initialDelaySeconds, periodSeconds, failureThreshold를 Probe에 맞게 적절히 지정 
 
-- 배포
-  - 사전확인
+- 배포 가이드
+  - 사전확인 방법 가이드 
     - Azure 로그인 상태 확인
       ```
       az account show
@@ -115,16 +115,14 @@
       ```
       kubectl get ns {네임스페이스}  
       ``` 
-  - 매니페스트 적용  
+  - 매니페스트 적용 가이드
     ```
     kubectl apply -f deployment/k8s/common
     kubectl apply -f deployment/k8s/{서비스명}
     ``` 
-  - 객체 생성 확인 
+  - 객체 생성 확인 가이드
 
-  - 파드 정상 실행 확인    
-
-- 배포 레포트 작성
+- 배포 가이드 작성
 
 [결과파일]
 - 배포결과 레포트: deployment/k8s/deploy-k8s.md
