@@ -45,6 +45,8 @@
       - [컨테이너 명령어 실습](#컨테이너-명령어-실습)
     - [쿠버네티스에 배포하기](#쿠버네티스에-배포하기)
       - [ingress controller 추가](#ingress-controller-추가)
+      - [백엔드 배포](#백엔드-배포)
+      - [프론트엔드 배포](#프론트엔드-배포)
 
 ---
 
@@ -1230,3 +1232,56 @@ server {
 
 ---
 
+#### 백엔드 배포   
+IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
+아래 프롬프트 예제와 같이 백엔드 배포를 위한 매니페스트와 배포 가이드 작성을 요청합니다.   
+'[실행정보]'에 정확한 값을 제공합니다.   
+실행결과는 deployment/k8s 디렉토리 밑에 생성됩니다.   
+
+```
+/deploy-k8s-guide-back
+[실행정보]
+- ACR명: acrdigitalgarage01
+- k8s명: aks-digitalgarage-01
+- 네임스페이스: tripgen-dev
+- 파드수: 1
+- 리소스(CPU): 256m/1024m
+- 리소스(메모리): 256Mi/1024Mi
+```
+
+deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스에 객체를 생성합니다.  
+
+| [Top](#목차) |
+
+---
+
+#### 프론트엔드 배포   
+vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
+아래 프롬프트 예제와 같이 프론트엔드 배포를 위한 매니페스트와 배포 가이드 작성을 요청합니다.   
+'[실행정보]'에 정확한 값을 제공합니다.   
+Gateway Host는 아래 명령으로 백엔드 Ingress Host의 값을 읽어 지정합니다.   
+```
+kubectl get ing
+```
+
+실행결과는 deployment/k8s 디렉토리 밑에 생성됩니다.   
+
+```
+/deploy-k8s-guide-front
+[실행정보]
+[실행정보]
+- 시스템명: tripgen
+- ACR명: acrdigitalgarage01
+- k8s명: aks-digitalgarage-01
+- 네임스페이스: tripgen
+- 파드수: 2
+- 리소스(CPU): 256m/1024m
+- 리소스(메모리): 256Mi/1024Mi
+- Gateway Host: http://tripgen-api.20.214.196.128.nip.io
+```
+
+deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스에 객체를 생성합니다.  
+
+| [Top](#목차) |
+
+---
