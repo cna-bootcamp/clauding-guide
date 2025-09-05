@@ -107,8 +107,9 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-
 ---
 
 ### Lessons Learned 등록하게 하기     
-Claude Code는 완벽하지 않아 시행착오를 자꾸합니다.   
-이를 방지하기 위해 아래와 같이 'CLAUDE.md'에 재실수를 방지하기 위한 추가 지침을 하도록 합니다.  
+Claude와 같은 AI와 같이 작업할 때 과거 작업을 기억하는데 한계가 있어 이전 실수를 반복할 경우가 있습니다.      
+이를 방지하기 위해 아래와 같이 'CLAUDE.md'에 재실수를 방지하기 위한 추가 지침을 하도록 합니다.   
+CLAUDE.md는 Claude Code 실행 시 메모리에 로딩되므로 대화를 종료하지 않는 한 기억할 가능성이 높아집니다.   
 그냥 등록하라고 하면 너무 길게 등록하므로 '간략하고 명확하게' 등록하라고 합니다.  
 
 ```
