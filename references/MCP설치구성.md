@@ -279,10 +279,8 @@ Claude Code 프롬프트에서 이 채널ID를 제공하여 작업합니다.
 
 ## Claude Desktop에 주요 MCP서버 연결
 ### 사전준비
-1)Git설치    
-https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-client-%EC%84%A4%EC%B9%98
    
-2)Node설치    
+Node설치    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#nodejs-%EC%84%A4%EC%B9%98
    
 ### 주요 MCP 연결 
@@ -325,7 +323,7 @@ Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 
 ### Figma MCP 설치  
 Claude Desktop에 Figma MCP 설정은 아래와 같이 하면 됩니다.    
 먼저 아래 링크에서 1)~2)번 수행을 먼저 해야 합니다.     
-https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98%ED%95%84%EC%88%98
 
 그리고 MCP설정 파일에 아래 내용을 추가하십시오.   
 
