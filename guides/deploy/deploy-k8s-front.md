@@ -74,7 +74,7 @@
   - Service 매니페스트 작성  
     - name: {서비스명}
     - port: 8080
-    - targetPort: 80  
+    - targetPort: 8080  
     - type: ClusterIP
   
   - Deployment 매니페스트 작성  
@@ -99,6 +99,8 @@
   - Ingress Controller External IP 확인 및 매니페스트에 반영 확인
     kubectl get svc ingress-nginx-controller -n ingress-nginx        
     EXTERNAL-IP 컬럼의 실제 값이 ingress.yaml의 host에 정확하게 설정되었는지 재확인할 것 
+  - Ingress 매니페스트의 서비스 backend.service.port.number와 Service 매니페스트의 port가 "8080"으로 동일한가 ?
+  - Service 매니페스트의 targetPort가 8080인가?     
   - Image명이 '{ACR명}.azurecr.io/{시스템명}/{서비스명}:latest' 형식인지 재확인 
   - ConfigMap 'cm-{서비스명}'의 data 내용 확인 
     - key는 runtime-env.js인가?
