@@ -24,7 +24,7 @@
   - 각 서비스별로 '<병렬처리>'가이드대로 동시 개발
     - 설정 Manifest(application.yml) 작성 
       - 하드코딩하지 않고 환경변수 사용
-      - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함     
+      - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함: '<DB/Redis 설정 예제>' 참조    
       - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정
       - 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
       - 개발모드의 DDL_AUTO값은 update로 함 
@@ -152,6 +152,48 @@ networkTimeout=10000
 validateDistributionUrl=true
 zipStoreBase=GRADLE_USER_HOME
 zipStorePath=wrapper/dists
+```
+
+<DB/Redis 설정 예제>
+```
+spring:
+  datasource:
+    url: jdbc:${DB_KIND:postgresql}://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:phonebill_auth}
+    username: ${DB_USERNAME:phonebill_user}
+    password: ${DB_PASSWORD:phonebill_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000      
+  # JPA 설정
+  jpa:
+    show-sql: ${SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+    hibernate:
+      ddl-auto: ${DDL_AUTO:update}
+      
+  # Redis 설정
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+      database: ${REDIS_DATABASE:0}
+  
 ```
 
 <SecurityConfig 예제>
