@@ -372,7 +372,12 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 #### 1.클라우드 아키텍처 패턴 선정   
 적용할 클라우드 아키텍처 패턴을 추천받고 검토합니다.   
-결과는 'design/pattern/architecture-pattern.md'에 생성됩니다.   
+결과는 'design/pattern/architecture-pattern.md'에 생성됩니다.  
+
+```
+/clear
+```
+
 ```
 /design-pattern
 ```
@@ -397,6 +402,10 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 논리 아키텍처를 설계하고 검토합니다.   
 결과는 'design/backend/logical' 디렉토리에 생성됩니다.   
 ```
+/clear
+```
+
+```
 /design-logical
 ```
 
@@ -408,6 +417,10 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 각 서비스 사이, 서비스와 외부시스템 사이의 인터페이스를 외부 시퀀스로 설계합니다.   
 결과는 '/design/backend/outer' 디렉토리에 생성됩니다.  
 ```
+/clear
+```
+
+```
 /design-seq-outer
 ```
 
@@ -418,6 +431,10 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 #### 4.내부 시퀀스 설계
 각 서비스 내부의 처리 흐름을 내부 시퀀스로 설계합니다.   
 결과는 '/design/backend/inner' 디렉토리에 생성됩니다.   
+```
+/clear
+```
+
 ```
 /design-seq-inner
 ```
@@ -449,6 +466,10 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 결과는 '/design/backend/api' 디렉토리에 생성됩니다.   
 생성된 swagger 파일(확장자가 yaml)을 'https://editor.swagger.io/'에 붙여서 테스트 하면서 검토합니다.   
 ```
+/clear
+```
+
+```
 /design-api
 ```
 
@@ -468,6 +489,10 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 각 서비스의 클래스 설계를 합니다.
 아래 예제와 같이 설계를 위한 정보를 프롬프트에 제공합니다. 
 결과는 'design/backend/class' 디렉토리에 생성됩니다.   
+```
+/clear
+```
+
 예제)
 ```
 /design-class
@@ -500,6 +525,10 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 데이터설계를 합니다.  
 결과는 'design/backend/database' 디렉토리에 생성됩니다.  
 ```
+/clear
+```
+
+```
 /design-data
 ```
 
@@ -511,6 +540,10 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 지금까지 설계를 바탕으로 상위 수준의 종합적인 아키텍처 정의서를 작성합니다.    
 'CLOUD' 항목에 사용할 클라우드플랫폼 제공자를 Azure, AWS, Google과 같이 입력합니다.   
 결과는 'design/high-level-architecture.md'에 생성됩니다.   
+```
+/clear
+```
+
 예시)
 ```
 /design-high-level
@@ -526,6 +559,9 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 'CLOUD' 항목에 사용할 클라우드플랫폼 제공자를 Azure, AWS, Google과 같이 입력합니다.   
 결과는 'design/backend/physical' 디렉토리에 생성됩니다.    
 물리 아키텍처는 개발환경과 운영환경으로 나누어 설계됩니다. 
+```
+/clear
+```
 
 예시)
 ```
@@ -580,12 +616,19 @@ az aks get-credentials -n dg0100-aks -f ~/.kube/config
 1)데이터베이스 설치 계획서 작성    
 'develop/database/plan' 디렉토리에 개발환경과 운영환경의 설치계획서가 생성됩니다.  
 ```
+/clear
+```
+
+```
 /develop-db-guide
 ```
 2)데이터베이스 설치 수행    
 데이터베이스를 계획서에 따라 설치합니다.   
 '[설치정보]' 섹션에 설치정보를 제공해줘야 합니다.   
 설치결과 레포트가 'develop/database/exec' 디렉토리에 생성됩니다.   
+```
+/clear
+```
 
 예시)
 ```
@@ -611,6 +654,9 @@ AKS기준으로 작성되었으며 다른 클라우드의 Kubernetes서비스는
 
 **팁) 데이터베이스 제거**    
 설치된 데이터베이스를 모두 제거하려면 아래 프롬프트를 이용합니다.   
+```
+/clear
+```
 
 ```
 /develop-db-remove
@@ -620,6 +666,9 @@ AKS기준으로 작성되었으며 다른 클라우드의 Kubernetes서비스는
 1)설치계획서 작성    
 Message Queue 설치계획서 작성을 요청합니다.    
 결과는 'develop/mq/mq-plan-{대상환경}.md' 파일로 생성됩니다.   
+```
+/clear
+```
 
 ```
 /develop-mq-guide
@@ -629,6 +678,9 @@ Message Queue 설치계획서 작성을 요청합니다.
 Message Queue 설치를 요청합니다.   
 '[설치정보]' 섹션에 설치정보를 제공해줘야 합니다.   
 결과는 'develop/mq/mq-exec-{대상환경}.md' 파일로 생성됩니다.   
+```
+/clear
+```
 
 예제)
 ```
@@ -641,6 +693,9 @@ Message Queue 설치를 요청합니다.
 
 **팁) MQ 제거**    
 설치된 MQ를 모두 제거하려면 아래 프롬프트를 이용합니다.   
+```
+/clear
+```
 
 ```
 /develop-mq-remove
@@ -654,24 +709,40 @@ Message Queue 설치를 요청합니다.
 #### 백엔드 개발/테스트
  
 **1.초안개발**        
+1)개발요청   
 설계 결과를 참조하여 모든 백엔드서비스를 개발 요청합니다.    
 간단한 기능은 제대로 개발하나 복잡한 기능은 TODO로 남겨놓는 경우도 많습니다.  
+```
+/clear
+```
+
 ```
 /develop-dev-backend
 ```
 
+2)마이크로서비스 확인    
 개발 초기에 settings.gradle이 생성되면 올바르게 마이크로서비스를 정의했는지 확인합니다.   
 만약 잘못되어 있다면 ESC를 눌러 잠깐 중지하고 아래 예와 같이 정정 요청합니다.     
 ![](images/2025-09-08-15-49-15.png)
 
-  
-개발가이드에따라 컴파일까지는 수행하고 오류가 있으면 해결할 겁니다.   
-AI가 서버를 실행하려고 하면 ESC를 눌러 중단시키십시오.    
+
+3)개발완료 체크 요청     
+```
+/clear
+```
+
+```
+/develop-dev-backend
+
+```
 
 **2.실행 프로파일 작성**    
 서비스를 실행하기 위한 실행 프로파일을 작성 요청합니다.    
 각 서비스에 생성된 application.yml을 분석하여 환경변수까지 등록된 IntelliJ의 서비스 실행 프로파일이 작성됩니다.       
 결과는 {service}/.run/{service}.run.xml로 생성됩니다.    
+```
+/clear
+```
 
 ```
 /develop-make-run-profile
@@ -762,6 +833,10 @@ user-service를 위한 db pod를 찾아 아래 사용자를 등록해 주세요.
 2)에러 발생 시 API명령을 제공하여 에러 수정 요청   
 
 ![](images/2025-09-01-17-58-20.png)  
+
+```
+/clear
+```
 
 예시)
 ```
