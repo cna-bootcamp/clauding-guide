@@ -744,9 +744,27 @@ Message Queue 설치를 요청합니다.
 /clear
 ```
 
+'[작성정보]'에 외부 API Key와 같은 정보를 제공하세요.  
+DB나 Redis의 접근 정보는 지정할 필요 없습니다. 특별히 없으면 '[작성정보]'섹션에 '없음'이라고 하세요.      
+
+예1)  
 ```
 /develop-make-run-profile
+[작성정보]
+- API Key
+  - Claude: sk-ant-ap...
+  - OpenAI: sk-proj-An4Q...
+  - Open Weather Map: 1aa5b...
+  - Kakao API Key: 5cdc24....
 ```
+
+예2)   
+```
+/develop-make-run-profile
+[작성정보]
+없음
+```
+
 
 등록이 되면 서비스탭에 나타납니다.    
 ![](images/2025-08-07-09-23-54.png)  
