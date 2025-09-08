@@ -9,6 +9,7 @@
 - 설치 대상 클라우드 플랫폼은 이미 로그인되어 있고 Kubernetes도 연결되어 있음  
 - Kubernetes에 배포 manifest는 develop/database/exec 디렉토리에 생성하고 완료 후 삭제  
 - '[결과파일]' 안내에 따라 파일 작성 
+- 설치 결과 파일에는 설치 helm 명령, 설치 시 사용한 values.yaml 등을 포함하여 작성   
 
 [참고자료]
 - 데이터베이스설치계획서
