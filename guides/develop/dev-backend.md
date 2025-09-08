@@ -37,6 +37,9 @@
     - 테스트 코드 작성은 하지 않음     
   - 개발 결과 설명: dev-backend.md
 - 검토:
+  - Gradle Wrapper 환경 설정
+    - Spring Boot 버전에 맞는 Gradle Wrapper 버전 사용 
+    - gradle/wrapper/gradle-wrapper.properties 파일 생성: '<gradle-wrapper.properties 예제>' 참조   
   - 컴파일 및 오류 수정:
     - '<병렬처리>'에 따라 동시 수행  
     - 컴파일 방법: {프로젝트 루트}/gradlew {service-name}:compileJava
@@ -138,6 +141,17 @@ logging:
 ```
 
 [예제]
+<gradle-wrapper.properties 예제>
+```
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.11-bin.zip
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+```
+
 <SecurityConfig 예제>
 ```
 /**
