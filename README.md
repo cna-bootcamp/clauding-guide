@@ -513,7 +513,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 결과는 'design/high-level-architecture.md'에 생성됩니다.   
 예시)
 ```
-/design-physical
+/design-high-level
 - CLOUD: Azure
 ```
 
