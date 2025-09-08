@@ -848,11 +848,20 @@ CLAUDE.md에 Lessons Learned 섹션을 만들고, 아래 예시처럼 개발 워
 
 **5.런타임에러 해결**         
 '서비스'탭에서 서비스를 실행합니다.   
-에러가 나면 AI에게 로그를 분석하여 에러를 해결하도록 요청합니다.    
+에러가 나면 AI에게 에러 메시지를 제공하거나 로그를 분석하여 에러를 해결하도록 요청합니다.    
 
-예제)  
+예1)
 ```
-user-service 실행 시 에러가 발생합니다.   
+user-service 런타임 에러가 발생합니다.   
+
+Task :api-gateway:bootRun FAILED
+00:49:19.924 [main] ERROR org.springframework.boot.SpringApplication -- Application run failed
+...
+```
+
+예2)  
+```
+user-service 런타임 에러가 발생합니다.   
 서버 로그를 분석하여 해결하세요.   
 ```
 
