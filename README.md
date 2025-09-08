@@ -457,6 +457,9 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 @analyze as @archi @back @front --think 외부시퀀스설계서와 내부시퀀스설계서의 설계 결과와 일관성 검사를 해주세요.
 ```
 
+아래처럼 서버를 localhost가 아닌 다른 서버를 선택하고 테스트 하면서 검토합니다.   
+![](images/2025-09-08-11-58-46.png)
+
 | [Top](#목차) |
 
 ---
