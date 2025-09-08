@@ -56,7 +56,7 @@
 
 <실행프로파일 작성 가이드>
 - {service-name}/.run/{service-name}.run.xml 파일로 작성
-- Spring Boot가 아니고 **Gradle 실행 프로파일**이어야 함: '<실행프로파일 예시>' 참조  
+- Spring Boot가 아니고 **Gradle 실행 프로파일**이어야 함: '[실행프로파일 예시]' 참조  
 - Kubernetes에 배포된 데이터베이스의 LoadBalancer Service 확인:
   - kubectl get svc -n {namespace} | grep LoadBalancer 명령으로 LoadBalancer IP 확인
   - 각 서비스별 데이터베이스의 LoadBalancer External IP를 DB_HOST로 사용
@@ -83,7 +83,7 @@
 - 백킹서비스 연결 확인 결과를 바탕으로 정확한 값을 지정  
 - 기존에 파일이 있으면 내용을 분석하여 항목 추가/수정/삭제  
 
-<실행프로파일 예시>
+[실행프로파일 예시]
 ```
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="user-service" type="GradleRunConfiguration" factoryName="Gradle">
