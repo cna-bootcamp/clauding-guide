@@ -22,19 +22,19 @@
 - 실행:  
   - common 모듈 개발  
   - 각 서비스별로 '<병렬처리>'가이드대로 동시 개발
-  - 설정 Manifest(application.yml) 작성 
-    - 하드코딩하지 않고 환경변수 사용
-    - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함     
-    - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정
-    - 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
-    - 개발모드의 DDL_AUTO값은 update로 함 
-    - JWT Secret Key는 모든 서비스가 동일해야 함 
-    - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정 
-  - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성  
-  - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
-  - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
-  - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
-  - 테스트 코드 작성은 하지 않음     
+    - 설정 Manifest(application.yml) 작성 
+      - 하드코딩하지 않고 환경변수 사용
+      - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함     
+      - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정
+      - 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
+      - 개발모드의 DDL_AUTO값은 update로 함 
+      - JWT Secret Key는 모든 서비스가 동일해야 함 
+      - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정 
+    - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성  
+    - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
+    - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
+    - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
+    - 테스트 코드 작성은 하지 않음     
   - 개발 결과 설명: dev-backend.md
 - 검토:
   - 컴파일 및 오류 수정:
