@@ -20,6 +20,9 @@
 - 준비:
   - 참고자료 분석 및 이해 
 - 실행:  
+  - '[루트 build.gradle 표준]'대로 최상위 build.gradle 작성
+    - SpringBoot 3.3.0, Java 21 사용 
+    - 각 서비스에도 공통으로 사용되는 Dependency는 루트 build.gradle에 지정      
   - common 모듈 개발  
   - 각 서비스별로 '<병렬처리>'가이드대로 동시 개발
     - 설정 Manifest(application.yml) 작성 
@@ -30,8 +33,7 @@
       - 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
       - 개발모드의 DDL_AUTO값은 update로 함 
       - JWT Secret Key는 모든 서비스가 동일해야 함 
-      - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정 
-    - '[루트 build.gradle 표준]'대로 최상위 build.gradle 작성: SpringBoot 3.3.0, Java 21 사용  
+      - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정  
     - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성  
     - 최상위 build.gradle에 정의한 설정은 각 마이크로서비스의 build.gradle에 중복하여 정의하지 않도록 함  
     - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
