@@ -31,6 +31,7 @@
       - 개발모드의 DDL_AUTO값은 update로 함 
       - JWT Secret Key는 모든 서비스가 동일해야 함 
       - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정 
+    - '[루트 build.gradle 표준]'대로 최상위 build.gradle 작성: SpringBoot 3.3.0, Java 21 사용  
     - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성  
     - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
     - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
@@ -141,6 +142,114 @@ logging:
   file:
     name: ${LOG_FILE_PATH:logs/{서비스명}.log}
 
+```
+
+[루트 build.gradle 표준]
+```
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.0' apply false
+    id 'io.spring.dependency-management' version '1.1.6' apply false
+    id 'io.freefair.lombok' version '8.10' apply false
+}
+
+group = 'com.unicorn.{시스템명}'
+version = '1.0.0'
+
+allprojects {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.freefair.lombok'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+    
+    // Common versions for all subprojects
+    ext {
+        jjwtVersion = '0.12.5'
+        springdocVersion = '2.5.0'
+        mapstructVersion = '1.5.5.Final'
+        commonsLang3Version = '3.14.0'
+        commonsIoVersion = '2.16.1'
+        hypersistenceVersion = '3.7.3'
+        openaiVersion = '0.18.2'
+        feignJacksonVersion = '13.1'
+    }
+}
+
+// Configure all subprojects with Spring dependency management
+subprojects {
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.2"
+        }
+    }
+}
+
+// Configure only service modules (exclude common)
+configure(subprojects.findAll { it.name != 'common' }) {
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        // Common module dependency
+        implementation project(':common')
+        
+        // Actuator for health checks and monitoring
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        
+        // API Documentation (common across all services)
+        implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+        
+        // Testing
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.springframework.security:spring-security-test'
+        testImplementation 'org.testcontainers:junit-jupiter'
+        testImplementation 'org.mockito:mockito-junit-jupiter'
+        
+        // Configuration Processor
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    }
+}
+
+// Java version consistency check for all modules
+tasks.register('checkJavaVersion') {
+    doLast {
+        println "Java Version: ${System.getProperty('java.version')}"
+        println "Java Home: ${System.getProperty('java.home')}"
+    }
+}
+
+// Clean task for all subprojects
+tasks.register('cleanAll') {
+    dependsOn subprojects.collect { it.tasks.named('clean') }
+    description = 'Clean all subprojects'
+}
+
+// Build task for all subprojects
+tasks.register('buildAll') {
+    dependsOn subprojects.collect { it.tasks.named('build') }
+    description = 'Build all subprojects'
+}
 ```
 
 [예제]
