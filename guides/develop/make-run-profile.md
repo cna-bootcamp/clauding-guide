@@ -56,6 +56,7 @@
 
 <실행프로파일 작성 가이드>
 - {service-name}/.run/{service-name}.run.xml 파일로 작성
+- Spring Boot가 아니고 Gradle 실행 프로파일이어야 함  
 - Kubernetes에 배포된 데이터베이스의 LoadBalancer Service 확인:
   - kubectl get svc -n {namespace} | grep LoadBalancer 명령으로 LoadBalancer IP 확인
   - 각 서비스별 데이터베이스의 LoadBalancer External IP를 DB_HOST로 사용
