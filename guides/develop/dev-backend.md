@@ -33,6 +33,7 @@
       - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정 
     - '[루트 build.gradle 표준]'대로 최상위 build.gradle 작성: SpringBoot 3.3.0, Java 21 사용  
     - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성  
+    - 최상위 build.gradle에 정의한 설정은 각 마이크로서비스의 build.gradle에 중복하여 정의하지 않도록 함  
     - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
     - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
     - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
