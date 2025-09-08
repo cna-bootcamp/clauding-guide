@@ -9,6 +9,7 @@
 - Kubernetes에 배포 manifest는 develop/mq 디렉토리에 생성하고 완료 후 삭제   
 - MQ연결문자열을 얻는 명령어를 결과서에 명시하고 연결문자열을 mq-connection-string.txt에 저장  
 - '[결과파일]' 안내에 따라 파일 작성 
+- 설치 결과 파일에는 설치 시 사용한 명령을 포함하여 작성 
 
 [참고자료]
 - MQ설치계획서
