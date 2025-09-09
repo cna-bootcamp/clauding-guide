@@ -22,7 +22,7 @@
 - 실행:  
   - '[루트 build.gradle 표준]'대로 최상위 build.gradle 작성
     - SpringBoot 3.3.0, Java 21 사용 
-    - 각 서비스에도 공통으로 사용되는 Dependency는 루트 build.gradle에 지정      
+    - 각 서비스에도 공통으로 사용되는 Dependency는 루트 build.gradle에 지정     
   - common 모듈 개발  
   - 각 서비스별로 '<병렬처리>'가이드대로 동시 개발
     - 설정 Manifest(application.yml) 작성 
@@ -85,11 +85,10 @@
 [JWT, CORS, Actuaotr,OpenAPI Documentation,Loggings 표준]
 ```
 # JWT 
-security:
-  jwt:
-    secret: ${JWT_SECRET:}
-    access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:3600}  
-    refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800} 
+jwt:
+  secret: ${JWT_SECRET:}
+  access-token-validity: ${JWT_ACCESS_TOKEN_VALIDITY:1800}  
+  refresh-token-validity: ${JWT_ACCESS_TOKEN_VALIDITY:86400} 
 
 # CORS Configuration
 cors:
@@ -464,7 +463,7 @@ public class JwtTokenProvider {
     private final long tokenValidityInMilliseconds;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secret,
-                           @Value("${jwt.token-validity-in-seconds:3600}") long tokenValidityInSeconds) {
+                           @Value("${jwt.access-token-validity:3600}") long tokenValidityInSeconds) {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
