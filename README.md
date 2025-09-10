@@ -1158,8 +1158,8 @@ API명세서는 design/api 디렉토리에 생성됩니다.
 ```
 대시보드 화면을 개발합시다.   
 1. 유저스토리: UFR-TRIP-010
-2. 프로토타입: 02-대시보드.html. '프로토타입 분석 및 테스트'대로 분석 
-3. API: 제공한 API 실행 명령을 이용하여 요청/응답 데이터 구조를 분석하여 API 연동 개발 
+2. 프로토타입: 02-대시보드.html.  
+3. API:  
 1) 상태별 여행목록 구하기: 
 tripStatus: planning, ongoing, completed
 curl -X 'GET' \
