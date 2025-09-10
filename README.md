@@ -1052,11 +1052,23 @@ code .
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-k8s-front.md
   - 파일명: deploy-k8s-front.md 
   
-## 작업약어
-- "@design-front": /sc:design --persona-front --think --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
+## 프롬프트 약어 
+### 역할 약어 
+- "@front": "--persona-front"
+- "@devops": "--persona-devops"
 
-- "@dev-front": /sc:implement --persona-front --think --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
+### 작업 약어 
+- "@complex-flag": --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
 
+- "@plan": --plan --think
+- "@dev-front": /sc:implement @front --think-hard @complex-flag
+- "@cicd": /sc:implement @devops --think @complex-flag
+- "@document": /sc:document --think @scribe @complex-flag
+- "@fix": /sc:troubleshoot --think @complex-flag
+- "@estimate": /sc:estimate --think-hard @complex-flag
+- "@improve": /sc:improve --think @complex-flag
+- "@analyze": /sc:analyze --think --seq 
+- "@explain": /sc:explain --think --seq --answer-only 
 
 ## Lessons Learned
 **프론트엔드 개발 절차**:
@@ -1236,7 +1248,8 @@ vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행�
 프롬프트에 아래 명령으로 이미지를 빌드합니다.   
 수행결과는 deployment/container/build-image.md 파일로 생성됩니다.  
 ```
-/deploy-build-image-front
+@cicd 
+'프론트엔드컨테이너이미지작성가이드'에 따라 컨테이너 이미지를 작성해 주세요. 
 ```
 아래 명령으로 생성된 이미지를 확인합니다.   
 ```
@@ -1296,7 +1309,8 @@ vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행�
 
 예시) 
 ```
-/deploy-run-container-guide-front
+@cicd 
+'프론트엔드컨테이너실행방법가이드'에 따라 컨테이너 실행 가이드를 작성해 주세요. 
 [실행정보]
 - 시스템명: tripgen
 - ACR명: acrdigitalgarage01
@@ -1471,9 +1485,10 @@ kubectl get ing
 
 실행결과는 deployment/k8s 디렉토리 밑에 생성됩니다.   
 
+예시)   
 ```
-/deploy-k8s-guide-front
-[실행정보]
+@cicd 
+'프론트엔드배포가이드'에 따라 프론트엔드 서비스 배포 방법을 작성해 주세요. 
 [실행정보]
 - 시스템명: tripgen
 - ACR명: acrdigitalgarage01
