@@ -1018,6 +1018,7 @@ code .
 
 [URL링크 참조]
 - URL링크는 WebFetch가 아닌 'curl {URL} > claude/{filename}'명령으로 저장
+- 동일한 파일이 있으면 덮어 씀 
 - 'claude'디렉토리가 없으면 생성하고 다운로드   
 - 저장된 파일을 읽어 사용함
 
