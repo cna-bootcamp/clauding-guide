@@ -47,6 +47,8 @@
       - [ingress controller 추가](#ingress-controller-추가)
       - [백엔드 배포](#백엔드-배포)
       - [프론트엔드 배포](#프론트엔드-배포)
+      - [쿠버네티스 리소스 학습](#쿠버네티스-리소스-학습)
+      - [kubectl 명령어 실습](#kubectl-명령어-실습)
 
 ---
 
@@ -1581,3 +1583,24 @@ deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스
 | [Top](#목차) |
 
 ---
+
+#### 쿠버네티스 리소스 학습    
+
+아래 링크를 새 탭으로 열어 쿠버네티스 리소스에 대해 학습합니다.   
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-resources.md
+
+
+| [Top](#목차) |
+
+---
+
+#### kubectl 명령어 실습    
+
+아래 링크를 새 탭으로 열어 kubectl 명령어에 대해 실습합니다.   
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-command.md
+
+
+| [Top](#목차) |
+
+---
+
