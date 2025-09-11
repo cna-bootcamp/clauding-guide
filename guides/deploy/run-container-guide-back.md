@@ -58,21 +58,6 @@
 - 어플리케이션 빌드 및 컨테이너 이미지 생성 방법 안내     
   'deployment/container/build-image.md' 파일을 열어 가이드대로 수행하도록 안내    
 
-- 환경변수 확인    
-  '{서비스명}/.run/{서비스명}.run.xml' 을 읽어 각 서비스의 환경변수 찾음.      
-  "env.map"의 각 entry의 key와 value가 환경변수임.   
-    
-  예제) SERVER_PORT=8081, DB_HOST=20.249.137.175가 환경변수임 
-  ```
-  <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="ai-service" type="GradleRunConfiguration" factoryName="Gradle">
-      <ExternalSystemSettings>
-        <option name="env">
-          <map>
-            <entry key="SERVER_PORT" value="8084" />
-            <entry key="DB_HOST" value="20.249.137.175" />
-  ```
-
 - 컨테이너 레지스트리 로그인 방법 안내     
   아래 명령으로 {ACR명}의 인증정보를 구합니다.  
   'username'이 ID이고 'passwords[0].value'가 암호임. 
@@ -114,20 +99,35 @@
   ```
 
 - 컨테이너 실행 명령 생성    
-  아래 명령으로 컨테이너를 실행하는 명령을 생성합니다.    
-  - shell 파일을 만들지 말고 command로 수행하는 방법 안내.        
-  - 모든 환경변수에 대해 '-e' 파라미터로 환경변수값을 넘깁니다.  
-  - 중요) CORS 설정 환경변수에 프론트엔드 주소 추가   
-    - 'ALLOWED_ORIGINS' 포함된 환경변수가 CORS 설정 환경변수임.  
-    - 이 환경변수의 값에 'http://{VM.IP}:3000'번 추가  
-   
-  ```
-  SERVER_PORT={환경변수의 SERVER_PORT값}
+  - 환경변수 확인    
+    '{서비스명}/.run/{서비스명}.run.xml' 을 읽어 각 서비스의 환경변수 찾음.      
+    "env.map"의 각 entry의 key와 value가 환경변수임.   
+      
+    예제) SERVER_PORT=8081, DB_HOST=20.249.137.175가 환경변수임 
+    ```
+    <component name="ProjectRunConfigurationManager">
+      <configuration default="false" name="ai-service" type="GradleRunConfiguration" factoryName="Gradle">
+        <ExternalSystemSettings>
+          <option name="env">
+            <map>
+              <entry key="SERVER_PORT" value="8084" />
+              <entry key="DB_HOST" value="20.249.137.175" />
+    ```
 
-  docker run -d --name {서비스명} --rm -p ${SERVER_PORT}:${SERVER_PORT} \
-  -e {환경변수 KEY}={환경변수 VALUE} 
-  {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
-  ```
+  - 아래 명령으로 컨테이너를 실행하는 명령을 생성합니다.    
+    - shell 파일을 만들지 말고 command로 수행하는 방법 안내.        
+    - 모든 환경변수에 대해 '-e' 파라미터로 환경변수값을 넘깁니다.  
+    - 중요) CORS 설정 환경변수에 프론트엔드 주소 추가   
+      - 'ALLOWED_ORIGINS' 포함된 환경변수가 CORS 설정 환경변수임.  
+      - 이 환경변수의 값에 'http://{VM.IP}:3000'번 추가  
+    
+    ```
+    SERVER_PORT={환경변수의 SERVER_PORT값}
+
+    docker run -d --name {서비스명} --rm -p ${SERVER_PORT}:${SERVER_PORT} \
+    -e {환경변수 KEY}={환경변수 VALUE} 
+    {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
+    ```
 
 - 실행된 컨테이너 확인 방법 작성    
   아래 명령으로 모든 서비스의 컨테이너가 실행 되었는지 확인하는 방법을 안내.     
