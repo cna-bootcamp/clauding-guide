@@ -1232,6 +1232,63 @@ id: user01, pw: P@ssw0rd$
 
 #### 컨테이너 이미지 빌드 
 **1.백엔드 컨테이너 이미지 빌드**        
+**1)사전체크**         
+1-1.Actuator설정     
+각 서비스의 application.yml에 Actuator설정이 아래와 같이 되어 있어야 합니다.    
+다른 설정이 추가된것은 괜찮지만 아래 항목은 반드시 있어야 합니다.  
+```
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+```
+
+1-2.Actuator 라이브러리 추가 확인     
+최상위 build.gradle에 아래 라이브러리가 있는지 확인   
+```
+// Actuator for health checks and monitoring
+implementation 'org.springframework.boot:spring-boot-starter-actuator'
+```
+
+1-3.Actuator 경로 무인증 허용    
+각 서비스의 SecurityConfig 클래스에 '.requestMatchers("/actuator/**").permitAll()'와 같이    
+Actuator 경로를 인증없이 접근하도록 허용해야 합니다.  
+```
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                    // Actuator endpoints
+                    .requestMatchers("/actuator/**").permitAll()
+                    // Swagger UI endpoints - context path와 상관없이 접근 가능하도록 설정
+                    .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+                    // Health check
+                    .requestMatchers("/health").permitAll()
+                    // All other requests require authentication
+                    .anyRequest().authenticated()
+            )
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), 
+                            UsernamePasswordAuthenticationFilter.class)
+            .build();
+}
+```
+
+**2)컨테이너 이미지 빌드**         
 IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
 프롬프트에 아래 명령으로 이미지를 빌드합니다.   
 수행결과는 deployment/container/build-image.md 파일로 생성됩니다.   
