@@ -50,6 +50,7 @@
       - [쿠버네티스 리소스 학습](#쿠버네티스-리소스-학습)
       - [kubectl 명령어 실습](#kubectl-명령어-실습)
     - [CI/CD](#cicd)
+      - [CI/CD 툴 설치: Jenkins, SonarQube, ArgoCD](#cicd-툴-설치-jenkins-sonarqube-argocd)
 
 ---
 
@@ -1606,4 +1607,6 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-command.
 ---
 
 ### CI/CD
+
+#### CI/CD 툴 설치: Jenkins, SonarQube, ArgoCD
 
