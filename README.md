@@ -1349,7 +1349,8 @@ IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합�
   - USERID: azureuser
   - IP: 4.230.5.6
 ```
-실행이 완료되면 프롬프트에 '푸시'라고 입력하여 원격 Git Repo에 푸시합니다.   
+실행이 완료되면 'deployment/container/run-container-guide.md'파일을 열어 내용을 검토 및 수정합니다.    
+그리고 프롬프트에 '푸시'라고 입력하여 원격 Git Repo에 푸시합니다.   
   
 2)컨테이너 실행     
 웹브라우저에서 실행가이드를 오픈하여 안내대로 아래 작업을 수행합니다.    
@@ -1382,7 +1383,8 @@ vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행�
   - USERID: azureuser
   - IP: 4.230.5.6
 ```
-실행이 완료되면 프롬프트에 '푸시'라고 입력하여 원격 Git Repo에 푸시합니다.   
+실행이 완료되면 'deployment/container/run-container-guide.md'파일을 열어 내용을 검토 및 수정합니다.    
+그리고 프롬프트에 '푸시'라고 입력하여 원격 Git Repo에 푸시합니다.   
   
 2)컨테이너 실행     
 웹브라우저에서 실행가이드를 오픈하여 안내대로 아래 작업을 수행합니다.    
