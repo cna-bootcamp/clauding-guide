@@ -110,16 +110,6 @@ management:
       enabled: true
     readinessState:
       enabled: true
-    db:
-      enabled: true
-    redis:
-      enabled: true
-  metrics:
-    export:
-      prometheus:
-        enabled: true
-    tags:
-      service: {서비스명}
 
 # OpenAPI Documentation
 springdoc:
