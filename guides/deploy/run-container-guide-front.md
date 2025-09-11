@@ -137,11 +137,20 @@
   ```
 
 - 재배포 방법 작성
+  - 로컬에서 수정된 소스 푸시 
+  - VM 접속 
+  - 디렉토리 이동 및 소스 내려받기
+    ```
+    cd ~/home/workspace/{서비스명}
+    ```
+
+    ```
+    git pull
+    ```
+
   - 컨테이너 이미지 재생성 
-    로컬에서 아래 명령으로 재생성 
-    ```
-    /deploy-build-image-front 
-    ```
+    'deployment/container/build-image.md' 파일을 열어 가이드대로 수행
+
   - 컨테이너 이미지 푸시  
     로컬에서 수행  
     ```
@@ -149,7 +158,6 @@
     docker push {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
     ```     
   - 컨테이너 중지
-    VM 접속 후 수행   
     ```
     docker stop {서비스명}
     ```
