@@ -100,24 +100,64 @@ spec:
 
 ## **2.Service**   
 1)로드밸런싱   
-selector에 정의한 대로 'app=user-service' Label으로 생성된 Pod를 로드밸런싱 합니다.  
-Service객체는 '80'으로 요청을 받아 대상 Pod의 '8081'포트로 바인딩합니다.  
-Pod내 애플리케이션이 로딩되는 포트를 targetPort로 지정해야 합니다.  
+selector에 정의한 대로 'app=phonebill-front' Label으로 생성된 Pod를 로드밸런싱 합니다.  
+Service객체는 '8080'으로 요청을 받아 대상 Pod의 '8080'포트로 바인딩합니다.  
+
 ```
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: phonebill-front
   namespace: phonebill-dev
 spec:
-  selector:
-    app: user-service
-  ports:
-  - port: 80
-    targetPort: 8081
   type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: phonebill-front
 ```
-    
+
+Pod내 애플리케이션이 로딩되는 포트를 targetPort로 지정해야 합니다.  
+프론트엔드는 Dockerfile에 지정한 nginx가 Listen하는 포트(EXPOSE에 지정한 포트)를 지정해야 합니다.    
+```
+...
+USER nginx
+
+EXPOSE ${EXPORT_PORT}
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+백엔드는 application.yml의 server.port에 지정한 포트를 지정해야 합니다.   
+여기서 환경변수 SERVER_PORT를 사용하므로 ConfigMap(configmap.yaml)에 지정한 포트를 지정해야 합니다.   
+```
+...
+server:
+  port: ${SERVER_PORT:8081}
+  # HTTP 헤더 크기 제한 설정
+  max-http-header-size: 64KB
+  max-http-request-header-size: 64KB
+...
+```
+
+ConfigMap 'cm-user-service.yaml' 
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-user-service
+  namespace: phonebill-dev
+data:
+  SERVER_PORT: "8081"
+  DB_KIND: "postgresql"
+  DB_PORT: "5432"
+  DDL_AUTO: "update"
+  REDIS_DATABASE: "0"
+  SHOW_SQL: "true"
+```
+
 2)Service 유형  
 Service 리소스의 'type'은 3가지가 있습니다.  
 - ClusterIP:   
