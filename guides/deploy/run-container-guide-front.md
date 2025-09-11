@@ -50,6 +50,25 @@
     docker login {ACR명}.azurecr.io -u {ID} -p {암호}
     ```
 
+- Git Repository 클론 안내      
+  - workspace 디렉토리 생성 및 이동   
+    ```
+    mkdir -p ~/home/workspace 
+    cd ~/home/workspace
+    ```
+  - 소스 Clone 
+    ```
+    git clone {원격 Git Repository 주소}
+    ```   
+    예)
+    ```
+    git clone https://github.com/cna-bootcamp/phonebill-front.git 
+    ```
+  - 프로젝트 디렉토리로 이동  
+    ```
+    cd {서비스명}
+    ``` 
+
 - 컨테이너 이미지 생성 방법 안내     
   'deployment/container/build-image.md' 파일을 열어 가이드대로 수행하도록 안내    
 
