@@ -1712,7 +1712,7 @@ branch명은 'main'으로 함.
 
 ##### 프론트엔드 서비스  
 
-1.'.dockerignore'파일 작성   
+**1.'.dockerignore'파일 작성**     
 Frontend의 Pipeline 구동 시 성능을 높이기 위해 image 빌드 시   
 image 내로 파일 복사할 때 제외할 파일이나 디렉토리를 정의합니다.   
 
