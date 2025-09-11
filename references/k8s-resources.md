@@ -19,11 +19,55 @@ Deployment, StatefulSet, DaemonSet, Job, CronJob이 그것이죠.
 ---
 
 ## **1.Ingress**  
-path '/member(/|$)(.*)'에서 '(/|$)'부분이 '$1'이고 '(.*)'부분이 '$2'가 됩니다.  
-'nginx.ingress.kubernetes.io/rewrite-target'에 의해서 'member/'부분은 사라지고   
-그 뒤의 값으로 rewriting 됩니다.   
-예) http://{ingress host}/member/api/auth/login -> http://member:80/api/auth/login    
 
+pathType을 Prefix로 하면 요청된 경로를 변경하지 않고 그대로 서비스 객체로 연결합니다.     
+주의할 점은 rules.host는 중복되면 안된다는 것입니다.  
+
+예제)
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: phonebill
+  namespace: phonebill-dev
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: phonebill-api.20.214.196.128.nip.io
+    http:
+      paths:
+      - path: /api/v1/auth
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 80
+      - path: /api/v1/users
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 80
+      - path: /api/v1/bills
+        pathType: Prefix
+        backend:
+          service:
+            name: bill-service
+            port:
+              number: 80
+
+```
+
+경로를 수정하려면 pathType을 'ImplementationSpecific'으로 하고 annotations에 추가 설정을 하면 됩니다.   
+아래 예제처럼 Ingress객체가 생성되면 아래와 같이 경로가 변경됩니다.  
+/user/api/v1/users -> /api/v1/users
+
+예제)  
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -38,14 +82,16 @@ spec:
   rules:
     - http:
         paths:
-          - path: /member(/|$)(.*)
+          - path: /user(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: member
+                name: user-service
                 port:
                   number: 80
 ```
+
+
 더 자세한 정보를 원하시면 [서비스 로드 밸런서 인그레스](https://happycloud-lee.tistory.com/254)을 참조하세요.      
 
 | [Top](#목차) |
@@ -54,20 +100,21 @@ spec:
 
 ## **2.Service**   
 1)로드밸런싱   
-selector에 정의한 대로 'app=member' Label으로 생성된 Pod를 로드밸런싱 합니다.  
+selector에 정의한 대로 'app=user-service' Label으로 생성된 Pod를 로드밸런싱 합니다.  
 Service객체는 '80'으로 요청을 받아 대상 Pod의 '8081'포트로 바인딩합니다.  
 Pod내 애플리케이션이 로딩되는 포트를 targetPort로 지정해야 합니다.  
 ```
 apiVersion: v1
 kind: Service
 metadata:
-  name: member
+  name: user-service
+  namespace: phonebill-dev
 spec:
   selector:
-    app: member
+    app: user-service
   ports:
-    - port: 80
-      targetPort: 8081
+  - port: 80
+    targetPort: 8081
   type: ClusterIP
 ```
     
@@ -111,18 +158,18 @@ Service 리소스의 'type'은 3가지가 있습니다.
 ## **3.Workload Controller**   
 **1)워크로드 컨트롤러의 유형**   
    
-![](images/2025-02-16-16-36-12.png)  
+![](images/2025-09-11-14-07-23.png)  
   
 Database는 자기가 CRUD해야할 데이터 저장소에 대한 정보를 갖고 있어야 하므로 StatefulSet으로 배포합니다.   
 여기서 데이터 저장소에 대한 정보는 PVC(Persistent Volume Claim)으로 정의 합니다.    
-![](images/2025-02-16-16-37-36.png)  
+![](images/2025-09-11-14-07-37.png)  
   
 **2)워크로드 컨트롤러의 구조**     
 워크로드는 항목이 많기 때문에 더 자세한 정보는 [파드 실행 및 통제를 위한 워크로드 컨트롤러](https://happycloud-lee.tistory.com/252)을 참조 하세요.   
-![](images/2025-02-16-16-38-41.png)  
+![](images/2025-09-11-14-07-50.png)  
     
 **3)Deployment와 StatefulSet의 차이점**     
-![](images/2025-02-16-16-41-15.png)  
+![](images/2025-09-11-14-07-59.png)  
       
 
 **4)ImagePullPolicy**: Always-로컬에 있어도 항상 레지스트리에서 다시 Pull함, IfNotPresent: 로컬에 없을때만 Pull함   
@@ -132,7 +179,7 @@ Database는 자기가 CRUD해야할 데이터 저장소에 대한 정보를 갖�
 **6)파드스케줄링 방법**: 파드가 배포될 노드를 지정하는 방법입니다.   
 '어피니티'가 붙은 방법들은 좀 복잡합니다.  
 [파드 실행 및 통제를 위한 워크로드 컨트롤러](https://happycloud-lee.tistory.com/252)을 참조 하세요.   
-![](images/2025-02-16-16-45-50.png)  
+![](images/2025-09-11-14-08-15.png)  
 
 **7)CPU/Memory 초기값/최대값 정의**   
 spec.template.spec.containers 항목 밑에 각 컨테이너별로 지정합니다.   
@@ -156,13 +203,13 @@ spec.template.spec.containers 항목 밑에 각 컨테이너별로 지정합니�
 ```
 envFrom:
 - configMapRef:
-    name: common-config
+    name: cm-common
 - configMapRef:
-    name: member-config
+    name: cm-user-service
 - secretRef:
-    name: common-secret
+    name: secret-common
 - secretRef:
-    name: member-secret
+    name: secret-user-service
 ```
 
 직접 지정하고 싶으면 'env'항목 밑에 지정하면 됩니다.  
@@ -176,7 +223,7 @@ env:
     
 **9)헬스체크**   
 spec.template.spec.containers 항목 밑에 각 컨테이너별로 지정합니다.  
-![](images/2025-02-16-17-05-09.png)   
+![](images/2025-09-11-14-09-45.png)    
 
 ```
 startupProbe:
@@ -255,7 +302,7 @@ management:
 ## **4.ConfigMap과 Secret**       
 
 ConfigMap과 Secret의 생성과 사용 방식 차이는 아래와 같습니다.      
-![](images/2025-02-16-17-18-52.png)   
+![](images/2025-09-11-14-10-22.png)   
 
 - 환경설정 파일 이용 방식은 파일에 키와 밸류로 구성된 환경변수들을 정의하고 그 파일을 이용하여 컨피그맵이나 시크릿을 만드는 방식입니다.   
   환경변수 이름에는 언더바를 쓰시는게 제일 안전합니다.  
@@ -297,7 +344,7 @@ ConfigMap과 Secret의 생성과 사용 방식 차이는 아래와 같습니다.
   
 시크릿으로 관리되는 데이터의 종류는 아래와 같습니다.
 시크릿을 만들때 각 사용 용도에 맞게 정확한 시크릿 타입을 지정해 주는 것이 좋습니다.
-![](images/2025-02-16-17-27-21.png)   
+![](images/2025-09-11-14-11-02.png)
    
 > 참고: 이미지 레지스트리 인증 Secret 생성 예시  
 ```
@@ -359,12 +406,12 @@ spec:
 
 **1.1)파드의 볼륨 접근 아키텍처**   
 기본적인 원리는 아래와 같이 '마운트'입니다.   
-![](images/2025-02-16-17-33-50.png)  
+![](images/2025-09-11-14-11-46.png)   
     
 파드와 볼륨간의 Loosely Coupling을 위해 실제 아키텍처는 아래와 같습니다.    
 쿠버네티스는 인프라스트럭처와의 느슨한 결합을 위해 퍼시스턴트 볼륨PV(Persistent Volume)/퍼시스턴트 볼륨 클레임PVC(Persistent Volume Claim)와    
 CSI(Container Storage Interface)라는 중계자 역할을 만들었습니다.   
-![](images/2025-02-16-17-34-52.png)   
+![](images/2025-09-11-14-12-01.png)    
 ❶ 파드정보, 컨피그맵, 시크릿은 파드 명세에 정의하여 마운트 합니다.   
 ❷ 노드 로컬 볼륨과 네트워크 볼륨은 퍼시스턴트볼륨 리소스로 정의하고 퍼시스턴트 볼륨 클레임에 바인딩(연결) 합니다.    
 파드 명세에서는 퍼시스턴트 볼륨 클레임만 지정해 주면 연결된 볼륨이 마운트 됩니다.    
@@ -377,7 +424,7 @@ CSI 표준 명세대로 퍼시스턴트 볼륨을 만들면 스토리지 제품�
 물론 CSI를 이용하지 않을때는 사용하려는 스토리지 제품별로 어떻게 퍼시스턴트 볼륨을 정의해야 하는지 알아야 합니다.   
 
 **1.2)사용목적별 볼륨 유형**    
-![](images/2025-02-16-18-47-06.png)  
+![](images/2025-09-11-14-12-20.png)   
 
 | [Top](#목차) |
 
@@ -442,7 +489,7 @@ CSI 표준 명세대로 퍼시스턴트 볼륨을 만들면 스토리지 제품�
 **2.3) 파드 로컬 볼륨: downwardAPI**   
 파드 매니페스트에 정의한 내용을 볼륨으로 마운트하여 사용하는 방식입니다.      
 
-![](images/2025-02-16-18-59-55.png) 
+![](images/2025-09-11-14-12-42.png)   
 
 ```
 apiVersion: apps/v1
@@ -629,11 +676,11 @@ spec:
 ```
 
 쿠버네티스가 지원하는 네트워크 스토리지 볼륨을 정리하면 아래와 같습니다.  
-![](images/2025-02-16-19-21-16.png)    
+![](images/2025-09-11-14-13-09.png)   
 
    
 **3)PV의 라이프사이클**    
-![](images/2025-02-16-17-38-35.png)   
+![](images/2025-09-11-14-13-19.png)    
           
 ❶ 프로비저닝: 퍼시스턴트 볼륨 오브젝트에 정의된 대로 물리적인 볼륨이 프로비저닝(공급)되는 단계입니다.   
 ❷ 바인딩: 퍼시스턴트 볼륨 오브젝트가 퍼시스턴트 볼륨 클레임 오브젝트와 연결되는 단계입니다.   
@@ -652,7 +699,7 @@ Delete와 Recycle 반환 정책은 데이터가 사라질 수 있으니 주의�
 ❺ 삭제: 반환 정책이 Delete인 경우 퍼시스턴트 볼륨이 삭제 됩니다.   
     
 **5)PV 정의하기**   
-![](images/2025-02-16-17-43-09.png)  
+![](images/2025-09-11-14-13-34.png)   
 - accessModes:   
   - ReadWriteOnce: RWO-한 노드에서만 볼륨 마운트를 할 수 있고 읽기/쓰기 허용
   - ReadWriteMany: RWX- 여러 노드에서 볼륨 마운트를 할 수 있고 읽기/쓰기 허용
@@ -677,7 +724,7 @@ managed-csi-premium     disk.csi.azure.com   Delete          WaitForFirstConsume
 managed-premium         disk.csi.azure.com   Delete          WaitForFirstConsumer   true                   2d4h
 ```
 **6)PVC 정의하기**   
-![](images/2025-02-16-17-52-05.png)   
+![](images/2025-09-11-14-13-48.png)    
 
 새로운 퍼시스턴트 볼륨 클레임 오브젝트가 생성되면 ❶ 스토리지 클래스 네임, ❷ 볼륨 요청 크기, ❸ 접근 모드, ❹ 퍼시스턴트 볼륨 오브젝트 레이블 조건이 맞는   
 퍼시스턴트 볼륨 오브젝트가 바인딩 됩니다.   
@@ -687,7 +734,7 @@ managed-premium         disk.csi.azure.com   Delete          WaitForFirstConsume
 쿠버네티스는 퍼시스턴트 볼륨 클레임 오브젝트를 생성하면 자동으로 볼륨 디렉토리와 퍼시스턴트 볼륨 오브젝트를 생성하는 방법을 제공 합니다.  
 이렇게 자동으로 볼륨 디렉토리와 퍼시스턴트 볼륨 오브젝트를 생성하는 것을 **동적 프로비저닝(Dynamic provisioning)**이라고 합니다.    
   
-![](images/2025-02-16-17-57-25.png)  
+![](images/2025-09-11-14-13-59.png)    
   
 ❶ 동적 프로비저닝을 위한 동적 프로비저너를 설치합니다. 이 프로비저너도 파드로 생성이 됩니다.  
 ❷ 관리자는 동적 프로비저닝을 지원하는 스토리지 클래스를 미리 생성해야 합니다.   
@@ -709,3 +756,4 @@ AKS에 제공되는 스토리지 클래스는 모두 동적 프로비저닝을 �
 | [Top](#목차) |
 
 ---
+

@@ -27,7 +27,7 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/README.md#%EC%BB%A8%ED%
 ## **컨테이너 중지/시작/삭제**  
 프론트엔드 컨테이너를 중지해 보십시오.   
 ```
-docker stop tripgen-front
+docker stop phonebill-front
 ```
 컨테이너가 중지되면 프로세스가 사라지는게 아니라 중지만 됩니다.   
 중지된 컨테이너 프로세스를 보려면 ?   
@@ -36,11 +36,11 @@ docker stop tripgen-front
 docker ps -a 
 ```
 
-하지만 tripgen-front앱이 안보일겁니다.   
+하지만 phonebill-front앱이 안보일겁니다.   
 왜 그럴까요?   
 컨테이너 실행할 때 옵션을 찬찬히 볼까요?   
 ```
-docker run -d --name tripgen-front --rm -p 8081:8081 \
+docker run -d --name phonebill-front --rm -p 8081:8081 \
 ....
 
 ```
@@ -52,13 +52,13 @@ docker run -d --name tripgen-front --rm -p 8081:8081 \
 ```
 SERVER_PORT=3000
 
-docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
-  -v ~/tripgen-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
-  acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest
+docker run -d --name phonebill-front -p ${SERVER_PORT}:80 \
+  -v ~/phonebill-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
+  acrdigitalgarage01.azurecr.io/phonebill/phonebill-front:latest
 ```
 
 ```
-docker stop tripgen-front
+docker stop phonebill-front
 docker ps -a
 ```
 이젠 'EXIT'상태의 컨테이너가 보일겁니다.   
@@ -66,7 +66,7 @@ docker ps -a
 
 중지된 컨테이너를 다시 시작해 봅시다.   
 ```
-docker start tripgen-front
+docker start phonebill-front
 docker ps
 ```
 
@@ -75,13 +75,13 @@ docker ps
   
 다시 중지시키고 이번엔 완전히 삭제 해 봅시다.  
 ```
-docker stop tripgen-front
+docker stop phonebill-front
 docker ps -a
 ```
 
 docker rm으로 영구 삭제 합니다.  
 ```
-docker rm tripgen-front
+docker rm phonebill-front
 docker ps -a
 ```
 
@@ -89,9 +89,9 @@ docker ps -a
 ```
 SERVER_PORT=3000
 
-docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
-  -v ~/tripgen-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
-  acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest
+docker run -d --name phonebill-front -p ${SERVER_PORT}:80 \
+  -v ~/phonebill-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
+  acrdigitalgarage01.azurecr.io/phonebill/phonebill-front:latest
 ```
 
 | [Top](#목차) |
@@ -101,15 +101,15 @@ docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
 ## **이미지 지우기**  
 이미지를 지우려면 docker rmi 명령을 사용하면 됩니다.   
 이미지를 정리 안하면 스토리지를 차지하기 때문에 정기적으로 지우는게 좋습니다.  
-tripgen-front 이미지만 삭제해 보겠습니다.     
+phonebill-front 이미지만 삭제해 보겠습니다.     
 ```
-docker images | grep tripgen-front
+docker images | grep phonebill-front
 ```
 
 Repository:tag 또는 Image ID로 삭제하면 됩니다.   
 예시)
 ```
-docker rmi acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest  
+docker rmi acrdigitalgarage01.azurecr.io/phonebill/phonebill-front:latest  
 ```
 ```
 docker rmi c732e60b5e0e
@@ -118,8 +118,8 @@ docker rmi c732e60b5e0e
 이 이미지로 컨테이너가 실행되고 있으므로 삭제가 안될겁니다.   
 컨테이너를 중지합니다.   
 ```
-docker stop tripgen-front
-docker rm tripgen-front
+docker stop phonebill-front
+docker rm phonebill-front
 ```
 
 그리고 다시 이미지를 삭제한 후 삭제 여부를 확인합니다.  
@@ -143,13 +143,13 @@ docker container prune 입니다.
 ```
 SERVER_PORT=3000
 
-docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
-  -v ~/tripgen-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
-  acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest
+docker run -d --name phonebill-front -p ${SERVER_PORT}:80 \
+  -v ~/phonebill-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
+  acrdigitalgarage01.azurecr.io/phonebill/phonebill-front:latest
 ```
 
 ```
-docker stop tripgen-front
+docker stop phonebill-front
 docker ps -a
 ```
 
@@ -173,9 +173,9 @@ docker ps -a
 ```
 SERVER_PORT=3000
 
-docker run -d --name tripgen-front -p ${SERVER_PORT}:80 \
-  -v ~/tripgen-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
-  acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest
+docker run -d --name phonebill-front -p ${SERVER_PORT}:80 \
+  -v ~/phonebill-front/public/runtime-env.js:/usr/share/nginx/html/runtime-env.js \
+  acrdigitalgarage01.azurecr.io/phonebill/phonebill-front:latest
 ```
 
 아래와 같은 문법으로 사용합니다.   
@@ -185,14 +185,14 @@ docker exec -it {container name / id} {command}
 
 아래와 같이 테스트 해 봅니다.   
 ```
-docker exec -it tripgen-front env
-docker exec -it tripgen-front ls -al /
+docker exec -it phonebill-front env
+docker exec -it phonebill-front ls -al /
 ```
 
 이걸 응용해서 컨테이너 안으로 들어갈 수도 있습니다.   
 'bash' 또는 'sh'을 사용하십시오.   
 ```
-docker exec -it tripgen-front sh
+docker exec -it phonebill-front sh
 ls -al
 ```
 
@@ -218,18 +218,18 @@ echo "hello" > hello.txt
 
 컨테이너 내부에 tmp 디렉토리를 만들고 만든 파일을 복사합니다.    
 ```
-docker exec -it tripgen-front mkdir -p /tmp
-docker cp hello.txt tripgen-front:/tmp/hello.txt
+docker exec -it phonebill-front mkdir -p /tmp
+docker cp hello.txt phonebill-front:/tmp/hello.txt
 ```
 
 복사가 되었는지 확인합니다.   
 ```
-docker exec -it tripgen-front cat /tmp/hello.txt
+docker exec -it phonebill-front cat /tmp/hello.txt
 ```
 
 반대로 컨테이너 안의 파일을 복사해 볼까요?
 ```
-docker cp tripgen-front:/tmp/hello.txt hello2.txt
+docker cp phonebill-front:/tmp/hello.txt hello2.txt
 ```
 
 파일이 복사되었는지 확인합니다.    
@@ -248,29 +248,29 @@ ls -al
 아래 예시와 같이 docker save 명령을 이용하여 이미지를 압축파일로 만듭니다.    
 예시)
 ```
-docker save acrdigitalgarage01.azurecr.io/tripgen/tripgen-front:latest -o tripgen-front.tar  
+docker save acrdigitalgarage01.azurecr.io/phonebill/phonebill-front:latest -o phonebill-front.tar  
 ```
 ```
-docker save c732e60b5e0e -o tripgen-front.tar
+docker save c732e60b5e0e -o phonebill-front.tar
 ```
 
 이미지 로딩 테스트를 위해 이미지를 삭제합니다.    
 컨테이너가 실행중이므로 중지/삭제 후 이미지를 삭제합니다.  
 ```
-docker stop tripgen-front
-docker rm tripgen-front 
+docker stop phonebill-front
+docker rm phonebill-front 
 ```
 
 이미지를 삭제합니다.   
 ```
-docker rmi tripgen-front
-docker images tripgen-front
+docker rmi phonebill-front
+docker images phonebill-front
 ```
 
 docker load 명령으로 이미지를 로딩합니다.    
 ```
-docker load -i tripgen-front.tar
-docker images tripgen-front 
+docker load -i phonebill-front.tar
+docker images phonebill-front 
 ```
 
 | [Top](#목차) |
@@ -283,8 +283,8 @@ docker images tripgen-front
 이때 쓸 수 있는 명령이 docker image prune -a 입니다.  
 
 
-위에서 tripgen-front 컨테이너를 중지했고 이미지만 남겨져 있으므로   
-아래 명령을 수행하면 tripgen-front 이미지가 삭제될겁니다.   
+위에서 phonebill-front 컨테이너를 중지했고 이미지만 남겨져 있으므로   
+아래 명령을 수행하면 phonebill-front 이미지가 삭제될겁니다.   
 ```
 docker image prune -a
 ```
@@ -301,7 +301,7 @@ docker의 network 객체로 가상의 통신망을 만들고 컨테이너 실행
 Docker Network 객체를 아래 명령으로 만드세요.   
 예제)
 ```
-docker network create tripgen
+docker network create phonebill-network
 ```
 
 생성된 네트워크 객체는 아래 명령으로 조회할 수 있습니다.   
@@ -312,11 +312,11 @@ docker network ls
 아래 예제와 같이 컨테이너 실행 시 --network 파라미터로 네트워크 이름을 명시합니다.   
 ```
 docker run -d \
-  --name tripgen-redis \
+  --name phonebill-redis \
   -p 6379:6379 \
   -v redis-data:/data \
   --restart unless-stopped \
-  --network tripgen \
+  --network phonebill-network \
   redis
 ```
 
@@ -326,9 +326,9 @@ docker run -d \
 예시) 
 ```
 docker run -d --name user-service -p 8081:8081 \
--e REDIS_HOST=tripgen-redis \
+-e REDIS_HOST=phonebill-redis \
 ...
---network tripgen \
+--network phonebill \
 user-service:latest
 ```
 
