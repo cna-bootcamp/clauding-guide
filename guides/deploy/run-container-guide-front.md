@@ -32,11 +32,26 @@
     "name": "tripgen-front",
     "private": true,
   ```
-- 생성된 컨테이너 이미지 확인   
-  아래 명령으로 모든 서비스의 컨테이너 이미 생성 확인  
-  ```
-  docker images | grep {서비스명}
-  ``` 
+
+- VM 접속 방법 안내
+  - Linux/Mac은 기본 터미널을 실행하고 Window는 Window Terminal을 실행하도록 안내   
+  - 터미널에서 아래 명령으로 VM에 접속하도록 안내  
+    최초 한번 Private key파일의 모드를 변경.  
+    ```
+    chmod 400 {VM.KEY파일}
+    ``` 
+    
+    private key를 이용하여 접속.  
+    ``` 
+    ssh -i {VM.KEY파일} {VM.USERID}@{VM.IP}
+    ``` 
+  - 접속 후 docker login 방법 안내   
+    ```
+    docker login {ACR명}.azurecr.io -u {ID} -p {암호}
+    ```
+
+- 컨테이너 이미지 생성 방법 안내     
+  'deployment/container/build-image.md' 파일을 열어 가이드대로 수행하도록 안내    
 
 - 컨테이너 레지스트리 로그인 방법 안내     
   아래 명령으로 {ACR명}의 인증정보를 구합니다.  
@@ -77,23 +92,6 @@
   ```
   docker push {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
   ```
-
-- VM 접속 방법 안내
-  - Linux/Mac은 기본 터미널을 실행하고 Window는 Window Terminal을 실행하도록 안내   
-  - 터미널에서 아래 명령으로 VM에 접속하도록 안내  
-    최초 한번 Private key파일의 모드를 변경.  
-    ```
-    chmod 400 {VM.KEY파일}
-    ``` 
-    
-    private key를 이용하여 접속.  
-    ``` 
-    ssh -i {VM.KEY파일} {VM.USERID}@{VM.IP}
-    ``` 
-  - 접속 후 docker login 방법 안내   
-    ```
-    docker login {ACR명}.azurecr.io -u {ID} -p {암호}
-    ```
 
 - 런타임 환경변수 파일 생성 방법 안내      
   - public/runtime-env.js파일을 읽어 그 안의 설정을 모두 포함    

@@ -37,11 +37,26 @@
   include 'ai-service'
   include 'trip-service'
   ```  
-- 생성된 컨테이너 이미지 확인   
-  아래 명령으로 모든 서비스의 컨테이너 이미 생성 확인  
-  ```
-  docker images | grep {서비스명}
-  ``` 
+
+- VM 접속 방법 안내
+  - Linux/Mac은 기본 터미널을 실행하고 Window는 Window Terminal을 실행하도록 안내   
+  - 터미널에서 아래 명령으로 VM에 접속하도록 안내  
+    최초 한번 Private key파일의 모드를 변경.  
+    ```
+    chmod 400 {VM.KEY파일}
+    ``` 
+    
+    private key를 이용하여 접속.  
+    ``` 
+    ssh -i {VM.KEY파일} {VM.USERID}@{VM.IP}
+    ``` 
+  - 접속 후 docker login 방법 안내   
+    ```
+    docker login {ACR명}.azurecr.io -u {ID} -p {암호}
+    ```
+
+- 어플리케이션 빌드 및 컨테이너 이미지 생성 방법 안내     
+  'deployment/container/build-image.md' 파일을 열어 가이드대로 수행하도록 안내    
 
 - 환경변수 확인    
   '{서비스명}/.run/{서비스명}.run.xml' 을 읽어 각 서비스의 환경변수 찾음.      
@@ -97,23 +112,6 @@
   ```
   docker push {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest
   ```
-
-- VM 접속 방법 안내
-  - Linux/Mac은 기본 터미널을 실행하고 Window는 Window Terminal을 실행하도록 안내   
-  - 터미널에서 아래 명령으로 VM에 접속하도록 안내  
-    최초 한번 Private key파일의 모드를 변경.  
-    ```
-    chmod 400 {VM.KEY파일}
-    ``` 
-    
-    private key를 이용하여 접속.  
-    ``` 
-    ssh -i {VM.KEY파일} {VM.USERID}@{VM.IP}
-    ``` 
-  - 접속 후 docker login 방법 안내   
-    ```
-    docker login {ACR명}.azurecr.io -u {ID} -p {암호}
-    ```
 
 - 컨테이너 실행 명령 생성    
   아래 명령으로 컨테이너를 실행하는 명령을 생성합니다.    
