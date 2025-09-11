@@ -51,6 +51,9 @@
       - [kubectl 명령어 실습](#kubectl-명령어-실습)
     - [CI/CD](#cicd)
       - [CI/CD 툴 설치: Jenkins, SonarQube, ArgoCD](#cicd-툴-설치-jenkins-sonarqube-argocd)
+      - [Jenkins를 이용한 CI/CD](#jenkins를-이용한-cicd)
+        - [백엔드 서비스](#백엔드-서비스)
+        - [프론트엔드 서비스](#프론트엔드-서비스)
 
 ---
 
@@ -1611,6 +1614,124 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-command.
 #### CI/CD 툴 설치: Jenkins, SonarQube, ArgoCD
 
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/05.setup-cicd-tools.md
+
+| [Top](#목차) |
+
+---
+
+#### Jenkins를 이용한 CI/CD
+##### 백엔드 서비스 
+**1.루트 build.gradle 수정**    
+1)플러그인 'sonarqube'를 추가    
+```
+plugins {
+  ...
+  id "org.sonarqube" version "5.0.0.4638" apply false
+}
+```
+
+2)플러그인 'jacoco' 추가    
+jacoco는 소스 품질 검사 툴입니다.   
+```
+subprojects {
+  ...
+
+  apply plugin: 'org.sonarqube'
+  apply plugin: 'jacoco' // 서브 프로젝트에 JaCoCo 플러그인 적용
+
+  jacoco {
+      toolVersion = "0.8.11" // JaCoCo 최신 버전 사용
+  }
+
+  ...
+```
+
+3)Test 설정    
+기존에 'test'항목이 있으면 지우고 아래와 같이 변경합니다.     
+
+```
+subprojects {
+  ...
+
+  test {
+      useJUnitPlatform()
+      include '**/*Test.class'
+      testLogging {
+          events "passed", "skipped", "failed"
+      }
+      finalizedBy jacocoTestReport // 테스트 후 JaCoCo 리포트 생성
+  }
+  jacocoTestReport {
+      dependsOn test
+      reports {
+          xml.required = true // SonarQube 분석을 위해 XML 형식 필요
+          csv.required = false
+          html.required = true
+          html.outputLocation = layout.buildDirectory.dir("jacocoHtml").get().asFile
+      }
+
+      afterEvaluate {
+          classDirectories.setFrom(files(classDirectories.files.collect {
+              fileTree(dir: it, exclude: [
+                      "**/config/**",        // 설정 클래스 제외
+                      "**/entity/**",        // 엔티티 클래스 제외
+                      "**/dto/**",           // DTO 클래스 제외
+                      "**/*Application.class", // 메인 애플리케이션 클래스 제외
+                      "**/exception/**"      // 예외 클래스 제외
+              ])
+          }))
+      }
+  }
+}
+```
+
+**2.SonarQube 프로젝트 만들기**     
+SonarQube에 로그인하여 수행합니다.  
+1)각 서비스별 프로젝트 만들기    
+{root project}-{서비스명}-{Team ID}
+예) lifesub-member-unicorn, lifesub-mysub-unicorn, lifesub-recommend-unicorn, lifesub-web-unicorn     
+ 
+![](images/2025-09-11-19-07-13.png)  
+
+
+branch명은 'main'으로 함.
+![](images/2025-09-11-19-08-04.png)
+
+![](images/2025-09-11-19-08-46.png)
+
+2)각 프로젝트에서 Quality Gate 수정    
+
+![](images/2025-09-11-19-09-11.png)
+
+![](images/2025-09-11-19-11-44.png)  
+
+| [Top](#목차) |
+
+---
+
+
+##### 프론트엔드 서비스  
+
+1.'.dockerignore'파일 작성   
+Frontend의 Pipeline 구동 시 성능을 높이기 위해 image 빌드 시   
+image 내로 파일 복사할 때 제외할 파일이나 디렉토리를 정의합니다.   
+
+아래 내용으로 .dockerignore 파일을 생성합니다.   
+```
+images
+node_modules
+npm-debug.log
+build
+.git
+.github
+coverage
+.env*
+.cache
+dist
+logs
+**/*.log
+**/.DS_Store
+```
 
 | [Top](#목차) |
 
