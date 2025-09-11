@@ -1231,6 +1231,10 @@ id: user01, pw: P@ssw0rd$
 ### 컨테이너로 배포하기
 
 #### 컨테이너 이미지 빌드 
+컨테이너 이미지 빌드를 위해서는 Docker 데몬이 실행되어야 합니다.    
+**Docker Desktop을 실행**해 주세요.   
+Window는 'Docker Desktop'을 찾아 실행하고 Mac은 터미널에서 'open -a docker'명령을 실행하세요.   
+
 **1.백엔드 컨테이너 이미지 빌드**        
 **1)사전체크**         
 1-1.Actuator설정     
