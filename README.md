@@ -49,6 +49,7 @@
       - [프론트엔드 배포](#프론트엔드-배포)
       - [쿠버네티스 리소스 학습](#쿠버네티스-리소스-학습)
       - [kubectl 명령어 실습](#kubectl-명령어-실습)
+    - [CI/CD](#cicd)
 
 ---
 
@@ -1603,4 +1604,6 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-command.
 | [Top](#목차) |
 
 ---
+
+### CI/CD
 
