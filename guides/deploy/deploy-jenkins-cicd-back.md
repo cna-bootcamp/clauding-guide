@@ -153,7 +153,7 @@
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
 
-  namespace: {시스템명}-{환경}
+  namespace: {SYSTEM_NAME}-{환경}
 
   resources:
     - ../../base
@@ -170,7 +170,7 @@
     - path: ingress-patch.yaml
       target:
         kind: Ingress
-        name: {시스템명}-ingress
+        name: {SYSTEM_NAME}-ingress
     - path: secret-common-patch.yaml
       target:
         kind: Secret
@@ -181,7 +181,7 @@
         name: secret-{서비스명}
 
   images:
-    - name: {ACR명}.azurecr.io/{시스템명}/{서비스명}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명}
       newTag: {환경}-latest
 
   commonLabels:
@@ -217,7 +217,7 @@
     - base에서 `host: phonebill-api.20.214.196.128.nip.io` 이면
     - dev에서도 `host: phonebill-api.20.214.196.128.nip.io` 로 동일하게 설정
     - **절대** `phonebill-dev-api.xxx` 처럼 변경하지 말 것
-  - Staging/Prod 환경별 도메인 설정: {시스템명}.도메인 형식
+  - Staging/Prod 환경별 도메인 설정: {SYSTEM_NAME}.도메인 형식
   - service name을 '{서비스명}'으로 함.
   - Staging/prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -374,7 +374,7 @@
                       sh """
                           az login --service-principal -u \$AZURE_CLIENT_ID -p \$AZURE_CLIENT_SECRET -t \$AZURE_TENANT_ID
                           az aks get-credentials --resource-group ${props.resource_group} --name ${props.cluster_name} --overwrite-existing
-                          kubectl create namespace {시스템명}-${environment} --dry-run=client -o yaml | kubectl apply -f -
+                          kubectl create namespace {SYSTEM_NAME}-${environment} --dry-run=client -o yaml | kubectl apply -f -
                       """
                   }
               }
@@ -392,8 +392,8 @@
                       services.each { service ->
                           sh """
                               ./gradlew :${service}:test :${service}:jacocoTestReport :${service}:sonar \\
-                                  -Dsonar.projectKey={시스템명}-${service}-${environment} \\
-                                  -Dsonar.projectName={시스템명}-${service}-${environment} \\
+                                  -Dsonar.projectKey={SYSTEM_NAME}-${service}-${environment} \\
+                                  -Dsonar.projectName={SYSTEM_NAME}-${service}-${environment} \\
                                   -Dsonar.java.binaries=build/classes/java/main \\
                                   -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
                                   -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
@@ -431,7 +431,7 @@
                           sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
                           
                           // ACR 로그인
-                          sh "podman login {ACR명}.azurecr.io --username \$ACR_USERNAME --password \$ACR_PASSWORD"
+                          sh "podman login {ACR_NAME}.azurecr.io --username \$ACR_USERNAME --password \$ACR_PASSWORD"
 
                           services.each { service ->
                               sh """
@@ -439,9 +439,9 @@
                                       --build-arg BUILD_LIB_DIR="${service}/build/libs" \\
                                       --build-arg ARTIFACTORY_FILE="${service}.jar" \\
                                       -f deployment/container/Dockerfile-backend \\
-                                      -t {ACR명}.azurecr.io/{시스템명}/${service}:${environment}-${imageTag} .
+                                      -t {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag} .
 
-                                  podman push {ACR명}.azurecr.io/{시스템명}/${service}:${environment}-${imageTag}
+                                  podman push {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag}
                               """
                           }
                       }
@@ -451,29 +451,33 @@
 
           stage('Update Kustomize & Deploy') {
               container('azure-cli') {
-                  sh """
-                      # Kustomize 설치 (sudo 없이 사용자 디렉토리에 설치)
-                      curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-                      mkdir -p \$HOME/bin
-                      mv kustomize \$HOME/bin/
-                      export PATH=\$PATH:\$HOME/bin
+                sh """
+                    # Kustomize 설치 (sudo 없이 사용자 디렉토리에 설치)
+                    curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+                    mkdir -p \$HOME/bin
+                    mv kustomize \$HOME/bin/
+                    export PATH=\$PATH:\$HOME/bin
 
-                      # 환경별 디렉토리로 이동
-                      cd deployment/cicd/kustomize/overlays/${environment}
+                    # 환경별 디렉토리로 이동
+                    cd deployment/cicd/kustomize/overlays/${environment}
+                """
+                
+                // 이미지 태그 업데이트
+                services.each { service ->
+                    sh "\$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag}"
+                }
 
-                      # 이미지 태그 업데이트
-                      services.each { service ->
-                          sh "kustomize edit set image {ACR명}.azurecr.io/{시스템명}/${service}:${environment}-${imageTag}"
-                      }
+                sh """
+                    # 매니페스트 적용
+                    kubectl apply -k .
 
-                      # 매니페스트 적용
-                      kubectl apply -k .
-
-                      echo "Waiting for deployments to be ready..."
-                      services.each { service ->
-                          sh "kubectl -n {시스템명}-${environment} wait --for=condition=available deployment/${service} --timeout=300s"
-                      }
-                  """
+                    # 배포 상태 확인
+                    echo "Waiting for deployments to be ready..."
+                """
+                
+                services.each { service ->
+                    sh "kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/${service} --timeout=300s"
+                }
               }
           }
           
@@ -528,9 +532,9 @@
     ```
   - 배포 상태 확인:
     ```
-    kubectl get pods -n {시스템명}-{환경}
-    kubectl get services -n {시스템명}-{환경}
-    kubectl get ingress -n {시스템명}-{환경}
+    kubectl get pods -n {SYSTEM_NAME}-{환경}
+    kubectl get services -n {SYSTEM_NAME}-{환경}
+    kubectl get ingress -n {SYSTEM_NAME}-{환경}
     ```
 
 - 수동 배포 스크립트 작성
@@ -547,7 +551,7 @@
   
   # 각 서비스 이미지 태그 업데이트 (실제 서비스명으로 교체)
   for service in {서비스명1} {서비스명2} {서비스명3}; do
-      kustomize edit set image {ACR명}.azurecr.io/{시스템명}/${service}:${ENVIRONMENT}-${IMAGE_TAG}
+      kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${ENVIRONMENT}-${IMAGE_TAG}
   done
   
   # 배포 실행
@@ -555,7 +559,7 @@
   
   # 배포 상태 확인 (실제 서비스명으로 교체)
   for service in {서비스명1} {서비스명2} {서비스명3}; do
-      kubectl rollout status deployment/${service} -n {시스템명}-${ENVIRONMENT}
+      kubectl rollout status deployment/${service} -n {SYSTEM_NAME}-${ENVIRONMENT}
   done
   
   echo "✅ Deployment completed successfully!"
@@ -565,16 +569,16 @@
   - 이전 버전으로 롤백:
     ```bash
     # 특정 버전으로 롤백
-    kubectl rollout undo deployment/{서비스명} -n {시스템명}-{환경} --to-revision=2
+    kubectl rollout undo deployment/{서비스명} -n {SYSTEM_NAME}-{환경} --to-revision=2
     
     # 롤백 상태 확인
-    kubectl rollout status deployment/{서비스명} -n {시스템명}-{환경}
+    kubectl rollout status deployment/{서비스명} -n {SYSTEM_NAME}-{환경}
     ```
   - 이미지 태그 기반 롤백:
     ```bash
     # 이전 안정 버전 이미지 태그로 업데이트
     cd deployment/cicd/kustomize/overlays/{환경}
-    kustomize edit set image {ACR명}.azurecr.io/{시스템명}/{서비스명}:{환경}-{이전태그}
+    kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명}:{환경}-{이전태그}
     kubectl apply -k .
     ```
 
