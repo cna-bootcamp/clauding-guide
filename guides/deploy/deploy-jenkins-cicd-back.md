@@ -292,7 +292,7 @@
   - base의 각 서비스별 secret-{서비스명}.yaml을 환경별로 오버라이드
   - 기본값은 base의 secret-{서비스명}.yaml과 동일하게 함
 
-- -
+---
 
 **Patch 파일 작성 가이드라인:**
 - metadata.name은 base와 동일하게 유지 (Kustomize가 매칭)
