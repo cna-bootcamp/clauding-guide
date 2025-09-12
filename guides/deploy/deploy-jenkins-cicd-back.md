@@ -192,6 +192,73 @@
   done
   ```
 
+- 환경별 Patch 파일 생성
+  각 환경별로 필요한 patch 파일들을 생성합니다.   
+  **중요원칙**:
+  - **base 매니페스트에 없는 항목은 추가 않함**
+  - **base 매니페스트와 항목이 일치해야 함**
+  - Secret 매니페스트에 'data'가 아닌 'stringData'사용
+
+  **1. ConfigMap Common Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/cm-common-patch.yaml`
+
+  - base 매니페스트를 환경별로 복사
+    ```
+    cp deployment/cicd/kustomize/base/common/cm-common.yaml deployment/cicd/kustomize/overlays/{환경}/cm-common-patch.yaml
+    ```
+
+  - SPRING_PROFILES_ACTIVE를 환경에 맞게 설정 (dev/staging/prod)
+  - DDL_AUTO 설정: dev는 "update", staging/prod는 "validate"
+  - JWT 토큰 유효시간은 prod에서 보안을 위해 짧게 설정
+
+  **2. Secret Common Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml`
+
+  - base 매니페스트를 환경별로 복사
+    ```
+    cp deployment/cicd/kustomize/base/common/secret-common.yaml deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml
+    ```
+
+  **3. Ingress Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
+  - base의 ingress.yaml을 환경별로 오버라이드
+  - **⚠️ 중요**: 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 **정확히 동일하게** 함
+    - base에서 `host: phonebill-api.20.214.196.128.nip.io` 이면
+    - dev에서도 `host: phonebill-api.20.214.196.128.nip.io` 로 동일하게 설정
+    - **절대** `phonebill-dev-api.xxx` 처럼 변경하지 말 것
+  - Staging/Prod 환경별 도메인 설정: {SYSTEM_NAME}.도메인 형식
+  - service name을 '{서비스명}'으로 함.
+  - Staging/prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
+  - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+  **4. deployment Patch 파일 생성** ⚠️ **중요**
+  각 서비스별로 별도 파일 생성
+  `deployment/cicd/kustomize/overlays/{환경}/deployment-{서비스명}-patch.yaml`
+
+  **필수 포함 사항:**
+  - ✅ **replicas 설정**: 각 서비스별 Deployment의 replica 수를 환경별로 설정
+    - dev: 모든 서비스 1 replica (리소스 절약)
+    - staging: 모든 서비스 2 replicas
+    - prod: 모든 서비스 3 replicas
+  - ✅ **resources 설정**: 각 서비스별 Deployment의 resources를 환경별로 설정
+    - dev: requests(256m CPU, 256Mi Memory), limits(1024m CPU, 1024Mi Memory)
+    - staging: requests(512m CPU, 512Mi Memory), limits(2048m CPU, 2048Mi Memory)
+    - prod: requests(1024m CPU, 1024Mi Memory), limits(4096m CPU, 4096Mi Memory)
+
+  **작성 형식:**
+  - **Strategic Merge Patch 형식** 사용 (JSON Patch 아님)
+  - 각 서비스별로 별도의 Deployment 리소스로 분리하여 작성
+  - replicas와 resources를 **반드시 모두** 포함
+
+  **5. 서비스별 Secret Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`
+
+  - base 매니페스트를 환경별로 복사
+    ```
+    cp deployment/cicd/kustomize/base/{서비스명}/secret-{서비스명}.yaml deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml
+    ```  
+
 - 환경별 Overlay 작성  
   각 환경별로 `overlays/{환경}/kustomization.yaml` 생성
   ```yaml
@@ -232,81 +299,6 @@
   commonLabels:
     environment: {환경}
   ```
-
-- 환경별 Patch 파일 생성
-  각 환경별로 필요한 patch 파일들을 생성합니다.   
-  **중요원칙**:
-  - **base 매니페스트에 없는 항목은 추가 않함**
-  - **base 매니페스트와 항목이 일치해야 함**
-  - Secret 매니페스트에 'data'가 아닌 'stringData'사용
-
-  **1. ConfigMap Common Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/cm-common-patch.yaml`
-
-  - 기존 k8s 매니페스트를 환경별로 복사
-    ```
-    cp deployment/k8s/common/cm-common.yaml deployment/cicd/kustomize/overlays/dev/cm-common-patch.yaml
-    cp deployment/k8s/common/cm-common.yaml deployment/cicd/kustomize/overlays/staging/cm-common-patch.yaml
-    cp deployment/k8s/common/cm-common.yaml deployment/cicd/kustomize/overlays/prod/cm-common-patch.yaml
-    ```
-
-  - SPRING_PROFILES_ACTIVE를 환경에 맞게 설정 (dev/staging/prod)
-  - DDL_AUTO 설정: dev는 "update", staging/prod는 "validate"
-  - JWT 토큰 유효시간은 prod에서 보안을 위해 짧게 설정
-
-  **2. Secret Common Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml`
-
-  - 기존 k8s 매니페스트를 환경별로 복사
-    ```
-    cp deployment/k8s/common/secret-common.yaml deployment/cicd/kustomize/overlays/dev/secret-common-patch.yaml
-    cp deployment/k8s/common/secret-common.yaml deployment/cicd/kustomize/overlays/staging/secret-common-patch.yaml
-    cp deployment/k8s/common/secret-common.yaml deployment/cicd/kustomize/overlays/prod/secret-common-patch.yaml
-    ```
-
-  **3. Ingress Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
-  - base의 ingress.yaml을 환경별로 오버라이드
-  - **⚠️ 중요**: 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 **정확히 동일하게** 함
-    - base에서 `host: phonebill-api.20.214.196.128.nip.io` 이면
-    - dev에서도 `host: phonebill-api.20.214.196.128.nip.io` 로 동일하게 설정
-    - **절대** `phonebill-dev-api.xxx` 처럼 변경하지 말 것
-  - Staging/Prod 환경별 도메인 설정: {SYSTEM_NAME}.도메인 형식
-  - service name을 '{서비스명}'으로 함.
-  - Staging/prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
-  - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
-  - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
-
-  **4. deployment Patch 파일 생성** ⚠️ **중요**
-  각 서비스별로 별도 파일 생성
-  `deployment/cicd/kustomize/overlays/{환경}/deployment-{서비스명}-patch.yaml`
-
-  **필수 포함 사항:**
-  - ✅ **replicas 설정**: 각 서비스별 Deployment의 replica 수를 환경별로 설정
-    - dev: 모든 서비스 1 replica (리소스 절약)
-    - staging: 모든 서비스 2 replicas
-    - prod: 모든 서비스 3 replicas
-  - ✅ **resources 설정**: 각 서비스별 Deployment의 resources를 환경별로 설정
-    - dev: requests(256m CPU, 256Mi Memory), limits(1024m CPU, 1024Mi Memory)
-    - staging: requests(512m CPU, 512Mi Memory), limits(2048m CPU, 2048Mi Memory)
-    - prod: requests(1024m CPU, 1024Mi Memory), limits(4096m CPU, 4096Mi Memory)
-
-  **작성 형식:**
-  - **Strategic Merge Patch 형식** 사용 (JSON Patch 아님)
-  - 각 서비스별로 별도의 Deployment 리소스로 분리하여 작성
-  - replicas와 resources를 **반드시 모두** 포함
-
-  **5. 서비스별 Secret Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`
-
-  - 기존 서비스별 k8s 매니페스트를 환경별로 복사
-    ```
-    cp deployment/k8s/common/secret-{서비스명}.yaml deployment/cicd/kustomize/overlays/dev/secret-{서비스명}-patch.yaml
-    cp deployment/k8s/common/secret-{서비스명}.yaml deployment/cicd/kustomize/overlays/staging/secret-{서비스명}-patch.yaml
-    cp deployment/k8s/common/secret-{서비스명}.yaml deployment/cicd/kustomize/overlays/prod/secret-{서비스명}-patch.yaml
-    ```  
-
----
 
 - 환경별 설정 파일 작성    
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법
