@@ -184,7 +184,7 @@
   `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
   - base의 ingress.yaml을 환경별로 오버라이드
   - 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 동일하게 함  
-  - Staging/Prod 환경별 도메인 설정: {시스템명}-{환경}.도메인 형식
+  - Staging/Prod 환경별 도메인 설정: {시스템명}.도메인 형식
   - service name을 '{서비스명}'으로 함. 
   - Staging/prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
