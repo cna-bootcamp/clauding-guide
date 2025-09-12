@@ -318,6 +318,15 @@
   - **SonarQube Analysis**: services.each 루프를 통한 각 서비스별 코드 품질 분석 및 Quality Gate
   - **Container Build & Push**: 30분 timeout 설정과 함께 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
+  - **Pod Cleanup**: 파이프라인 완료 시 에이전트 파드 자동 정리
+
+  **⚠️ 중요: Pod 자동 정리 설정**
+  에이전트 파드가 파이프라인 완료 시 즉시 정리되도록 다음 설정들이 적용됨:
+  - **podRetention: never()**: 파이프라인 완료 시 파드 즉시 삭제 (문법 주의: 문자열 'never' 아님)
+  - **idleMinutes: 1**: 유휴 시간 1분으로 설정하여 빠른 정리
+  - **terminationGracePeriodSeconds: 3**: 파드 종료 시 3초 내 강제 종료
+  - **restartPolicy: Never**: 파드 재시작 방지
+  - **try-catch-finally**: 예외 발생 시에도 정리 로직 실행 보장
 
   **⚠️ 중요: 변수 참조 문법 및 충돌 해결**
   Jenkins Groovy에서 bash shell로 변수 전달 시:
@@ -344,11 +353,13 @@
       label: "${PIPELINE_ID}",
       serviceAccount: 'jenkins',
       slaveConnectTimeout: 300,
-      idleMinutes: 30,
+      idleMinutes: 1,
       activeDeadlineSeconds: 3600,
       podRetention: never(),  // 파드 자동 정리 옵션: never(), onFailure(), always(), default()
       yaml: '''
           spec:
+            terminationGracePeriodSeconds: 3
+            restartPolicy: Never
             tolerations:
             - effect: NoSchedule
               key: dedicated
@@ -405,134 +416,144 @@
           def environment = params.ENVIRONMENT ?: 'dev'
           def services = ['{서비스명1}', '{서비스명2}', '{서비스명3}']
           
-          stage("Get Source") {
-              checkout scm
-              props = readProperties file: "deployment/cicd/config/deploy_env_vars_${environment}"
-          }
-
-          stage("Setup AKS") {
-              container('azure-cli') {
-                  withCredentials([azureServicePrincipal('azure-credentials')]) {
-                      sh """
-                          az login --service-principal -u \$AZURE_CLIENT_ID -p \$AZURE_CLIENT_SECRET -t \$AZURE_TENANT_ID
-                          az aks get-credentials --resource-group ${props.resource_group} --name ${props.cluster_name} --overwrite-existing
-                          kubectl create namespace {SYSTEM_NAME}-${environment} --dry-run=client -o yaml | kubectl apply -f -
-                      """
-                  }
+          try {
+              stage("Get Source") {
+                  checkout scm
+                  props = readProperties file: "deployment/cicd/config/deploy_env_vars_${environment}"
               }
-          }
 
-          stage('Build & SonarQube Analysis') {
-              container('gradle') {
-                  withSonarQubeEnv('SonarQube') {
-                      sh """
-                          chmod +x gradlew
-                          ./gradlew build -x test
-                      """
-                      
-                      // 각 서비스별 테스트 및 SonarQube 분석
-                      services.each { service ->
+              stage("Setup AKS") {
+                  container('azure-cli') {
+                      withCredentials([azureServicePrincipal('azure-credentials')]) {
                           sh """
-                              ./gradlew :${service}:test :${service}:jacocoTestReport :${service}:sonar \\
-                                  -Dsonar.projectKey={SYSTEM_NAME}-${service}-${environment} \\
-                                  -Dsonar.projectName={SYSTEM_NAME}-${service}-${environment} \\
-                                  -Dsonar.java.binaries=build/classes/java/main \\
-                                  -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
-                                  -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
+                              az login --service-principal -u \$AZURE_CLIENT_ID -p \$AZURE_CLIENT_SECRET -t \$AZURE_TENANT_ID
+                              az aks get-credentials --resource-group ${props.resource_group} --name ${props.cluster_name} --overwrite-existing
+                              kubectl create namespace {SYSTEM_NAME}-${environment} --dry-run=client -o yaml | kubectl apply -f -
                           """
                       }
                   }
               }
-          }
 
-          stage('Quality Gate') {
-              timeout(time: 10, unit: 'MINUTES') {
-                  def qg = waitForQualityGate()
-                  if (qg.status != 'OK') {
-                      error "Pipeline aborted due to quality gate failure: \${qg.status}"
-                  }
-              }
-          }
-
-          stage('Build & Push Images') {
-              timeout(time: 30, unit: 'MINUTES') {
-                  container('podman') {
-                      withCredentials([
-                          usernamePassword(
-                              credentialsId: 'acr-credentials',
-                              usernameVariable: 'ACR_USERNAME',
-                              passwordVariable: 'ACR_PASSWORD'
-                          ),
-                          usernamePassword(
-                              credentialsId: 'dockerhub-credentials',
-                              usernameVariable: 'DOCKERHUB_USERNAME', 
-                              passwordVariable: 'DOCKERHUB_PASSWORD'
-                          )
-                      ]) {
-                          // Docker Hub 로그인 (rate limit 해결)
-                          sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
+              stage('Build & SonarQube Analysis') {
+                  container('gradle') {
+                      withSonarQubeEnv('SonarQube') {
+                          sh """
+                              chmod +x gradlew
+                              ./gradlew build -x test
+                          """
                           
-                          // ACR 로그인
-                          sh "podman login {ACR_NAME}.azurecr.io --username \$ACR_USERNAME --password \$ACR_PASSWORD"
-
+                          // 각 서비스별 테스트 및 SonarQube 분석
                           services.each { service ->
                               sh """
-                                  podman build \\
-                                      --build-arg BUILD_LIB_DIR="${service}/build/libs" \\
-                                      --build-arg ARTIFACTORY_FILE="${service}.jar" \\
-                                      -f deployment/container/Dockerfile-backend \\
-                                      -t {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag} .
-
-                                  podman push {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag}
+                                  ./gradlew :${service}:test :${service}:jacocoTestReport :${service}:sonar \\
+                                      -Dsonar.projectKey={SYSTEM_NAME}-${service}-${environment} \\
+                                      -Dsonar.projectName={SYSTEM_NAME}-${service}-${environment} \\
+                                      -Dsonar.java.binaries=build/classes/java/main \\
+                                      -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
+                                      -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
                               """
                           }
                       }
                   }
               }
-          }
 
-          stage('Update Kustomize & Deploy') {
-              container('azure-cli') {
-                sh """
-                    # Kustomize 설치 (sudo 없이 사용자 디렉토리에 설치)
-                    curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-                    mkdir -p \$HOME/bin
-                    mv kustomize \$HOME/bin/
-                    export PATH=\$PATH:\$HOME/bin
-
-                    # 환경별 디렉토리로 이동
-                    cd deployment/cicd/kustomize/overlays/${environment}
-
-                    # 서비스 목록 정의 (실제 서비스명으로 교체, 공백으로 구분)
-                    services="{서비스명1} {서비스명2} {서비스명3} ..."
-
-                    # 이미지 태그 업데이트
-                    for service in \$services; do
-                        \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:${environment}-${imageTag}
-                    done
-
-                    # 매니페스트 적용
-                    kubectl apply -k .
-
-                    # 배포 상태 확인
-                    echo "Waiting for deployments to be ready..."
-                    for service in \$services; do
-                        kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/\$service --timeout=300s
-                    done
-                """
+              stage('Quality Gate') {
+                  timeout(time: 10, unit: 'MINUTES') {
+                      def qg = waitForQualityGate()
+                      if (qg.status != 'OK') {
+                          error "Pipeline aborted due to quality gate failure: \${qg.status}"
+                      }
+                  }
               }
-          }
+
+              stage('Build & Push Images') {
+                  timeout(time: 30, unit: 'MINUTES') {
+                      container('podman') {
+                          withCredentials([
+                              usernamePassword(
+                                  credentialsId: 'acr-credentials',
+                                  usernameVariable: 'ACR_USERNAME',
+                                  passwordVariable: 'ACR_PASSWORD'
+                              ),
+                              usernamePassword(
+                                  credentialsId: 'dockerhub-credentials',
+                                  usernameVariable: 'DOCKERHUB_USERNAME', 
+                                  passwordVariable: 'DOCKERHUB_PASSWORD'
+                              )
+                          ]) {
+                              // Docker Hub 로그인 (rate limit 해결)
+                              sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
+                              
+                              // ACR 로그인
+                              sh "podman login {ACR_NAME}.azurecr.io --username \$ACR_USERNAME --password \$ACR_PASSWORD"
+
+                              services.each { service ->
+                                  sh """
+                                      podman build \\
+                                          --build-arg BUILD_LIB_DIR="${service}/build/libs" \\
+                                          --build-arg ARTIFACTORY_FILE="${service}.jar" \\
+                                          -f deployment/container/Dockerfile-backend \\
+                                          -t {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag} .
+
+                                      podman push {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag}
+                                  """
+                              }
+                          }
+                      }
+                  }
+              }
+
+              stage('Update Kustomize & Deploy') {
+                  container('azure-cli') {
+                      sh """
+                          # Kustomize 설치 (sudo 없이 사용자 디렉토리에 설치)
+                          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+                          mkdir -p \$HOME/bin
+                          mv kustomize \$HOME/bin/
+                          export PATH=\$PATH:\$HOME/bin
+
+                          # 환경별 디렉토리로 이동
+                          cd deployment/cicd/kustomize/overlays/${environment}
+
+                          # 서비스 목록 정의 (실제 서비스명으로 교체, 공백으로 구분)
+                          services="{서비스명1} {서비스명2} {서비스명3} ..."
+
+                          # 이미지 태그 업데이트
+                          for service in \$services; do
+                              \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:${environment}-${imageTag}
+                          done
+
+                          # 매니페스트 적용
+                          kubectl apply -k .
+
+                          # 배포 상태 확인
+                          echo "Waiting for deployments to be ready..."
+                          for service in \$services; do
+                              kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/\$service --timeout=300s
+                          done
+                      """
+                  }
+              }
           
-          // 파이프라인 완료 로그 (Scripted Pipeline 방식)
-          stage('Pipeline Complete') {
-              echo "🧹 Pipeline completed. Pod cleanup handled by Jenkins Kubernetes Plugin."
-              
-              // 성공/실패 여부 로깅
-              if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-                  echo "✅ Pipeline completed successfully!"
-              } else {
-                  echo "❌ Pipeline failed with result: ${currentBuild.result}"
+              // 파이프라인 완료 로그 (Scripted Pipeline 방식)
+              stage('Pipeline Complete') {
+                  echo "🧹 Pipeline completed. Pod cleanup handled by Jenkins Kubernetes Plugin."
+                  
+                  // 성공/실패 여부 로깅
+                  if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
+                      echo "✅ Pipeline completed successfully!"
+                  } else {
+                      echo "❌ Pipeline failed with result: ${currentBuild.result}"
+                  }
               }
+              
+          } catch (Exception e) {
+              currentBuild.result = 'FAILURE'
+              echo "❌ Pipeline failed with exception: ${e.getMessage()}"
+              throw e
+          } finally {
+              echo "🧹 Cleaning up resources and preparing for pod termination..."
+              echo "Pod will be terminated in 3 seconds due to terminationGracePeriodSeconds: 3"
           }
       }
   }
@@ -824,6 +845,8 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
   - gradle 컨테이너 이미지 이름에 올바른 JDK버전 사용: gradle:jdk{JDK버전}
   - 변수 참조 문법 확인: `${variable}` 사용, `\${variable}` 사용 금지
   - 모든 서비스명이 실제 프로젝트 서비스명으로 치환되었는지 확인
+  - **파드 자동 정리 설정 확인**: podRetention: never(), idleMinutes: 1, terminationGracePeriodSeconds: 3
+  - **try-catch-finally 블록 포함**: 예외 상황에서도 정리 로직 실행 보장
 - [ ] 수동 배포 스크립트 `scripts/deploy.sh` 생성 완료
 - [ ] **리소스 검증 스크립트 `scripts/validate-resources.sh` 생성 완료**
 - [ ] 스크립트 실행 권한 설정 완료 (`chmod +x scripts/*.sh`)
