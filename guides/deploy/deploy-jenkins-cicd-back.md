@@ -247,9 +247,14 @@
   주요 구성 요소:
   - **Pod Template**: Gradle, Podman, Azure-CLI 컨테이너
   - **Build & Test**: Gradle 기반 빌드 및 단위 테스트
-  - **SonarQube Analysis**: 코드 품질 분석 및 Quality Gate
-  - **Container Build & Push**: 환경별 이미지 태그로 빌드 및 푸시
+  - **SonarQube Analysis**: services.each 루프를 통한 각 서비스별 코드 품질 분석 및 Quality Gate
+  - **Container Build & Push**: 30분 timeout 설정과 함께 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
+
+  **🔧 최신 최적화 사항**:
+  - **SonarQube 분석 최적화**: 반복 코드를 services.each 루프로 통합하여 유지보수성 향상
+  - **Docker 빌드 안정성**: 30분 timeout 설정으로 Jenkins 에이전트 연결 끊김 방지
+  - **코드 간소화**: 40줄 → 13줄로 대폭 단축, 새 서비스 추가 시 services 배열에만 추가
   
   **⚠️ 중요: 변수 참조 문법**
   Jenkins Groovy에서 bash shell로 변수 전달 시:
@@ -317,15 +322,19 @@
                       sh """
                           chmod +x gradlew
                           ./gradlew build -x test
-                          
-                          # 각 서비스별 테스트 및 분석
-                          ./gradlew :{서비스명}:test :{서비스명}:jacocoTestReport :{서비스명}:sonar \\
-                              -Dsonar.projectKey={시스템명}-{서비스명}-${environment} \\
-                              -Dsonar.projectName={시스템명}-{서비스명}-${environment} \\
-                              -Dsonar.java.binaries=build/classes/java/main \\
-                              -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
-                              -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/** 
                       """
+                      
+                      // 각 서비스별 테스트 및 SonarQube 분석
+                      services.each { service ->
+                          sh """
+                              ./gradlew :${service}:test :${service}:jacocoTestReport :${service}:sonar \\
+                                  -Dsonar.projectKey={시스템명}-${service}-${environment} \\
+                                  -Dsonar.projectName={시스템명}-${service}-${environment} \\
+                                  -Dsonar.java.binaries=build/classes/java/main \\
+                                  -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
+                                  -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
+                          """
+                      }
                   }
               }
           }
@@ -340,24 +349,26 @@
           }
 
           stage('Build & Push Images') {
-              container('podman') {
-                  withCredentials([usernamePassword(
-                      credentialsId: 'acr-credentials',
-                      usernameVariable: 'USERNAME',
-                      passwordVariable: 'PASSWORD'
-                  )]) {
-                      sh "podman login {ACR명}.azurecr.io --username \$USERNAME --password \$PASSWORD"
+              timeout(time: 30, unit: 'MINUTES') {
+                  container('podman') {
+                      withCredentials([usernamePassword(
+                          credentialsId: 'acr-credentials',
+                          usernameVariable: 'USERNAME',
+                          passwordVariable: 'PASSWORD'
+                      )]) {
+                          sh "podman login {ACR명}.azurecr.io --username \$USERNAME --password \$PASSWORD"
 
-                      services.each { service ->
-                          sh """
-                              podman build \\
-                                  --build-arg BUILD_LIB_DIR="${service}/build/libs" \\
-                                  --build-arg ARTIFACTORY_FILE="${service}.jar" \\
-                                  -f deployment/container/Dockerfile-backend \\
-                                  -t {ACR명}.azurecr.io/{시스템명}/${service}:${environment}-${imageTag} .
+                          services.each { service ->
+                              sh """
+                                  podman build \\
+                                      --build-arg BUILD_LIB_DIR="${service}/build/libs" \\
+                                      --build-arg ARTIFACTORY_FILE="${service}.jar" \\
+                                      -f deployment/container/Dockerfile-backend \\
+                                      -t {ACR명}.azurecr.io/{시스템명}/${service}:${environment}-${imageTag} .
 
-                              podman push {ACR명}.azurecr.io/{시스템명}/${service}:${environment}-${imageTag}
-                          """
+                                  podman push {ACR명}.azurecr.io/{시스템명}/${service}:${environment}-${imageTag}
+                              """
+                          }
                       }
                   }
               }
