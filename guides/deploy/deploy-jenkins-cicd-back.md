@@ -169,7 +169,7 @@
   `deployment/cicd/kustomize/overlays/{환경}/configmap-common-patch.yaml`
   - base의 cm-common.yaml을 환경별로 오버라이드
   - 환경별 도메인, 프로파일, 데이터베이스 설정 변경
-  - CORS_ALLOWED_ORIGINS를 환경별 도메인으로 설정
+  - CORS_ALLOWED_ORIGINS를 환경별 도메인으로 설정. 기본값은 base의 cm-common.yaml과 동일하게 함  
   - SPRING_PROFILES_ACTIVE를 환경에 맞게 설정 (dev/staging/prod)
   - DDL_AUTO 설정: dev는 "update", staging/prod는 "validate"
   - JWT 토큰 유효시간은 prod에서 보안을 위해 짧게 설정
@@ -184,7 +184,7 @@
   `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
   - base의 ingress.yaml을 환경별로 오버라이드
   - 환경별 도메인 설정: {시스템명}-{환경}.도메인 형식
-  - Ingress Host는 base의 ingress.yaml과 동일하게 함  
+  - Ingress Host는 환경별 도메인으로 설정. 기본값은 base의 ingress.yaml과 동일하게 함  
   - service name을 namePrefix가 적용된 이름으로 변경 ({환경}-{서비스명})
   - prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
