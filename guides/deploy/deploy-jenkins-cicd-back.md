@@ -242,24 +242,26 @@
 
   **1. ConfigMap Common Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/configmap-common-patch.yaml`
-  - base의 cm-common.yaml을 환경별로 오버라이드
-  - 환경별 도메인, 프로파일, 데이터베이스 설정 변경
-  - CORS_ALLOWED_ORIGINS를 환경별 도메인으로 설정. 기본값은 base의 cm-common.yaml과 동일하게 함
+
+  - 기존 k8s 매니페스트를 환경별로 복사
+    ```
+    cp deployment/k8s/common/cm-common.yaml deployment/cicd/kustomize/overlays/dev/cm-common-patch.yaml
+    cp deployment/k8s/common/cm-common.yaml deployment/cicd/kustomize/overlays/staging/cm-common-patch.yaml
+    cp deployment/k8s/common/cm-common.yaml deployment/cicd/kustomize/overlays/prod/cm-common-patch.yaml
+    ```
+
   - SPRING_PROFILES_ACTIVE를 환경에 맞게 설정 (dev/staging/prod)
   - DDL_AUTO 설정: dev는 "update", staging/prod는 "validate"
   - JWT 토큰 유효시간은 prod에서 보안을 위해 짧게 설정
 
   **2. Secret Common Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml`
-  - base의 secret-common.yaml을 환경별로 오버라이드
-  - base의 secret-common.yaml과 Key와 Value가 동일해야 함
-    예) 
-    base/cm-common.yaml이 아래와 같다면, cm-common-patch.yaml의 Key와 Value도 완전히 똑같아야 함 
+
+  - 기존 k8s 매니페스트를 환경별로 복사
     ```
-    stringData:
-      JWT_SECRET: "nwe5Yo9qaJ6FBD/T..."
-      REDIS_HOST: "redis-cache-dev-master"
-      REDIS_PASSWORD: "Redis2025Dev!"
+    cp deployment/k8s/common/secret-common.yaml deployment/cicd/kustomize/overlays/dev/secret-common-patch.yaml
+    cp deployment/k8s/common/secret-common.yaml deployment/cicd/kustomize/overlays/staging/secret-common-patch.yaml
+    cp deployment/k8s/common/secret-common.yaml deployment/cicd/kustomize/overlays/prod/secret-common-patch.yaml
     ```
 
   **3. Ingress Patch 파일 생성**
@@ -296,18 +298,14 @@
 
   **5. 서비스별 Secret Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`
-  - base의 각 서비스별 secret-{서비스명}.yaml을 환경별로 오버라이드
-  - base의 각 서비스별 secret-{서비스명}.yaml과 Key와 Value가 동일해야 함
-    예)
-    base/cm-service1.yaml이 아래와 같다면, cm-service1-patch.yaml의 Key와 Value도 완전히 똑같아야 함   
+
+  - 기존 서비스별 k8s 매니페스트를 환경별로 복사
     ```
-    stringData:
-      DB_HOST: "auth-postgres-dev-postgresql"
-      DB_NAME: "phonebill_auth"
-      DB_USERNAME: "auth_user"
-      DB_PASSWORD: "AuthUser2025!"
-    ```
-    
+    cp deployment/k8s/common/secret-{서비스명}.yaml deployment/cicd/kustomize/overlays/dev/secret-{서비스명}-patch.yaml
+    cp deployment/k8s/common/secret-{서비스명}.yaml deployment/cicd/kustomize/overlays/staging/secret-{서비스명}-patch.yaml
+    cp deployment/k8s/common/secret-{서비스명}.yaml deployment/cicd/kustomize/overlays/prod/secret-{서비스명}-patch.yaml
+    ```  
+
 ---
 
 **Patch 파일 작성 가이드라인:**
