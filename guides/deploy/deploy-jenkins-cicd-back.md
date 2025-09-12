@@ -13,8 +13,7 @@
   - 환경별 설정 파일 작성
   - Jenkinsfile 작성
   - 수동 배포 스크립트 작성
-- 작업 완료 후 '[체크리스트]'대로 검사 
- 
+
 [작업순서]
 - 사전 준비사항 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
@@ -207,7 +206,10 @@
   **3. Ingress Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
   - base의 ingress.yaml을 환경별로 오버라이드
-  - 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 동일하게 함
+  - **⚠️ 중요**: 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 **정확히 동일하게** 함
+    - base에서 `host: phonebill-api.20.214.196.128.nip.io` 이면
+    - dev에서도 `host: phonebill-api.20.214.196.128.nip.io` 로 동일하게 설정
+    - **절대** `phonebill-dev-api.xxx` 처럼 변경하지 말 것
   - Staging/Prod 환경별 도메인 설정: {시스템명}.도메인 형식
   - service name을 '{서비스명}'으로 함.
   - Staging/prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
@@ -583,7 +585,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] `overlays/dev/kustomization.yaml` 생성 완료
 - [ ] `overlays/dev/configmap-common-patch.yaml` 생성 완료 (dev 프로파일, update DDL)
 - [ ] `overlays/dev/secret-common-patch.yaml` 생성 완료
-- [ ] `overlays/dev/ingress-patch.yaml` 생성 완료 (Host 기본값은 base의 ingress.yaml과 동일)
+- [ ] `overlays/dev/ingress-patch.yaml` 생성 완료 (**Host 기본값은 base의 ingress.yaml과 동일**)
 - [ ] `overlays/dev/deployment-patch.yaml` 생성 완료 (replicas, resources 지정)
 - [ ] 각 서비스별 `overlays/dev/secret-{서비스명}-patch.yaml` 생성 완료
 
