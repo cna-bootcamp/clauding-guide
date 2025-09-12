@@ -308,13 +308,6 @@
 
 ---
 
-**Patch 파일 작성 가이드라인:**
-- metadata.name은 base와 동일하게 유지 (Kustomize가 매칭)
-- 변경이 필요한 부분만 포함 (Strategic Merge Patch 방식)
-- 환경별 특성에 맞는 값들로 설정
-- 보안이 중요한 값들은 Secret으로, 일반 설정은 ConfigMap으로 분리
-- 각 환경의 리소스 사용량과 트래픽을 고려하여 replica 수 결정
-
 - 환경별 설정 파일 작성    
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법
   ```bash
