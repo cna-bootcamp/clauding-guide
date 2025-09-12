@@ -288,6 +288,9 @@
         kind: Secret
         name: secret-{서비스명}
 
+  commonLabels:
+    system: {SYSTEM_NAME}
+
   images:
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명}
       newTag: {환경}-latest
