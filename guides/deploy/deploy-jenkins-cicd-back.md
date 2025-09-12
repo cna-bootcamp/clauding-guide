@@ -189,12 +189,13 @@
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
   
-  **4. Replica Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/replica-patch.yaml`
+  **4. deployment Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/deployment-patch.yaml`
   - 각 서비스별 Deployment의 replica 수를 환경별로 설정
-  - dev: 모든 서비스 1 replica (리소스 절약)
-  - staging: 주요 서비스 2 replicas
-  - prod: 주요 서비스 3+ replicas
+    - dev: 모든 서비스 1 replica (리소스 절약)
+    - staging: 주요 서비스 2 replicas
+    - prod: 주요 서비스 3+ replicas
+  - 각 서비스별 Deployment의 resources를 환경별로 설정
   - 각 서비스별로 별도의 Deployment 리소스로 분리하여 작성
   
   **5. 서비스별 Secret Patch 파일 생성**
@@ -471,7 +472,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] `overlays/dev/configmap-common-patch.yaml` 생성 완료 (dev 프로파일, update DDL)
 - [ ] `overlays/dev/secret-common-patch.yaml` 생성 완료  
 - [ ] `overlays/dev/ingress-patch.yaml` 생성 완료 (dev 도메인, HTTP)
-- [ ] `overlays/dev/replica-patch.yaml` 생성 완료 (모든 서비스 1 replica)
+- [ ] `overlays/dev/deployment-patch.yaml` 생성 완료 
 - [ ] 각 서비스별 `overlays/dev/secret-{서비스명}-patch.yaml` 생성 완료
 
 ### STAGING 환경  
@@ -479,7 +480,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] `overlays/staging/configmap-common-patch.yaml` 생성 완료 (staging 프로파일, validate DDL)
 - [ ] `overlays/staging/secret-common-patch.yaml` 생성 완료
 - [ ] `overlays/staging/ingress-patch.yaml` 생성 완료 (staging 도메인, HTTPS)  
-- [ ] `overlays/staging/replica-patch.yaml` 생성 완료 (주요 서비스 2 replicas)
+- [ ] `overlays/staging/deployment-patch.yaml` 생성 완료 
 - [ ] 각 서비스별 `overlays/staging/secret-{서비스명}-patch.yaml` 생성 완료
 
 ### PROD 환경
@@ -487,7 +488,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] `overlays/prod/configmap-common-patch.yaml` 생성 완료 (prod 프로파일, validate DDL, 짧은 JWT)
 - [ ] `overlays/prod/secret-common-patch.yaml` 생성 완료
 - [ ] `overlays/prod/ingress-patch.yaml` 생성 완료 (prod 도메인, HTTPS, SSL 인증서)
-- [ ] `overlays/prod/replica-patch.yaml` 생성 완료 (주요 서비스 3+ replicas)  
+- [ ] `overlays/prod/deployment-patch.yaml` 생성 완료 
 - [ ] 각 서비스별 `overlays/prod/secret-{서비스명}-patch.yaml` 생성 완료
 
 ## ⚙️ 설정 및 스크립트 체크리스트
