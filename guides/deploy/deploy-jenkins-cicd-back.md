@@ -9,6 +9,7 @@
   - Kustomize 디렉토리 구조 생성
   - Base Kustomization 작성
   - 환경별 Overlay 작성
+  - 환경별 Patch 파일 생성
   - 환경별 설정 파일 작성
   - Jenkinsfile 작성
   - 수동 배포 스크립트 작성 
@@ -156,6 +157,55 @@
   commonLabels:
     environment: {환경}
   ```
+
+- 환경별 Patch 파일 생성
+  각 환경별로 필요한 patch 파일들을 생성합니다.
+  
+  **1. ConfigMap Common Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/configmap-common-patch.yaml`
+  - base의 cm-common.yaml을 환경별로 오버라이드
+  - 환경별 도메인, 프로파일, 데이터베이스 설정 변경
+  - CORS_ALLOWED_ORIGINS를 환경별 도메인으로 설정
+  - SPRING_PROFILES_ACTIVE를 환경에 맞게 설정 (dev/staging/prod)
+  - DDL_AUTO 설정: dev는 "update", staging/prod는 "validate"
+  - JWT 토큰 유효시간은 prod에서 보안을 위해 짧게 설정
+  
+  **2. Secret Common Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml`
+  - base의 secret-common.yaml을 환경별로 오버라이드  
+  - 환경별 공통 시크릿 값들 설정
+  - Redis 비밀번호, 데이터베이스 접속 정보 등
+  
+  **3. Ingress Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
+  - base의 ingress.yaml을 환경별로 오버라이드
+  - 환경별 도메인 설정: {시스템명}-{환경}.도메인 형식
+  - service name을 namePrefix가 적용된 이름으로 변경 ({환경}-{서비스명})
+  - prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
+  - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  
+  **4. Replica Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/replica-patch.yaml`
+  - 각 서비스별 Deployment의 replica 수를 환경별로 설정
+  - dev: 모든 서비스 1 replica (리소스 절약)
+  - staging: 주요 서비스 2 replicas
+  - prod: 주요 서비스 3+ replicas
+  - 각 서비스별로 별도의 Deployment 리소스로 분리하여 작성
+  
+  **5. 서비스별 Secret Patch 파일 생성**
+  `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`
+  - 각 서비스별 전용 시크릿 파일을 환경별로 오버라이드
+  - 데이터베이스 접속 정보, API 키 등 서비스별 민감 정보
+  - 환경별 데이터베이스 연결 정보 (dev/staging/prod DB 분리)
+  - 외부 API 연동 정보 (환경별 엔드포인트, 인증키)
+  
+  **Patch 파일 작성 가이드라인:**
+  - metadata.name은 base와 동일하게 유지 (Kustomize가 매칭)
+  - 변경이 필요한 부분만 포함 (Strategic Merge Patch 방식)
+  - 환경별 특성에 맞는 값들로 설정
+  - 보안이 중요한 값들은 Secret으로, 일반 설정은 ConfigMap으로 분리
+  - 각 환경의 리소스 사용량과 트래픽을 고려하여 replica 수 결정
 
 - 환경별 설정 파일 작성    
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법  
@@ -393,5 +443,53 @@
     kubectl apply -k .
     ```
 
+[체크리스트]
+Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한 체크리스트입니다.
+
+## 📋 사전 준비 체크리스트
+- [ ] settings.gradle에서 시스템명과 서비스명 확인 완료
+- [ ] 실행정보 섹션에서 ACR명, 리소스 그룹, AKS 클러스터명 확인 완료
+
+## 📂 Kustomize 구조 생성 체크리스트  
+- [ ] 디렉토리 구조 생성: `deployment/cicd/kustomize/{base,overlays/{dev,staging,prod}}`
+- [ ] 서비스별 base 디렉토리 생성: `deployment/cicd/kustomize/base/{common,{서비스명들}}`
+- [ ] 기존 k8s 매니페스트를 base로 복사 완료
+- [ ] Base kustomization.yaml 파일 생성 완료
+
+## 🔧 환경별 Overlay 구성 체크리스트
+### DEV 환경
+- [ ] `overlays/dev/kustomization.yaml` 생성 완료
+- [ ] `overlays/dev/configmap-common-patch.yaml` 생성 완료 (dev 프로파일, update DDL)
+- [ ] `overlays/dev/secret-common-patch.yaml` 생성 완료  
+- [ ] `overlays/dev/ingress-patch.yaml` 생성 완료 (dev 도메인, HTTP)
+- [ ] `overlays/dev/replica-patch.yaml` 생성 완료 (모든 서비스 1 replica)
+- [ ] 각 서비스별 `overlays/dev/secret-{서비스명}-patch.yaml` 생성 완료
+
+### STAGING 환경  
+- [ ] `overlays/staging/kustomization.yaml` 생성 완료
+- [ ] `overlays/staging/configmap-common-patch.yaml` 생성 완료 (staging 프로파일, validate DDL)
+- [ ] `overlays/staging/secret-common-patch.yaml` 생성 완료
+- [ ] `overlays/staging/ingress-patch.yaml` 생성 완료 (staging 도메인, HTTPS)  
+- [ ] `overlays/staging/replica-patch.yaml` 생성 완료 (주요 서비스 2 replicas)
+- [ ] 각 서비스별 `overlays/staging/secret-{서비스명}-patch.yaml` 생성 완료
+
+### PROD 환경
+- [ ] `overlays/prod/kustomization.yaml` 생성 완료  
+- [ ] `overlays/prod/configmap-common-patch.yaml` 생성 완료 (prod 프로파일, validate DDL, 짧은 JWT)
+- [ ] `overlays/prod/secret-common-patch.yaml` 생성 완료
+- [ ] `overlays/prod/ingress-patch.yaml` 생성 완료 (prod 도메인, HTTPS, SSL 인증서)
+- [ ] `overlays/prod/replica-patch.yaml` 생성 완료 (주요 서비스 3+ replicas)  
+- [ ] 각 서비스별 `overlays/prod/secret-{서비스명}-patch.yaml` 생성 완료
+
+## ⚙️ 설정 및 스크립트 체크리스트
+- [ ] 환경별 설정 파일 생성: `config/deploy_env_vars_{dev,staging,prod}`
+- [ ] `Jenkinsfile` 생성 완료 (Pod Template, Build, SonarQube, Deploy 단계 포함)
+- [ ] 수동 배포 스크립트 `scripts/deploy.sh` 생성 완료
+- [ ] 스크립트 실행 권한 설정 완료 (`chmod +x scripts/deploy.sh`)
+
 [결과파일]
-deployment/cicd/jenkins-pipeline-guide.md
+- 가이드: deployment/cicd/jenkins-pipeline-guide.md
+- 환경별 설정 파일: deployment/cicd/config/*
+- Kustomize 파일: deployment/cicd/kustomize/*
+- 수동배포 스크립트: deployment/cicd/scripts
+- Jenkins 스크립트: deployment/cicd/Jenkinsfile
