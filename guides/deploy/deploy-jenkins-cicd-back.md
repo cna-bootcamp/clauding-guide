@@ -284,10 +284,15 @@
   - **Docker 빌드 안정성**: 30분 timeout 설정으로 Jenkins 에이전트 연결 끊김 방지
   - **코드 간소화**: 40줄 → 13줄로 대폭 단축, 새 서비스 추가 시 services 배열에만 추가
 
-  **⚠️ 중요: 변수 참조 문법**
+  **⚠️ 중요: 변수 참조 문법 및 충돌 해결**
   Jenkins Groovy에서 bash shell로 변수 전달 시:
   - **올바른 문법**: `${variable}` (Groovy 문자열 보간)
   - **잘못된 문법**: `\${variable}` (bash 특수문자 이스케이프로 인한 "syntax error: bad substitution" 오류)
+  
+  **변수 이름 충돌 방지**:
+  - Jenkins Groovy `services` 변수와 Bash `services` 배열 충돌 시 "syntax error: unexpected '('" 발생
+  - **해결책**: Bash 배열 이름을 `svc_list`로 변경하여 충돌 방지
+  - 예시: `services=(...)` → `svc_list=(...)`, `"${services[@]}"` → `"${svc_list[@]}"`
 
   ```groovy
   def PIPELINE_ID = "${env.BUILD_NUMBER}"
@@ -462,10 +467,11 @@
                     cd deployment/cicd/kustomize/overlays/${environment}
 
                     # 서비스 배열 정의 (실제 서비스명으로 교체)
-                    services=({서비스명1} {서비스명2} {서비스명3} ...)
+                    # 주의: Jenkins Groovy 'services' 변수와 충돌 방지를 위해 'svc_list' 사용
+                    svc_list=({서비스명1} {서비스명2} {서비스명3} ...)
 
                     # 이미지 태그 업데이트
-                    for service in "\${services[@]}"; do
+                    for service in "\${svc_list[@]}"; do
                         \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:${environment}-${imageTag}
                     done
 
@@ -474,7 +480,7 @@
 
                     # 배포 상태 확인
                     echo "Waiting for deployments to be ready..."
-                    for service in "\${services[@]}"; do
+                    for service in "\${svc_list[@]}"; do
                         kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/\$service --timeout=300s
                     done
                 """
