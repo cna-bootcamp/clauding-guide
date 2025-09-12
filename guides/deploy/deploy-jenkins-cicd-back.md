@@ -73,7 +73,7 @@
     - Secret: {SonarQube토큰}
     ```
 
-- Kustomize 디렉토리 구조 생성 안내       
+- Kustomize 디렉토리 구조 생성: 실행하여 생성       
   - 프로젝트 루트에 CI/CD 디렉토리 생성   
     ```
     mkdir -p deployment/cicd/kustomize/{base,overlays/{dev,staging,prod}}
@@ -90,7 +90,7 @@
     find deployment/cicd/kustomize/base -name "*.yaml" -exec sed -i 's/namespace: .*//' {} \;
     ``` 
 
-- Base Kustomization 작성 방법 안내      
+- Base Kustomization 작성: 실행하여 생성       
   `deployment/cicd/kustomize/base/kustomization.yaml` 파일 생성 방법 안내    
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
@@ -122,7 +122,7 @@
       newTag: latest
   ```
 
-- 환경별 Overlay 작성 방법 안내   
+- 환경별 Overlay 작성: 실행하여 생성    
   각 환경별로 `overlays/{환경}/kustomization.yaml` 생성  
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
@@ -150,7 +150,7 @@
     environment: {환경}
   ```
 
-- 환경별 설정 파일 작성 방법 안내     
+- 환경별 설정 파일 작성: 실행하여 생성      
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법  
   ```bash
   # {환경} Environment Configuration
@@ -158,7 +158,7 @@
   cluster_name={AKS_CLUSTER}
   ```
 
-- Jenkinsfile 작성 방법 안내    
+- Jenkinsfile 작성    
   `deployment/cicd/Jenkinsfile` 파일 생성 방법을 안내합니다.
   
   주요 구성 요소:
