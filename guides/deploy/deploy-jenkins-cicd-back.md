@@ -85,6 +85,13 @@
     - Username: {ACR_NAME}
     - Password: {ACR_PASSWORD}
 
+    # Docker Hub Credentials (Rate Limit 해결용)
+    - Kind: Username with password
+    - ID: dockerhub-credentials
+    - Username: {DOCKERHUB_USERNAME}
+    - Password: {DOCKERHUB_PASSWORD}
+    - 참고: Docker Hub 무료 계정 생성 (https://hub.docker.com)
+
     # SonarQube Token
     - Kind: Secret text
     - ID: sonarqube-token
@@ -408,12 +415,23 @@
           stage('Build & Push Images') {
               timeout(time: 30, unit: 'MINUTES') {
                   container('podman') {
-                      withCredentials([usernamePassword(
-                          credentialsId: 'acr-credentials',
-                          usernameVariable: 'USERNAME',
-                          passwordVariable: 'PASSWORD'
-                      )]) {
-                          sh "podman login {ACR명}.azurecr.io --username \$USERNAME --password \$PASSWORD"
+                      withCredentials([
+                          usernamePassword(
+                              credentialsId: 'acr-credentials',
+                              usernameVariable: 'ACR_USERNAME',
+                              passwordVariable: 'ACR_PASSWORD'
+                          ),
+                          usernamePassword(
+                              credentialsId: 'dockerhub-credentials',
+                              usernameVariable: 'DOCKERHUB_USERNAME', 
+                              passwordVariable: 'DOCKERHUB_PASSWORD'
+                          )
+                      ]) {
+                          // Docker Hub 로그인 (rate limit 해결)
+                          sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
+                          
+                          // ACR 로그인
+                          sh "podman login {ACR명}.azurecr.io --username \$ACR_USERNAME --password \$ACR_PASSWORD"
 
                           services.each { service ->
                               sh """
