@@ -460,24 +460,24 @@
 
                     # 환경별 디렉토리로 이동
                     cd deployment/cicd/kustomize/overlays/${environment}
-                """
-                
-                // 이미지 태그 업데이트
-                services.each { service ->
-                    sh "\$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag}"
-                }
 
-                sh """
+                    # 서비스 배열 정의 (실제 서비스명으로 교체)
+                    services=({서비스명1} {서비스명2} {서비스명3} ...)
+
+                    # 이미지 태그 업데이트
+                    for service in "\${services[@]}"; do
+                        \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:${environment}-${imageTag}
+                    done
+
                     # 매니페스트 적용
                     kubectl apply -k .
 
                     # 배포 상태 확인
                     echo "Waiting for deployments to be ready..."
+                    for service in "\${services[@]}"; do
+                        kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/\$service --timeout=300s
+                    done
                 """
-                
-                services.each { service ->
-                    sh "kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/${service} --timeout=300s"
-                }
               }
           }
           
