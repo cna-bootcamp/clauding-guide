@@ -1009,6 +1009,9 @@ Private 레포지토리로 지정합니다.
 cd ~/home/workspace/phonebill
 ```
 
+Git설정을 먼저 하세요.
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-%EC%84%A4%EC%A0%95
+  
 로컬 레포지토리 생성.   
 ```
 git init
@@ -1043,12 +1046,6 @@ git add . && git commit -m "push first" && git push -u origin main
 ```
 
 '-u origin main'은 최초 한번만 하면 됩니다.  
-
-팁) ID/PW 매번 물어보지 않게 하기   
-push 전에 아래 명령으로 Git 접근 정보를 로컬에 저장하게 합니다.   
-```
-git config --global credential.helper store
-```
 
 
 | [Top](#목차) |
@@ -1287,6 +1284,9 @@ Tip)3000번 포트로 실행 안되는 경우.
 직접 웹브라우저에서 열어 확인한 후 조치하세요.  
 id: user01, pw: P@ssw0rd$
 ```
+
+**3.Git 레포지토리 생성 및 푸시**   
+Private 원격 레포지토리를 만들고 푸시 합니다.  
 
 | [Top](#목차) |
 
@@ -1815,10 +1815,38 @@ GitHub Repository에 WebHook을 설정을 하여 소스 업로드 시 Jenkins에
 4)Pipeline 설정
 ![](images/2025-09-12-15-18-54.png)
 
+브랜치를 'main'으로 하고 Jenkinsfile의 경로를 정확하게 입력합니다.   
+![](images/2025-09-12-15-39-23.png)
+
 
 **7.파이프라인 실행**    
+1)기존 배포된 k8s객체 삭제     
+
+아래 명령으로 모든 객체를 삭제합니다. 
+'-R'옵션은 하위 모든 서브 디렉토리에서 매니페스트 파일을 찾는 옵션입니다.      
+```
+kubectl delete -f deployment/k8s -R
+```
+
+2)파이프라인 실행
+1)실행방법   
+'지금빌드'를 클릭하여 실행합니다.  
+![](images/2025-09-12-15-40-58.png)  
+
+2)BlueOcean 사용법    
+블루오션은 진행상황을 더 편하게 볼 수 있는 플러그인입니다.   
+![](images/2025-09-12-15-43-28.png)  
+
+![](images/2025-09-12-15-44-04.png)
+
+- 좌측 상단 'Jenkins'로고 클릭: 파이프라인 목록 보기
+- 파이파라인 이름 옆에 톱니바퀴: 파이프라인 설정으로 이동
+- 우측 상단 'Administration' 클릭: Jenkins 관리로 이동
 
 
+
+3)트러블슈팅   
+아래와 같이 파이프라인 실행 중 나오는 에러 메시지를 복사하여 Claude Code에 해결 요청을 합니다.   
 ```
 파이프라인 실행 에러. 
 
@@ -1836,6 +1864,9 @@ Execution failed for task ':bill-service:sonar'.
          project :bill-service
 
 ```
+
+로컬에서 수정 후 반드시 'push'명령으로 원격 Git 레포지토리에 푸시합니다.   
+그리고 다시 파이프라인을 실행합니다.   
 
 | [Top](#목차) |
 
