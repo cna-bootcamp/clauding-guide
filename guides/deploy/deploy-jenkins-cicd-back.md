@@ -25,7 +25,7 @@
   [실행정보]
   - ACR명: acrdigitalgarage01
   - RESOURCE_GROUP: rg-digitalgarage-01
-  - AKS_CLUSTER: aks-digitalgarage-01  
+  - AKS_CLUSTER: aks-digitalgarage-01
   ``` 
   
 - 시스템명과 서비스명 확인   
@@ -184,6 +184,7 @@
   `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
   - base의 ingress.yaml을 환경별로 오버라이드
   - 환경별 도메인 설정: {시스템명}-{환경}.도메인 형식
+  - Ingress Host는 base의 ingress.yaml과 동일하게 함  
   - service name을 namePrefix가 적용된 이름으로 변경 ({환경}-{서비스명})
   - prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
