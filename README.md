@@ -1688,14 +1688,17 @@ subprojects {
 **2.SonarQube 프로젝트 만들기**     
 SonarQube에 로그인하여 수행합니다.  
 1)각 서비스별 프로젝트 만들기    
-{root project}-{서비스명}-{Team ID}
-예) lifesub-member-unicorn, lifesub-mysub-unicorn, lifesub-recommend-unicorn, lifesub-web-unicorn     
+{root project}-{서비스명}-{대상환경:dev/staging/prod}
+예) 
+- dev: lifesub-member-unicorn-dev, lifesub-mysub-unicorn-dev     
+- staging: lifesub-member-unicorn-staging, lifesub-mysub-unicorn-staging
+- prod: lifesub-member-unicorn-prod, lifesub-mysub-unicorn-prod
  
 ![](images/2025-09-11-19-07-13.png)  
 
 
 branch명은 'main'으로 함.
-![](images/2025-09-11-19-08-04.png)
+![](images/2025-09-12-13-34-25.png) 
 
 ![](images/2025-09-11-19-08-46.png)
 
