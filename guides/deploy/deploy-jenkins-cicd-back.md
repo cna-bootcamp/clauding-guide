@@ -162,10 +162,6 @@
     
     # ... 추가 서비스들도 동일한 패턴으로 계속 작성
 
-  commonLabels:
-    app: {SYSTEM_NAME}
-    version: v1
-
   images:
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명1}
       newTag: latest
@@ -296,8 +292,6 @@
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명}
       newTag: {환경}-latest
 
-  commonLabels:
-    environment: {환경}
   ```
 
 - 환경별 설정 파일 작성    
