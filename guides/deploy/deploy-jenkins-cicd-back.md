@@ -210,11 +210,11 @@
   
   **5. 서비스별 Secret Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`
-  - 각 서비스별 전용 시크릿 파일을 환경별로 오버라이드
-  - 데이터베이스 접속 정보, API 키 등 서비스별 민감 정보
-  - 환경별 데이터베이스 연결 정보 (dev/staging/prod DB 분리)
-  - 외부 API 연동 정보 (환경별 엔드포인트, 인증키)
+  - base의 각 서비스별 secret-{서비스명}.yaml을 환경별로 오버라이드
+  - 기본값은 base의 secret-{서비스명}.yaml과 동일하게 함 
   
+- - 
+ 
   **Patch 파일 작성 가이드라인:**
   - metadata.name은 base와 동일하게 유지 (Kustomize가 매칭)
   - 변경이 필요한 부분만 포함 (Strategic Merge Patch 방식)
