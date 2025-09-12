@@ -238,8 +238,7 @@
   - **SonarQube Analysis**: 코드 품질 분석 및 Quality Gate
   - **Container Build & Push**: 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
-  - **Health Check**: 배포 후 서비스 상태 확인
-
+  
   ```groovy
   def PIPELINE_ID = "${env.BUILD_NUMBER}"
   
@@ -291,7 +290,10 @@
                           # 각 서비스별 테스트 및 분석
                           ./gradlew :{서비스명}:test :{서비스명}:jacocoTestReport :{서비스명}:sonar \\
                               -Dsonar.projectKey={시스템명}-{서비스명}-\${environment} \\
-                              -Dsonar.projectName={시스템명}-{서비스명}
+                              -Dsonar.projectName={시스템명}-{서비스명} \\
+                              -Dsonar.java.binaries=build/classes/java/main \\
+                              -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
+                              -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/** 
                       """
                   }
               }
@@ -320,7 +322,7 @@
                               podman build \\
                                   --build-arg BUILD_LIB_DIR="\${service}/build/libs" \\
                                   --build-arg ARTIFACTORY_FILE="\${service}.jar" \\
-                                  -f deployment/container/Dockerfile \\
+                                  -f deployment/container/Dockerfile-backend \\
                                   -t {ACR명}.azurecr.io/{시스템명}/\${service}:\${environment}-\${imageTag} .
 
                               podman push {ACR명}.azurecr.io/{시스템명}/\${service}:\${environment}-\${imageTag}
@@ -352,20 +354,6 @@
                       services.each { service ->
                           sh "kubectl -n {시스템명}-\${environment} wait --for=condition=available deployment/\${environment}-\${service} --timeout=300s"
                       }
-                  """
-              }
-          }
-
-          stage('Health Check') {
-              container('azure-cli') {
-                  sh """
-                      echo "🔍 Health Check starting..."
-                      
-                      # API Gateway Health Check (첫 번째 서비스로 가정)
-                      GATEWAY_POD=\$(kubectl get pod -n {시스템명}-\${environment} -l app={첫번째서비스명} -o jsonpath='{.items[0].metadata.name}')
-                      kubectl -n {시스템명}-\${environment} exec \$GATEWAY_POD -- curl -f http://localhost:8080/health || exit 1
-                      
-                      echo "✅ All services are healthy!"
                   """
               }
           }
