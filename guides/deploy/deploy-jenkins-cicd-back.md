@@ -274,25 +274,17 @@
   - **Container Build & Push**: 30분 timeout 설정과 함께 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
 
-  **🔧 최신 최적화 사항**:
-  - **Jenkins Pod Template 최적화**: timeout 설정(slaveConnectTimeout: 300, idleMinutes: 30, activeDeadlineSeconds: 3600)
-  - **리소스 제한 설정**: 각 컨테이너별 CPU/Memory request/limit 설정으로 안정성 향상
-  - **Tolerations 설정**: CICD 전용 노드에서 실행하도록 설정 (dedicated=cicd)
-  - **Kustomize 설치 최적화**: sudo 없이 사용자 홈 디렉토리에 설치하여 권한 문제 해결
-  - **Patch 방법 변경**: `patchesStrategicMerge` → `patches` (최신 문법, target 명시)
-  - **SonarQube 분석 최적화**: 반복 코드를 services.each 루프로 통합하여 유지보수성 향상
-  - **Docker 빌드 안정성**: 30분 timeout 설정으로 Jenkins 에이전트 연결 끊김 방지
-  - **코드 간소화**: 40줄 → 13줄로 대폭 단축, 새 서비스 추가 시 services 배열에만 추가
-
   **⚠️ 중요: 변수 참조 문법 및 충돌 해결**
   Jenkins Groovy에서 bash shell로 변수 전달 시:
   - **올바른 문법**: `${variable}` (Groovy 문자열 보간)
   - **잘못된 문법**: `\${variable}` (bash 특수문자 이스케이프로 인한 "syntax error: bad substitution" 오류)
   
-  **변수 이름 충돌 방지**:
-  - Jenkins Groovy `services` 변수와 Bash `services` 배열 충돌 시 "syntax error: unexpected '('" 발생
-  - **해결책**: Bash 배열 이름을 `svc_list`로 변경하여 충돌 방지
-  - 예시: `services=(...)` → `svc_list=(...)`, `"${services[@]}"` → `"${svc_list[@]}"`
+  **쉘 호환성 문제 해결**:
+  - Jenkins 컨테이너에서 기본 쉘이 `/bin/sh` (dash)인 경우 Bash 배열 문법 `()` 미지원
+  - **"syntax error: unexpected '('" 에러 발생** - Bash 배열 문법을 인식하지 못함
+  - **해결책**: Bash 배열 대신 공백 구분 문자열 사용 (모든 POSIX 쉘에서 호환)
+  - 변경 전: `svc_list=(service1 service2)` → `for service in "\${svc_list[@]}"`
+  - 변경 후: `services="service1 service2"` → `for service in \$services`
 
   ```groovy
   def PIPELINE_ID = "${env.BUILD_NUMBER}"
@@ -466,12 +458,11 @@
                     # 환경별 디렉토리로 이동
                     cd deployment/cicd/kustomize/overlays/${environment}
 
-                    # 서비스 배열 정의 (실제 서비스명으로 교체)
-                    # 주의: Jenkins Groovy 'services' 변수와 충돌 방지를 위해 'svc_list' 사용
-                    svc_list=({서비스명1} {서비스명2} {서비스명3} ...)
+                    # 서비스 목록 정의 (실제 서비스명으로 교체, 공백으로 구분)
+                    services="{서비스명1} {서비스명2} {서비스명3} ..."
 
                     # 이미지 태그 업데이트
-                    for service in "\${svc_list[@]}"; do
+                    for service in \$services; do
                         \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:${environment}-${imageTag}
                     done
 
@@ -480,7 +471,7 @@
 
                     # 배포 상태 확인
                     echo "Waiting for deployments to be ready..."
-                    for service in "\${svc_list[@]}"; do
+                    for service in \$services; do
                         kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/\$service --timeout=300s
                     done
                 """
