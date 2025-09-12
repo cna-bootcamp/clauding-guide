@@ -1689,10 +1689,12 @@ subprojects {
 SonarQube에 로그인하여 수행합니다.  
 1)각 서비스별 프로젝트 만들기    
 {root project}-{서비스명}-{대상환경:dev/staging/prod}
-예) 
-- dev: lifesub-member-unicorn-dev, lifesub-mysub-unicorn-dev     
-- staging: lifesub-member-unicorn-staging, lifesub-mysub-unicorn-staging
-- prod: lifesub-member-unicorn-prod, lifesub-mysub-unicorn-prod
+아래 5개의 프로젝트를 만듭니다. 
+- phonebill-user-service-dev 
+- phonebill-bill-service-dev
+- phonebill-product-service-dev
+- phonebill-kos-mock-dev
+- phonebill-api-gateway-dev
  
 ![](images/2025-09-11-19-07-13.png)  
 
@@ -1708,9 +1710,60 @@ branch명은 'main'으로 함.
 
 ![](images/2025-09-11-19-11-44.png)  
 
+
+**3.Jenkins CI/CD 파일 작성**     
+IntelliJ를 실행하고 Claude Code도 시작한 후 수행 하세요.   
+아래와 같이 프롬프팅하여 Jenkins CI/CD파일들을 작성합니다.    
+deployment/cicd 디렉토리 하위에 파일들이 생성됩니다.    
+
+예시)  
+```
+/deploy-jenkins-cicd-guide-back
+
+[실행정보]
+- ACR명: acrdigitalgarage01
+- RESOURCE_GROUP: rg-digitalgarage-01
+- AKS_CLUSTER: aks-digitalgarage-01
+```
+
+deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
+
+**4.Git Push**     
+Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다. 
+따라서 로컬에서 수정하면 반드시 원격 Git Repo에 푸시해야 합니다.    
+프롬프트창에 아래 명령을 내립니다.   
+```
+push 
+```
+
+**5.Jenkins Credential 생성**    
+1)GitHub Credential 작성    
+Jenkins에서 Git에 접근할 수 있는 정보를 등록합니다.    
+
+
+**5.Jenkins 파이프라인 작성**        
+
+1)'새로운 Item'을 클릭   
+![](images/2025-09-12-13-56-01.png)
+
+2)프로파일명 입력 후 Pipeline 카드 선택    
+![](images/2025-09-12-13-57-33.png)
+
+3)GitHub hook trigger for GITScm polling 체크    
+GitHub Repository에 WebHook을 설정을 하여 소스 업로드 시 Jenkins에 파이프라인 구동을 요청할 수 있습니다.   
+이를 위해 이 옵션을 체크해야 합니다.   
+
+![](images/2025-09-12-13-58-37.png)
+
+
+
+**6.프론트엔드 파이프라인 작성 및 실행**   
+
+
 | [Top](#목차) |
 
 ---
+
 
 
 ##### 프론트엔드 서비스  
