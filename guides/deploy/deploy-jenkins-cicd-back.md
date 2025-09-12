@@ -17,37 +17,36 @@
 [작업순서]
 - 사전 준비사항 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
-  - {ACR명}: Azure Container Registry 이름
+  - {ACR_NAME}: Azure Container Registry 이름
   - {RESOURCE_GROUP}: Azure 리소스 그룹명
   - {AKS_CLUSTER}: AKS 클러스터명
     예시)
   ```
   [실행정보]
-  - ACR명: acrdigitalgarage01
-  - RESOURCE_GROUP: rg-digitalgarage-01
-  - AKS_CLUSTER: aks-digitalgarage-01
+  - ACR_NAME: myproject-acr
+  - RESOURCE_GROUP: rg-myproject-01
+  - AKS_CLUSTER: aks-myproject-01
   ``` 
 
 - 시스템명과 서비스명 확인   
   settings.gradle에서 확인.
-  - 시스템명: rootProject.name
-  - 서비스명: include 'common'하위의 include문 뒤의 값임
+  - {SYSTEM_NAME}: rootProject.name
+  - {SERVICE_NAMES}: include 'common'하위의 include문 뒤의 값임
 
-  예시) include 'common'하위의 5개가 서비스명임.
+  예시) include 'common'하위의 서비스명들.
   ```
-  rootProject.name = 'phonebill'
+  rootProject.name = 'myproject'
 
   include 'common'
   include 'api-gateway'
   include 'user-service'
-  include 'bill-service'
-  include 'product-service'
-  include 'kos-mock'
+  include 'order-service'
+  include 'payment-service'
   ```  
 
 - JDK버전 확인
   루트 build.gradle에서 JDK 버전 확인.   
-  {JDK버전}: 'java' 섹션에서 JDK 버전 확인. 아래 예에서는 21임.
+  {JDK_VERSION}: 'java' 섹션에서 JDK 버전 확인. 아래 예에서는 21임.
   ```
   java {
       toolchain {
@@ -83,8 +82,8 @@
     # ACR Credentials  
     - Kind: Username with password
     - ID: acr-credentials
-    - Username: {ACR명}
-    - Password: {ACR패스워드}
+    - Username: {ACR_NAME}
+    - Password: {ACR_PASSWORD}
 
     # SonarQube Token
     - Kind: Secret text
@@ -96,14 +95,14 @@
   - 프로젝트 루트에 CI/CD 디렉토리 생성
     ```
     mkdir -p deployment/cicd/kustomize/{base,overlays/{dev,staging,prod}}
-    mkdir -p deployment/cicd/kustomize/base/{common,{서비스명1},{서비스명2},...}
+    mkdir -p deployment/cicd/kustomize/base/{common,{SERVICE_NAME_1},{SERVICE_NAME_2},...}
     mkdir -p deployment/cicd/{config,scripts}
     ```
   - 기존 k8s 매니페스트를 base로 복사
     ```
     # 기존 deployment/k8s/* 파일들을 base로 복사
     cp deployment/k8s/common/* deployment/cicd/kustomize/base/common/
-    cp deployment/k8s/{서비스명}/* deployment/cicd/kustomize/base/{서비스명}/
+    cp deployment/k8s/{SERVICE_NAME}/* deployment/cicd/kustomize/base/{SERVICE_NAME}/
     
     # 네임스페이스 하드코딩 제거
     find deployment/cicd/kustomize/base -name "*.yaml" -exec sed -i 's/namespace: .*//' {} \;
@@ -116,7 +115,7 @@
   kind: Kustomization
 
   metadata:
-    name: {시스템명}-base
+    name: {SYSTEM_NAME}-base
 
   resources:
     # Common resources
@@ -127,17 +126,17 @@
     - common/ingress.yaml
 
     # 각 서비스별 리소스
-    - {서비스명}/deployment.yaml
-    - {서비스명}/service.yaml
-    - {서비스명}/configmap.yaml
-    - {서비스명}/secret.yaml
+    - {SERVICE_NAME}/deployment.yaml
+    - {SERVICE_NAME}/service.yaml
+    - {SERVICE_NAME}/configmap.yaml
+    - {SERVICE_NAME}/secret.yaml
 
   commonLabels:
-    app: {시스템명}
+    app: {SYSTEM_NAME}
     version: v1
 
   images:
-    - name: {ACR명}.azurecr.io/{시스템명}/{서비스명}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
       newTag: latest
   ```
 
@@ -157,11 +156,14 @@
       target:
         kind: ConfigMap
         name: cm-common
-    - path: deployment-patch.yaml
+    - path: deployment-{서비스명}-patch.yaml
+      target:
+        kind: Deployment
+        name: {서비스명}
     - path: ingress-patch.yaml
       target:
         kind: Ingress
-        name: phonebill-ingress
+        name: {시스템명}-ingress
     - path: secret-common-patch.yaml
       target:
         kind: Secret
@@ -214,7 +216,8 @@
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
   **4. deployment Patch 파일 생성** ⚠️ **중요**
-  `deployment/cicd/kustomize/overlays/{환경}/deployment-patch.yaml`
+  각 서비스별로 별도 파일 생성
+  `deployment/cicd/kustomize/overlays/{환경}/deployment-{서비스명}-patch.yaml`
 
   **필수 포함 사항:**
   - ✅ **replicas 설정**: 각 서비스별 Deployment의 replica 수를 환경별로 설정
@@ -239,11 +242,11 @@
 - -
 
 **Patch 파일 작성 가이드라인:**
-  - metadata.name은 base와 동일하게 유지 (Kustomize가 매칭)
-  - 변경이 필요한 부분만 포함 (Strategic Merge Patch 방식)
-  - 환경별 특성에 맞는 값들로 설정
-  - 보안이 중요한 값들은 Secret으로, 일반 설정은 ConfigMap으로 분리
-  - 각 환경의 리소스 사용량과 트래픽을 고려하여 replica 수 결정
+- metadata.name은 base와 동일하게 유지 (Kustomize가 매칭)
+- 변경이 필요한 부분만 포함 (Strategic Merge Patch 방식)
+- 환경별 특성에 맞는 값들로 설정
+- 보안이 중요한 값들은 Secret으로, 일반 설정은 ConfigMap으로 분리
+- 각 환경의 리소스 사용량과 트래픽을 고려하여 replica 수 결정
 
 - 환경별 설정 파일 작성    
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법
@@ -272,7 +275,7 @@
   - **SonarQube 분석 최적화**: 반복 코드를 services.each 루프로 통합하여 유지보수성 향상
   - **Docker 빌드 안정성**: 30분 timeout 설정으로 Jenkins 에이전트 연결 끊김 방지
   - **코드 간소화**: 40줄 → 13줄로 대폭 단축, 새 서비스 추가 시 services 배열에만 추가
-  
+
   **⚠️ 중요: 변수 참조 문법**
   Jenkins Groovy에서 bash shell로 변수 전달 시:
   - **올바른 문법**: `${variable}` (Groovy 문자열 보간)
@@ -440,16 +443,30 @@
                       cd deployment/cicd/kustomize/overlays/${environment}
 
                       # 이미지 태그 업데이트
-                      kustomize edit set image {ACR명}.azurecr.io/{시스템명}/{서비스명1}:${environment}-${imageTag}
-                      kustomize edit set image {ACR명}.azurecr.io/{시스템명}/{서비스명2}:${environment}-${imageTag}
+                      services.each { service ->
+                          sh "kustomize edit set image {ACR명}.azurecr.io/{시스템명}/${service}:${environment}-${imageTag}"
+                      }
 
                       # 매니페스트 적용
                       kubectl apply -k .
 
                       echo "Waiting for deployments to be ready..."
-                      kubectl -n {시스템명}-${environment} wait --for=condition=available deployment/${environment}-{서비스명1} --timeout=300s
-                      kubectl -n {시스템명}-${environment} wait --for=condition=available deployment/${environment}-{서비스명2} --timeout=300s
+                      services.each { service ->
+                          sh "kubectl -n {시스템명}-${environment} wait --for=condition=available deployment/${environment}-${service} --timeout=300s"
+                      }
                   """
+              }
+          }
+          
+          // 파이프라인 완료 로그 (Scripted Pipeline 방식)
+          stage('Pipeline Complete') {
+              echo "🧹 Pipeline completed. Pod cleanup handled by Jenkins Kubernetes Plugin."
+              
+              // 성공/실패 여부 로깅
+              if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
+                  echo "✅ Pipeline completed successfully!"
+              } else {
+                  echo "❌ Pipeline failed with result: ${currentBuild.result}"
               }
           }
       }
@@ -509,16 +526,18 @@
   # 환경별 이미지 태그 업데이트
   cd deployment/cicd/kustomize/overlays/${ENVIRONMENT}
   
-  # 각 서비스 이미지 태그 업데이트
-  kustomize edit set image {ACR명}.azurecr.io/{시스템명}/{서비스명1}:${ENVIRONMENT}-${IMAGE_TAG}
-  kustomize edit set image {ACR명}.azurecr.io/{시스템명}/{서비스명2}:${ENVIRONMENT}-${IMAGE_TAG}
+  # 각 서비스 이미지 태그 업데이트 (실제 서비스명으로 교체)
+  for service in {서비스명1} {서비스명2} {서비스명3}; do
+      kustomize edit set image {ACR명}.azurecr.io/{시스템명}/${service}:${ENVIRONMENT}-${IMAGE_TAG}
+  done
   
   # 배포 실행
   kubectl apply -k .
   
-  # 배포 상태 확인
-  kubectl rollout status deployment/${ENVIRONMENT}-{서비스명1} -n {시스템명}-${ENVIRONMENT}
-  kubectl rollout status deployment/${ENVIRONMENT}-{서비스명2} -n {시스템명}-${ENVIRONMENT}
+  # 배포 상태 확인 (실제 서비스명으로 교체)
+  for service in {서비스명1} {서비스명2} {서비스명3}; do
+      kubectl rollout status deployment/${ENVIRONMENT}-${service} -n {시스템명}-${ENVIRONMENT}
+  done
   
   echo "✅ Deployment completed successfully!"
   ```
@@ -545,7 +564,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 
 ## 📋 사전 준비 체크리스트
 - [ ] settings.gradle에서 시스템명과 서비스명 확인 완료
-- [ ] 루트 build.gradle에서 JDK버전 확인 완료  
+- [ ] 루트 build.gradle에서 JDK버전 확인 완료
 - [ ] 실행정보 섹션에서 ACR명, 리소스 그룹, AKS 클러스터명 확인 완료
 
 ## 📂 Kustomize 구조 생성 체크리스트
@@ -587,7 +606,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 
 ## ⚙️ 설정 및 스크립트 체크리스트
 - [ ] 환경별 설정 파일 생성: `config/deploy_env_vars_{dev,staging,prod}`
-- [ ] `Jenkinsfile` 생성 완료 
+- [ ] `Jenkinsfile` 생성 완료
 - [ ] `Jenkinsfile` 주요 내용 확인
   - Pod Template, Build, SonarQube, Deploy 단계 포함
   - gradle 컨테이너 이미지 이름에 올바른 JDK버전 사용: gradle:jdk{JDK버전}
