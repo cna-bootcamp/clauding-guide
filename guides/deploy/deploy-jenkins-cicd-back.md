@@ -189,14 +189,23 @@
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
   
-  **4. deployment Patch 파일 생성**
+  **4. deployment Patch 파일 생성** ⚠️ **중요**
   `deployment/cicd/kustomize/overlays/{환경}/deployment-patch.yaml`
-  - 각 서비스별 Deployment의 replica 수를 환경별로 설정
+  
+  **필수 포함 사항:**
+  - ✅ **replicas 설정**: 각 서비스별 Deployment의 replica 수를 환경별로 설정
     - dev: 모든 서비스 1 replica (리소스 절약)
-    - staging: 주요 서비스 2 replicas
-    - prod: 주요 서비스 3+ replicas
-  - 각 서비스별 Deployment의 resources를 환경별로 설정
+    - staging: 모든 서비스 2 replicas  
+    - prod: 모든 서비스 3 replicas
+  - ✅ **resources 설정**: 각 서비스별 Deployment의 resources를 환경별로 설정
+    - dev: requests(256m CPU, 256Mi Memory), limits(1024m CPU, 1024Mi Memory)
+    - staging: requests(512m CPU, 512Mi Memory), limits(2048m CPU, 2048Mi Memory)
+    - prod: requests(1024m CPU, 1024Mi Memory), limits(4096m CPU, 4096Mi Memory)
+  
+  **작성 형식:**
+  - **Strategic Merge Patch 형식** 사용 (JSON Patch 아님)
   - 각 서비스별로 별도의 Deployment 리소스로 분리하여 작성
+  - replicas와 resources를 **반드시 모두** 포함
   
   **5. 서비스별 Secret Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`
