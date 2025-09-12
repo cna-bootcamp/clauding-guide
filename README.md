@@ -1828,7 +1828,7 @@ GitHub Repository에 WebHook을 설정을 하여 소스 업로드 시 Jenkins에
 kubectl delete -f deployment/k8s -R
 ```
 
-2)파이프라인 실행
+2)파이프라인 실행  
 1)실행방법   
 '지금빌드'를 클릭하여 실행합니다.  
 ![](images/2025-09-12-15-40-58.png)  
