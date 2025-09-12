@@ -993,6 +993,63 @@ sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.
 resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
 ```
   
+**9.Git 레포지토리 생성 및 푸시**   
+GitHub에 원격 레포지토리를 생성합니다.   
+![](images/2025-09-12-15-21-00.png) 
+
+Private 레포지토리로 지정합니다.  
+내용에 보안 정보가 있을 가능성이 높기 때문입니다.   
+![](images/2025-09-12-15-21-32.png)
+
+원격 레포지토리 주소를 복사합니다.   
+![](images/2025-09-12-15-22-42.png)  
+
+프로젝트 디렉토리로 이동 후 로컬 레포지토리를 생성합니다.
+```
+cd ~/home/workspace/phonebill
+```
+
+로컬 레포지토리 생성.   
+```
+git init
+```
+
+브랜치를 main으로 변경.   
+```
+git checkout -b main
+```
+
+원격 레포지토리 주소를 지정.  
+```
+git remote add origin {원격 레포지토리 주소}
+```
+
+원격 레포지토리로 푸시.   
+```
+git add . 
+```
+
+```
+git commit -m "{메시지}"
+```
+
+```
+git push -u origin main
+```
+
+Git Bash나 Mac에서는 아래 예와 같이 한줄로 사용할 수 있습니다.   
+```
+git add . && git commit -m "push first" && git push -u origin main
+```
+
+'-u origin main'은 최초 한번만 하면 됩니다.  
+
+팁) ID/PW 매번 물어보지 않게 하기   
+push 전에 아래 명령으로 Git 접근 정보를 로컬에 저장하게 합니다.   
+```
+git config --global credential.helper store
+```
+
 
 | [Top](#목차) |
 
@@ -1755,10 +1812,30 @@ GitHub Repository에 WebHook을 설정을 하여 소스 업로드 시 Jenkins에
 
 ![](images/2025-09-12-13-58-37.png)
 
+4)Pipeline 설정
+![](images/2025-09-12-15-18-54.png)
 
 
 **7.파이프라인 실행**    
 
+
+```
+파이프라인 실행 에러. 
+
+FAILURE: Build failed with an exception.
+* What went wrong:
+
+Execution failed for task ':bill-service:sonar'.
+
+> Could not resolve all files for configuration ':bill-service:testCompileClasspath'.
+
+   > Could not find redis.embedded:embedded-redis:0.7.3.
+
+     Required by:
+
+         project :bill-service
+
+```
 
 | [Top](#목차) |
 
