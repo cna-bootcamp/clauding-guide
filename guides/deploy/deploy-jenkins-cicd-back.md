@@ -152,12 +152,24 @@
   resources:
     - ../../base
 
-  patchesStrategicMerge:
-    - configmap-common-patch.yaml
-    - deployment-patch.yaml
-    - ingress-patch.yaml
-    - secret-common-patch.yaml
-    - secret-{서비스명}-patch.yaml
+  patches:
+    - path: configmap-common-patch.yaml
+      target:
+        kind: ConfigMap
+        name: cm-common
+    - path: deployment-patch.yaml
+    - path: ingress-patch.yaml
+      target:
+        kind: Ingress
+        name: phonebill-ingress
+    - path: secret-common-patch.yaml
+      target:
+        kind: Secret
+        name: secret-common
+    - path: secret-{서비스명}-patch.yaml
+      target:
+        kind: Secret
+        name: secret-{서비스명}
 
   images:
     - name: {ACR명}.azurecr.io/{시스템명}/{서비스명}
@@ -252,6 +264,11 @@
   - **Kustomize Deploy**: 환경별 매니페스트 적용
 
   **🔧 최신 최적화 사항**:
+  - **Jenkins Pod Template 최적화**: timeout 설정(slaveConnectTimeout: 300, idleMinutes: 30, activeDeadlineSeconds: 3600)
+  - **리소스 제한 설정**: 각 컨테이너별 CPU/Memory request/limit 설정으로 안정성 향상
+  - **Tolerations 설정**: CICD 전용 노드에서 실행하도록 설정 (dedicated=cicd)
+  - **Kustomize 설치 최적화**: sudo 없이 사용자 홈 디렉토리에 설치하여 권한 문제 해결
+  - **Patch 방법 변경**: `patchesStrategicMerge` → `patches` (최신 문법, target 명시)
   - **SonarQube 분석 최적화**: 반복 코드를 services.each 루프로 통합하여 유지보수성 향상
   - **Docker 빌드 안정성**: 30분 timeout 설정으로 Jenkins 에이전트 연결 끊김 방지
   - **코드 간소화**: 40줄 → 13줄로 대폭 단축, 새 서비스 추가 시 services 배열에만 추가
@@ -273,19 +290,55 @@
   podTemplate(
       label: "${PIPELINE_ID}",
       serviceAccount: 'jenkins',
+      slaveConnectTimeout: 300,
+      idleMinutes: 30,
+      activeDeadlineSeconds: 3600,
+      podRetention: never(),  // 파드 자동 정리 옵션: never(), onFailure(), always(), default()
+      yaml: '''
+          spec:
+            tolerations:
+            - effect: NoSchedule
+              key: dedicated
+              operator: Equal
+              value: cicd
+      ''',
       containers: [
-          containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
-          containerTemplate(name: 'gradle',
-                          image: 'gradle:jdk{JDK버전}',
-                          ttyEnabled: true,
-                          command: 'cat',
-                          envVars: [
-                              envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
-                              envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
-                              envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
-                          ]),
-          containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
-          containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h')
+          containerTemplate(
+              name: 'podman', 
+              image: "mgoltzsche/podman", 
+              ttyEnabled: true, 
+              command: 'cat', 
+              privileged: true,
+              resourceRequestCpu: '500m',
+              resourceRequestMemory: '2Gi',
+              resourceLimitCpu: '2000m',
+              resourceLimitMemory: '4Gi'
+          ),
+          containerTemplate(
+              name: 'gradle',
+              image: 'gradle:jdk{JDK버전}',
+              ttyEnabled: true,
+              command: 'cat',
+              resourceRequestCpu: '500m',
+              resourceRequestMemory: '1Gi',
+              resourceLimitCpu: '1000m',
+              resourceLimitMemory: '2Gi',
+              envVars: [
+                  envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
+                  envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
+                  envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
+              ]
+          ),
+          containerTemplate(
+              name: 'azure-cli', 
+              image: 'hiondal/azure-kubectl:latest', 
+              command: 'cat', 
+              ttyEnabled: true,
+              resourceRequestCpu: '200m',
+              resourceRequestMemory: '512Mi',
+              resourceLimitCpu: '500m',
+              resourceLimitMemory: '1Gi'
+          )
       ],
       volumes: [
           emptyDirVolume(mountPath: '/home/gradle/.gradle', memory: false),
@@ -377,9 +430,11 @@
           stage('Update Kustomize & Deploy') {
               container('azure-cli') {
                   sh """
-                      # Kustomize 설치
+                      # Kustomize 설치 (sudo 없이 사용자 디렉토리에 설치)
                       curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-                      sudo mv kustomize /usr/local/bin/
+                      mkdir -p \$HOME/bin
+                      mv kustomize \$HOME/bin/
+                      export PATH=\$PATH:\$HOME/bin
 
                       # 환경별 디렉토리로 이동
                       cd deployment/cicd/kustomize/overlays/${environment}
@@ -504,6 +559,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - **base 매니페스트에 없는 항목을 추가하지 않았는지 체크**
 - **base 매니페스트와 항목이 일치 하는지 체크**
 - Secret 매니페스트에 'data'가 아닌 'stringData'사용했는지 체크
+- **⚠️ Kustomize patch 방법 변경**: `patchesStrategicMerge` → `patches` (target 명시)
 
 ### DEV 환경
 - [ ] `overlays/dev/kustomization.yaml` 생성 완료

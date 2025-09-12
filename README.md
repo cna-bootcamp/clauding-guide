@@ -1818,8 +1818,28 @@ GitHub Repository에 WebHook을 설정을 하여 소스 업로드 시 Jenkins에
 브랜치를 'main'으로 하고 Jenkinsfile의 경로를 정확하게 입력합니다.   
 ![](images/2025-09-12-15-39-23.png)
 
+**7.CI/CD 노드 증가**    
+현재 CI/CD 관련 노드는 한개입니다.   
+```
+k get node | grep cicd
+aks-cicd-33603374-vmss000002        Ready    <none>   130d   v1.30.10
+```
+Azure Portal에 로그인하여 노드를 한개 더 늘립니다.   
 
-**7.파이프라인 실행**    
+AKS 검색  
+![](images/2025-09-12-16-58-32.png)
+
+노드풀 클릭   
+![](images/2025-09-12-16-59-20.png)
+
+'cicd' 노드풀을 선택     
+![](images/2025-09-12-16-59-47.png)
+
+2개로 노드 증가   
+![](images/2025-09-12-17-01-14.png)
+
+
+**8.파이프라인 실행**    
 1)기존 배포된 k8s객체 삭제     
 
 아래 명령으로 모든 객체를 삭제합니다. 
@@ -1869,6 +1889,22 @@ Execution failed for task ':bill-service:sonar'.
 
 로컬에서 수정 후 반드시 'push'명령으로 원격 Git 레포지토리에 푸시합니다.   
 그리고 다시 파이프라인을 실행합니다.   
+
+4)새로운 파이프라인 빠르게 시작하기     
+파이프라인에서 에러가 나서 중단되었고 에러를 고쳐 새로 파이프라인을 시작했는데 한참동안 시작이 안될 경우가 있습니다.    
+원인은 그전 에이젼트 파드가 없어지지 않아 리소스를 점유하고 있기 때문입니다.   
+아래와 같이 에이젼트 파드를 찾아서 삭제 하세요.    
+```
+% k get po -n jenkins
+NAME                       READY   STATUS    RESTARTS   AGE
+12-kp6r4-wqw0z             0/4     Pending   0          3m28s
+jenkins-69dc948556-tnpx7   1/1     Running   0          130d
+```
+
+```
+k delete po 12-kp6r4-wqw0z -n jenkins --force --grace-period=0
+```
+
 
 | [Top](#목차) |
 
