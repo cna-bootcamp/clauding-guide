@@ -204,7 +204,7 @@
     - ../../base
 
   patches:
-    - path: configmap-common-patch.yaml
+    - path: cm-common-patch.yaml
       target:
         kind: ConfigMap
         name: cm-common
@@ -241,7 +241,7 @@
   - Secret 매니페스트에 'data'가 아닌 'stringData'사용
 
   **1. ConfigMap Common Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/configmap-common-patch.yaml`
+  `deployment/cicd/kustomize/overlays/{환경}/cm-common-patch.yaml`
 
   - 기존 k8s 매니페스트를 환경별로 복사
     ```
@@ -822,7 +822,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 
 ### DEV 환경
 - [ ] `overlays/dev/kustomization.yaml` 생성 완료
-- [ ] `overlays/dev/configmap-common-patch.yaml` 생성 완료 (dev 프로파일, update DDL)
+- [ ] `overlays/dev/cm-common-patch.yaml` 생성 완료 (dev 프로파일, update DDL)
 - [ ] `overlays/dev/secret-common-patch.yaml` 생성 완료
 - [ ] `overlays/dev/ingress-patch.yaml` 생성 완료 (**Host 기본값은 base의 ingress.yaml과 동일**)
 - [ ] `overlays/dev/deployment-patch.yaml` 생성 완료 (replicas, resources 지정)
@@ -830,7 +830,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 
 ### STAGING 환경
 - [ ] `overlays/staging/kustomization.yaml` 생성 완료
-- [ ] `overlays/staging/configmap-common-patch.yaml` 생성 완료 (staging 프로파일, validate DDL)
+- [ ] `overlays/staging/cm-common-patch.yaml` 생성 완료 (staging 프로파일, validate DDL)
 - [ ] `overlays/staging/secret-common-patch.yaml` 생성 완료
 - [ ] `overlays/staging/ingress-patch.yaml` 생성 완료 (prod 도메인, HTTPS, SSL 인증서)
 - [ ] `overlays/staging/deployment-patch.yaml` 생성 완료 (replicas, resources 지정)
@@ -838,7 +838,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 
 ### PROD 환경
 - [ ] `overlays/prod/kustomization.yaml` 생성 완료
-- [ ] `overlays/prod/configmap-common-patch.yaml` 생성 완료 (prod 프로파일, validate DDL, 짧은 JWT)
+- [ ] `overlays/prod/cm-common-patch.yaml` 생성 완료 (prod 프로파일, validate DDL, 짧은 JWT)
 - [ ] `overlays/prod/secret-common-patch.yaml` 생성 완료
 - [ ] `overlays/prod/ingress-patch.yaml` 생성 완료 (prod 도메인, HTTPS, SSL 인증서)
 - [ ] `overlays/prod/deployment-patch.yaml` 생성 완료 (replicas, resources 지정)
