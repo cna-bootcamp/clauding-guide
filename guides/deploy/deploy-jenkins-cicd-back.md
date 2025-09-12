@@ -254,8 +254,22 @@
       serviceAccount: 'jenkins',
       containers: [
           containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
-          containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
-          containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true)
+          containerTemplate(name: 'gradle',
+                          image: 'gradle:jdk17',
+                          ttyEnabled: true,
+                          command: 'cat',
+                          envVars: [
+                              envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
+                              envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
+                              envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
+                          ]),
+          containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
+          containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h')
+      ],
+      volumes: [
+          emptyDirVolume(mountPath: '/home/gradle/.gradle', memory: false),
+          emptyDirVolume(mountPath: '/root/.azure', memory: false),
+          emptyDirVolume(mountPath: '/run/podman', memory: false)
       ]
   ) {
       node(PIPELINE_ID) {
