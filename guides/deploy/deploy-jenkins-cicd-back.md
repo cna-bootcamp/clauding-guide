@@ -183,10 +183,10 @@
   **3. Ingress Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
   - base의 ingress.yaml을 환경별로 오버라이드
-  - 환경별 도메인 설정: {시스템명}-{환경}.도메인 형식
-  - Ingress Host는 환경별 도메인으로 설정. 기본값은 base의 ingress.yaml과 동일하게 함  
-  - service name을 namePrefix가 적용된 이름으로 변경 ({환경}-{서비스명})
-  - prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
+  - 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 동일하게 함  
+  - Staging/Prod 환경별 도메인 설정: {시스템명}-{환경}.도메인 형식
+  - service name을 '{서비스명}'으로 함. 
+  - Staging/prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
   
@@ -483,7 +483,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] `overlays/dev/kustomization.yaml` 생성 완료
 - [ ] `overlays/dev/configmap-common-patch.yaml` 생성 완료 (dev 프로파일, update DDL)
 - [ ] `overlays/dev/secret-common-patch.yaml` 생성 완료  
-- [ ] `overlays/dev/ingress-patch.yaml` 생성 완료 (dev 도메인, HTTP)
+- [ ] `overlays/dev/ingress-patch.yaml` 생성 완료 (Host 기본값은 base의 ingress.yaml과 동일)
 - [ ] `overlays/dev/deployment-patch.yaml` 생성 완료 (replicas, resources 지정)
 - [ ] 각 서비스별 `overlays/dev/secret-{서비스명}-patch.yaml` 생성 완료
 
@@ -491,7 +491,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] `overlays/staging/kustomization.yaml` 생성 완료
 - [ ] `overlays/staging/configmap-common-patch.yaml` 생성 완료 (staging 프로파일, validate DDL)
 - [ ] `overlays/staging/secret-common-patch.yaml` 생성 완료
-- [ ] `overlays/staging/ingress-patch.yaml` 생성 완료 (staging 도메인, HTTPS)  
+- [ ] `overlays/staging/ingress-patch.yaml` 생성 완료 (prod 도메인, HTTPS, SSL 인증서)  
 - [ ] `overlays/staging/deployment-patch.yaml` 생성 완료 (replicas, resources 지정)
 - [ ] 각 서비스별 `overlays/staging/secret-{서비스명}-patch.yaml` 생성 완료
 
