@@ -159,7 +159,10 @@
   ```
 
 - 환경별 Patch 파일 생성
-  각 환경별로 필요한 patch 파일들을 생성합니다.
+  각 환경별로 필요한 patch 파일들을 생성합니다.   
+  **중요원칙**:  
+  - **base 매니페스트에 없는 항목은 추가 않함**  
+  - **base 매니페스트와 항목이 일치해야 함**  
   
   **1. ConfigMap Common Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/configmap-common-patch.yaml`
@@ -457,6 +460,9 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] Base kustomization.yaml 파일 생성 완료
 
 ## 🔧 환경별 Overlay 구성 체크리스트
+### 공통 체크 사항
+- **base 매니페스트에 없는 항목을 추가하지 않았는지 체크**  
+- **base 매니페스트와 항목이 일치 하는지 체크** 
 ### DEV 환경
 - [ ] `overlays/dev/kustomization.yaml` 생성 완료
 - [ ] `overlays/dev/configmap-common-patch.yaml` 생성 완료 (dev 프로파일, update DDL)
