@@ -4,7 +4,14 @@
 - Jenkins + Kustomize 기반 CI/CD 파이프라인 구축 가이드 작성  
 - 환경별(dev/staging/prod) 매니페스트 관리 및 자동 배포 구현
 - SonarQube 코드 품질 분석과 Quality Gate 포함
-- 실제 Jenkins 구축은 하지 않고 '[결과파일]'에 구축 방법 및 파이프라인 작성 가이드 생성    
+- '[결과파일]'에 구축 방법 및 파이프라인 작성 가이드 생성    
+- 아래 작업은 실제 수행하여 파일 생성
+  - Kustomize 디렉토리 구조 생성
+  - Base Kustomization 작성
+  - 환경별 Overlay 작성
+  - 환경별 설정 파일 작성
+  - Jenkinsfile 작성
+  - 수동 배포 스크립트 작성 
 
 [작업순서]
 - 사전 준비사항 확인   
@@ -73,7 +80,7 @@
     - Secret: {SonarQube토큰}
     ```
 
-- Kustomize 디렉토리 구조 생성: 실행하여 생성       
+- Kustomize 디렉토리 구조 생성      
   - 프로젝트 루트에 CI/CD 디렉토리 생성   
     ```
     mkdir -p deployment/cicd/kustomize/{base,overlays/{dev,staging,prod}}
@@ -90,7 +97,7 @@
     find deployment/cicd/kustomize/base -name "*.yaml" -exec sed -i 's/namespace: .*//' {} \;
     ``` 
 
-- Base Kustomization 작성: 실행하여 생성       
+- Base Kustomization 작성 
   `deployment/cicd/kustomize/base/kustomization.yaml` 파일 생성 방법 안내    
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
@@ -122,7 +129,7 @@
       newTag: latest
   ```
 
-- 환경별 Overlay 작성: 실행하여 생성    
+- 환경별 Overlay 작성  
   각 환경별로 `overlays/{환경}/kustomization.yaml` 생성  
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
@@ -150,7 +157,7 @@
     environment: {환경}
   ```
 
-- 환경별 설정 파일 작성: 실행하여 생성      
+- 환경별 설정 파일 작성    
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법  
   ```bash
   # {환경} Environment Configuration
@@ -343,7 +350,7 @@
     kubectl get ingress -n {시스템명}-{환경}
     ```
 
-- 수동 배포 스크립트 작성 방법 안내 
+- 수동 배포 스크립트 작성
   `deployment/cicd/scripts/deploy.sh` 파일 생성:
   ```bash
   #!/bin/bash
