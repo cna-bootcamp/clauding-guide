@@ -1778,12 +1778,18 @@ deployment/cicd 디렉토리 하위에 파일들이 생성됩니다.
 /deploy-jenkins-cicd-guide-back
 
 [실행정보]
-- ACR명: acrdigitalgarage01
+- ACR_NAME: acrdigitalgarage01
 - RESOURCE_GROUP: rg-digitalgarage-01
 - AKS_CLUSTER: aks-digitalgarage-01
 ```
 
+작업완료 후 아래와 같이 검증 요청을 한번 더 합니다.  
+```
+가이드의 [체크리스트]대로 검증하세요. 
+```
+
 deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
+
 
 **4.Git Push**     
 Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다. 
