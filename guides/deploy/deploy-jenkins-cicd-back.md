@@ -45,6 +45,17 @@
   include 'kos-mock'
   ```  
 
+- JDK버전 확인
+  루트 build.gradle에서 JDK 버전 확인.   
+  {JDK버전}: 'java' 섹션에서 JDK 버전 확인. 아래 예에서는 21임.    
+  ```
+  java {
+      toolchain {
+          languageVersion = JavaLanguageVersion.of(21)
+      }
+  }
+  ``` 
+
 - Jenkins 서버 환경 구성 안내
   - Jenkins 설치 및 필수 플러그인 설치   
     ```
@@ -255,7 +266,7 @@
       containers: [
           containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
           containerTemplate(name: 'gradle',
-                          image: 'gradle:jdk17',
+                          image: 'gradle:jdk{JDK버전}',
                           ttyEnabled: true,
                           command: 'cat',
                           envVars: [
