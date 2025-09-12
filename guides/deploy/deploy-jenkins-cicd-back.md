@@ -117,6 +117,13 @@
 
 - Base Kustomization 작성
   `deployment/cicd/kustomize/base/kustomization.yaml` 파일 생성 방법 안내
+  
+  **⚠️ 중요: 리소스 누락 방지 가이드**
+  1. **디렉토리별 파일 확인**: 각 서비스 디렉토리의 모든 yaml 파일을 확인
+  2. **일관성 체크**: 모든 서비스가 동일한 파일 구조를 가지는지 확인 (deployment, service, configmap, secret)
+  3. **누락 검증**: `ls deployment/cicd/kustomize/base/{서비스명}/` 명령으로 실제 파일과 kustomization.yaml 리스트 비교
+  4. **명명 규칙 준수**: ConfigMap은 `cm-{서비스명}.yaml`, Secret은 `secret-{서비스명}.yaml` 패턴 확인
+
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
@@ -125,26 +132,64 @@
     name: {SYSTEM_NAME}-base
 
   resources:
-    # Common resources
+    # Namespace
     - namespace.yaml
-    - common/configmap-common.yaml
+    
+    # Common resources
+    - common/cm-common.yaml
     - common/secret-common.yaml
     - common/secret-imagepull.yaml
     - common/ingress.yaml
 
-    # 각 서비스별 리소스
-    - {SERVICE_NAME}/deployment.yaml
-    - {SERVICE_NAME}/service.yaml
-    - {SERVICE_NAME}/configmap.yaml
-    - {SERVICE_NAME}/secret.yaml
+    # 각 서비스별 리소스 (누락 없이 모두 포함)
+    # {서비스명1} (예: api-gateway)
+    - {서비스명1}/deployment.yaml
+    - {서비스명1}/service.yaml
+    - {서비스명1}/cm-{서비스명1}.yaml      # ConfigMap이 있는 경우
+    - {서비스명1}/secret-{서비스명1}.yaml  # Secret이 있는 경우
+    
+    # {서비스명2} (예: user-service)
+    - {서비스명2}/deployment.yaml
+    - {서비스명2}/service.yaml
+    - {서비스명2}/cm-{서비스명2}.yaml      # ConfigMap이 있는 경우
+    - {서비스명2}/secret-{서비스명2}.yaml  # Secret이 있는 경우
+    
+    # {서비스명3} (예: order-service)
+    - {서비스명3}/deployment.yaml
+    - {서비스명3}/service.yaml
+    - {서비스명3}/cm-{서비스명3}.yaml      # ConfigMap이 있는 경우
+    - {서비스명3}/secret-{서비스명3}.yaml  # Secret이 있는 경우
+    
+    # ... 추가 서비스들도 동일한 패턴으로 계속 작성
 
   commonLabels:
     app: {SYSTEM_NAME}
     version: v1
 
   images:
-    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명1}
       newTag: latest
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명2}
+      newTag: latest
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명3}
+      newTag: latest
+    # ... 각 서비스별로 image 항목 추가
+  ```
+  
+  **검증 명령어**:
+  ```bash
+  # 각 서비스 디렉토리의 파일 확인
+  ls deployment/cicd/kustomize/base/*/
+  
+  # kustomization.yaml 유효성 검사
+  kubectl kustomize deployment/cicd/kustomize/base/
+  
+  # 누락된 리소스 확인
+  for dir in deployment/cicd/kustomize/base/*/; do
+    service=$(basename "$dir")
+    echo "=== $service ==="
+    ls "$dir"*.yaml 2>/dev/null || echo "No YAML files found"
+  done
   ```
 
 - 환경별 Overlay 작성  
@@ -546,20 +591,156 @@
   # 환경별 이미지 태그 업데이트
   cd deployment/cicd/kustomize/overlays/${ENVIRONMENT}
   
-  # 각 서비스 이미지 태그 업데이트 (실제 서비스명으로 교체)
-  for service in {서비스명1} {서비스명2} {서비스명3}; do
-      kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${ENVIRONMENT}-${IMAGE_TAG}
+  # 서비스 목록 (공백으로 구분, 실제 서비스명으로 교체)
+  services="{서비스명1} {서비스명2} {서비스명3}"
+  
+  # 각 서비스 이미지 태그 업데이트
+  for service in $services; do
+      kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/$service:${ENVIRONMENT}-${IMAGE_TAG}
   done
   
   # 배포 실행
   kubectl apply -k .
   
-  # 배포 상태 확인 (실제 서비스명으로 교체)
-  for service in {서비스명1} {서비스명2} {서비스명3}; do
-      kubectl rollout status deployment/${service} -n {SYSTEM_NAME}-${ENVIRONMENT}
+  # 배포 상태 확인
+  for service in $services; do
+      kubectl rollout status deployment/$service -n {SYSTEM_NAME}-${ENVIRONMENT}
   done
   
   echo "✅ Deployment completed successfully!"
+  ```
+
+- **리소스 검증 스크립트 생성** 
+  `deployment/cicd/scripts/validate-resources.sh` 파일 생성:
+  ```bash
+  #!/bin/bash
+  # Base 리소스 누락 검증 스크립트 (범용)
+  
+  echo "🔍 {SYSTEM_NAME} Base 리소스 누락 검증 시작..."
+  
+  BASE_DIR="deployment/cicd/kustomize/base"
+  MISSING_RESOURCES=0
+  REQUIRED_FILES=("deployment.yaml" "service.yaml")
+  OPTIONAL_FILES=("cm-" "secret-")
+  
+  # 1. 각 서비스 디렉토리의 파일 확인
+  echo "1. 서비스 디렉토리별 파일 목록:"
+  for dir in $BASE_DIR/*/; do
+      if [ -d "$dir" ] && [[ $(basename "$dir") != "common" ]]; then
+          service=$(basename "$dir")
+          echo "=== $service ==="
+          
+          # 필수 파일 확인
+          for required in "${REQUIRED_FILES[@]}"; do
+              if [ -f "$dir$required" ]; then
+                  echo "  ✅ $required"
+              else
+                  echo "  ❌ MISSING REQUIRED: $required"
+                  ((MISSING_RESOURCES++))
+              fi
+          done
+          
+          # 선택적 파일 확인
+          for optional in "${OPTIONAL_FILES[@]}"; do
+              files=($(ls "$dir"$optional*".yaml" 2>/dev/null))
+              if [ ${#files[@]} -gt 0 ]; then
+                  for file in "${files[@]}"; do
+                      echo "  ✅ $(basename "$file")"
+                  done
+              fi
+          done
+          echo ""
+      fi
+  done
+  
+  # 2. Common 리소스 확인
+  echo "2. Common 리소스 확인:"
+  COMMON_DIR="$BASE_DIR/common"
+  if [ -d "$COMMON_DIR" ]; then
+      common_files=($(ls "$COMMON_DIR"/*.yaml 2>/dev/null))
+      if [ ${#common_files[@]} -gt 0 ]; then
+          for file in "${common_files[@]}"; do
+              echo "  ✅ common/$(basename "$file")"
+          done
+      else
+          echo "  ❌ Common 디렉토리에 YAML 파일이 없습니다"
+          ((MISSING_RESOURCES++))
+      fi
+  else
+      echo "  ❌ Common 디렉토리가 없습니다"
+      ((MISSING_RESOURCES++))
+  fi
+  
+  # 3. kustomization.yaml과 실제 파일 비교
+  echo ""
+  echo "3. kustomization.yaml 리소스 검증:"
+  if [ -f "$BASE_DIR/kustomization.yaml" ]; then
+      while IFS= read -r line; do
+          # resources 섹션의 YAML 파일 경로 추출
+          if [[ $line =~ ^[[:space:]]*-[[:space:]]*([^#]+\.yaml)[[:space:]]*$ ]]; then
+              resource_path=$(echo "${BASH_REMATCH[1]}" | xargs)  # 공백 제거
+              full_path="$BASE_DIR/$resource_path"
+              if [ -f "$full_path" ]; then
+                  echo "  ✅ $resource_path"
+              else
+                  echo "  ❌ MISSING: $resource_path"
+                  ((MISSING_RESOURCES++))
+              fi
+          fi
+      done < "$BASE_DIR/kustomization.yaml"
+  else
+      echo "  ❌ kustomization.yaml 파일이 없습니다"
+      ((MISSING_RESOURCES++))
+  fi
+  
+  # 4. kubectl kustomize 검증
+  echo ""
+  echo "4. Kustomize 빌드 테스트:"
+  if kubectl kustomize "$BASE_DIR" > /dev/null 2>&1; then
+      echo "  ✅ Base kustomization 빌드 성공"
+  else
+      echo "  ❌ Base kustomization 빌드 실패:"
+      kubectl kustomize "$BASE_DIR" 2>&1 | head -5 | sed 's/^/     /'
+      ((MISSING_RESOURCES++))
+  fi
+  
+  # 5. 환경별 overlay 검증
+  echo ""
+  echo "5. 환경별 Overlay 검증:"
+  for env in dev staging prod; do
+      overlay_dir="deployment/cicd/kustomize/overlays/$env"
+      if [ -d "$overlay_dir" ] && [ -f "$overlay_dir/kustomization.yaml" ]; then
+          if kubectl kustomize "$overlay_dir" > /dev/null 2>&1; then
+              echo "  ✅ $env 환경 빌드 성공"
+          else
+              echo "  ❌ $env 환경 빌드 실패"
+              ((MISSING_RESOURCES++))
+          fi
+      else
+          echo "  ⚠️  $env 환경 설정 없음 (선택사항)"
+      fi
+  done
+  
+  # 결과 출력
+  echo ""
+  echo "======================================"
+  if [ $MISSING_RESOURCES -eq 0 ]; then
+      echo "🎯 검증 완료! 모든 리소스가 정상입니다."
+      echo "======================================"
+      exit 0
+  else
+      echo "❌ $MISSING_RESOURCES개의 문제가 발견되었습니다."
+      echo "======================================"
+      echo ""
+      echo "💡 문제 해결 가이드:"
+      echo "1. 누락된 파일들을 base 디렉토리에 추가하세요"
+      echo "2. kustomization.yaml에서 존재하지 않는 파일 참조를 제거하세요"
+      echo "3. 파일명이 명명 규칙을 따르는지 확인하세요:"
+      echo "   - ConfigMap: cm-{서비스명}.yaml"
+      echo "   - Secret: secret-{서비스명}.yaml"
+      echo "4. 다시 검증: ./scripts/validate-resources.sh"
+      exit 1
+  fi
   ```
 
 - 롤백 방법 작성
@@ -591,7 +772,18 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] 디렉토리 구조 생성: `deployment/cicd/kustomize/{base,overlays/{dev,staging,prod}}`
 - [ ] 서비스별 base 디렉토리 생성: `deployment/cicd/kustomize/base/{common,{서비스명들}}`
 - [ ] 기존 k8s 매니페스트를 base로 복사 완료
+- [ ] **리소스 누락 방지 검증 완료**:
+  - [ ] `ls deployment/cicd/kustomize/base/*/` 명령으로 모든 서비스 디렉토리의 파일 확인
+  - [ ] 각 서비스별 필수 파일 존재 확인 (deployment.yaml, service.yaml 필수)
+  - [ ] ConfigMap 파일 존재 시 `cm-{서비스명}.yaml` 명명 규칙 준수 확인
+  - [ ] Secret 파일 존재 시 `secret-{서비스명}.yaml` 명명 규칙 준수 확인
 - [ ] Base kustomization.yaml 파일 생성 완료
+  - [ ] 모든 서비스의 deployment.yaml, service.yaml 포함 확인
+  - [ ] 존재하는 모든 ConfigMap 파일 포함 확인 (`cm-{서비스명}.yaml`)
+  - [ ] 존재하는 모든 Secret 파일 포함 확인 (`secret-{서비스명}.yaml`)
+- [ ] **검증 명령어 실행 완료**:
+  - [ ] `kubectl kustomize deployment/cicd/kustomize/base/` 정상 실행 확인
+  - [ ] 에러 메시지 없이 모든 리소스 출력 확인
 
 ## 🔧 환경별 Overlay 구성 체크리스트
 ### 공통 체크 사항
@@ -633,7 +825,9 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
   - 변수 참조 문법 확인: `${variable}` 사용, `\${variable}` 사용 금지
   - 모든 서비스명이 실제 프로젝트 서비스명으로 치환되었는지 확인
 - [ ] 수동 배포 스크립트 `scripts/deploy.sh` 생성 완료
-- [ ] 스크립트 실행 권한 설정 완료 (`chmod +x scripts/deploy.sh`)
+- [ ] **리소스 검증 스크립트 `scripts/validate-resources.sh` 생성 완료**
+- [ ] 스크립트 실행 권한 설정 완료 (`chmod +x scripts/*.sh`)
+- [ ] **검증 스크립트 실행하여 누락 리소스 확인 완료** (`./scripts/validate-resources.sh`)
 
 [결과파일]
 - 가이드: deployment/cicd/jenkins-pipeline-guide.md
