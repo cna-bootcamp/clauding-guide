@@ -177,8 +177,6 @@
     - name: {ACR명}.azurecr.io/{시스템명}/{서비스명}
       newTag: {환경}-latest
 
-  namePrefix: {환경}-
-
   commonLabels:
     environment: {환경}
   ```
@@ -452,7 +450,7 @@
 
                       echo "Waiting for deployments to be ready..."
                       services.each { service ->
-                          sh "kubectl -n {시스템명}-${environment} wait --for=condition=available deployment/${environment}-${service} --timeout=300s"
+                          sh "kubectl -n {시스템명}-${environment} wait --for=condition=available deployment/${service} --timeout=300s"
                       }
                   """
               }
@@ -536,7 +534,7 @@
   
   # 배포 상태 확인 (실제 서비스명으로 교체)
   for service in {서비스명1} {서비스명2} {서비스명3}; do
-      kubectl rollout status deployment/${ENVIRONMENT}-${service} -n {시스템명}-${ENVIRONMENT}
+      kubectl rollout status deployment/${service} -n {시스템명}-${ENVIRONMENT}
   done
   
   echo "✅ Deployment completed successfully!"
@@ -546,10 +544,10 @@
   - 이전 버전으로 롤백:
     ```bash
     # 특정 버전으로 롤백
-    kubectl rollout undo deployment/{환경}-{서비스명} -n {시스템명}-{환경} --to-revision=2
+    kubectl rollout undo deployment/{서비스명} -n {시스템명}-{환경} --to-revision=2
     
     # 롤백 상태 확인
-    kubectl rollout status deployment/{환경}-{서비스명} -n {시스템명}-{환경}
+    kubectl rollout status deployment/{서비스명} -n {시스템명}-{환경}
     ```
   - 이미지 태그 기반 롤백:
     ```bash
