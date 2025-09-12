@@ -252,8 +252,15 @@
   **2. Secret Common Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml`
   - base의 secret-common.yaml을 환경별로 오버라이드
-  - 환경별 공통 시크릿 값들 설정
-  - Redis 비밀번호, 데이터베이스 접속 정보 등
+  - base의 secret-common.yaml과 Key와 Value가 동일해야 함
+    예) 
+    base/cm-common.yaml이 아래와 같다면, cm-common-patch.yaml의 Key와 Value도 완전히 똑같아야 함 
+    ```
+    stringData:
+      JWT_SECRET: "nwe5Yo9qaJ6FBD/T..."
+      REDIS_HOST: "redis-cache-dev-master"
+      REDIS_PASSWORD: "Redis2025Dev!"
+    ```
 
   **3. Ingress Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
@@ -290,8 +297,17 @@
   **5. 서비스별 Secret Patch 파일 생성**
   `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`
   - base의 각 서비스별 secret-{서비스명}.yaml을 환경별로 오버라이드
-  - 기본값은 base의 secret-{서비스명}.yaml과 동일하게 함
-
+  - base의 각 서비스별 secret-{서비스명}.yaml과 Key와 Value가 동일해야 함
+    예)
+    base/cm-service1.yaml이 아래와 같다면, cm-service1-patch.yaml의 Key와 Value도 완전히 똑같아야 함   
+    ```
+    stringData:
+      DB_HOST: "auth-postgres-dev-postgresql"
+      DB_NAME: "phonebill_auth"
+      DB_USERNAME: "auth_user"
+      DB_PASSWORD: "AuthUser2025!"
+    ```
+    
 ---
 
 **Patch 파일 작성 가이드라인:**
