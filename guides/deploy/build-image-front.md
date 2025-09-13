@@ -89,10 +89,10 @@
   COPY ${BUILD_FOLDER}/nginx.conf /etc/nginx/templates/default.conf.template
 
   # Add custom nginx settings
-  RUN echo "client_max_body_size 100M;" > /etc/nginx/conf.d/client_max_body_size.conf
-  RUN echo "proxy_buffer_size 128k;" > /etc/nginx/conf.d/proxy_buffer_size.conf
-  RUN echo "proxy_buffers 4 256k;" > /etc/nginx/conf.d/proxy_buffers.conf
-  RUN echo "proxy_busy_buffers_size 256k;" > /etc/nginx/conf.d/proxy_busy_buffers_size.conf
+  RUN echo "client_max_body_size 100M;" > /etc/nginx/conf.d/client_max_body_size.conf && \
+    echo "proxy_buffer_size 128k;" > /etc/nginx/conf.d/proxy_buffer_size.conf && \
+    echo "proxy_buffers 4 256k;" > /etc/nginx/conf.d/proxy_buffers.conf && \
+    echo "proxy_busy_buffers_size 256k;" > /etc/nginx/conf.d/proxy_busy_buffers_size.conf
 
   # Set permissions
   RUN chown -R nginx:nginx /usr/share/nginx/html && \
