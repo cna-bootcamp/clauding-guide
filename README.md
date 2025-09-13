@@ -1979,7 +1979,11 @@ push
 1)'새로운 Item'을 클릭   
 2)프로파일명 '서비스명' 입력 후 Pipeline 카드 선택: 예) phonebill-front    
 3)GitHub hook trigger for GITScm polling 체크    
-4)Pipeline 설정      
+4)Pipeline 설정    
+- Repository URL: 원격 Git Repo 주소
+- Credentials: 원격 Git Repo 접속 위한 인증 Credential
+  ![](images/2025-09-13-13-44-37.png)   
+
 - 브랜치: 'main'  
 - Jenkinsfile 경로: deployment/cicd/Jenkinsfile     
 
