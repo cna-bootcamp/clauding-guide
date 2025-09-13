@@ -1683,6 +1683,10 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/05.setup-c
 
 #### Jenkins를 이용한 CI/CD
 ##### 백엔드 서비스 
+작업 단계는 아래와 같습니다.    
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/cicd-jenkins-backend-tasks.svg
+
+
 **1.루트 build.gradle 수정**    
 1)플러그인 'sonarqube'를 추가    
 ```
