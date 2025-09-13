@@ -15,7 +15,7 @@
   - 수동 배포 스크립트 작성
 
 [작업순서]
-- 사전 준비사항 확인   
+- 프롬프트 제공정보 확인 
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
   - {ACR_NAME}: Azure Container Registry 이름
   - {RESOURCE_GROUP}: Azure 리소스 그룹명

@@ -1113,7 +1113,11 @@ code .
   - 설명: 프론트엔드 서비스를 쿠버네티스 클러스터에 배포하는 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-k8s-front.md
   - 파일명: deploy-k8s-front.md 
-  
+- 프론트엔드Jenkins파이프라인작성가이드
+  - 설명: 프론트엔드 서비스를 Jenkins를 이용하여 CI/CD하는 배포 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-jenkins-cicd-front.md
+  - 파일명: deploy-jenkins-cicd-front.md  
+
 ## 프롬프트 약어 
 ### 역할 약어 
 - "@front": "--persona-front"
@@ -1783,11 +1787,6 @@ deployment/cicd 디렉토리 하위에 파일들이 생성됩니다.
 - AKS_CLUSTER: aks-digitalgarage-01
 ```
 
-작업완료 후 아래와 같이 검증 요청을 한번 더 합니다.  
-```
---think '백엔드Jenkins파이프라인작성가이드'의 [체크리스트]대로 작성되었는지 검증하고 수정하세요.
-```
-
 deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
 
 
@@ -1940,6 +1939,68 @@ logs
 **/*.log
 **/.DS_Store
 ```
+
+**2.SonarQube 프로젝트 만들기**     
+SonarQube에 로그인하여 프론트엔드를 위한 프로젝트를 작성합니다.  
+{서비스명}-{대상환경:dev/staging/prod}
+
+아래 이름으로 작성합니다.  
+- phonebill-front-dev 
+
+
+**3.Jenkins CI/CD 파일 작성**     
+vscode를 실행하고 프론트엔드 서비스를 오픈하세요.   
+Claude Code도 시작한 후 수행 하세요.   
+아래와 같이 프롬프팅하여 Jenkins CI/CD파일들을 작성합니다.    
+deployment/cicd 디렉토리 하위에 파일들이 생성됩니다.    
+
+예시)
+```
+@cicd 
+'프론트엔드Jenkins파이프라인작성가이드'에 따라 Jenkins를 이용한 CI/CD 가이드를 작성해 주세요. 
+[실행정보]
+- SYSTEM_NAME: phonebill
+- ACR_NAME: acrdigitalgarage01
+- RESOURCE_GROUP: rg-digitalgarage-01
+- AKS_CLUSTER: aks-digitalgarage-01 
+```
+
+deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
+
+**4.Git Push**     
+Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다. 
+따라서 로컬에서 수정하면 반드시 원격 Git Repo에 푸시해야 합니다.    
+프롬프트창에 아래 명령을 내립니다.   
+```
+push 
+```
+
+**5.Jenkins 파이프라인 작성**        
+1)'새로운 Item'을 클릭   
+2)프로파일명 '서비스명' 입력 후 Pipeline 카드 선택: 예) phonebill-front    
+3)GitHub hook trigger for GITScm polling 체크    
+4)Pipeline 설정      
+- 브랜치: 'main'  
+- Jenkinsfile 경로: deployment/cicd/Jenkinsfile     
+
+**6.파이프라인 실행**    
+1)기존 배포된 k8s객체 삭제     
+아래 명령으로 모든 객체를 삭제합니다.      
+```
+kubectl delete -f deployment/k8s
+```
+2)파이프라인 실행  
+
+3)트러블슈팅   
+아래와 같이 파이프라인 실행 중 나오는 에러 메시지를 복사하여 Claude Code에 해결 요청을 합니다.   
+```
+파이프라인 실행 에러. 
+
+{에러 메시지 붙여넣기}
+```
+
+로컬에서 수정 후 반드시 'push'명령으로 원격 Git 레포지토리에 푸시합니다.   
+그리고 다시 파이프라인을 실행합니다.   
 
 | [Top](#목차) |
 
