@@ -1816,7 +1816,7 @@ GitHub Repository에 WebHook을 설정을 하여 소스 업로드 시 Jenkins에
 
 ![](images/2025-09-12-13-58-37.png)
 
-4)Pipeline 설정
+4)Pipeline 설정   
 매개변수 지정:    
 배포 대상 환경 'ENVIRONMENT'를 추가. 값은 dev, staging, prod 중 하나인데 실습시에는 'dev'로 지정합니다.    
 소스품질검사 Skip여부 'SKIP_SONARQUBE'를 추가. 값은 true 또는 false로 지정.
