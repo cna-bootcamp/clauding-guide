@@ -129,119 +129,115 @@
   <line x1="520" y1="590" x2="560" y2="590" class="connector-line" marker-end="url(#arrowhead)"/>
   <line x1="760" y1="590" x2="800" y2="590" class="connector-line" marker-end="url(#arrowhead)"/>
 
-  <!-- Phase 5: Repository 연결 -->
-  <rect x="50" y="640" width="1100" height="40" rx="5" class="phase-bg"/>
-  <text x="600" y="665" class="phase">5. Repository 연결</text>
+  <!-- Step 4.5: Git Repository 설정 -->
+  <rect x="100" y="640" width="250" height="80" rx="5" class="step-bg"/>
+  <text x="225" y="660" class="step">Git Repository 설정</text>
+  <text x="110" y="675" class="detail">• Repository URL: 원격 Git Repo 주소</text>
+  <text x="110" y="690" class="detail">• Credentials: Git Repo 접속 인증</text>
+  <text x="110" y="705" class="detail">• Branch: */main</text>
 
-  <!-- Step 5.1: Git Repository 설정 -->
-  <rect x="200" y="700" width="300" height="80" rx="5" class="step-bg"/>
-  <text x="350" y="720" class="step">Git Repository 설정</text>
-  <text x="210" y="735" class="detail">• Repository URL: 원격 Git Repo 주소</text>
-  <text x="210" y="750" class="detail">• Credentials: Git Repo 접속 인증</text>
-  <text x="210" y="765" class="detail">• Branch: */main, Jenkinsfile 경로</text>
+  <!-- Step 4.6: Jenkinsfile 경로 설정 -->
+  <rect x="400" y="640" width="250" height="60" rx="5" class="step-bg"/>
+  <text x="525" y="665" class="step">Jenkinsfile 경로 설정</text>
+  <text x="410" y="680" class="detail">경로: deployment/cicd/Jenkinsfile</text>
+  <text x="410" y="695" class="detail">스크립트 경로 정확히 입력</text>
 
-  <!-- Step 5.2: Jenkinsfile 경로 설정 -->
-  <rect x="550" y="700" width="300" height="60" rx="5" class="step-bg"/>
-  <text x="700" y="720" class="step">Jenkinsfile 경로 설정</text>
-  <text x="560" y="735" class="detail">경로: deployment/cicd/Jenkinsfile</text>
-  <text x="560" y="750" class="detail">스크립트 경로 정확히 입력</text>
+  <!-- Arrows for additional Phase 4 steps -->
+  <line x1="900" y1="620" x2="900" y2="630" class="connector-line"/>
+  <line x1="900" y1="630" x2="225" y2="630" class="connector-line"/>
+  <line x1="225" y1="630" x2="225" y2="640" class="connector-line" marker-end="url(#arrowhead)"/>
+  <line x1="350" y1="670" x2="400" y2="670" class="connector-line" marker-end="url(#arrowhead)"/>
 
-  <!-- Arrow to Phase 5 -->
-  <line x1="900" y1="620" x2="900" y2="640" class="connector-line"/>
-  <line x1="900" y1="640" x2="350" y2="640" class="connector-line"/>
-  <line x1="350" y1="640" x2="350" y2="700" class="connector-line" marker-end="url(#arrowhead)"/>
-  <line x1="500" y1="730" x2="550" y2="730" class="connector-line" marker-end="url(#arrowhead)"/>
+  <!-- Phase 5: 파이프라인 실행 -->
+  <rect x="50" y="720" width="1100" height="40" rx="5" class="phase-bg"/>
+  <text x="600" y="745" class="phase">5. 파이프라인 실행 및 검증</text>
 
-  <!-- Phase 6: 파이프라인 실행 -->
-  <rect x="50" y="800" width="1100" height="40" rx="5" class="phase-bg"/>
-  <text x="600" y="825" class="phase">6. 파이프라인 실행 및 검증</text>
+  <!-- Step 5.1: K8s 객체 삭제 -->
+  <rect x="100" y="780" width="180" height="80" rx="5" class="step-bg"/>
+  <text x="190" y="800" class="step">K8s 객체 삭제</text>
+  <text x="110" y="815" class="detail">kubectl delete -f</text>
+  <text x="110" y="830" class="detail">deployment/k8s</text>
+  <text x="110" y="845" class="detail">기존 배포 정리</text>
 
-  <!-- Step 6.1: K8s 객체 삭제 -->
-  <rect x="100" y="860" width="180" height="80" rx="5" class="step-bg"/>
-  <text x="190" y="880" class="step">K8s 객체 삭제</text>
-  <text x="110" y="895" class="detail">kubectl delete -f</text>
-  <text x="110" y="910" class="detail">deployment/k8s</text>
-  <text x="110" y="925" class="detail">기존 배포 정리</text>
-
-  <!-- Step 6.2: 파이프라인 실행 -->
-  <rect x="320" y="860" width="180" height="60" rx="5" class="step-bg"/>
-  <text x="410" y="880" class="step">파이프라인 실행</text>
-  <text x="330" y="895" class="detail">수동 빌드 트리거</text>
-  <text x="330" y="910" class="detail">진행 상황 모니터링</text>
+  <!-- Step 5.2: 파이프라인 실행 -->
+  <rect x="320" y="780" width="180" height="60" rx="5" class="step-bg"/>
+  <text x="410" y="800" class="step">파이프라인 실행</text>
+  <text x="330" y="815" class="detail">수동 빌드 트리거</text>
+  <text x="330" y="830" class="detail">진행 상황 모니터링</text>
 
   <!-- Decision: 빌드 성공? -->
-  <polygon points="600,860 680,890 600,920 520,890" class="decision-bg"/>
-  <text x="600" y="895" class="step">빌드 성공?</text>
+  <polygon points="600,780 680,810 600,840 520,810" class="decision-bg"/>
+  <text x="600" y="815" class="step">빌드 성공?</text>
 
-  <!-- Step 6.3: 트러블슈팅 (실패 시) -->
-  <rect x="350" y="960" width="220" height="100" rx="5" class="step-bg"/>
-  <text x="460" y="980" class="step">트러블슈팅</text>
-  <text x="360" y="995" class="detail">• 에러 메시지 복사</text>
-  <text x="360" y="1010" class="detail">• Claude Code에 해결 요청</text>
-  <text x="360" y="1025" class="detail">• 로컬 수정 후 push</text>
-  <text x="360" y="1040" class="detail">• 파이프라인 재실행</text>
+  <!-- Step 5.3: 트러블슈팅 (실패 시) -->
+  <rect x="350" y="880" width="220" height="100" rx="5" class="step-bg"/>
+  <text x="460" y="900" class="step">트러블슈팅</text>
+  <text x="360" y="915" class="detail">• 에러 메시지 복사</text>
+  <text x="360" y="930" class="detail">• Claude Code에 해결 요청</text>
+  <text x="360" y="945" class="detail">• 로컬 수정 후 push</text>
+  <text x="360" y="960" class="detail">• 파이프라인 재실행</text>
 
-  <!-- Step 6.4: 빌드 성공 확인 -->
-  <rect x="750" y="960" width="180" height="60" rx="5" class="success-bg"/>
-  <text x="840" y="985" class="step" fill="white">빌드 성공 확인</text>
-  <text x="760" y="1000" class="detail" fill="white">성공적인 배포 검증</text>
-  <text x="760" y="1015" class="detail" fill="white">프론트엔드 서비스 준비</text>
+  <!-- Step 5.4: 빌드 성공 확인 -->
+  <rect x="750" y="880" width="180" height="60" rx="5" class="success-bg"/>
+  <text x="840" y="905" class="step" fill="white">빌드 성공 확인</text>
+  <text x="760" y="920" class="detail" fill="white">성공적인 배포 검증</text>
+  <text x="760" y="935" class="detail" fill="white">프론트엔드 서비스 준비</text>
 
-  <!-- Arrows for Phase 6 -->
-  <line x1="700" y1="760" x2="700" y2="800" class="connector-line"/>
-  <line x1="700" y1="800" x2="190" y2="800" class="connector-line"/>
-  <line x1="190" y1="800" x2="190" y2="860" class="connector-line" marker-end="url(#arrowhead)"/>
-  <line x1="280" y1="900" x2="320" y2="900" class="connector-line" marker-end="url(#arrowhead)"/>
-  <line x1="500" y1="890" x2="520" y2="890" class="connector-line" marker-end="url(#arrowhead)"/>
+  <!-- Arrows for Phase 5 -->
+  <line x1="525" y1="700" x2="525" y2="720" class="connector-line"/>
+  <line x1="525" y1="720" x2="190" y2="720" class="connector-line"/>
+  <line x1="190" y1="720" x2="190" y2="780" class="connector-line" marker-end="url(#arrowhead)"/>
+  <line x1="280" y1="820" x2="320" y2="820" class="connector-line" marker-end="url(#arrowhead)"/>
+  <line x1="500" y1="810" x2="520" y2="810" class="connector-line" marker-end="url(#arrowhead)"/>
 
   <!-- Decision arrows -->
-  <line x1="580" y1="910" x2="460" y2="960" class="connector-line" marker-end="url(#arrowhead)"/>
-  <text x="510" y="940" class="detail" fill="#e74c3c">실패</text>
-  <line x1="620" y1="910" x2="840" y2="960" class="connector-line" marker-end="url(#arrowhead)"/>
-  <text x="720" y="940" class="detail" fill="#27ae60">성공</text>
+  <line x1="580" y1="830" x2="460" y2="880" class="connector-line" marker-end="url(#arrowhead)"/>
+  <text x="510" y="860" class="detail" fill="#e74c3c">실패</text>
+  <line x1="620" y1="830" x2="840" y2="880" class="connector-line" marker-end="url(#arrowhead)"/>
+  <text x="720" y="860" class="detail" fill="#27ae60">성공</text>
 
   <!-- Loop back from troubleshooting -->
-  <path d="M 350 1010 Q 280 1010 280 950 Q 280 890 300 890" class="connector-line" marker-end="url(#arrowhead)"/>
+  <path d="M 350 930 Q 280 930 280 870 Q 280 810 300 810" class="connector-line" marker-end="url(#arrowhead)"/>
 
-  <!-- Phase 7: 자동화 설정 -->
-  <rect x="50" y="1080" width="1100" height="40" rx="5" class="phase-bg"/>
-  <text x="600" y="1105" class="phase">7. 자동화 설정 및 완료</text>
+  <!-- Phase 6: 자동화 설정 -->
+  <rect x="50" y="1000" width="1100" height="40" rx="5" class="phase-bg"/>
+  <text x="600" y="1025" class="phase">6. 자동화 설정 및 완료</text>
 
-  <!-- Step 7.1: WebHook 설정 -->
-  <rect x="200" y="1140" width="250" height="80" rx="5" class="step-bg"/>
-  <text x="325" y="1160" class="step">GitHub WebHook 설정</text>
-  <text x="210" y="1175" class="detail">• Repository Settings → WebHooks</text>
-  <text x="210" y="1190" class="detail">• Payload URL: http://{Jenkins IP}/github-webhook/</text>
-  <text x="210" y="1205" class="detail">• Content-Type: application/json</text>
+  <!-- Step 6.1: WebHook 설정 -->
+  <rect x="200" y="1060" width="250" height="80" rx="5" class="step-bg"/>
+  <text x="325" y="1080" class="step">GitHub WebHook 설정</text>
+  <text x="210" y="1095" class="detail">• Repository Settings → WebHooks</text>
+  <text x="210" y="1110" class="detail">• Payload URL: http://{Jenkins IP}/github-webhook/</text>
+  <text x="210" y="1125" class="detail">• Content-Type: application/json</text>
 
-  <!-- Step 7.2: 자동화 테스트 -->
-  <rect x="500" y="1140" width="250" height="80" rx="5" class="success-bg"/>
-  <text x="625" y="1160" class="step" fill="white">자동화 테스트</text>
-  <text x="510" y="1175" class="detail" fill="white">• 소스 변경 후 자동 빌드 확인</text>
-  <text x="510" y="1190" class="detail" fill="white">• git commit → push → 자동 빌드</text>
-  <text x="510" y="1205" class="detail" fill="white">• 프론트엔드 CI/CD 파이프라인 완성</text>
+  <!-- Step 6.2: 자동화 테스트 -->
+  <rect x="500" y="1060" width="250" height="80" rx="5" class="success-bg"/>
+  <text x="625" y="1080" class="step" fill="white">자동화 테스트</text>
+  <text x="510" y="1095" class="detail" fill="white">• 소스 변경 후 자동 빌드 확인</text>
+  <text x="510" y="1110" class="detail" fill="white">• git commit → push → 자동 빌드</text>
+  <text x="510" y="1125" class="detail" fill="white">• 프론트엔드 CI/CD 파이프라인 완성</text>
 
   <!-- Final arrows -->
-  <line x1="840" y1="1020" x2="840" y2="1080" class="connector-line"/>
-  <line x1="840" y1="1080" x2="325" y2="1080" class="connector-line"/>
-  <line x1="325" y1="1080" x2="325" y2="1140" class="connector-line" marker-end="url(#arrowhead)"/>
-  <line x1="450" y1="1180" x2="500" y2="1180" class="connector-line" marker-end="url(#arrowhead)"/>
+  <line x1="840" y1="940" x2="840" y2="1000" class="connector-line"/>
+  <line x1="840" y1="1000" x2="325" y2="1000" class="connector-line"/>
+  <line x1="325" y1="1000" x2="325" y2="1060" class="connector-line" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="1100" x2="500" y2="1100" class="connector-line" marker-end="url(#arrowhead)"/>
 
   <!-- Success indicator -->
-  <circle cx="625" cy="1260" r="20" class="success-bg"/>
-  <text x="625" y="1265" class="step" fill="white">완료</text>
-  <line x1="625" y1="1220" x2="625" y2="1240" class="connector-line" marker-end="url(#arrowhead)"/>
+  <circle cx="625" cy="1180" r="20" class="success-bg"/>
+  <text x="625" y="1185" class="step" fill="white">완료</text>
+  <line x1="625" y1="1140" x2="625" y2="1160" class="connector-line" marker-end="url(#arrowhead)"/>
 
   <!-- Legend -->
-  <rect x="50" y="1300" width="300" height="120" rx="5" fill="none" stroke="#bdc3c7" stroke-width="1"/>
-  <text x="200" y="1320" class="step">범례</text>
-  <rect x="70" y="1330" width="15" height="15" class="phase-bg"/>
-  <text x="95" y="1342" class="detail">주요 단계 (Phase)</text>
-  <rect x="70" y="1345" width="15" height="15" class="step-bg"/>
-  <text x="95" y="1357" class="detail">작업 단계 (Step)</text>
-  <polygon points="70,1365 80,1370 70,1375 65,1370" class="decision-bg"/>
-  <text x="95" y="1372" class="detail">의사결정</text>
-  <rect x="70" y="1385" width="15" height="15" class="success-bg"/>
-  <text x="95" y="1397" class="detail">완료/성공</text>
+  <rect x="50" y="1220" width="300" height="120" rx="5" fill="none" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="200" y="1240" class="step">범례</text>
+  <rect x="70" y="1250" width="15" height="15" class="phase-bg"/>
+  <text x="95" y="1262" class="detail">주요 단계 (Phase)</text>
+  <rect x="70" y="1265" width="15" height="15" class="step-bg"/>
+  <text x="95" y="1277" class="detail">작업 단계 (Step)</text>
+  <polygon points="70,1285 80,1290 70,1295 65,1290" class="decision-bg"/>
+  <text x="95" y="1292" class="detail">의사결정</text>
+  <rect x="70" y="1305" width="15" height="15" class="success-bg"/>
+  <text x="95" y="1317" class="detail">완료/성공</text>
 
 </svg>

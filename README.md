@@ -1929,6 +1929,9 @@ k delete po 12-kp6r4-wqw0z -n jenkins --force --grace-period=0
 
 
 ##### 프론트엔드 서비스  
+작업 단계는 아래와 같습니다.    
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/cicd-jenkins-frontend-tasks.svg
+
 **1.사전작업**         
   
 1)'.dockerignore' 파일 작성         
