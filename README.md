@@ -54,6 +54,7 @@
       - [Jenkins를 이용한 CI/CD](#jenkins를-이용한-cicd)
         - [백엔드 서비스](#백엔드-서비스)
         - [프론트엔드 서비스](#프론트엔드-서비스)
+        - [WebhHook 설정](#webhhook-설정)
 
 ---
 
@@ -2014,6 +2015,39 @@ kubectl delete -f deployment/k8s
 
 로컬에서 수정 후 반드시 'push'명령으로 원격 Git 레포지토리에 푸시합니다.   
 그리고 다시 파이프라인을 실행합니다.   
+
+| [Top](#목차) |
+
+---
+
+##### WebhHook 설정 
+Git push 시 자동으로 pipeline이 구동되게 하려면 아래와 같이 github repository에 webhook 설정을 합니다.   
+
+1.Git 레포지토리의 Settings를 클릭    
+2.좌측메뉴에서 WebHooks 클릭   
+3.Webhook 정보 입력       
+  - Payload URL: http://{Jenkins service의 External IP}/github-webhook/ 
+    아래와 같이 구합니다. 아래 예에서는 '20.249.203.199'가 Jenkins의 External IP입니다.   
+    ```
+    k get svc -n jenkins
+    NAME                     TYPE           CLUSTER-IP    EXTERNAL-IP
+    jenkins                  LoadBalancer   10.0.106.33   20.249.203.199
+    ``` 
+    Payload URL 예: http://20.249.203.199/github-webhook/
+
+    주의) Payload URL 마지막에 반드시 ‘/’를 붙여야 합니다.
+  - Content-Type: application/json
+  - SSL Verification: Disable
+  
+  ![](images/2025-09-13-19-52-29.png)
+
+4.테스트   
+  - 백엔드 프로젝트에서 아무 파일이나 수정한 후 푸시    
+    ```
+    git add . && git commit -m "test cicd" && git push 
+    ``` 
+  - 몇초 후 Jenkins 파이프라인이 구동되는것 확인    
+
 
 | [Top](#목차) |
 

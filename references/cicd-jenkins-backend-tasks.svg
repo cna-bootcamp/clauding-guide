@@ -1,0 +1,258 @@
+<svg width="1200" height="1400" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <style>
+        .title { font: bold 18px Arial; text-anchor: middle; fill: #2c3e50;
+  }
+        .phase { font: bold 14px Arial; text-anchor: middle; fill: #ffffff;
+  }
+        .step { font: 12px Arial; text-anchor: middle; fill: #2c3e50; }
+        .detail { font: 10px Arial; fill: #555; }
+        .phase-bg { fill: #3498db; stroke: #2980b9; stroke-width: 2; }
+        .step-bg { fill: #ecf0f1; stroke: #bdc3c7; stroke-width: 1; }
+        .decision-bg { fill: #f39c12; stroke: #e67e22; stroke-width: 2; }
+        .success-bg { fill: #27ae60; stroke: #229954; stroke-width: 2; }
+        .arrow { stroke: #2c3e50; stroke-width: 2; fill: #2c3e50; }
+        .connector-line { stroke: #2c3e50; stroke-width: 2; fill: none; }
+      </style>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10"
+  refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+      </marker>
+    </defs>
+
+    <!-- Title -->
+    <text x="600" y="30" class="title">Jenkins CI/CD 자동화 구축 작업
+  단계</text>
+
+    <!-- Phase 1: 개발환경 설정 -->
+    <rect x="50" y="60" width="1100" height="40" rx="5" class="phase-bg"/>
+    <text x="600" y="85" class="phase">1. 개발환경 설정</text>
+
+    <!-- Step 1.1: 프로젝트 준비 -->
+    <rect x="100" y="120" width="200" height="60" rx="5" class="step-bg"/>
+    <text x="200" y="140" class="step">프로젝트 오픈</text>
+    <text x="110" y="155" class="detail">프로젝트 구조 확인(settings.gradle)</text>
+    <text x="110" y="170" class="detail">컨테이너 빌드 파일 확인(deployment/container)</text>
+
+    <!-- Step 1.2: build.gradle 설정 -->
+    <rect x="350" y="120" width="250" height="60" rx="5" class="step-bg"/>
+    <text x="475" y="140" class="step">build.gradle 설정</text>
+    <text x="360" y="155" class="detail">• SonarQube 플러그인 추가</text>
+    <text x="360" y="170" class="detail">• JaCoCo 플러그인 추가 및 테스트
+  설정</text>
+
+    <!-- Arrow 1.1 to 1.2 -->
+    <line x1="300" y1="150" x2="350" y2="150" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+
+    <!-- Phase 2: 품질 검사 도구 -->
+    <rect x="50" y="200" width="1100" height="40" rx="5" class="phase-bg"/>
+    <text x="600" y="225" class="phase">2. 품질 검사 도구 설정</text>
+
+    <!-- Step 2.1: SonarQube 프로젝트 생성 -->
+    <rect x="100" y="260" width="300" height="80" rx="5" class="step-bg"/>
+    <text x="250" y="280" class="step">SonarQube 프로젝트 생성</text>
+    <text x="110" y="295" class="detail">• 서비스별 프로젝트 생성
+  (5개)</text>
+    <text x="110" y="310" class="detail">• 패턴:
+  {system}-{service}-{env}</text>
+    <text x="110" y="325" class="detail">• Quality Gate 설정</text>
+
+    <!-- Arrow 1.2 to 2.1 -->
+    <line x1="475" y1="180" x2="475" y2="200" class="connector-line"/>
+    <line x1="475" y1="200" x2="250" y2="200" class="connector-line"/>
+    <line x1="250" y1="200" x2="250" y2="260" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+
+    <!-- Phase 3: CI/CD 파일 생성 -->
+    <rect x="50" y="360" width="1100" height="40" rx="5" class="phase-bg"/>
+    <text x="600" y="385" class="phase">3. CI/CD 파일 생성</text>
+
+    <!-- Step 3.1: 개발 도구 실행 -->
+    <rect x="100" y="420" width="200" height="60" rx="5" class="step-bg"/>
+    <text x="200" y="440" class="step">Claude Code 실행</text>
+
+    <!-- Step 3.2: CI/CD 파일 생성 -->
+    <rect x="350" y="420" width="250" height="60" rx="5" class="step-bg"/>
+    <text x="475" y="440" class="step">CI/CD 파일 생성</text>
+    <text x="360" y="455" class="detail">프롬프트:
+  /deploy-jenkins-cicd-guide-back</text>
+    <text x="360" y="470" class="detail">deployment/cicd 디렉토리에
+  생성됨</text>
+
+    <!-- Step 3.3: Git Push -->
+    <rect x="650" y="420" width="200" height="60" rx="5" class="step-bg"/>
+    <text x="750" y="440" class="step">Git Push</text>
+    <text x="660" y="455" class="detail">로컬 변경사항 커밋</text>
+    <text x="660" y="470" class="detail">원격 저장소 푸시</text>
+
+    <!-- Arrows for Phase 3 -->
+    <line x1="250" y1="340" x2="250" y2="360" class="connector-line"/>
+    <line x1="250" y1="360" x2="200" y2="360" class="connector-line"/>
+    <line x1="200" y1="360" x2="200" y2="420" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <line x1="300" y1="450" x2="350" y2="450" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <line x1="600" y1="450" x2="650" y2="450" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+
+    <!-- Phase 4: Jenkins 설정 -->
+    <rect x="50" y="500" width="1100" height="40" rx="5" class="phase-bg"/>
+    <text x="600" y="525" class="phase">4. Jenkins 파이프라인 구성</text>
+
+    <!-- Step 4.1: Credential 등록 -->
+    <rect x="100" y="560" width="180" height="60" rx="5" class="step-bg"/>
+    <text x="190" y="580" class="step">GitHub Credential</text>
+    <text x="190" y="595" class="step">등록</text>
+    <text x="110" y="610" class="detail">Jenkins 관리 → Credentials</text>
+
+    <!-- Step 4.2: 파이프라인 생성 -->
+    <rect x="320" y="560" width="180" height="60" rx="5" class="step-bg"/>
+    <text x="410" y="580" class="step">파이프라인 생성</text>
+    <text x="330" y="595" class="detail">'새로운 Item' → Pipeline</text>
+    <text x="330" y="610" class="detail">WebHook 트리거 설정</text>
+
+    <!-- Step 4.3: 매개변수 설정 -->
+    <rect x="540" y="560" width="180" height="60" rx="5" class="step-bg"/>
+    <text x="630" y="580" class="step">매개변수 설정</text>
+    <text x="550" y="595" class="detail">ENVIRONMENT, SKIP_SONARQUBE</text>
+
+    <!-- Step 4.4: Git Repository 연결 -->
+    <rect x="760" y="560" width="200" height="60" rx="5" class="step-bg"/>
+    <text x="860" y="580" class="step">Git Repository 연결</text>
+    <text x="770" y="595" class="detail">Repository URL, Credentials</text>
+    <text x="770" y="610" class="detail">Branch: */main, Jenkinsfile
+  경로</text>
+
+    <!-- Arrows for Phase 4 -->
+    <line x1="750" y1="480" x2="750" y2="500" class="connector-line"/>
+    <line x1="750" y1="500" x2="190" y2="500" class="connector-line"/>
+    <line x1="190" y1="500" x2="190" y2="560" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <line x1="280" y1="590" x2="320" y2="590" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <line x1="500" y1="590" x2="540" y2="590" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <line x1="720" y1="590" x2="760" y2="590" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+
+    <!-- Phase 5: 인프라 확장 -->
+    <rect x="50" y="640" width="1100" height="40" rx="5" class="phase-bg"/>
+    <text x="600" y="665" class="phase">5. 인프라 확장</text>
+
+    <!-- Step 5.1: CI/CD 노드 증설 -->
+    <rect x="400" y="700" width="300" height="60" rx="5" class="step-bg"/>
+    <text x="550" y="720" class="step">CI/CD 노드 증설</text>
+    <text x="410" y="735" class="detail">Azure Portal → AKS 클러스터 →
+  노드풀 설정</text>
+    <text x="410" y="750" class="detail">CI/CD 워크로드를 위한 노드
+  추가</text>
+
+    <!-- Arrow to Phase 5 -->
+    <line x1="860" y1="620" x2="860" y2="640" class="connector-line"/>
+    <line x1="860" y1="640" x2="550" y2="640" class="connector-line"/>
+    <line x1="550" y1="640" x2="550" y2="700" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+
+    <!-- Phase 6: 파이프라인 실행 -->
+    <rect x="50" y="780" width="1100" height="40" rx="5" class="phase-bg"/>
+    <text x="600" y="805" class="phase">6. 파이프라인 실행 및 검증</text>
+
+    <!-- Step 6.1: 첫 번째 빌드 -->
+    <rect x="200" y="840" width="180" height="60" rx="5" class="step-bg"/>
+    <text x="290" y="860" class="step">첫 번째 빌드 실행</text>
+    <text x="210" y="875" class="detail">수동 빌드 트리거</text>
+    <text x="210" y="890" class="detail">진행 상황 모니터링</text>
+
+    <!-- Decision: 빌드 성공? -->
+    <polygon points="500,840 580,870 500,900 420,870" class="decision-bg"/>
+    <text x="500" y="875" class="step">빌드 성공?</text>
+
+    <!-- Step 6.2: 트러블슈팅 (실패 시) -->
+    <rect x="300" y="940" width="180" height="80" rx="5" class="step-bg"/>
+    <text x="390" y="960" class="step">트러블슈팅</text>
+    <text x="310" y="975" class="detail">• 에러 로그 분석</text>
+    <text x="310" y="990" class="detail">• Claude Code 활용 해결</text>
+    <text x="310" y="1005" class="detail">• 문제 해결 후 재실행</text>
+
+    <!-- Step 6.3: 빌드 결과 확인 (성공 시) -->
+    <rect x="650" y="940" width="180" height="60" rx="5"
+  class="success-bg"/>
+    <text x="740" y="965" class="step" fill="white">빌드 결과 확인</text>
+    <text x="660" y="980" class="detail" fill="white">성공적인 빌드
+  검증</text>
+    <text x="660" y="995" class="detail" fill="white">배포 준비 완료</text>
+
+    <!-- Arrows for Phase 6 -->
+    <line x1="550" y1="760" x2="550" y2="780" class="connector-line"/>
+    <line x1="550" y1="780" x2="290" y2="780" class="connector-line"/>
+    <line x1="290" y1="780" x2="290" y2="840" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <line x1="380" y1="870" x2="420" y2="870" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+
+    <!-- Decision arrows -->
+    <line x1="480" y1="890" x2="390" y2="940" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <text x="430" y="920" class="detail" fill="#e74c3c">실패</text>
+    <line x1="520" y1="890" x2="740" y2="940" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <text x="620" y="920" class="detail" fill="#27ae60">성공</text>
+
+    <!-- Loop back from troubleshooting -->
+    <path d="M 300 980 Q 250 980 250 920 Q 250 860 280 860"
+  class="connector-line" marker-end="url(#arrowhead)"/>
+
+    <!-- Phase 7: 자동화 설정 -->
+    <rect x="50" y="1040" width="1100" height="40" rx="5" class="phase-bg"/>
+    <text x="600" y="1065" class="phase">7. 자동화 설정 및 완료</text>
+
+    <!-- Step 7.1: WebHook 설정 -->
+    <rect x="200" y="1100" width="250" height="80" rx="5" class="step-bg"/>
+    <text x="325" y="1120" class="step">GitHub WebHook 설정</text>
+    <text x="210" y="1135" class="detail">• Repository Settings →
+  WebHooks</text>
+    <text x="210" y="1150" class="detail">• Payload URL: http://{Jenkins
+  IP}/github-webhook/</text>
+    <text x="210" y="1165" class="detail">• Content-Type:
+  application/json</text>
+
+    <!-- Step 7.2: 자동화 테스트 -->
+    <rect x="500" y="1100" width="250" height="80" rx="5"
+  class="success-bg"/>
+    <text x="625" y="1120" class="step" fill="white">자동화 테스트</text>
+    <text x="510" y="1135" class="detail" fill="white">• 소스 변경 후 자동
+  빌드 확인</text>
+    <text x="510" y="1150" class="detail" fill="white">• git commit → push →
+   자동 빌드</text>
+    <text x="510" y="1165" class="detail" fill="white">• CI/CD 파이프라인
+  완성</text>
+
+    <!-- Final arrows -->
+    <line x1="740" y1="1000" x2="740" y2="1040" class="connector-line"/>
+    <line x1="740" y1="1040" x2="325" y2="1040" class="connector-line"/>
+    <line x1="325" y1="1040" x2="325" y2="1100" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+    <line x1="450" y1="1140" x2="500" y2="1140" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+
+    <!-- Success indicator -->
+    <circle cx="625" cy="1220" r="20" class="success-bg"/>
+    <text x="625" y="1225" class="step" fill="white">완료</text>
+    <line x1="625" y1="1180" x2="625" y2="1200" class="connector-line"
+  marker-end="url(#arrowhead)"/>
+
+    <!-- Legend -->
+    <rect x="50" y="1260" width="300" height="120" rx="5" fill="none"
+  stroke="#bdc3c7" stroke-width="1"/>
+    <text x="200" y="1280" class="step">범례</text>
+    <rect x="70" y="1290" width="15" height="15" class="phase-bg"/>
+    <text x="95" y="1302" class="detail">주요 단계 (Phase)</text>
+    <rect x="70" y="1315" width="15" height="15" class="step-bg"/>
+    <text x="95" y="1327" class="detail">작업 단계 (Step)</text>
+    <polygon points="70,1340 80,1345 70,1350 65,1345" class="decision-bg"/>
+    <text x="95" y="1347" class="detail">의사결정</text>
+    <rect x="70" y="1355" width="15" height="15" class="success-bg"/>
+    <text x="95" y="1367" class="detail">완료/성공</text>
+
+  </svg>
