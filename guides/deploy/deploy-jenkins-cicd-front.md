@@ -455,6 +455,9 @@
                               sh """
                                   podman build \\
                                       -f deployment/container/Dockerfile-frontend \\
+                                      --build-arg PROJECT_FOLDER="." \\
+                                      --build-arg BUILD_FOLDER="deployment/container" \\
+                                      --build-arg EXPORT_PORT="8080" \\
                                       -t {ACR_NAME}.azurecr.io/{SERVICE_NAME}/{SERVICE_NAME}:${environment}-${imageTag} .
 
                                   podman push {ACR_NAME}.azurecr.io/{SERVICE_NAME}/{SERVICE_NAME}:${environment}-${imageTag}
