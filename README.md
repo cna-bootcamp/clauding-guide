@@ -1988,6 +1988,13 @@ push
 2)프로파일명 '서비스명' 입력 후 Pipeline 카드 선택: 예) phonebill-front    
 3)GitHub hook trigger for GITScm polling 체크    
 4)Pipeline 설정    
+- 매개변수 지정:    
+  배포 대상 환경 'ENVIRONMENT'를 추가. 값은 dev, staging, prod 중 하나인데 실습시에는 'dev'로 지정합니다.    
+  소스품질검사 Skip여부 'SKIP_SONARQUBE'를 추가. 값은 true 또는 false로 지정.
+  ![](images/2025-09-13-16-50-46.png) 
+  ![](images/2025-09-13-16-53-22.png) 
+  ![](images/2025-09-13-16-54-01.png) 
+
 - Repository URL: 원격 Git Repo 주소
 - Credentials: 원격 Git Repo 접속 위한 인증 Credential
   ![](images/2025-09-13-13-44-37.png)   
