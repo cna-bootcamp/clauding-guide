@@ -406,15 +406,18 @@
                           try {
                               withSonarQubeEnv('SonarQube') {
                                   sh """
-                                      timeout 300 ${sonarScannerHome}/bin/sonar-scanner \\
-                                      -Dsonar.projectKey={SERVICE_NAME}-${environment} \\
-                                      -Dsonar.projectName={SERVICE_NAME}-${environment} \\
-                                      -Dsonar.sources=src \\
-                                      -Dsonar.tests=src \\
-                                      -Dsonar.test.inclusions=src/**/*.test.js,src/**/*.test.jsx,src/**/*.test.ts,src/**/*.test.tsx \\
-                                      -Dsonar.exclusions=**/node_modules/**,**/build/**,**/dist/**,**/*.config.js,**/coverage/**,**/stores/** \\
-                                      -Dsonar.scm.disabled=true \\
-                                      -Dsonar.sourceEncoding=UTF-8
+                                    timeout 300 ${sonarScannerHome}/bin/sonar-scanner \\
+                                    -Dsonar.projectKey={SERVICE_NAME}-${environment} \\
+                                    -Dsonar.projectName={SERVICE_NAME}-${environment} \\
+                                    -Dsonar.sources=src/components,src/pages,src/services,src/hooks,src/utils \\
+                                    -Dsonar.tests=src \\
+                                    -Dsonar.test.inclusions=src/**/*.test.js,src/**/*.test.jsx,src/**/*.test.ts,src/**/*.test.tsx \\
+                                    -Dsonar.exclusions=**/node_modules/**,**/build/**,**/dist/**,**/*.config.js,**/coverage/**,**/stores/**,**/config/**,**/types/**,**/styles/**,**/assets/** \\
+                                    -Dsonar.scm.disabled=true \\
+                                    -Dsonar.sourceEncoding=UTF-8 \\
+                                    -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \\
+                                    -Dsonar.scm.disabled=true \\
+                                    -Dsonar.sourceEncoding=UTF-8
                                   """
                               }
                               
@@ -458,9 +461,9 @@
                                       --build-arg PROJECT_FOLDER="." \\
                                       --build-arg BUILD_FOLDER="deployment/container" \\
                                       --build-arg EXPORT_PORT="8080" \\
-                                      -t {ACR_NAME}.azurecr.io/{SERVICE_NAME}/{SERVICE_NAME}:${environment}-${imageTag} .
+                                      -t {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}:${environment}-${imageTag} .
 
-                                  podman push {ACR_NAME}.azurecr.io/{SERVICE_NAME}/{SERVICE_NAME}:${environment}-${imageTag}
+                                  podman push {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}:${environment}-${imageTag}
                               """
                           }
                       }
