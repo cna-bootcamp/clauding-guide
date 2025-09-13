@@ -15,7 +15,7 @@
   - 수동 배포 스크립트 작성
 
 [작업순서]
-- 프롬프트 제공정보 확인 
+- 사전 준비사항 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
   - {ACR_NAME}: Azure Container Registry 이름
   - {RESOURCE_GROUP}: Azure 리소스 그룹명
@@ -162,6 +162,10 @@
     
     # ... 추가 서비스들도 동일한 패턴으로 계속 작성
 
+  commonLabels:
+    app: {SYSTEM_NAME}
+    version: v1
+
   images:
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명1}
       newTag: latest
@@ -292,6 +296,8 @@
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명}
       newTag: {환경}-latest
 
+  commonLabels:
+    environment: {환경}
   ```
 
 - 환경별 설정 파일 작성    
@@ -307,8 +313,8 @@
 
   주요 구성 요소:
   - **Pod Template**: Gradle, Podman, Azure-CLI 컨테이너
-  - **Build & Test**: Gradle 기반 빌드 및 단위 테스트
-  - **SonarQube Analysis**: services.each 루프를 통한 각 서비스별 코드 품질 분석 및 Quality Gate
+  - **Build**: Gradle 기반 빌드 (테스트 제외)
+  - **SonarQube Analysis & Quality Gate**: 조건부 실행으로 테스트, 코드 품질 분석, Quality Gate 통합
   - **Container Build & Push**: 30분 timeout 설정과 함께 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
   - **Pod Cleanup**: 파이프라인 완료 시 에이전트 파드 자동 정리
@@ -407,6 +413,7 @@
           def props
           def imageTag = getImageTag()
           def environment = params.ENVIRONMENT ?: 'dev'
+          def skipSonarQube = params.SKIP_SONARQUBE ?: false
           def services = ['{서비스명1}', '{서비스명2}', '{서비스명3}']
           
           try {
@@ -427,34 +434,39 @@
                   }
               }
 
-              stage('Build & SonarQube Analysis') {
+              stage('Build') {
                   container('gradle') {
-                      withSonarQubeEnv('SonarQube') {
-                          sh """
-                              chmod +x gradlew
-                              ./gradlew build -x test
-                          """
-                          
-                          // 각 서비스별 테스트 및 SonarQube 분석
-                          services.each { service ->
-                              sh """
-                                  ./gradlew :${service}:test :${service}:jacocoTestReport :${service}:sonar \\
-                                      -Dsonar.projectKey={SYSTEM_NAME}-${service}-${environment} \\
-                                      -Dsonar.projectName={SYSTEM_NAME}-${service}-${environment} \\
-                                      -Dsonar.java.binaries=build/classes/java/main \\
-                                      -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
-                                      -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
-                              """
-                          }
-                      }
+                      sh """
+                          chmod +x gradlew
+                          ./gradlew build -x test
+                      """
                   }
               }
 
-              stage('Quality Gate') {
-                  timeout(time: 10, unit: 'MINUTES') {
-                      def qg = waitForQualityGate()
-                      if (qg.status != 'OK') {
-                          error "Pipeline aborted due to quality gate failure: \${qg.status}"
+              if (!skipSonarQube) {
+                  stage('SonarQube Analysis & Quality Gate') {
+                      container('gradle') {
+                          withSonarQubeEnv('SonarQube') {
+                              // 각 서비스별 테스트 및 SonarQube 분석
+                              services.each { service ->
+                                  sh """
+                                      ./gradlew :${service}:test :${service}:jacocoTestReport :${service}:sonar \\
+                                          -Dsonar.projectKey={SYSTEM_NAME}-${service}-${environment} \\
+                                          -Dsonar.projectName={SYSTEM_NAME}-${service}-${environment} \\
+                                          -Dsonar.java.binaries=build/classes/java/main \\
+                                          -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
+                                          -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
+                                  """
+                              }
+                              
+                              // Quality Gate 확인
+                              timeout(time: 10, unit: 'MINUTES') {
+                                  def qg = waitForQualityGate()
+                                  if (qg.status != 'OK') {
+                                      error "Pipeline aborted due to quality gate failure: \${qg.status}"
+                                  }
+                              }
+                          }
                       }
                   }
               }
@@ -565,6 +577,7 @@
     ```
     ENVIRONMENT: Choice Parameter (dev, staging, prod)
     IMAGE_TAG: String Parameter (default: latest)
+    SKIP_SONARQUBE: Boolean Parameter (default: false)
     ```
 
 - SonarQube 프로젝트 설정 방법 작성
@@ -584,7 +597,8 @@
     1. Jenkins > {프로젝트명} > Build with Parameters
     2. ENVIRONMENT 선택 (dev/staging/prod)
     3. IMAGE_TAG 입력 (선택사항)
-    4. Build 클릭
+    4. SKIP_SONARQUBE 설정 (SonarQube 분석 건너뛰려면 true)
+    5. Build 클릭
     ```
   - 배포 상태 확인:
     ```
