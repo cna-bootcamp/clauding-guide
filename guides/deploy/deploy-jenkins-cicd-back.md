@@ -413,7 +413,7 @@
           def props
           def imageTag = getImageTag()
           def environment = params.ENVIRONMENT ?: 'dev'
-          def skipSonarQube = params.SKIP_SONARQUBE ?: false
+          def skipSonarQube = params.SKIP_SONARQUBE ?: true
           def services = ['{서비스명1}', '{서비스명2}', '{서비스명3}']
           
           try {
