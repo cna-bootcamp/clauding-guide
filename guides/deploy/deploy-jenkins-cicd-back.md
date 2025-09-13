@@ -314,7 +314,7 @@
   주요 구성 요소:
   - **Pod Template**: Gradle, Podman, Azure-CLI 컨테이너
   - **Build**: Gradle 기반 빌드 (테스트 제외)
-  - **SonarQube Analysis & Quality Gate**: 조건부 실행으로 테스트, 코드 품질 분석, Quality Gate 통합
+  - **SonarQube Analysis & Quality Gate**: 항상 표시되는 단계, 내부에서 조건부 실행으로 테스트, 코드 품질 분석, Quality Gate 처리
   - **Container Build & Push**: 30분 timeout 설정과 함께 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
   - **Pod Cleanup**: 파이프라인 완료 시 에이전트 파드 자동 정리
@@ -413,7 +413,7 @@
           def props
           def imageTag = getImageTag()
           def environment = params.ENVIRONMENT ?: 'dev'
-          def skipSonarQube = params.SKIP_SONARQUBE ?: true
+          def skipSonarQube = (params.SKIP_SONARQUBE?.toLowerCase() == 'true')
           def services = ['{서비스명1}', '{서비스명2}', '{서비스명3}']
           
           try {
@@ -443,8 +443,10 @@
                   }
               }
 
-              if (!skipSonarQube) {
-                  stage('SonarQube Analysis & Quality Gate') {
+              stage('SonarQube Analysis & Quality Gate') {
+                  if (skipSonarQube) {
+                      echo "⏭️ Skipping SonarQube Analysis (SKIP_SONARQUBE=${params.SKIP_SONARQUBE})"
+                  } else {
                       container('gradle') {
                           withSonarQubeEnv('SonarQube') {
                               // 각 서비스별 테스트 및 SonarQube 분석
@@ -577,7 +579,7 @@
     ```
     ENVIRONMENT: Choice Parameter (dev, staging, prod)
     IMAGE_TAG: String Parameter (default: latest)
-    SKIP_SONARQUBE: Boolean Parameter (default: false)
+    SKIP_SONARQUBE: String Parameter (default: true)
     ```
 
 - SonarQube 프로젝트 설정 방법 작성
@@ -597,7 +599,7 @@
     1. Jenkins > {프로젝트명} > Build with Parameters
     2. ENVIRONMENT 선택 (dev/staging/prod)
     3. IMAGE_TAG 입력 (선택사항)
-    4. SKIP_SONARQUBE 설정 (SonarQube 분석 건너뛰려면 true)
+    4. SKIP_SONARQUBE 입력 (SonarQube 분석 건너뛰려면 "true", 실행하려면 "false")
     5. Build 클릭
     ```
   - 배포 상태 확인:

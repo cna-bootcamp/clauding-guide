@@ -370,7 +370,7 @@
           def props
           def imageTag = getImageTag()
           def environment = params.ENVIRONMENT ?: 'dev'
-          def skipSonarQube = params.SKIP_SONARQUBE ?: true
+          def skipSonarQube = (params.SKIP_SONARQUBE?.toLowerCase() == 'true')
           def sonarScannerHome = '/opt/sonar-scanner'
           
           try {
@@ -401,8 +401,10 @@
                   }
               }
 
-              if (!skipSonarQube) {
-                  stage('SonarQube Analysis & Quality Gate') {
+              stage('SonarQube Analysis & Quality Gate') {
+                  if (skipSonarQube) {
+                      echo "⏭️ Skipping SonarQube Analysis (SKIP_SONARQUBE=${params.SKIP_SONARQUBE})"
+                  } else {
                       container('sonar-scanner') {
                           script {
                               try {
@@ -434,10 +436,6 @@
                               }
                           }
                       }
-                  }
-              } else {
-                  stage('Skip SonarQube Analysis') {
-                      echo "🔄 SonarQube analysis skipped due to SKIP_SONARQUBE parameter"
                   }
               }
 
@@ -549,9 +547,9 @@
   - Default: latest
   - Description: 컨테이너 이미지 태그 (선택사항)
   
-  SKIP_SONARQUBE: Boolean Parameter
+  SKIP_SONARQUBE: String Parameter
   - Default: true
-  - Description: SonarQube 코드 분석 스킵 여부
+  - Description: SonarQube 코드 분석 스킵 여부 (true/false)
   ```
 
 - SonarQube 프로젝트 설정 안내
