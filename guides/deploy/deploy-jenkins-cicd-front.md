@@ -409,7 +409,7 @@
                                     timeout 300 ${sonarScannerHome}/bin/sonar-scanner \\
                                     -Dsonar.projectKey={SERVICE_NAME}-${environment} \\
                                     -Dsonar.projectName={SERVICE_NAME}-${environment} \\
-                                    -Dsonar.sources=src/components,src/pages,src/services,src/hooks,src/utils \\
+                                    -Dsonar.sources=src/components,src/pages,src/services,src/hooks \\
                                     -Dsonar.tests=src \\
                                     -Dsonar.test.inclusions=src/**/*.test.js,src/**/*.test.jsx,src/**/*.test.ts,src/**/*.test.tsx \\
                                     -Dsonar.exclusions=**/node_modules/**,**/build/**,**/dist/**,**/*.config.js,**/coverage/**,**/stores/**,**/config/**,**/types/**,**/styles/**,**/assets/** \\
