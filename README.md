@@ -1791,7 +1791,7 @@ deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합�
 
 
 **4.Git Push**     
-Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다. 
+Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다.   
 따라서 로컬에서 수정하면 반드시 원격 Git Repo에 푸시해야 합니다.    
 프롬프트창에 아래 명령을 내립니다.   
 ```
@@ -1968,7 +1968,7 @@ deployment/cicd 디렉토리 하위에 파일들이 생성됩니다.
 deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
 
 **4.Git Push**     
-Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다. 
+Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다.   
 따라서 로컬에서 수정하면 반드시 원격 Git Repo에 푸시해야 합니다.    
 프롬프트창에 아래 명령을 내립니다.   
 ```
