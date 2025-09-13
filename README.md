@@ -1993,9 +1993,7 @@ push
 
 - Repository URL: 원격 Git Repo 주소
 - Credentials: 원격 Git Repo 접속 위한 인증 Credential
-  ![](images/2025-09-13-13-44-37.png)   
-
-- 브랜치: 'main'  
+- branch를 '/main'으로 수정  
 - Jenkinsfile 경로: deployment/cicd/Jenkinsfile     
 
 **6.파이프라인 실행**    
