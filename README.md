@@ -1756,7 +1756,15 @@ SonarQube에 로그인하여 수행합니다.
 - phonebill-product-service-dev
 - phonebill-kos-mock-dev
 - phonebill-api-gateway-dev
- 
+
+매개변수 지정:    
+배포 대상 환경 'ENVIRONMENT'를 추가. 값은 dev, staging, prod 중 하나인데 실습시에는 'dev'로 지정합니다.    
+소스품질검사 Skip여부 'SKIP_SONARQUBE'를 추가. 값은 true 또는 false로 지정.
+![](images/2025-09-13-16-50-46.png) 
+![](images/2025-09-13-16-53-22.png) 
+![](images/2025-09-13-16-54-01.png) 
+
+원격 Git 레포지토리 주소 입력과 인증 Credential 지정   
 ![](images/2025-09-11-19-07-13.png)  
 
 
