@@ -370,6 +370,7 @@
           def props
           def imageTag = getImageTag()
           def environment = params.ENVIRONMENT ?: 'dev'
+          def skipSonarQube = params.SKIP_SONARQUBE ?: true
           def sonarScannerHome = '/opt/sonar-scanner'
           
           try {
@@ -400,37 +401,43 @@
                   }
               }
 
-              stage('Code Analysis & Quality Gate') {
-                  container('sonar-scanner') {
-                      script {
-                          try {
-                              withSonarQubeEnv('SonarQube') {
-                                  sh """
-                                    timeout 300 ${sonarScannerHome}/bin/sonar-scanner \\
-                                    -Dsonar.projectKey={SERVICE_NAME}-${environment} \\
-                                    -Dsonar.projectName={SERVICE_NAME}-${environment} \\
-                                    -Dsonar.sources=src/components,src/pages,src/services,src/hooks \\
-                                    -Dsonar.tests=src \\
-                                    -Dsonar.test.inclusions=src/**/*.test.js,src/**/*.test.jsx,src/**/*.test.ts,src/**/*.test.tsx \\
-                                    -Dsonar.exclusions=**/node_modules/**,**/build/**,**/dist/**,**/*.config.js,**/coverage/**,**/stores/**,**/config/**,**/types/**,**/styles/**,**/assets/** \\
-                                    -Dsonar.scm.disabled=true \\
-                                    -Dsonar.sourceEncoding=UTF-8 \\
-                                    -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \\
-                                    -Dsonar.scm.disabled=true \\
-                                    -Dsonar.sourceEncoding=UTF-8
-                                  """
-                              }
-                              
-                              timeout(time: 5, unit: 'MINUTES') {
-                                  def qg = waitForQualityGate()
-                                  if (qg.status != 'OK') {
-                                      echo "⚠️ Quality Gate failed: ${qg.status}, but continuing pipeline..."
+              if (!skipSonarQube) {
+                  stage('SonarQube Analysis & Quality Gate') {
+                      container('sonar-scanner') {
+                          script {
+                              try {
+                                  withSonarQubeEnv('SonarQube') {
+                                      sh """
+                                        timeout 300 ${sonarScannerHome}/bin/sonar-scanner \\
+                                        -Dsonar.projectKey={SERVICE_NAME}-${environment} \\
+                                        -Dsonar.projectName={SERVICE_NAME}-${environment} \\
+                                        -Dsonar.sources=src/components,src/pages,src/services,src/hooks \\
+                                        -Dsonar.tests=src \\
+                                        -Dsonar.test.inclusions=src/**/*.test.js,src/**/*.test.jsx,src/**/*.test.ts,src/**/*.test.tsx \\
+                                        -Dsonar.exclusions=**/node_modules/**,**/build/**,**/dist/**,**/*.config.js,**/coverage/**,**/stores/**,**/config/**,**/types/**,**/styles/**,**/assets/** \\
+                                        -Dsonar.scm.disabled=true \\
+                                        -Dsonar.sourceEncoding=UTF-8 \\
+                                        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \\
+                                        -Dsonar.scm.disabled=true \\
+                                        -Dsonar.sourceEncoding=UTF-8
+                                      """
                                   }
+                                  
+                                  timeout(time: 5, unit: 'MINUTES') {
+                                      def qg = waitForQualityGate()
+                                      if (qg.status != 'OK') {
+                                          echo "⚠️ Quality Gate failed: ${qg.status}, but continuing pipeline..."
+                                      }
+                                  }
+                              } catch (Exception e) {
+                                  echo "⚠️ SonarQube analysis failed: ${e.getMessage()}, but continuing pipeline..."
                               }
-                          } catch (Exception e) {
-                              echo "⚠️ SonarQube analysis failed: ${e.getMessage()}, but continuing pipeline..."
                           }
                       }
+                  }
+              } else {
+                  stage('Skip SonarQube Analysis') {
+                      echo "🔄 SonarQube analysis skipped due to SKIP_SONARQUBE parameter"
                   }
               }
 
@@ -541,6 +548,10 @@
   IMAGE_TAG: String Parameter
   - Default: latest
   - Description: 컨테이너 이미지 태그 (선택사항)
+  
+  SKIP_SONARQUBE: Boolean Parameter
+  - Default: true
+  - Description: SonarQube 코드 분석 스킵 여부
   ```
 
 - SonarQube 프로젝트 설정 안내
