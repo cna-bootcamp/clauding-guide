@@ -1940,48 +1940,6 @@ logs
 **/.DS_Store
 ```
   
-2)'.eslintrc.cjs' 파일 생성        
-'.eslintrc.cjs'는 TypeScript + React 프로젝트의 코드 품질 검사 규칙을 정의하는 설정 파일입니다.   
-이 파일이 기존에 생성되어 있지 않으면 아래 내용으로 루트에 작성합니다.  
-```
-module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
-  ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', '@typescript-eslint'],
-  rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    '@typescript-eslint/no-explicit-any': 'warn',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-  },
-}
-```
-  
-3)package.json의 scripts.lint 설정 추가 또는 설정     
-아래와 같이 scripts 섹션에 lint 명령이 있는지 체크해서 없으면 추가합니다.   
-기존에 있으면 아래와 같이 수정합니다.   
-
-```
-...
-"scripts": {
-    ...
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 20",
-    ...
-  },
-...  
-```
-
 **2.SonarQube 프로젝트 만들기**     
 SonarQube에 로그인하여 프론트엔드를 위한 프로젝트를 작성합니다.  
 {서비스명}-{대상환경:dev/staging/prod}
