@@ -101,28 +101,72 @@
   ```javascript
   module.exports = {
     root: true,
-    env: { browser: true, es2020: true },
+    env: { 
+      browser: true, 
+      es2020: true,
+      node: true
+    },
     extends: [
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
-      'plugin:react-hooks/recommended',
+      'plugin:react-hooks/recommended'
     ],
-    ignorePatterns: ['dist', '.eslintrc.cjs'],
+    ignorePatterns: [
+      'dist',
+      '.eslintrc.cjs',
+      'node_modules',
+      'build',
+      'coverage'
+    ],
     parser: '@typescript-eslint/parser',
-    plugins: ['react-refresh', '@typescript-eslint'],
+    parserOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      ecmaFeatures: {
+        jsx: true
+      }
+    },
+    plugins: [
+      'react-refresh',
+      '@typescript-eslint'
+    ],
     rules: {
+      // React 관련 규칙
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      
+      // TypeScript 관련 규칙
+      '@typescript-eslint/no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_'
+      }],
       '@typescript-eslint/no-explicit-any': 'warn',
+      
+      // 일반 규칙
+      'no-unused-vars': 'off', // TypeScript 규칙을 사용
+      
+      // Hooks 규칙
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/exhaustive-deps': 'warn'
     },
+    overrides: [
+      {
+        files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
+        env: {
+          jest: true
+        }
+      }
+    ]
   }
   ```
 
+  **필수 ESLint 관련 devDependencies 설치**:
+  ```bash
+  npm install --save-dev eslint-plugin-react
+  ```
+  
   **package.json lint 스크립트 수정** (max-warnings 20으로 설정):
   ```json
   {
@@ -323,7 +367,7 @@
               image: 'node:slim', 
               ttyEnabled: true, 
               command: 'cat',
-              resourceRequestCpu: '500m',
+              resourceRequestCpu: '400m',
               resourceRequestMemory: '1Gi',
               resourceLimitCpu: '2000m',
               resourceLimitMemory: '4Gi'
@@ -334,7 +378,7 @@
               ttyEnabled: true, 
               command: 'cat', 
               privileged: true,
-              resourceRequestCpu: '500m',
+              resourceRequestCpu: '400m',
               resourceRequestMemory: '2Gi',
               resourceLimitCpu: '2000m',
               resourceLimitMemory: '4Gi'
@@ -413,15 +457,15 @@
                                         timeout 300 ${sonarScannerHome}/bin/sonar-scanner \\
                                         -Dsonar.projectKey={SERVICE_NAME}-${environment} \\
                                         -Dsonar.projectName={SERVICE_NAME}-${environment} \\
-                                        -Dsonar.sources=src/components,src/pages,src/services,src/hooks \\
+                                        -Dsonar.sources=src \\
                                         -Dsonar.tests=src \\
-                                        -Dsonar.test.inclusions=src/**/*.test.js,src/**/*.test.jsx,src/**/*.test.ts,src/**/*.test.tsx \\
-                                        -Dsonar.exclusions=**/node_modules/**,**/build/**,**/dist/**,**/*.config.js,**/coverage/**,**/stores/**,**/config/**,**/types/**,**/styles/**,**/assets/** \\
+                                        -Dsonar.test.inclusions=**/*.test.ts,**/*.test.tsx,**/*.spec.ts,**/*.spec.tsx \\
+                                        -Dsonar.exclusions=node_modules/**,dist/**,build/**,coverage/**,**/*.config.js,**/*.config.ts,scripts/** \\
                                         -Dsonar.scm.disabled=true \\
                                         -Dsonar.sourceEncoding=UTF-8 \\
+                                        -Dsonar.typescript.tsconfigPaths=tsconfig.json \\
                                         -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \\
-                                        -Dsonar.scm.disabled=true \\
-                                        -Dsonar.sourceEncoding=UTF-8
+                                        -Dsonar.javascript.node.maxspace=4096
                                       """
                                   }
                                   
