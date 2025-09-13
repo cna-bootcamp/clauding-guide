@@ -1756,17 +1756,8 @@ SonarQube에 로그인하여 수행합니다.
 - phonebill-product-service-dev
 - phonebill-kos-mock-dev
 - phonebill-api-gateway-dev
-
-매개변수 지정:    
-배포 대상 환경 'ENVIRONMENT'를 추가. 값은 dev, staging, prod 중 하나인데 실습시에는 'dev'로 지정합니다.    
-소스품질검사 Skip여부 'SKIP_SONARQUBE'를 추가. 값은 true 또는 false로 지정.
-![](images/2025-09-13-16-50-46.png) 
-![](images/2025-09-13-16-53-22.png) 
-![](images/2025-09-13-16-54-01.png) 
-
-원격 Git 레포지토리 주소 입력과 인증 Credential 지정   
+ 
 ![](images/2025-09-11-19-07-13.png)  
-
 
 branch명은 'main'으로 함.
 ![](images/2025-09-12-13-34-25.png) 
@@ -1826,6 +1817,14 @@ GitHub Repository에 WebHook을 설정을 하여 소스 업로드 시 Jenkins에
 ![](images/2025-09-12-13-58-37.png)
 
 4)Pipeline 설정
+매개변수 지정:    
+배포 대상 환경 'ENVIRONMENT'를 추가. 값은 dev, staging, prod 중 하나인데 실습시에는 'dev'로 지정합니다.    
+소스품질검사 Skip여부 'SKIP_SONARQUBE'를 추가. 값은 true 또는 false로 지정.
+![](images/2025-09-13-16-50-46.png) 
+![](images/2025-09-13-16-53-22.png) 
+![](images/2025-09-13-16-54-01.png) 
+
+원격 Git 레포지토리 주소와 인증 Credential 지정   
 ![](images/2025-09-12-15-18-54.png)
 
 브랜치를 'main'으로 하고 Jenkinsfile의 경로를 정확하게 입력합니다.   
