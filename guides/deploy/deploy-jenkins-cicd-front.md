@@ -513,100 +513,48 @@
   }
   ```
 
-## Jenkins Pipeline Job 생성
+- Jenkins Pipeline Job 생성 안내
 
-### Pipeline Job 설정
-1. Jenkins 웹 UI에서 **New Item > Pipeline** 선택
-2. **Pipeline script from SCM** 설정:
-   ```
-   SCM: Git
-   Repository URL: {Git저장소URL}
-   Branch: main (또는 develop)
-   Script Path: deployment/cicd/Jenkinsfile
-   ```
+  - Pipeline Job 설정
+  1. Jenkins 웹 UI에서 **New Item > Pipeline** 선택
+  2. **Pipeline script from SCM** 설정:
+     ```
+     SCM: Git
+     Repository URL: {Git저장소URL}
+     Branch: main (또는 develop)
+     Script Path: deployment/cicd/Jenkinsfile
+     ```
 
-### Pipeline Parameters 설정
-```
-ENVIRONMENT: Choice Parameter
-- Choices: dev, staging, prod
-- Default: dev
-- Description: 배포 환경 선택
+  - Pipeline Parameters 설정
+  ```
+  ENVIRONMENT: Choice Parameter
+  - Choices: dev, staging, prod
+  - Default: dev
+  - Description: 배포 환경 선택
 
-IMAGE_TAG: String Parameter
-- Default: latest
-- Description: 컨테이너 이미지 태그 (선택사항)
-```
+  IMAGE_TAG: String Parameter
+  - Default: latest
+  - Description: 컨테이너 이미지 태그 (선택사항)
+  ```
 
-## SonarQube 프로젝트 설정
+- SonarQube 프로젝트 설정 안내
 
-### SonarQube 프로젝트 생성
-- SonarQube에서 프론트엔드 프로젝트 생성
-- 프로젝트 키: `{SERVICE_NAME}-{환경}`
-- 언어: JavaScript/TypeScript
+  - SonarQube 프로젝트 생성
+    - SonarQube에서 프론트엔드 프로젝트 생성
+    - 프로젝트 키: `{SERVICE_NAME}-{환경}`
+    - 언어: JavaScript/TypeScript
 
-### Quality Gate 설정
-```
-Coverage: >= 70%
-Duplicated Lines: <= 3%
-Maintainability Rating: <= A
-Reliability Rating: <= A
-Security Rating: <= A
-Code Smells: <= 50
-Bugs: = 0
-Vulnerabilities: = 0
-```
-
-## 컨테이너 Dockerfile
-
-`deployment/container/Dockerfile-frontend` 파일 예시:
-```dockerfile
-# Build stage
-FROM node:20-slim as build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Production stage
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY deployment/container/nginx.conf /etc/nginx/nginx.conf
-EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-`deployment/container/nginx.conf` 파일 예시:
-```nginx
-events {
-    worker_connections 1024;
-}
-
-http {
-    include       /etc/nginx/mime.types;
-    default_type  application/octet-stream;
-    
-    sendfile        on;
-    keepalive_timeout  65;
-    
-    server {
-        listen 8080;
-        server_name localhost;
-        root /usr/share/nginx/html;
-        index index.html index.htm;
-        
-        location / {
-            try_files $uri $uri/ /index.html;
-        }
-        
-        location /health {
-            access_log off;
-            return 200 "healthy\n";
-            add_header Content-Type text/plain;
-        }
-    }
-}
-```
+  - Quality Gate 설정
+  ```
+  Coverage: >= 70%
+  Duplicated Lines: <= 3%
+  Maintainability Rating: <= A
+  Reliability Rating: <= A
+  Security Rating: <= A
+  Code Smells: <= 50
+  Bugs: = 0
+  Vulnerabilities: = 0
+  ```
 
 - 수동 배포 스크립트 작성
   `deployment/cicd/scripts/deploy.sh` 파일 생성:
