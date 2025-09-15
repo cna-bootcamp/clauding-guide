@@ -843,7 +843,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] Dockerfile 및 Nginx 설정 파일 생성 완료
 
 [결과파일]
-- 가이드: deployment/cicd/jenkins-pipeline-guide-frontend.md
+- 가이드: deployment/cicd/jenkins-pipeline-guide.md
 - 환경별 설정 파일: deployment/cicd/config/*
 - Kustomize 파일: deployment/cicd/kustomize/*
 - 수동배포 스크립트: deployment/cicd/scripts

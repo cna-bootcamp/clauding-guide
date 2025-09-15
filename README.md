@@ -1121,6 +1121,10 @@ code .
   - 설명: 프론트엔드 서비스를 Jenkins를 이용하여 CI/CD하는 배포 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-jenkins-cicd-front.md
   - 파일명: deploy-jenkins-cicd-front.md  
+- 프론트엔드GitHubActions파이프라인작성가이드
+  - 설명: 프론트엔드 서비스를 GitHub Actions를 이용하여 CI/CD하는 배포 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-actions-cicd-front.md
+  - 파일명: deploy-actions-cicd-front.md 
 
 ## 프롬프트 약어 
 ### 역할 약어 
