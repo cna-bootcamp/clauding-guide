@@ -2271,8 +2271,7 @@ DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
   
 **2.Repository Variables 설정**    
 
-GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:
-![](images/2025-09-15-15-50-36.png)  
+GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:  
 
 ```
 ENVIRONMENT: dev
