@@ -2202,3 +2202,130 @@ Error: Process completed with exit code 1.
 ---
 
 ##### 프론트엔드 서비스  
+
+**0.사전작업**    
+1)Jenkins로 배포한 객체 모두 삭제    
+vscode 터미널에서 아래 명령 수행   
+```
+k delete -f deployment/k8s
+```
+
+2)WebHook 트리거 해제   
+소스 업로드 시 Jenkins 파이프라인 구동되지 않도록 파이프라인 설정에서 해제   
+파이프라인 메뉴에서 '구성'을 클릭하거나, 블루오션에서 '설정' 아이콘을 클릭하여 파이프라인 설정화면으로 이동합니다.  
+
+'GitHub hook trigger for GITScm polling'을 uncheck합니다. 
+
+**1.Repository Secrets 설정**      
+
+GitHub Repository > Settings > Secrets and variables > Actions > Repository secrets에 다음 항목들을 등록하세요:   
+
+1)Azure 인증 정보   
+```json
+AZURE_CREDENTIALS:
+{
+  "clientId": "5e4b5b41-7208-48b7-b821-d6d5acf50ecf",
+  "clientSecret": "ldu8Q~GQEzFYU.dJX7_QsahR7n7C2xqkIM6hqbV8",
+  "subscriptionId": "2513dd36-7978-48e3-9a7c-b221d4874f66",
+  "tenantId": "4f0a3bfd-1156-4cce-8dc2-a049a13dba23"
+}
+```
+
+2)ACR Credentials    
+```bash
+# ACR 자격 증명 확인 명령어   
+az acr credential show --name acrdigitalgarage01
+```
+```
+ACR_USERNAME: acrdigitalgarage01
+ACR_PASSWORD: {ACR패스워드}
+```
+
+3)SonarQube 설정    
+GitHub Actions 파이프라인에서 SonarQube를 접근하기 위한 정보를 등록합니다.   
+```bash
+# SonarQube URL 확인
+kubectl get svc -n sonarqube
+
+# SonarQube 토큰 생성 방법:
+1. SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭  
+2. Security 탭 선택 후 토큰 생성  
+```
+```
+SONAR_HOST_URL: http://{External IP}
+SONAR_TOKEN: {SonarQube토큰}
+```
+
+4)Docker Hub 설정 (Rate Limit 해결)    
+```
+Docker Hub 패스워드 작성 방법
+- DockerHub(https://hub.docker.com)에 로그인
+- 우측 상단 프로필 아이콘 클릭 후 Account Settings를 선택
+- 좌측메뉴에서 'Personal Access Tokens' 클릭하여 생성  
+```
+
+```
+DOCKERHUB_USERNAME: {Docker Hub 사용자명}
+DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
+```
+  
+**2.Repository Variables 설정**    
+
+GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:
+![](images/2025-09-15-15-50-36.png)  
+
+```
+ENVIRONMENT: dev
+SKIP_SONARQUBE: true
+```
+
+**3.GitHub Actions CI/CD 파일 작성**     
+vscode를 실행하고 Claude Code도 시작한 후 수행 하세요.   
+아래와 같이 프롬프팅하여 GitHub Actions CI/CD파일들을 작성합니다.  
+[실행정보]는 본인 프로젝트에 맞게 수정하여야 합니다.     
+deployment/.github 디렉토리 하위에 파일들이 생성됩니다.    
+
+예시)  
+```
+@cicd 
+'프론트엔드GitHubActions파이프라인작성가이드'에 따라 GitHub Actions를 이용한 CI/CD 가이드를 작성해 주세요.   
+[실행정보]
+- SYSTEM_NAME: phonebill
+- ACR_NAME: acrdigitalgarage01
+- RESOURCE_GROUP: rg-digitalgarage-01
+- AKS_CLUSTER: aks-digitalgarage-01 
+```
+
+deployment/.github 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
+
+
+**4.Git Push**     
+GitHub Actions 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다.   
+따라서 로컬에서 수정하면 반드시 원격 Git Repo에 푸시해야 합니다.    
+프롬프트창에 아래 명령을 내립니다.   
+```
+push 
+```
+
+**5.파이프라인 구동 확인**    
+Actions 탭을 클릭하면 자동으로 파이프라인이 구동되는 것을 확인할 수 있습니다.   
+
+수행되고 있는 파이프라인을 클릭하면 Build -> Release -> Deploy별로 진행상태를 볼 수 있습니다.   
+각 단계를 클릭하면 상세한 타스크 진행상태를 볼 수 있습니다.    
+  
+파이프라인 구동 시 에러가 발생하면 아래와 같이 에러메시지를 첨부하여 에러 해결을 요청합니다.   
+예)
+```
+파이프라인 수행중 에러. 
+
+Run # 환경별 디렉토리로 이동
+error: accumulating resources: accumulation err='accumulating resources from '../../base': '/home/runner/work/phonebill/phonebill/.github/kustomize/base' must resolve to a file':
+...
+Error: Process completed with exit code 1.
+```
+
+| [Top](#목차) |
+
+---
+
+
