@@ -1,13 +1,9 @@
-# ArgoCD 파이프라인 작성 가이드
+# ArgoCD 파이프라인 작성 가이드 
 
 [요청사항]  
-- CI/CD 파이프라인에서 CI와 CD를 분리하여 ArgoCD를 활용한 GitOps 방식의 배포 가이드 작성   
+- CI/CD 파이프라인에서 CI와 CD를 분리하여 ArgoCD를 활용한 GitOps 방식의 배포 준비 수행   
 - 환경별(dev/staging/prod) Kustomize 매니페스트 관리 및 자동 배포 구현
-- '[결과파일]'에 구축 방법 및 파이프라인 작성 가이드 생성    
-- 아래 작업은 실제 수행하여 파일 생성
-  - 매니페스트 레포지토리 구성
-  - CI/CD가 분리된 Jenkins 파이프라인 스크립트 작성
-  - CI/CD가 분리된 GitHub Actions Workflow 작성  
+- '[결과파일]'에 수행 결과 작성
 
 [작업순서]
 - 사전 준비사항 확인   
@@ -17,7 +13,7 @@
   - {ACR_NAME}: Azure Container Registry 이름
   - {RESOURCE_GROUP}: Azure 리소스 그룹명
   - {AKS_CLUSTER}: AKS 클러스터명
-  - {MANIFEST_REG}: 'git remote get-url origin' 명령으로 매니페스트 원격 주소를 구함  
+  - {MANIFEST_REPO_URL}: 'git remote get-url origin' 명령으로 매니페스트 원격 주소를 구함  
   - {JENKINS_GIT_CREDENTIALS}: 매니페스트 레포지토리를 접근하기 위한 Jenkins Credential 
   - {MANIFEST_SECRET_GIT_USERNAME}: 매니페스트 레포지토리를 접근하기 위한 Git Username을 정의한 GitHub Action 변수명 
   - {MANIFEST_SECRET_GIT_PASSWORD}: 매니페스트 레포지토리를 접근하기 위한 Git Password을 정의한 GitHub Action 변수명 
@@ -30,20 +26,18 @@
   - ACR_NAME: acrdigitalgarage01
   - RESOURCE_GROUP: rg-digitalgarage-01
   - AKS_CLUSTER: aks-digitalgarage-01
-  - MANIFEST_REG: https://github.com/cna-bootcamp/phonebill-manifest.git
+  - MANIFEST_REPO_URL: https://github.com/cna-bootcamp/phonebill-manifest.git
   - JENKINS_GIT_CREDENTIALS: github-credentials-dg0500
   - MANIFEST_SECRET_GIT_USERNAME: GIT_USERNAME
   - MANIFEST_SECRET_GIT_PASSWORD: GIT_PASSWORD
   ``` 
 
-- 환경변수 생성   
-  export BASE_DIR=..
-
-  # 작업 편의를 위한 파생 환경변수
-  export BACKEND_DIR=${BASE_DIR}/${SYSTEM_NAME}
-  export FRONTEND_DIR=${BASE_DIR}/${FRONTEND_SERVICE}
-  export MANIFEST_DIR=.
-
+- 작업 편의를 위한 환경변수   
+  - {BASE_DIR}: ..
+  - {BACKEND_DIR}: ${BASE_DIR}/${SYSTEM_NAME}
+  - {FRONTEND_DIR}: ${BASE_DIR}/${FRONTEND_SERVICE}
+  - {MANIFEST_DIR}: .
+  
 - 백엔드 서비스명 확인   
   ${BACKEND_DIR}/settings.gradle에서 확인.
   {SERVICE_NAMES}: include 'common'하위의 include문 뒤의 값임
@@ -73,30 +67,206 @@
   ```
 
 - CI/CD가 분리된 Jenkins 파이프라인 스크립트 작성
-  - 백엔드 Jenkins 파이프라인 스크립트 작성  
-    - ${BACKEND_DIR}/deployment/cicd/Jenkisfile을 ${BACKEND_DIR}/deployment/cicd/Jenkisfile_ArgoCD로 복사  
-    - Jenkisfile_ArgoCD 변경: 직접 Deploy하지 않고 매니페스트 레포지토리의 Deployment 매니페스트의 이미지명만 변경하여 푸시 하도록 수정 
-  - 프론트엔드 Jenkins 파이프라인 스크립트 작성  
-    - ${FRONTEND_DIR}/deployment/cicd/Jenkisfile을 ${FRONTEND_DIR}/deployment/cicd/Jenkisfile_ArgoCD로 복사  
-    - Jenkisfile_ArgoCD 변경: 직접 Deploy하지 않고 매니페스트 레포지토리의 Deployment 매니페스트의 이미지명만 변경하여 푸시 하도록 수정 
+
+  **분석된 기존 파이프라인 구조:**
+  - Build & Test → SonarQube Analysis → Build & Push Images → **Deploy (직접 K8s 배포)**
+
+  **ArgoCD 적용 시 변경사항:**
+  - Deploy 단계를 **매니페스트 레포지토리 업데이트**로 교체
+  - `kubectl apply` 제거하고 `git push`로 ArgoCD 트리거
+
+  **1) 백엔드 Jenkins 파이프라인 수정**
+  - 기존 파일을 새 파일로 복사
+    ```
+    cp ${BACKEND_DIR}/deployment/cicd/Jenkinsfile ${BACKEND_DIR}/deployment/cicd/Jenkinsfile_ArgoCD
+    ```
+
+ - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
+  ```
+  stage('Update Manifest Repository') {
+    container('azure-cli') {
+        withCredentials([usernamePassword(
+            credentialsId: '{JENKINS_GIT_CREDENTIALS}',
+            usernameVariable: 'GIT_USERNAME',
+            passwordVariable: 'GIT_TOKEN'
+        )]) {
+            sh """
+                # 매니페스트 레포지토리 클론
+                REPO_URL=\$(echo "{MANIFEST_REPO_URL}" | sed 's|https://||')
+                git clone https://\${GIT_USERNAME}:\${GIT_TOKEN}@\${REPO_URL} manifest-repo
+                cd manifest-repo
+
+                # Kustomize 설치
+                curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+                mkdir -p \$HOME/bin && mv kustomize \$HOME/bin/
+                export PATH=\$PATH:\$HOME/bin
+
+                # 환경별 매니페스트 업데이트
+                cd {SYSTEM_NAME}/kustomize/overlays/\${environment}
+
+                # 각 서비스별 이미지 태그 업데이트
+                services="{SERVICE_NAMES}"
+                for service in \$services; do
+                    \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:\${environment}-\${imageTag}
+                done
+
+                # Git 설정 및 푸시
+                cd ../../../..
+                git config user.name "Jenkins CI"
+                git config user.email "jenkins@example.com"
+                git add .
+                git commit -m "🚀 Update {SYSTEM_NAME} \${environment} images to \${environment}-\${imageTag}"
+                git push origin main
+
+                echo "✅ 매니페스트 업데이트 완료. ArgoCD가 자동으로 배포합니다."
+            """
+        }
+      }
+    }
+    ```
+
+  **2) 프론트엔드 Jenkins 파이프라인 수정**
+  - 기존 파일을 새 파일로 복사
+    ```
+    cp ${FRONTEND_DIR}/deployment/cicd/Jenkinsfile ${FRONTEND_DIR}/deployment/cicd/Jenkinsfile_ArgoCD
+    ```
+  - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
+    ```
+    stage('Update Frontend Manifest Repository') {
+        container('azure-cli') {
+            withCredentials([usernamePassword(
+                credentialsId: 'JENKINS_GIT_CREDENTIALS_VALUE',
+                usernameVariable: 'GIT_USERNAME',
+                passwordVariable: 'GIT_TOKEN'
+            )]) {
+                sh """
+                    # 매니페스트 레포지토리 클론
+                    REPO_URL=\$(echo "{MANIFEST_REPO_URL}" | sed 's|https://||')
+                    git clone https://\${GIT_USERNAME}:\${GIT_TOKEN}@\${REPO_URL} manifest-repo
+                    cd manifest-repo
+
+                    # Kustomize 설치
+                    curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+                    mkdir -p \$HOME/bin && mv kustomize \$HOME/bin/
+                    export PATH=\$PATH:\$HOME/bin
+
+                    # 프론트엔드 매니페스트 업데이트
+                    cd {FRONTEND_SERVICE}/kustomize/overlays/\${environment}
+                    \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}:\${environment}-\${imageTag}
+
+                    # Git 설정 및 푸시
+                    cd ../../../..
+                    git config user.name "Jenkins CI"
+                    git config user.email "jenkins@example.com"
+                    git add .
+                    git commit -m "🚀 Update {FRONTEND_SERVICE} \${environment} image to \${environment}-\${imageTag}"
+                    git push origin main
+
+                    echo "✅ 프론트엔드 매니페스트 업데이트 완료. ArgoCD가 자동으로 배포합니다."
+                """
+            }
+        }
+    }
+    ```
 
 - CI/CD가 분리된 GitHub Actions Workflow 작성
-  - 백엔드 GitHub Actions Workflow 작성  
-    - ${BACKEND_DIR}/.github/workflows/backend-cicd.yaml을 ${BACKEND_DIR}/.github/workflows/backend-cicd_ArgoCD.yaml로 복사  
-    - backend-cicd_ArgoCD.yaml 변경: 직접 Deploy하지 않고 매니페스트 레포지토리의 Deployment 매니페스트의 이미지명만 변경하여 푸시 하도록 수정 
-  - 프론트엔드 GitHub Actions Workflow 작성  
-    - ${FRONTEND_DIR}/.github/workflows/frontend-cicd.yaml을 ${FRONTEND_DIR}/.github/workflows/frontend-cicd_ArgoCD.yaml로 복사  
-    - frontend-cicd_ArgoCD.yaml 변경: 직접 Deploy하지 않고 매니페스트 레포지토리의 Deployment 매니페스트의 이미지명만 변경하여 푸시 하도록 수정 
 
-- Jenkins파이프라인 수행 방법 안내 
-  - 'JENKINS_GIT_CREDENTIALS' 작성 방법 안내   
-  - 파이프라인 설정 수정 방법 안내 
-  - 파이프라인 실행 방법 안내 
-  
-- GitHub Actions Workflow 수행 방법 안내  
-  - 'MANIFEST_SECRET_GIT_USERNAME'과 'MANIFEST_SECRET_GIT_PASSWORD' 작성 방법 안내 
-  - GitHub Actions Workflow 실행 방법 안내   
+  **1) 백엔드 GitHub Actions Workflow 수정**
+  - 기존 파일을 새 파일로 복사
+    ```
+    cp ${BACKEND_DIR}/.github/workflows/backend-cicd.yaml ${BACKEND_DIR}/.github/workflows/backend-cicd_ArgoCD.yaml
+    ```
+
+  - backend-cicd_ArgoCD.yaml의 deploy job을 **update-manifest** job으로 교체
+  ```
+  update-manifest:
+    name: Update Manifest Repository
+    needs: [build, release]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set image tag environment variable
+      run: |
+        echo "IMAGE_TAG=${{ needs.build.outputs.image_tag }}" >> $GITHUB_ENV
+        echo "ENVIRONMENT=${{ needs.build.outputs.environment }}" >> $GITHUB_ENV
+
+    - name: Update Manifest Repository
+      run: |
+        # 매니페스트 레포지토리 클론
+        REPO_URL=$(echo "{MANIFEST_REPO_URL}" | sed 's|https://||')
+        git clone https://${{ secrets.{MANIFEST_SECRET_GIT_USERNAME} }}:${{ secrets.{MANIFEST_SECRET_GIT_PASSWORD} }}@${REPO_URL} manifest-repo
+        cd manifest-repo
+
+        # Kustomize 설치
+        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+        sudo mv kustomize /usr/local/bin/
+
+        # 매니페스트 업데이트
+        cd {SYSTEM_NAME}/kustomize/overlays/${{ env.ENVIRONMENT }}
+
+        # 각 서비스별 이미지 태그 업데이트
+        services="{SERVICE_NAMES}"
+        for service in $services; do
+          kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/$service:${{ env.ENVIRONMENT }}-${{ env.IMAGE_TAG }}
+        done
+
+        # Git 설정 및 푸시
+        cd ../../../..
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .
+        git commit -m "🚀 Update {SYSTEM_NAME} ${{ env.ENVIRONMENT }} images to ${{ env.ENVIRONMENT }}-${{ env.IMAGE_TAG }}"
+        git push origin main
+
+        echo "✅ 매니페스트 업데이트 완료. ArgoCD가 자동으로 배포합니다."
+  ```
+
+  **2) 프론트엔드 GitHub Actions Workflow 수정**
+  - 기존 파일을 새 파일로 복사
+    ```
+    cp ${FRONTEND_DIR}/.github/workflows/frontend-cicd.yaml ${FRONTEND_DIR}/.github/workflows/frontend-cicd_ArgoCD.yaml
+    ```
+  - frontend-cicd_ArgoCD.yaml의 프론트엔드용 deploy job 교체
+    ```
+    update-manifest:
+      name: Update Frontend Manifest Repository
+      needs: [build, release]
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Set image tag environment variable
+        run: |
+          echo "IMAGE_TAG=${{ needs.build.outputs.image_tag }}" >> $GITHUB_ENV
+          echo "ENVIRONMENT=${{ needs.build.outputs.environment }}" >> $GITHUB_ENV
+
+      - name: Update Frontend Manifest Repository
+        run: |
+          # 매니페스트 레포지토리 클론
+          REPO_URL=$(echo "{MANIFEST_REPO_URL}" | sed 's|https://||')
+          git clone https://${{ secrets.{MANIFEST_SECRET_GIT_USERNAME} }}:${{ secrets.{MANIFEST_SECRET_GIT_PASSWORD} }}@${REPO_URL} manifest-repo
+          cd manifest-repo
+
+          # Kustomize 설치
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          sudo mv kustomize /usr/local/bin/
+
+          # 프론트엔드 매니페스트 업데이트
+          cd {FRONTEND_SERVICE}/kustomize/overlays/${{ env.ENVIRONMENT }}
+
+          # 이미지 태그 업데이트
+          kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}:${{ env.ENVIRONMENT }}-${{ env.IMAGE_TAG }}
+
+          # Git 설정 및 푸시
+          cd ../../../..
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "🚀 Update {FRONTEND_SERVICE} ${{ env.ENVIRONMENT }} image to ${{ env.ENVIRONMENT }}-${{ env.IMAGE_TAG }}"
+          git push origin main
+
+          echo "✅ 프론트엔드 매니페스트 업데이트 완료. ArgoCD가 자동으로 배포합니다."
+    ```
 
 [결과파일]
-파이프라인 작성 가이드: deploy-argocd-guide.md
+작업결과: deploy-argocd-prepare.md
 

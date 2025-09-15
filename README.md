@@ -2405,7 +2405,7 @@ code .
 - 저장된 파일을 읽어 사용함
 
 ## 가이드 
-- ArgoCD파이프라인작성가이드
+- ArgoCD파이프라인준비가이드
   - 설명: 프론트엔드/백엔드 서비스를 ArgoCD를 이용하여 CI와 CD를 분리하는 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-argocd-cicd.md
   - 파일명: deploy-argocd-cicd.md 
@@ -2437,7 +2437,7 @@ Claude Code 수행: View > Command Palette 수행하고 'Run Claude Code'로 실
 예시) 
 ```
 @cicd
-'ArgoCD파이프라인작성가이드'에 따라 CI와 CD분리 가이드를 작성해 주세요.   
+'ArgoCD파이프라인준비가이드'에 따라 CI와 CD분리 준비 작업을 해주세요.   
 [실행정보]
 - SYSTEM_NAME: phonebill
 - FRONTEND_SERVICE: phonebill-front

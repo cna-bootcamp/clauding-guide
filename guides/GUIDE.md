@@ -176,6 +176,10 @@
   - 설명: 프론트엔드 서비스를 GitHub Actions를 이용하여 CI/CD하는 배포 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-actions-cicd-front.md
   - 파일명: deploy-actions-cicd-front.md  
+- ArgoCD파이프라인준비가이드
+  - 설명: 프론트엔드/백엔드 서비스를 ArgoCD를 이용하여 CI와 CD를 분리하는 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-argocd-cicd.md
+  - 파일명: deploy-argocd-cicd.md 
 
 ## 참조 문서
 - 프로젝트지침템플릿
