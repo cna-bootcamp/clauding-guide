@@ -55,6 +55,9 @@
         - [백엔드 서비스](#백엔드-서비스)
         - [프론트엔드 서비스](#프론트엔드-서비스)
         - [WebhHook 설정](#webhhook-설정)
+      - [GitHub Actions를 이용한 CI/CD](#github-actions를-이용한-cicd)
+        - [백엔드 서비스](#백엔드-서비스-1)
+        - [프론트엔드 서비스](#프론트엔드-서비스-1)
 
 ---
 
@@ -1926,8 +1929,6 @@ k delete po 12-kp6r4-wqw0z -n jenkins --force --grace-period=0
 
 ---
 
-
-
 ##### 프론트엔드 서비스  
 작업 단계는 아래와 같습니다.    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/cicd-jenkins-frontend-tasks.svg
@@ -2060,4 +2061,105 @@ Git push 시 자동으로 pipeline이 구동되게 하려면 아래와 같이 gi
 
 ---
 
+#### GitHub Actions를 이용한 CI/CD
+##### 백엔드 서비스 
+작업 단계는 아래와 같습니다.    
 
+**1.Repository Secrets 설정**      
+
+GitHub Repository > Settings > Secrets and variables > Actions > Repository secrets에 다음 항목들을 등록하세요:   
+  
+1)Azure 인증 정보   
+```json
+AZURE_CREDENTIALS:
+{
+  "clientId": "5e4b5b41-7208-48b7-b821-d6d5acf50ecf",
+  "clientSecret": "ldu8Q~GQEzFYU.dJX7_QsahR7n7C2xqkIM6hqbV8",
+  "subscriptionId": "2513dd36-7978-48e3-9a7c-b221d4874f66",
+  "tenantId": "4f0a3bfd-1156-4cce-8dc2-a049a13dba23"
+}
+```
+
+2)ACR Credentials    
+```bash
+# ACR 자격 증명 확인 명령어   
+az acr credential show --name acrdigitalgarage01
+```
+```
+ACR_USERNAME: acrdigitalgarage01
+ACR_PASSWORD: {ACR패스워드}
+```
+
+3)SonarQube 설정    
+```bash
+# SonarQube URL 확인
+kubectl get svc -n sonarqube
+```
+```
+SONAR_HOST_URL: http://{External IP}
+SONAR_TOKEN: {SonarQube토큰}
+```
+
+**SonarQube 토큰 생성 방법**:
+1. SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭  
+2. Security 탭 선택 후 토큰 생성  
+
+4)Docker Hub 설정 (Rate Limit 해결)    
+```
+DOCKERHUB_USERNAME: {Docker Hub 사용자명}
+DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
+```
+Docker Hub 패스워드 작성 방법
+- DockerHub(https://hub.docker.com)에 로그인
+- 우측 상단 프로필 아이콘 클릭 후 Account Settings를 선택
+- 좌측메뉴에서 'Personal Access Tokens' 클릭하여 생성  
+ 
+**2.Repository Variables 설정**    
+
+GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:
+
+```
+ENVIRONMENT: dev
+SKIP_SONARQUBE: true
+```
+
+**3.GitHub Actions CI/CD 파일 작성**     
+IntelliJ를 실행하고 Claude Code도 시작한 후 수행 하세요.   
+아래와 같이 프롬프팅하여 Jenkins CI/CD파일들을 작성합니다.    
+deployment/.github 디렉토리 하위에 파일들이 생성됩니다.    
+
+예시)  
+```
+/deploy-actions-cicd-guide-back
+
+[실행정보]
+- ACR_NAME: acrdigitalgarage01
+- RESOURCE_GROUP: rg-digitalgarage-01
+- AKS_CLUSTER: aks-digitalgarage-01
+```
+
+deployment/.github 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
+
+
+**4.Git Push**     
+GitHub Actions 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다.   
+따라서 로컬에서 수정하면 반드시 원격 Git Repo에 푸시해야 합니다.    
+프롬프트창에 아래 명령을 내립니다.   
+```
+push 
+```
+
+5.
+
+
+예)
+```
+파이프라인 수행중 에러. 
+
+Run # 환경별 디렉토리로 이동
+error: accumulating resources: accumulation err='accumulating resources from '../../base': '/home/runner/work/phonebill/phonebill/.github/kustomize/base' must resolve to a file': recursed accumulation of path '/home/runner/work/phonebill/phonebill/.github/kustomize/base': accumulating resources: accumulation err='accumulating resources from 'api-gateway/secret-api-gateway.yaml': evalsymlink failure on '/home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml' : lstat /home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml: no such file or directory': must build at directory: not a valid directory: evalsymlink failure on '/home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml' : lstat /home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml: no such file or directory
+Error: Process completed with exit code 1.
+```
+
+
+##### 프론트엔드 서비스  
