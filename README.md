@@ -59,7 +59,6 @@
         - [백엔드 서비스](#백엔드-서비스-1)
         - [프론트엔드 서비스](#프론트엔드-서비스-1)
       - [ArgoCD를 이용한 CI와 CD 분리](#argocd를-이용한-ci와-cd-분리)
-        - [백엔드 서비스](#백엔드-서비스-2)
 
 ---
 
@@ -2332,7 +2331,6 @@ Error: Process completed with exit code 1.
 
 #### ArgoCD를 이용한 CI와 CD 분리  
 
-##### 백엔드 서비스 
 작업 단계는 아래와 같습니다.    
 
 **0.사전작업**    
@@ -2348,6 +2346,14 @@ Actions탭 클릭 -> 기존 Workflow 클릭 -> 우측 메뉴에서 'Disable Work
 ![](images/2025-09-15-20-19-28.png)
 
 백엔드 레포지토리와 프론트엔드 레포지토리에서 모두 수행함.   
+
+3)백엔드와 프론트엔드 레포지토리에 Secret 변수 등록    
+GitHub Repository > Settings > Secrets and variables > Actions > Repository secrets에 다음 항목들을 등록하세요.        
+매니페스트 레포지토리에 접근할 수 있는 인증정보를 등록.   
+```
+GIT_USERNAME
+GIT_PASSWORD
+```
 
 **1.manifest 레포지토리 생성**    
 1)원격 레포지토리 생성   
@@ -2376,7 +2382,6 @@ git init
 git checkout -b main
 git remote add origin https://github.com/cna-bootcamp/phonebill-manifest 
 ```
-
   
 **2.CLAUDE.md 작성**       
 vscode에서 로컬 레포지토리를 오픈합니다.    
@@ -2418,3 +2423,29 @@ code .
 - "@explain": /sc:explain --think --seq --answer-only 
 ```
 
+**3.매니페스트 구성 및 파이프라인 작성**     
+vscode에서 Claude Code를 수행합니다.   
+YOLO모드로 전환.   
+```
+claude-yolo
+```
+Claude Code 수행: View > Command Palette 수행하고 'Run Claude Code'로 실행    
+
+아래 예시와 같이 프롬프팅 합니다.      
+'[실행정보]'는 본인 프로젝트에 맞게 수정해야 합니다.   
+
+예시) 
+```
+@cicd
+'ArgoCD파이프라인작성가이드'에 따라 CI와 CD분리 가이드를 작성해 주세요.   
+[실행정보]
+- SYSTEM_NAME: phonebill
+- FRONTEND_SERVICE: phonebill-front
+- ACR_NAME: acrdigitalgarage01
+- RESOURCE_GROUP: rg-digitalgarage-01
+- AKS_CLUSTER: aks-digitalgarage-01
+- MANIFEST_REG: https://github.com/cna-bootcamp/phonebill-manifest.git
+- JENKINS_GIT_CREDENTIALS: github-credentials-dg0500
+- MANIFEST_SECRET_GIT_USERNAME: GIT_USERNAME
+- MANIFEST_SECRET_GIT_PASSWORD: GIT_PASSWORD
+```
