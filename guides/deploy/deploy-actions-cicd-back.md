@@ -457,6 +457,12 @@
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v3
 
+        - name: Login to Docker Hub (prevent rate limit)
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
         - name: Login to Azure Container Registry
           uses: docker/login-action@v3
           with:
