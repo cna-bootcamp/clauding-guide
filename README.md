@@ -2341,3 +2341,80 @@ IntelliJ 터미널에서 아래 명령 수행
 ```
 k delete -f deployment/k8s -R 
 ```
+2)GitHub Actions workflow 수정   
+기존 Workflow가 소스 푸시 시 동작하지 않도록 Disable함   
+Actions탭 클릭 -> 기존 Workflow 클릭 -> 우측 메뉴에서 'Disable Workflow' 선택  
+
+![](images/2025-09-15-20-19-28.png)
+
+백엔드 레포지토리와 프론트엔드 레포지토리에서 모두 수행함.   
+
+**1.manifest 레포지토리 생성**    
+1)원격 레포지토리 생성   
+GitHub에 원격 레포티지토리를 생성합니다.   
+{SYSTEM_NAME}-manifest 형식으로 작성합니다.    
+예) phonebill-manifest
+
+2)로컬 레포지토리 생성  
+Window는 Window Terminal의 GitBash 터미널을 열고 Mac은 기본 터미널을 열어 작업합니다.    
+
+```
+cd ~/home/workspace
+mkdir {SYSTEM_NAME}-manifest
+cd {SYSTEM_NAME}-manifest
+git init
+git checkout -b main
+git remote add origin {원격 Git Repository 주소} 
+```
+
+예) SYSTEM_NAME이 phonebill인 경우   
+```
+cd ~/home/workspace
+mkdir phonebill-manifest
+cd phonebill-manifest
+git init
+git checkout -b main
+git remote add origin https://github.com/cna-bootcamp/phonebill-manifest 
+```
+
+  
+**2.CLAUDE.md 작성**       
+vscode에서 로컬 레포지토리를 오픈합니다.    
+```
+code . 
+```
+
+아래 내용으로 CLAUDE.md 파일을 만듭니다.   
+```
+# ArgoCD 가이드
+
+[Git 연동]
+- "pull" 명령어 입력 시 Git pull 명령을 수행하고 충돌이 있을 때 최신 파일로 병합 수행  
+- "push" 또는 "푸시" 명령어 입력 시 git add, commit, push를 수행 
+- Commit Message는 한글로 함
+
+[URL링크 참조]
+- URL링크는 WebFetch가 아닌 'curl {URL} > claude/{filename}'명령으로 저장
+- 동일한 파일이 있으면 덮어 씀 
+- 'claude'디렉토리가 없으면 생성하고 다운로드   
+- 저장된 파일을 읽어 사용함
+
+## 가이드 
+- ArgoCD파이프라인작성가이드
+  - 설명: 프론트엔드/백엔드 서비스를 ArgoCD를 이용하여 CI와 CD를 분리하는 가이드  
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-argocd-cicd.md
+  - 파일명: deploy-argocd-cicd.md 
+
+### 작업 약어 
+- "@complex-flag": --seq --c7 --uc --wave-mode auto --wave-strategy systematic --delegate auto
+
+- "@plan": --plan --think
+- "@cicd": /sc:implement @devops --think @complex-flag
+- "@document": /sc:document --think @scribe @complex-flag
+- "@fix": /sc:troubleshoot --think @complex-flag
+- "@estimate": /sc:estimate --think-hard @complex-flag
+- "@improve": /sc:improve --think @complex-flag
+- "@analyze": /sc:analyze --think --seq 
+- "@explain": /sc:explain --think --seq --answer-only 
+```
+
