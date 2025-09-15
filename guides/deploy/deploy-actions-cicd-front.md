@@ -335,7 +335,7 @@
 
   images:
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
-      newTag: {ENVIRONMENT}-latest
+      newTag: latest
 
   ```
 

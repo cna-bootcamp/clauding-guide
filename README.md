@@ -2449,3 +2449,57 @@ Claude Code 수행: View > Command Palette 수행하고 'Run Claude Code'로 실
 - MANIFEST_SECRET_GIT_USERNAME: GIT_USERNAME
 - MANIFEST_SECRET_GIT_PASSWORD: GIT_PASSWORD
 ```
+
+**4.ArgoCD 설정**    
+ArgoCD에서는 아래와 같은 작업을 합니다.   
+- Project 등록: ArgoCD의 애플리케이션들을 논리적으로 그룹핑한 개념. 매니페스트 레포지토리, 배포 대상 환경을 관리      
+- 레포지토리 등록: 매니페스트 레포지토리 정보와 인증정보 등록   
+- Application 등록: 백엔드와 프론트엔드별로 Project, 매니페스트 레포지토리와 배포 환경과의 동기화 옵션 등을 등록  
+
+1)Project 등록   
+- Settings > Projects를 클릭.  
+  ![](images/2025-09-15-23-12-59.png)    
+- 'NEW PROJECT' 버튼 클릭   
+- 프로젝트명과 설명 입력 
+  ![](images/2025-09-15-23-14-35.png)  
+- SOURCE REPOSITORIES 등록: 매니페스트 레포지토리 등록      
+  'EDIT'버튼 클릭 > ADD SOURCE 클릭 > 매니페스트 레포지토리의 주소를 입력하고 'SAVE'버튼을 클릭하여 저장    
+  ![](images/2025-09-15-23-15-36.png)     
+- DESTINATIONS 등록: 배포 환경 정보 등록  
+  'EDIT'버튼 클릭 > ADD DESTINATION 클릭 > 쿠버네티스 정보를 그림과 같이 입력하고 'SAVE'버튼을 클릭하여 저장  
+  ![](images/2025-09-15-23-17-54.png)   
+  
+2)레포지토리 등록
+- Settings > Repositories 클릭   
+  ![](images/2025-09-15-23-21-17.png)
+- 'CONNECT REPO' 클릭  
+- 레포지토리 정보 등록   
+  ![](images/2025-09-15-23-23-47.png)       
+  - Choose your connection method: HTTPS
+  - Type: git
+  - Name: 적절히 입력. 보통 레포지토리명과 동일하게 함
+  - Repository URL: 매니페스트 레포지토리의 주소 
+  - Username: 매니페스트 레포지토리 접근할 수 있는 유저ID
+  - Password: Git Access Token (로그인 암호가 아님)
+- 상단의 'CONNECT'를 눌러 저장한 후 연결상태가 'SUCCESSFUL'로 나와야 함  
+  ![](images/2025-09-15-23-27-00.png)     
+
+3)백엔드 Application 등록 
+- Applications > NEW APP 클릭 
+  ![](images/2025-09-15-23-29-01.png)  
+- GENERAL 정보 등록 
+  ![](images/2025-09-15-23-31-19.png) 
+  - SYNC POLICY: 매니페스트 레포지토리와 현재 배포된 객체간 동기화 옵션
+    - Prune Resources: 매니페스트 레포지토리에 정의 되지 않은 객체 삭제  
+    - SELF HEALS: 매니페스트 레포지토리에 정의된대로 현재 배포된 객체를 동기화 
+  - 나머지 옵션은 체크하지 않음
+- SOURCE 정보 등록
+  ![](images/2025-09-15-23-35-29.png)  
+  Path에 동기화할 Kustomize 디렉토리를 입력   
+- DESTINATION 정보 등록  
+  ![](images/2025-09-15-23-37-21.png)
+- Kustomize 섹션: 디폴트값 그대로 정의  
+
+4)프론트엔드 Application 등록   
+백엔드 Application 등록 참조하여 등록합니다.   
+

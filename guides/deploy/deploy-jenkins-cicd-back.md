@@ -132,9 +132,6 @@
     name: {SYSTEM_NAME}-base
 
   resources:
-    # Namespace
-    - namespace.yaml
-    
     # Common resources
     - common/cm-common.yaml
     - common/secret-common.yaml
@@ -294,10 +291,8 @@
 
   images:
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명}
-      newTag: {환경}-latest
+      newTag: latest
 
-  commonLabels:
-    environment: {환경}
   ```
 
 - 환경별 설정 파일 작성    

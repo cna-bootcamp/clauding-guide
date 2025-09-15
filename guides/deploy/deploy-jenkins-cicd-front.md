@@ -299,7 +299,7 @@
 
   images:
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
-      newTag: {환경}-latest
+      newTag: latest
 
   ```
 
