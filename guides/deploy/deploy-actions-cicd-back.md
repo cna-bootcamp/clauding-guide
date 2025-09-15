@@ -58,6 +58,7 @@
 
 - GitHub 저장소 환경 구성 안내
   - GitHub Repository Secrets 설정   
+    - Azure 접근 인증정보 설정  
     ```
     # Azure Service Principal
     Repository Settings > Secrets and variables > Actions > Repository secrets에 등록  
@@ -76,31 +77,40 @@
       "subscriptionId": "2513dd36-7978-48e3-9a7c-b221d4874f66",
       "tenantId": "4f0a3bfd-1156-4cce-8dc2-a049a13dba23",
     }
-
-    # ACR Credentials  
-    ACR_USERNAME: {ACR_NAME}
-    ACR_PASSWORD: {ACR패스워드}
-
-    값은 아래 명령으로 구함   
-    az acr credential show --name {acr 이름}
-    예) az acr credential show --name acrdigitalgarage01
-
-    # SonarQube
-    SONAR_TOKEN: {SonarQube토큰}
-    SONAR_HOST_URL: {SonarQube서버URL}
-    
-    SONAR_TOKEN 값은 아래와 같이 작성  
-    - SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭   
-    - Security 탭 선택 후 토큰 생성   
-    SONAR_HOST_URL은 아래 명령 수행 후 External IP를 지정   
-    k get svc -n sonarqube
-
-    예) http://20.249.187.69 
-
-    # Docker Hub (Rate Limit 해결용)
-    DOCKERHUB_USERNAME: {Docker Hub 사용자명}
-    DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
     ```
+
+    - ACR Credentials  
+      Credential 구하는 방법 안내     
+      az acr credential show --name {acr 이름}
+      예) az acr credential show --name acrdigitalgarage01
+      ```
+      ACR_USERNAME: {ACR_NAME}
+      ACR_PASSWORD: {ACR패스워드}
+      ```
+    - SonarQube URL과 인증 토큰  
+      SONAR_HOST_URL 구하는 방법과 SONAR_TOKEN 작성법 안내    
+      SONAR_HOST_URL: 아래 명령 수행 후 http://{External IP}를 지정   
+      k get svc -n sonarqube
+      예) http://20.249.187.69
+    
+      SONAR_TOKEN 값은 아래와 같이 작성  
+      - SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭
+      - Security 탭 선택 후 토큰 생성   
+
+      ```
+      SONAR_TOKEN: {SonarQube토큰}
+      SONAR_HOST_URL: {SonarQube서버URL}
+      ```
+      
+    - Docker Hub (Rate Limit 해결용)
+      Docker Hub 패스워드 작성 방법 안내
+      - DockerHub(https://hub.docker.com)에 로그인
+      - 우측 상단 프로필 아이콘 클릭 후 Account Settings를 선택
+      - 좌측메뉴에서 'Personal Access Tokens' 클릭하여 생성  
+      ```
+      DOCKERHUB_USERNAME: {Docker Hub 사용자명}
+      DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
+      ```
 
   - GitHub Repository Variables 설정
     ```
@@ -274,7 +284,6 @@
   - **SonarQube Analysis**: 코드 품질 분석 및 Quality Gate
   - **Container Build & Push**: 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
-  - **Health Check**: 배포 후 서비스 상태 확인
 
   ```yaml
   name: Backend Services CI/CD
@@ -550,23 +559,6 @@
             kubectl -n phonebill-${{ env.ENVIRONMENT }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-product-service --timeout=300s
             kubectl -n phonebill-${{ env.ENVIRONMENT }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-kos-mock --timeout=300s
 
-        - name: Health Check
-          run: |
-            echo "🔍 Health Check starting..."
-            
-            # API Gateway Health Check
-            GATEWAY_POD=$(kubectl get pod -n phonebill-${{ env.ENVIRONMENT }} -l app.kubernetes.io/name=${{ env.ENVIRONMENT }}-api-gateway -o jsonpath='{.items[0].metadata.name}')
-            kubectl -n phonebill-${{ env.ENVIRONMENT }} exec $GATEWAY_POD -- curl -f http://localhost:8080/actuator/health || exit 1
-            
-            echo "✅ All services are healthy!"
-
-        - name: Get service information
-          run: |
-            echo "📋 Service Information:"
-            kubectl get pods -n phonebill-${{ env.ENVIRONMENT }}
-            kubectl get services -n phonebill-${{ env.ENVIRONMENT }}
-            kubectl get ingress -n phonebill-${{ env.ENVIRONMENT }}
-            echo "Ingress IP: $(kubectl -n phonebill-${{ env.ENVIRONMENT }} get ingress phonebill-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo 'Pending')"
   ```
 
 - GitHub Actions 전용 환경별 설정 파일 작성    
