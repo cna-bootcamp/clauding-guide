@@ -24,9 +24,9 @@
     예시)
   ```
   [실행정보]
-  - ACR_NAME: myproject-acr
-  - RESOURCE_GROUP: rg-myproject-01
-  - AKS_CLUSTER: aks-myproject-01
+  - ACR_NAME: acrdigitalgarage01
+  - RESOURCE_GROUP: rg-digitalgarage-01
+  - AKS_CLUSTER: aks-digitalgarage-01
   ``` 
 
 - 시스템명과 서비스명 확인   
@@ -36,7 +36,7 @@
 
   예시) include 'common'하위의 서비스명들.
   ```
-  rootProject.name = 'myproject'
+  rootProject.name = 'phonebill'
 
   include 'common'
   include 'api-gateway'
@@ -69,15 +69,34 @@
       "subscriptionId": "{구독ID}",
       "tenantId": "{테넌트ID}"
     }
-    
+    예시)
+    {
+      "clientId": "5e4b5b41-7208-48b7-b821-d6d5acf50ecf",
+      "clientSecret": "ldu8Q~GQEzFYU.dJX7_QsahR7n7C2xqkIM6hqbV8",
+      "subscriptionId": "2513dd36-7978-48e3-9a7c-b221d4874f66",
+      "tenantId": "4f0a3bfd-1156-4cce-8dc2-a049a13dba23",
+    }
+
     # ACR Credentials  
     ACR_USERNAME: {ACR_NAME}
     ACR_PASSWORD: {ACR패스워드}
+
+    값은 아래 명령으로 구함   
+    az acr credential show --name {acr 이름}
+    예) az acr credential show --name acrdigitalgarage01
 
     # SonarQube
     SONAR_TOKEN: {SonarQube토큰}
     SONAR_HOST_URL: {SonarQube서버URL}
     
+    SONAR_TOKEN 값은 아래와 같이 작성  
+    - SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭   
+    - Security 탭 선택 후 토큰 생성   
+    SONAR_HOST_URL은 아래 명령 수행 후 External IP를 지정   
+    k get svc -n sonarqube
+
+    예) http://20.249.187.69 
+
     # Docker Hub (Rate Limit 해결용)
     DOCKERHUB_USERNAME: {Docker Hub 사용자명}
     DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
@@ -137,10 +156,6 @@
     - {SERVICE_NAME}/service.yaml
     - {SERVICE_NAME}/configmap.yaml
     - {SERVICE_NAME}/secret.yaml
-
-  commonLabels:
-    app: {SYSTEM_NAME}
-    version: v1
 
   images:
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
@@ -249,10 +264,6 @@
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
       newTag: {ENVIRONMENT}-latest
 
-  namePrefix: {ENVIRONMENT}-
-
-  commonLabels:
-    environment: {ENVIRONMENT}
   ```
 
 - GitHub Actions 워크플로우 작성 
@@ -749,7 +760,7 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 - [ ] 스크립트 실행 권한 설정 완료 (`chmod +x .github/scripts/*.sh`)
 
 [결과파일]
-- 가이드: claude/deploy-actions-cicd-back.md
+- 가이드: .github/deploy-actions-cicd-back.md
 - GitHub Actions 워크플로우: .github/workflows/backend-cicd.yaml
 - GitHub Actions 전용 Kustomize 매니페스트: .github/kustomize/*
 - GitHub Actions 전용 환경별 설정 파일: .github/config/*
