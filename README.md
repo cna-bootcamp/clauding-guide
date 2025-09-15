@@ -2151,7 +2151,7 @@ SKIP_SONARQUBE: true
 
 **3.GitHub Actions CI/CD 파일 작성**     
 IntelliJ를 실행하고 Claude Code도 시작한 후 수행 하세요.   
-아래와 같이 프롬프팅하여 Jenkins CI/CD파일들을 작성합니다.    
+아래와 같이 프롬프팅하여 GitHub Actions CI/CD파일들을 작성합니다.    
 deployment/.github 디렉토리 하위에 파일들이 생성됩니다.    
 
 예시)  
