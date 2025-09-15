@@ -2112,29 +2112,33 @@ ACR_PASSWORD: {ACR패스워드}
 ```
 
 3)SonarQube 설정    
+GitHub Actions 파이프라인에서 SonarQube를 접근하기 위한 정보를 등록합니다.   
 ```bash
 # SonarQube URL 확인
 kubectl get svc -n sonarqube
+
+# SonarQube 토큰 생성 방법:
+1. SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭  
+2. Security 탭 선택 후 토큰 생성  
 ```
 ```
 SONAR_HOST_URL: http://{External IP}
 SONAR_TOKEN: {SonarQube토큰}
 ```
 
-**SonarQube 토큰 생성 방법**:
-1. SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭  
-2. Security 탭 선택 후 토큰 생성  
-
 4)Docker Hub 설정 (Rate Limit 해결)    
-```
-DOCKERHUB_USERNAME: {Docker Hub 사용자명}
-DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
 ```
 Docker Hub 패스워드 작성 방법
 - DockerHub(https://hub.docker.com)에 로그인
 - 우측 상단 프로필 아이콘 클릭 후 Account Settings를 선택
 - 좌측메뉴에서 'Personal Access Tokens' 클릭하여 생성  
- 
+```
+
+```
+DOCKERHUB_USERNAME: {Docker Hub 사용자명}
+DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
+```
+  
 **2.Repository Variables 설정**    
 
 GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:
@@ -2184,7 +2188,8 @@ Actions 탭을 클릭하면 자동으로 파이프라인이 구동되는 것을 
 파이프라인 수행중 에러. 
 
 Run # 환경별 디렉토리로 이동
-error: accumulating resources: accumulation err='accumulating resources from '../../base': '/home/runner/work/phonebill/phonebill/.github/kustomize/base' must resolve to a file': recursed accumulation of path '/home/runner/work/phonebill/phonebill/.github/kustomize/base': accumulating resources: accumulation err='accumulating resources from 'api-gateway/secret-api-gateway.yaml': evalsymlink failure on '/home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml' : lstat /home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml: no such file or directory': must build at directory: not a valid directory: evalsymlink failure on '/home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml' : lstat /home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml: no such file or directory
+error: accumulating resources: accumulation err='accumulating resources from '../../base': '/home/runner/work/phonebill/phonebill/.github/kustomize/base' must resolve to a file':
+...
 Error: Process completed with exit code 1.
 ```
 
