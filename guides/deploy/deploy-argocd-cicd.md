@@ -74,6 +74,35 @@
   **ArgoCD 적용 시 변경사항:**
   - Deploy 단계를 **매니페스트 레포지토리 업데이트**로 교체
   - `kubectl apply` 제거하고 `git push`로 ArgoCD 트리거
+  - Git 전용 컨테이너 추가로 매니페스트 업데이트 작업 분리
+
+  **컨테이너 템플릿 추가:**
+  Jenkins 파이프라인의 containers 섹션에 Git 컨테이너 추가:
+  ```
+  containers: [
+      // 기존 컨테이너들...
+      containerTemplate(
+          name: 'azure-cli',
+          image: 'hiondal/azure-kubectl:latest',
+          command: 'cat',
+          ttyEnabled: true,
+          resourceRequestCpu: '200m',
+          resourceRequestMemory: '512Mi',
+          resourceLimitCpu: '500m',
+          resourceLimitMemory: '1Gi'
+      ),
+      containerTemplate(
+          name: 'git',
+          image: 'alpine/git:latest',
+          command: 'cat',
+          ttyEnabled: true,
+          resourceRequestCpu: '100m',
+          resourceRequestMemory: '256Mi',
+          resourceLimitCpu: '300m',
+          resourceLimitMemory: '512Mi'
+      )
+  ]
+  ```
 
   **1) 백엔드 Jenkins 파이프라인 수정**
   - 기존 파일을 새 파일로 복사
@@ -84,7 +113,7 @@
  - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
   ```
   stage('Update Manifest Repository') {
-    container('azure-cli') {
+    container('git') {
         withCredentials([usernamePassword(
             credentialsId: '{JENKINS_GIT_CREDENTIALS}',
             usernameVariable: 'GIT_USERNAME',
@@ -133,7 +162,7 @@
   - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
     ```
     stage('Update Frontend Manifest Repository') {
-        container('azure-cli') {
+        container('git') {
             withCredentials([usernamePassword(
                 credentialsId: 'JENKINS_GIT_CREDENTIALS_VALUE',
                 usernameVariable: 'GIT_USERNAME',
