@@ -58,6 +58,8 @@
       - [GitHub Actions를 이용한 CI/CD](#github-actions를-이용한-cicd)
         - [백엔드 서비스](#백엔드-서비스-1)
         - [프론트엔드 서비스](#프론트엔드-서비스-1)
+      - [ArgoCD를 이용한 CI와 CD 분리](#argocd를-이용한-ci와-cd-분리)
+        - [백엔드 서비스](#백엔드-서비스-2)
 
 ---
 
@@ -2328,4 +2330,14 @@ Error: Process completed with exit code 1.
 
 ---
 
+#### ArgoCD를 이용한 CI와 CD 분리  
 
+##### 백엔드 서비스 
+작업 단계는 아래와 같습니다.    
+
+**0.사전작업**    
+1)Jenkins로 배포한 객체 모두 삭제    
+IntelliJ 터미널에서 아래 명령 수행   
+```
+k delete -f deployment/k8s -R 
+```
