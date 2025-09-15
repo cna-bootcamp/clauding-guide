@@ -2450,7 +2450,32 @@ Claude Code 수행: View > Command Palette 수행하고 'Run Claude Code'로 실
 - MANIFEST_SECRET_GIT_PASSWORD: GIT_PASSWORD
 ```
 
-**4.ArgoCD 설정**    
+수행결과 확인:  
+- 매니페스트 레포지토리에 매니페스트 파일 생성     
+- 백엔드/프론트엔드 Jenkins 파이프라인 스크립트 생성: deployment/cicd/Jenkinsfile_ArgoCD 
+- 백엔드/프론트엔드 GitHub Actions Workflow 파일 생성: 
+  - .github/workflows/backend-cicd_ArgoCD.yaml
+  - .github/workflows/frontend-cicd_ArgoCD.yaml
+
+**4.원격 레포지토리에 푸시**        
+각 로컬 레포지토리의 파일을 원격 레포지토리에 푸시 합니다.    
+1)백엔드: IntelliJ의 Claude Code 창에서 'push'입력   
+2)프론트엔드: vscode의 Claude Code 창에서 'push'입력   
+3)매니페스트: vscode의 Claude Code 창에서 'push'입력   
+
+**5.기존 k8s객체 삭제**       
+vscode GitBash 터미널을 추가하고 아래 명령을 수행합니다.    
+1)백엔드 객체 삭제   
+```
+k delete ../phonebill/deployment/k8s -R
+```
+
+2)프론트엔드 객체 삭제
+```
+k delete ../phonebill-front/deployment/k8s
+```
+  
+**6.ArgoCD 설정**    
 ArgoCD에서는 아래와 같은 작업을 합니다.   
 - Project 등록: ArgoCD의 애플리케이션들을 논리적으로 그룹핑한 개념. 매니페스트 레포지토리, 배포 대상 환경을 관리      
 - 레포지토리 등록: 매니페스트 레포지토리 정보와 인증정보 등록   
@@ -2503,3 +2528,25 @@ ArgoCD에서는 아래와 같은 작업을 합니다.
 4)프론트엔드 Application 등록   
 백엔드 Application 등록 참조하여 등록합니다.   
 
+5)확인   
+아래와 같이 Status가 Healthy + Synched로 나와야 합니다.   
+![](images/2025-09-16-00-33-57.png)  
+
+터미널에서 확인해 보면 매니페스트에 정의된대로 k8s객체가 생성되는 것을 확인할 수 있습니다.   
+```
+kubectl get po 
+```
+
+Application을 선택하고 우측 상단의 'Application Details Network'에서 3번째 아이콘을 눌러보세요.   
+아래와 같이 k8s객체의 상태가 이쁘게 나옵니다.   
+![](images/2025-09-16-00-38-26.png)
+
+**7.Jenkins CI/CD 분리 테스트**           
+1)백엔드 테스트    
+백엔드 Jenkins 파이프라인 설정에서 Script Path를 수정합니다.    
+![](images/2025-09-16-00-42-31.png)
+
+
+2)프론트엔드 테스트    
+
+**7.GitHub Actions CI/CD 분리 테스트**          
