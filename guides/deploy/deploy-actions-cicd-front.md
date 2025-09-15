@@ -549,7 +549,7 @@
             docker build \
               -f deployment/container/Dockerfile-frontend \
               --build-arg PROJECT_FOLDER="." \
-              --build-arg BUILD_FOLDER="dist" \
+              --build-arg BUILD_FOLDER="deployment/container" \
               --build-arg EXPORT_PORT="8080" \
               -t ${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/{SERVICE_NAME}:${{ needs.build.outputs.environment }}-${{ needs.build.outputs.image_tag }} .
 
