@@ -2103,7 +2103,12 @@ AZURE_CREDENTIALS:
   "tenantId": "4f0a3bfd-1156-4cce-8dc2-a049a13dba23"
 }
 ```
-
+  
+팁) Azure Service Principal 등록   
+위 Azure Credential 정보를 등록하는 방법은 아래 링크의 '10.Service Principal 작성'을 참고하세요.   
+실습시에는 이미 되어 있으므로 절대 수행하지는 마세요.   
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/05.setup-cicd-tools.md#jenkins%EC%84%A4%EC%B9%98
+    
 2)ACR Credentials    
 ```bash
 # ACR 자격 증명 확인 명령어   
@@ -2229,6 +2234,11 @@ AZURE_CREDENTIALS:
   "tenantId": "4f0a3bfd-1156-4cce-8dc2-a049a13dba23"
 }
 ```
+
+팁) Azure Service Principal 등록   
+위 Azure Credential 정보를 등록하는 방법은 아래 링크의 '10.Service Principal 작성'을 참고하세요.   
+실습시에는 이미 되어 있으므로 절대 수행하지는 마세요.   
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/05.setup-cicd-tools.md#jenkins%EC%84%A4%EC%B9%98
 
 2)ACR Credentials    
 ```bash
