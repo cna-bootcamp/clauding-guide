@@ -2062,13 +2062,34 @@ Git push 시 자동으로 pipeline이 구동되게 하려면 아래와 같이 gi
 ---
 
 #### GitHub Actions를 이용한 CI/CD
+
 ##### 백엔드 서비스 
 작업 단계는 아래와 같습니다.    
+
+**0.사전작업**    
+1)Jenkins로 배포한 객체 모두 삭제    
+IntelliJ 터미널에서 아래 명령 수행   
+```
+k delete -f deployment/k8s -R 
+```
+
+2)WebHook 트리거 해제   
+소스 업로드 시 Jenkins 파이프라인 구동되지 않도록 파이프라인 설정에서 해제   
+파이프라인 메뉴에서 '구성'을 클릭하거나,   
+![](images/2025-09-15-15-58-32.png)  
+
+블루오션에서 '설정' 아이콘을 클릭하여 파이프라인 설정화면으로 이동합니다.   
+![](images/2025-09-15-15-58-59.png)
+
+'GitHub hook trigger for GITScm polling'을 uncheck합니다.    
+![](images/2025-09-15-16-00-47.png)
 
 **1.Repository Secrets 설정**      
 
 GitHub Repository > Settings > Secrets and variables > Actions > Repository secrets에 다음 항목들을 등록하세요:   
-  
+
+![](images/2025-09-15-15-50-03.png)
+
 1)Azure 인증 정보   
 ```json
 AZURE_CREDENTIALS:
@@ -2117,6 +2138,7 @@ Docker Hub 패스워드 작성 방법
 **2.Repository Variables 설정**    
 
 GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:
+![](images/2025-09-15-15-50-36.png)  
 
 ```
 ENVIRONMENT: dev
@@ -2149,9 +2171,14 @@ GitHub Actions 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD�
 push 
 ```
 
-5.
+**5.파이프라인 구동 확인**    
+Actions 탭을 클릭하면 자동으로 파이프라인이 구동되는 것을 확인할 수 있습니다.   
+![](images/2025-09-15-15-51-49.png)  
 
-
+수행되고 있는 파이프라인을 클릭하면 Build -> Release -> Deploy별로 진행상태를 볼 수 있습니다.   
+각 단계를 클릭하면 상세한 타스크 진행상태를 볼 수 있습니다.    
+  
+파이프라인 구동 시 에러가 발생하면 아래와 같이 에러메시지를 첨부하여 에러 해결을 요청합니다.   
 예)
 ```
 파이프라인 수행중 에러. 
@@ -2160,6 +2187,5 @@ Run # 환경별 디렉토리로 이동
 error: accumulating resources: accumulation err='accumulating resources from '../../base': '/home/runner/work/phonebill/phonebill/.github/kustomize/base' must resolve to a file': recursed accumulation of path '/home/runner/work/phonebill/phonebill/.github/kustomize/base': accumulating resources: accumulation err='accumulating resources from 'api-gateway/secret-api-gateway.yaml': evalsymlink failure on '/home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml' : lstat /home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml: no such file or directory': must build at directory: not a valid directory: evalsymlink failure on '/home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml' : lstat /home/runner/work/phonebill/phonebill/.github/kustomize/base/api-gateway/secret-api-gateway.yaml: no such file or directory
 Error: Process completed with exit code 1.
 ```
-
 
 ##### 프론트엔드 서비스  
