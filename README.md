@@ -16,49 +16,48 @@
     - [깊게 고민하게 하기](#깊게-고민하게-하기)
     - [이전 git commit 참고 또는 복원하기](#이전-git-commit-참고-또는-복원하기)
     - [Azure 방화벽 오픈](#azure-방화벽-오픈)
-  - [프로젝트 단계별 수행 가이드](#프로젝트-단계별-수행-가이드)
-    - [서비스 기획 하기](#서비스-기획-하기)
-      - [1.상위수준기획](#1상위수준기획)
-      - [2.기획 구체화](#2기획-구체화)
-      - [3.유저스토리 작성](#3유저스토리-작성)
-      - [4.프로토타입 개발](#4프로토타입-개발)
-    - [백엔드 설계](#백엔드-설계)
-      - [0.사전 설치](#0사전-설치)
-      - [1.클라우드 아키텍처 패턴 선정](#1클라우드-아키텍처-패턴-선정)
-      - [2.논리아키텍처 설계](#2논리아키텍처-설계)
-      - [3.외부 시퀀스 설계](#3외부-시퀀스-설계)
-      - [4.내부 시퀀스 설계](#4내부-시퀀스-설계)
-      - [5.API설계](#5api설계)
-      - [6.클래스 설계](#6클래스-설계)
-      - [7.데이터 설계](#7데이터-설계)
-      - [8.High Level 아키텍처 정의서 작성](#8high-level-아키텍처-정의서-작성)
-      - [9.물리 아키텍처 설계](#9물리-아키텍처-설계)
-    - [클라우드 환경 설정](#클라우드-환경-설정)
-    - [백엔드 개발](#백엔드-개발)
-      - [백킹서비스 설치](#백킹서비스-설치)
-      - [백엔드 개발/테스트](#백엔드-개발테스트)
-    - [프론트엔드 설계](#프론트엔드-설계)
-    - [프론트엔드 개발](#프론트엔드-개발)
-    - [컨테이너로 배포하기](#컨테이너로-배포하기)
-      - [컨테이너 이미지 빌드](#컨테이너-이미지-빌드)
-      - [컨테이너 실행](#컨테이너-실행)
-      - [컨테이너 명령어 실습](#컨테이너-명령어-실습)
-    - [쿠버네티스에 배포하기](#쿠버네티스에-배포하기)
-      - [ingress controller 추가](#ingress-controller-추가)
-      - [백엔드 배포](#백엔드-배포)
-      - [프론트엔드 배포](#프론트엔드-배포)
-      - [쿠버네티스 리소스 학습](#쿠버네티스-리소스-학습)
-      - [kubectl 명령어 실습](#kubectl-명령어-실습)
-    - [CI/CD](#cicd)
-      - [CI/CD 툴 설치: Jenkins, SonarQube, ArgoCD](#cicd-툴-설치-jenkins-sonarqube-argocd)
-      - [Jenkins를 이용한 CI/CD](#jenkins를-이용한-cicd)
-        - [백엔드 서비스](#백엔드-서비스)
-        - [프론트엔드 서비스](#프론트엔드-서비스)
-        - [WebhHook 설정](#webhhook-설정)
-      - [GitHub Actions를 이용한 CI/CD](#github-actions를-이용한-cicd)
-        - [백엔드 서비스](#백엔드-서비스-1)
-        - [프론트엔드 서비스](#프론트엔드-서비스-1)
-      - [ArgoCD를 이용한 CI와 CD 분리](#argocd를-이용한-ci와-cd-분리)
+  - [서비스 기획 하기](#서비스-기획-하기)
+    - [1.상위수준기획](#1상위수준기획)
+    - [2.기획 구체화](#2기획-구체화)
+    - [3.유저스토리 작성](#3유저스토리-작성)
+    - [4.프로토타입 개발](#4프로토타입-개발)
+  - [백엔드 설계](#백엔드-설계)
+    - [0.사전 설치](#0사전-설치)
+    - [1.클라우드 아키텍처 패턴 선정](#1클라우드-아키텍처-패턴-선정)
+    - [2.논리아키텍처 설계](#2논리아키텍처-설계)
+    - [3.외부 시퀀스 설계](#3외부-시퀀스-설계)
+    - [4.내부 시퀀스 설계](#4내부-시퀀스-설계)
+    - [5.API설계](#5api설계)
+    - [6.클래스 설계](#6클래스-설계)
+    - [7.데이터 설계](#7데이터-설계)
+    - [8.High Level 아키텍처 정의서 작성](#8high-level-아키텍처-정의서-작성)
+    - [9.물리 아키텍처 설계](#9물리-아키텍처-설계)
+  - [클라우드 환경 설정](#클라우드-환경-설정)
+  - [백엔드 개발](#백엔드-개발)
+    - [백킹서비스 설치](#백킹서비스-설치)
+    - [백엔드 개발/테스트](#백엔드-개발테스트)
+  - [프론트엔드 설계](#프론트엔드-설계)
+  - [프론트엔드 개발](#프론트엔드-개발)
+  - [컨테이너로 배포하기](#컨테이너로-배포하기)
+    - [컨테이너 이미지 빌드](#컨테이너-이미지-빌드)
+    - [컨테이너 실행](#컨테이너-실행)
+    - [컨테이너 명령어 실습](#컨테이너-명령어-실습)
+  - [쿠버네티스에 배포하기](#쿠버네티스에-배포하기)
+    - [ingress controller 추가](#ingress-controller-추가)
+    - [백엔드 배포](#백엔드-배포)
+    - [프론트엔드 배포](#프론트엔드-배포)
+    - [쿠버네티스 리소스 학습](#쿠버네티스-리소스-학습)
+    - [kubectl 명령어 실습](#kubectl-명령어-실습)
+  - [CI/CD](#cicd)
+    - [CI/CD 툴 설치: Jenkins, SonarQube, ArgoCD](#cicd-툴-설치-jenkins-sonarqube-argocd)
+    - [Jenkins를 이용한 CI/CD](#jenkins를-이용한-cicd)
+      - [백엔드 서비스](#백엔드-서비스)
+      - [프론트엔드 서비스](#프론트엔드-서비스)
+      - [WebhHook 설정](#webhhook-설정)
+    - [GitHub Actions를 이용한 CI/CD](#github-actions를-이용한-cicd)
+      - [백엔드 서비스](#백엔드-서비스-1)
+      - [프론트엔드 서비스](#프론트엔드-서비스-1)
+    - [ArgoCD를 이용한 CI와 CD 분리](#argocd를-이용한-ci와-cd-분리)
   - [맺음말](#맺음말)
 
 ---
@@ -203,11 +202,9 @@ AKS에 배포된 DB나 서비스를 접근하기 위해 방화벽 포트를 오�
 
 ---
 
-## 프로젝트 단계별 수행 가이드  
+## 서비스 기획 하기
 
-### 서비스 기획 하기
-
-#### 1.상위수준기획
+### 1.상위수준기획
 Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니다.   
 [서비스 기획하기](https://github.com/cna-bootcamp/aiguide/blob/main/AI%ED%99%9C%EC%9A%A9%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
 
@@ -217,7 +214,7 @@ Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니�
 
 ---
 
-#### 2.기획 구체화 
+### 2.기획 구체화 
 DDD 전략설계 방법인 Event Storming기법을 이용하여 기획을 구체화 합니다.   
 기획 구체화는 Figma에서 수행합니다.  
 
@@ -241,7 +238,7 @@ Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행
 
 ---
 
-#### 3.유저스토리 작성   
+### 3.유저스토리 작성   
 피그마로 이벤트스토밍을 수행한 경우 아래와 같이 Figma MCP를 이용하여 유저스토리 초안을 빠르게 만듭니다.   
 기획 구체화는 Claude Code에서 수행합니다.  이 이후의 작업은 Claude Code에서 수행합니다.   
 
@@ -288,7 +285,7 @@ Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행
 
 ---
 
-#### 4.프로토타입 개발
+### 4.프로토타입 개발
 **1.UI/UX설계**   
 아래 명령을 수행합니다.    
 ```
@@ -370,8 +367,8 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-### 백엔드 설계 
-#### 0.사전 설치
+## 백엔드 설계 
+### 0.사전 설치
 설계하기 부터는 추가로 아래 링크의 프로그램들을 설치하고 시작 하십시오.     
 [기본 프로그램 설치(2)](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare2.md)
   
@@ -383,7 +380,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 1.클라우드 아키텍처 패턴 선정   
+### 1.클라우드 아키텍처 패턴 선정   
 적용할 클라우드 아키텍처 패턴을 추천받고 검토합니다.   
 결과는 'design/pattern/architecture-pattern.md'에 생성됩니다.  
 
@@ -411,7 +408,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 2.논리아키텍처 설계
+### 2.논리아키텍처 설계
 논리 아키텍처를 설계하고 검토합니다.   
 결과는 'design/backend/logical' 디렉토리에 생성됩니다.   
 ```
@@ -426,7 +423,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 3.외부 시퀀스 설계  
+### 3.외부 시퀀스 설계  
 각 서비스 사이, 서비스와 외부시스템 사이의 인터페이스를 외부 시퀀스로 설계합니다.   
 결과는 '/design/backend/outer' 디렉토리에 생성됩니다.  
 ```
@@ -441,7 +438,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 4.내부 시퀀스 설계
+### 4.내부 시퀀스 설계
 각 서비스 내부의 처리 흐름을 내부 시퀀스로 설계합니다.   
 결과는 '/design/backend/inner' 디렉토리에 생성됩니다.   
 ```
@@ -474,7 +471,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 5.API설계   
+### 5.API설계   
 각 서비스의 API를 설계합니다.  
 결과는 '/design/backend/api' 디렉토리에 생성됩니다.   
 생성된 swagger 파일(확장자가 yaml)을 'https://editor.swagger.io/'에 붙여서 테스트 하면서 검토합니다.   
@@ -498,7 +495,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 6.클래스 설계
+### 6.클래스 설계
 각 서비스의 클래스 설계를 합니다.
 아래 예제와 같이 설계를 위한 정보를 프롬프트에 제공합니다. 
 결과는 'design/backend/class' 디렉토리에 생성됩니다.   
@@ -534,7 +531,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 7.데이터 설계
+### 7.데이터 설계
 데이터설계를 합니다.  
 결과는 'design/backend/database' 디렉토리에 생성됩니다.  
 ```
@@ -549,7 +546,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 8.High Level 아키텍처 정의서 작성
+### 8.High Level 아키텍처 정의서 작성
 지금까지 설계를 바탕으로 상위 수준의 종합적인 아키텍처 정의서를 작성합니다.    
 'CLOUD' 항목에 사용할 클라우드플랫폼 제공자를 Azure, AWS, Google과 같이 입력합니다.   
 결과는 'design/high-level-architecture.md'에 생성됩니다.   
@@ -567,7 +564,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-#### 9.물리 아키텍처 설계
+### 9.물리 아키텍처 설계
 클라우드 플랫폼에 배포하기 위한 물리 아키텍처를 설계합니다.   
 'CLOUD' 항목에 사용할 클라우드플랫폼 제공자를 Azure, AWS, Google과 같이 입력합니다.   
 결과는 'design/backend/physical' 디렉토리에 생성됩니다.    
@@ -586,7 +583,7 @@ design/uiux/prototype/{화면순서번호 2자리}-{화면명}.html
 
 ---
 
-### 클라우드 환경 설정
+## 클라우드 환경 설정
 개발을 위해서는 사전에 클라우드 환경설정이 완료되어야 합니다.   
 Azure외의 클라우드 플랫폼은 Claude나 Perplexity를 이용하여 작업합니다.  
 
@@ -604,8 +601,8 @@ https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 
 ---
 
-### 백엔드 개발
-#### 백킹서비스 설치
+## 백엔드 개발
+### 백킹서비스 설치
 **0.사전작업**   
 터미널을 열고 데이터베이스를 배포할 클라우드플랫폼에 로그인하고 Kubernetes 인증 정보를 가져옵니다.   
 각 클라우드플랫폼별 CLI와 Kubernetes 인증정보를 갖고 오는 방법은 claude나 perplexity에 문의하세요.    
@@ -719,7 +716,7 @@ Message Queue 설치를 요청합니다.
 
 ---
 
-#### 백엔드 개발/테스트
+### 백엔드 개발/테스트
  
 **1.초안개발**        
 1)개발요청   
@@ -1058,7 +1055,7 @@ git add . && git commit -m "push first" && git push -u origin main
 
 ---
 
-### 프론트엔드 설계
+## 프론트엔드 설계
 **1.준비작업**  
 1)작업 디렉토리 작성  
 {사용자홈}/home/workspace 밑에 작성합니다.   
@@ -1206,7 +1203,7 @@ API명세서는 design/api 디렉토리에 생성됩니다.
 
 ---
 
-### 프론트엔드 개발
+## 프론트엔드 개발
 [프론트엔드개발가이드](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/develop/dev-frontend.md)를 이용하여 개발 합니다.   
 아래와 같이 가이드에 있는것처럼 0~5단계까지는 AI가 수행하고 6단계 부터는 같이 각 화면별로 개발합니다.  
 - '0. 준비'를 수행하고 완료 후 다음 단계 진행여부를 사용자에게 확인  
@@ -1306,9 +1303,9 @@ Private 원격 레포지토리를 만들고 푸시 합니다.
 
 ---
 
-### 컨테이너로 배포하기
+## 컨테이너로 배포하기
 
-#### 컨테이너 이미지 빌드 
+### 컨테이너 이미지 빌드 
 컨테이너 이미지 빌드를 위해서는 Docker 데몬이 실행되어야 합니다.    
 **Docker Desktop을 실행**해 주세요.   
 Window는 'Docker Desktop'을 찾아 실행하고 Mac은 터미널에서 'open -a docker'명령을 실행하세요.   
@@ -1400,7 +1397,7 @@ docker images
 
 ---
 
-#### 컨테이너 실행 
+### 컨테이너 실행 
 
 **1.VM 생성 및 필요툴 설치**    
 컨테이너 실행은 VM에서 수행합니다.  
@@ -1483,7 +1480,7 @@ docker ps
 
 ---
 
-#### 컨테이너 명령어 실습  
+### 컨테이너 명령어 실습  
 
 아래 링크를 새 탭으로 열어 기타 Docker 명령어를 실습합니다.   
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/docker-command.md
@@ -1493,9 +1490,9 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/docker-comma
 
 ---
 
-### 쿠버네티스에 배포하기
+## 쿠버네티스에 배포하기
 
-#### ingress controller 추가
+### ingress controller 추가
 Ingress Controller는 Simple한 API Gateway입니다.   
   
 쿠버네티스 설치 시 Ingress Controller가 기본으로 설치 안되기 때문에 먼저 그거부터 설치해야 합니다.  
@@ -1597,7 +1594,7 @@ server {
 
 ---
 
-#### 백엔드 배포   
+### 백엔드 배포   
 IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
 아래 프롬프트 예제와 같이 백엔드 배포를 위한 매니페스트와 배포 가이드 작성을 요청합니다.   
 '[실행정보]'에 정확한 값을 제공합니다.   
@@ -1628,7 +1625,7 @@ deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스
 
 ---
 
-#### 프론트엔드 배포   
+### 프론트엔드 배포   
 vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
 아래 프롬프트 예제와 같이 프론트엔드 배포를 위한 매니페스트와 배포 가이드 작성을 요청합니다.   
 '[실행정보]'에 정확한 값을 제공합니다.   
@@ -1660,7 +1657,7 @@ deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스
 
 ---
 
-#### 쿠버네티스 리소스 학습    
+### 쿠버네티스 리소스 학습    
 
 아래 링크를 새 탭으로 열어 쿠버네티스 리소스에 대해 학습합니다.   
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-resources.md
@@ -1670,7 +1667,7 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-resource
 
 ---
 
-#### kubectl 명령어 실습    
+### kubectl 명령어 실습    
 
 아래 링크를 새 탭으로 열어 kubectl 명령어에 대해 실습합니다.   
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-command.md
@@ -1680,9 +1677,9 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/k8s-command.
 
 ---
 
-### CI/CD
+## CI/CD
 
-#### CI/CD 툴 설치: Jenkins, SonarQube, ArgoCD
+### CI/CD 툴 설치: Jenkins, SonarQube, ArgoCD
 
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/05.setup-cicd-tools.md
 
@@ -1690,8 +1687,8 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/05.setup-c
 
 ---
 
-#### Jenkins를 이용한 CI/CD
-##### 백엔드 서비스 
+### Jenkins를 이용한 CI/CD
+#### 백엔드 서비스 
 작업 단계는 아래와 같습니다.    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/cicd-jenkins-backend-tasks.svg
 
@@ -1935,7 +1932,7 @@ k delete po 12-kp6r4-wqw0z -n jenkins --force --grace-period=0
 
 ---
 
-##### 프론트엔드 서비스  
+#### 프론트엔드 서비스  
 작업 단계는 아래와 같습니다.    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/cicd-jenkins-frontend-tasks.svg
 
@@ -2034,7 +2031,7 @@ kubectl delete -f deployment/k8s
 
 ---
 
-##### WebhHook 설정 
+#### WebhHook 설정 
 Git push 시 자동으로 pipeline이 구동되게 하려면 아래와 같이 github repository에 webhook 설정을 합니다.   
 
 1.Git 레포지토리의 Settings를 클릭    
@@ -2067,9 +2064,9 @@ Git push 시 자동으로 pipeline이 구동되게 하려면 아래와 같이 gi
 
 ---
 
-#### GitHub Actions를 이용한 CI/CD
+### GitHub Actions를 이용한 CI/CD
 
-##### 백엔드 서비스 
+#### 백엔드 서비스 
 작업 단계는 아래와 같습니다.    
 
 **0.사전작업**    
@@ -2203,7 +2200,7 @@ Error: Process completed with exit code 1.
 
 ---
 
-##### 프론트엔드 서비스  
+#### 프론트엔드 서비스  
 
 **0.사전작업**    
 1)Jenkins로 배포한 객체 모두 삭제    
@@ -2330,7 +2327,7 @@ Error: Process completed with exit code 1.
 
 ---
 
-#### ArgoCD를 이용한 CI와 CD 분리  
+### ArgoCD를 이용한 CI와 CD 분리  
 
 작업 단계는 아래와 같습니다.    
 
