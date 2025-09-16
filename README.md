@@ -10,12 +10,6 @@
   - [사전준비](#사전준비)
   - [프로젝트 생성 및 Instruction 설정](#프로젝트-생성-및-instruction-설정)
   - [유용한 Tip](#유용한-tip)
-    - [공통 Tip](#공통-tip)
-    - [Lessons Learned 등록하게 하기](#lessons-learned-등록하게-하기)
-    - [context7 MCP 이용](#context7-mcp-이용)
-    - [깊게 고민하게 하기](#깊게-고민하게-하기)
-    - [이전 git commit 참고 또는 복원하기](#이전-git-commit-참고-또는-복원하기)
-    - [Azure 방화벽 오픈](#azure-방화벽-오픈)
   - [서비스 기획 하기](#서비스-기획-하기)
     - [1.상위수준기획](#1상위수준기획)
     - [2.기획 구체화](#2기획-구체화)
@@ -79,7 +73,8 @@
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-prompt.md
 
 ## 유용한 Tip
-### 공통 Tip
+
+**1.공통 Tip**     
 - 작업 중단 시키기:   
   - 작업 중 ESC를 누르면 진행중인 작업이 중단됩니다.   
   - 다시 시작하려면 '계속'이라고 입력. 또는 특정 단계명을 입력하여 계속하게 함.   
@@ -116,11 +111,11 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/prompt/01.setup-
   제공할 이미지를 클립보드에 복사한 후 프롬프트창에 붙여 넣습니다.   
   맥은 'CTRL-V'키, 윈도우는 'ALT-V' 키를 이용하여 붙입니다.   
 
-| [Top](#목차) |
-
----
-
-### Lessons Learned 등록하게 하기     
+- 프롬프트 줄바꿈    
+  - SHIFT+Enter로 줄바꿈을 할 수 있음 
+  - 만약 안되는 경우 역슬래쉬로 줄바꿈 하면 됨
+  
+**2.Lessons Learned 등록하게 하기**          
 Claude와 같은 AI와 같이 작업할 때 과거 작업을 기억하는데 한계가 있어 이전 실수를 반복할 경우가 있습니다.      
 이를 방지하기 위해 아래와 같이 'CLAUDE.md'에 재실수를 방지하기 위한 추가 지침을 하도록 합니다.   
 CLAUDE.md는 Claude Code 실행 시 메모리에 로딩되므로 대화를 종료하지 않는 한 기억할 가능성이 높아집니다.   
@@ -141,62 +136,27 @@ AI가 실수 하면 아래 예와 같이 Lessons Learned에 추가 요청합니�
 ```
 잠깐 환경설정값은 applicaiton.yml이 아니라 실행프로파일을 점검해야 합니다. lessons learned에 간략하고. 명확하게 추가해주고 계속해줘요.
 ```
-
-| [Top](#목차) |
-
----
-
-### context7 MCP 이용       
+  
+**3.context7 MCP 이용**             
 최신 개발 Best practice를 참조하여 개발할 수 있습니다.  
 context7 MCP를 이용하면 됩니다.   
 개발명령어(/develop-dev-backend, /develop-fix-backend, develop-test-backend)에 이미 '-c7'이라는 옵션이 있습니다.   
 이 명령어를 사용하지 않고 프롬프트에서 수정이나 개선을 요청할 때는 이 옵션을 명시해 줘야 합니다.   
 예) -c7 Google Place API를 이용하여 주변 주차장 정보를 찾도록 해주세요.  
-
-| [Top](#목차) |
-
----
-
-### 깊게 고민하게 하기  
+  
+**4.깊게 고민하게 하기**        
 잘 문제를 못풀면 깊게 고민하는 옵션을 프롬프트에 추가할 수 있습니다.  
 고민을 얼마나 깊게 할 지에 따라 --think, --think-hard, --ultra-think가 있습니다.  
 ```
 --think 왜 로그인 에러가 나는지 원인을 찾아요.  
 ```
-
-| [Top](#목차) |
-
----
-
-### 이전 git commit 참고 또는 복원하기  
+  
+**5.이전 git commit 참고 또는 복원하기**       
 개발하다 보면 이전 commit 소스를 찾아 참고하거나 복원해야할 경우가 있습니다. 
 이때 commit id를 제공하여 작업을 수행할 수 있습니다.    
 ```
 원격 commit 'abb2a9d'에서 찾아서 API '일자별 일정 재생성' API와 관련 리소스 클래스를 복원해요.
 ```
-
-| [Top](#목차) |
-
----
-
-### Azure 방화벽 오픈
-AKS에 배포된 DB나 서비스를 접근하기 위해 방화벽 포트를 오픈하는 방법입니다.    
-- AKS찾기   
-![](images/2025-09-01-17-22-07.png)
-
-- 노드풀 클릭: 기본 생성되는 노드풀 이름은 보통 'nodepool1'임.  
-![](images/2025-09-01-17-24-30.png)
-
-- 서브넷 클릭 
-  ![](images/2025-09-01-17-25-43.png)
-
-- 보안그룹 클릭 
-  ![](images/2025-09-01-17-26-23.png)
-
-- 방화벽 포트 추가 :  
-  ![](images/2025-09-01-17-26-59.png)
-  
-  ![](images/2025-09-01-17-28-01.png)  
 
 | [Top](#목차) |
 
