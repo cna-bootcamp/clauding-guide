@@ -11,8 +11,6 @@
   - [Claude Desktop에 주요 MCP서버 연결](#claude-desktop에-주요-mcp서버-연결)
     - [사전준비](#사전준비)
     - [주요 MCP 연결](#주요-mcp-연결-1)
-    - [Figma MCP 설치](#figma-mcp-설치)
-    - [Filesystem MCP 설치](#filesystem-mcp-설치)
   - [MCP포탈 이용 방법](#mcp포탈-이용-방법)
     - [GitHub MCP 설치](#github-mcp-설치)
     - [Google Map (옵션)](#google-map-옵션)
@@ -35,17 +33,27 @@ MCP서버는 'http'를 통해 연결할 수도 있고 PC에 설치하여 연결�
 ---
 
 ## 사전작업
+  
 **1.bun 설치:**   
 Linux/Mac사용자는 기본 터미널에서 수행하고, Window사용자는 Window Terminal의 Git Bash에서 수행합니다.   
-
+1)설치    
 ```bash
 curl -fsSL https://bun.sh/install | bash
 ```
-설정 적용: Mac은 ~/.zshrc, Linux와 Window는 ~/.bashrc에 추가 
+
+2)OS별 PATH 설정      
+macOS  
+```bash
+echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 ```
-export PATH="$HOME/.bun/bin:$PATH"
+
+Window GitBash          
 ```
-  
+echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
 **2.Claude Desktop 설치**    
 Claude Desktop에 MCP를 연결하려면 아래 사이트에서 Claude Desktop을 먼저 설치해야 합니다.   
 Claude Desktop은 온라인 Claude와 동일한 기능을 로컬에서 사용하기 위한 로컬 Claude툴입니다.  
@@ -66,13 +74,13 @@ https://github.com/upstash/context7
 - Sequential Thinking MCP: AI가 논리적 작업 순서를 설계하도록 지원    
 https://mcp.so/server/sequentialthinking/modelcontextprotocol
 
-- Magic MCP: 화면설계 지원   
-
 - Playwright MCP: UI테스트를 지원. 웹브라우저를 실행하여 스스로 테스트나 분석을 수행할 수 있음.   
 https://github.com/microsoft/playwright-mcp
 
-- GitHub MCP: GitHub Repository 연동     
+- Filesystem MCP: PC 파일 접근      
 
+- Figma MCP: Figma 연동 MCP
+ 
 ---
 
 ## Claude Code에 주요 MCP서버 연결 
@@ -164,7 +172,8 @@ claude mcp list
 Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽을 수 있도록 하는 강력한 기능을 제공합니다.   
 참고로 유투브나 블로그에 여러 방법이 있는데 지금은 동작 안하는 방법이 많습니다.   
 그래서 로컬에 Figma MCP서버를 설치해서 연동하는 방법으로 설명합니다.   
-
+정확히 말하면 Figma MCP는 이미 설치된것이고 이 작업은 Figma에 접근하는 proxy서버를 설치하는 것입니다.  
+  
 **1)Figma MCP 서버 설치**    
 아무곳에나 설치해도 되지만 홈디렉토리 밑에 설치하는게 제일 낫습니다.  
 ```
@@ -217,52 +226,18 @@ Figma Desktop을 실행합니다.
 
 ![](images/2025-08-26-17-07-43.png)  
 
-**3)Claude Code에 MCP설정을 추가**     
-사용자홈 디렉토리 하위에 '.claude.json'파일을 편집기에서 오픈 합니다.    
-파일 끝 부분으로 가서 '"mcpServers"을 찾아 아래와 같이 MCP설정을 추가힙니다.   
-
-Linux/Mac:
-```
-"ClaudeTalkToFigma": {
-  "command": "bunx",
-  "args": ["claude-talk-to-figma-mcp@latest"]
-}
-```
-
-Window:
-```
-"ClaudeTalkToFigma": {
-  "type": "stdio",
-  "command": "cmd",
-  "args": [
-    "/c",
-    "npx",
-    "-y",
-    "claude-talk-to-figma-mcp@latest"
-  ]
-}
-```
-예시)
-![](images/2025-08-26-17-40-55.png)
-
-
-**4)연결 확인**            
-```
-claude mcp list 
-```
-
-**5)Figma MCP 사용법**     
-5-1)온라인 Figma 사용 시    
+**3)Figma MCP 사용법**     
+3-1)온라인 Figma 사용 시    
 연동할 객체를 선택합니다.    
 그리고 'Cursor Talk to Figma MCP Plugin'을 실행합니다.
 ![](images/2025-08-26-18-24-00.png)  
 
-5-2)Figma Desktop 사용 시    
+3-2)Figma Desktop 사용 시    
 연동할 객체를 선택합니다.    
 그리고 'Claude MCP Plugin'을 실행합니다.   
 ![](images/2025-08-26-17-17-39.png)  
 
-**6)클로드에서 사용하기**    
+**4)클로드에서 사용하기**    
 창 가운데에 있는 채널ID를 복사합니다.    
 예시)
 ```
@@ -307,7 +282,7 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-linuxmac
 Windows:
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-window.json
 
-설정 파일에 붙여넣고 저장합니다.  
+기존 설정 파일 내용을 위 내용으로 덮어쓰고 저장합니다.  
 
 **3.확인**    
 Claude Desktop이 실행 중이면 종료 합니다.   
@@ -318,84 +293,11 @@ Claude Desktop이 실행 중이면 종료 합니다.
 Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 확인합니다.   
 추가한 MCP서버 목록이 보이고 각 MCP서버를 선택하였을 때 'running'이라고 나와야 합니다.   
 ![](images/2025-08-03-10-35-59.png)
-
-
-### Figma MCP 설치  
-Claude Desktop에 Figma MCP 설정은 아래와 같이 하면 됩니다.    
-먼저 아래 링크에서 1)~2)번 수행을 먼저 해야 합니다.     
-https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP%EC%84%A4%EC%B9%98%EA%B5%AC%EC%84%B1.md#figma-mcp-%EC%84%A4%EC%B9%98%ED%95%84%EC%88%98
-
-그리고 MCP설정 파일에 아래 내용을 추가하십시오.   
-
-Linux/Mac
-```
-"ClaudeTalkToFigma": {
-  "command": "npx",
-  "args": [
-    "claude-talk-to-figma-mcp@latest"
-  ]
-}
-```
-
-Window:
-```
-"ClaudeTalkToFigma": {
-  "type": "stdio",
-  "command": "cmd",
-  "args": [
-    "/c",
-    "npx",
-    "-y",
-    "claude-talk-to-figma-mcp@latest"
-  ]
-}
-```
-
+  
 프롬프트 창에서 아래와 같이 사용할 수 있습니다.   
 ```
 피그마 체널 'pyrrzgaq'에 접속하여 이벤트스토밍결과를 아티팩트로 정리
 ```
-
-### Filesystem MCP 설치
-Claude Desktop에서 Local 파일을 접근하려면 이 MCP가 필요합니다. 
-
-MCP설정 파일에 아래 내용을 추가하십시오.    
-'args'의 마지막 파라미터는 접근을 허용할 절대경로입니다.   
-본인 디렉토리에 맞게 지정하세요.   
-
-Linux/Mac 예시:
-```
-"filesystem": {
-  "command": "npx",
-  "args": [
-    "-y",
-    "@modelcontextprotocol/server-filesystem",
-    "/Users/dreamondal/home"
-  ]
-}
-```
-
-window 예시:
-```
-"filesystem": {
-  "type": "stdio",
-  "command": "cmd",
-  "args": [
-  "/c", 
-  "npx",
-  "-y",
-  "@modelcontextprotocol/server-filesystem",
-  "/Users/hiond/home"
-  ]
-}	
-```
-
-Claude Desktop을 완전히 종료한 후 다시 시작합니다.   
-하얀색 화면이 몇분정도 보일 수 있습니다.   
-MCP설치중인것이니 기다리십시오.    
-설정 화면에서 아래와 같이 MCP가 설치되면 성공입니다.     
-
-![](images/2025-08-27-11-58-16.png)
 
 ---
 
