@@ -584,6 +584,13 @@ https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 az login 
 ```
 
+참고) 샘플 백엔드 애플리케이션  
+샘플 백엔드 애플리케이션으로 실습하려면 아래 Git 레포지토리를 클론하세요.   
+```
+cd ~/home/workspace
+git clone https://github.com/cna-bootcamp/phonebill.git
+```
+
 - AKS(Azure Kubernetes Service) 인증정보 획득    
 ```
 az aks get-credentials [-g {리소스그룹}] -n {AKS명} -f ~/.kube/config
@@ -1034,6 +1041,14 @@ git add . && git commit -m "push first" && git push -u origin main
 ```
 mkdir -p ~/home/workspace/tripgen-front 
 ```
+
+참고) 샘플 백엔드 애플리케이션  
+샘플 프론트엔드 애플리케이션으로 실습하려면 아래 Git 레포지토리를 클론하세요.    
+```
+cd ~/home/workspace
+git clone https://github.com/cna-bootcamp/phonebill-front.git
+```
+
 vscode에서 오픈합니다.   
 예시)  
 ```
