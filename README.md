@@ -993,12 +993,14 @@ cd ~/home/workspace/phonebill
 Git설정을 먼저 하세요.    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-%EC%84%A4%EC%A0%95
   
-로컬 레포지토리 생성.   
+로컬 레포지토리 생성
+
 ```
 git init
 ```
 
-브랜치를 main으로 변경.   
+브랜치를 main으로 변경
+   
 ```
 git checkout -b main
 ```
