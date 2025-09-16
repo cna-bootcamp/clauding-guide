@@ -26,7 +26,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/Users/dreamondal/home"
+        "/Users"
       ]
     },
     "ClaudeTalkToFigma": {

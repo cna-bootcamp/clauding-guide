@@ -34,7 +34,7 @@
       "npx",
       "-y",
       "@modelcontextprotocol/server-filesystem",
-      "/Users/hiond/home"
+      "/Users"
       ]
     },
     "ClaudeTalkToFigma": {
