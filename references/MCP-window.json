@@ -25,6 +25,27 @@
         "npx",
         "@playwright/mcp@latest"
       ]
+    },
+    "filesystem": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+      "/c", 
+      "npx",
+      "-y",
+      "@modelcontextprotocol/server-filesystem",
+      "/Users/hiond/home"
+      ]
+    },
+    "ClaudeTalkToFigma": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "claude-talk-to-figma-mcp@latest"
+      ]
     }
   }
 }

@@ -20,6 +20,20 @@
         "-y",
         "@playwright/mcp@latest"
       ]
-    }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/dreamondal/home"
+      ]
+    },
+    "ClaudeTalkToFigma": {
+      "command": "npx",
+      "args": [
+        "claude-talk-to-figma-mcp@latest"
+      ]
+    }       
   }
 }
