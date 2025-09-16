@@ -196,9 +196,15 @@ cd claude-talk-to-figma-mcp
 bun install
 ```
 
-빌드합니다.   
-macOS/Linux: bun run build   
-Windows: bun run build:win   
+빌드합니다.       
+macOS/Linux:     
+```
+bun run build   
+```
+Windows:      
+```
+bun run build:win   
+```
 
 Figma MCP의 소켓서버를 실행합니다.   
 이 서버를 통해 AI와 Figma가 통신합니다.    
