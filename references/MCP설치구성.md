@@ -4,13 +4,10 @@
   - [Overview](#overview)
   - [사전작업](#사전작업)
   - [주요 MCP 이해 및 준비 작업](#주요-mcp-이해-및-준비-작업)
-  - [Claude Code에 주요 MCP서버 연결](#claude-code에-주요-mcp서버-연결)
-    - [주요 MCP 연결](#주요-mcp-연결)
-    - [Magic MCP 설치(옵션)](#magic-mcp-설치옵션)
-    - [Figma MCP 설치(필수)](#figma-mcp-설치필수)
   - [Claude Desktop에 주요 MCP서버 연결](#claude-desktop에-주요-mcp서버-연결)
-    - [사전준비](#사전준비)
-    - [주요 MCP 연결](#주요-mcp-연결-1)
+  - [Claude Code에 주요 MCP서버 연결](#claude-code에-주요-mcp서버-연결)
+  - [Figma MCP 설치](#figma-mcp-설치)
+  - [Magic MCP 설치(옵션)](#magic-mcp-설치옵션)
   - [MCP포탈 이용 방법](#mcp포탈-이용-방법)
     - [GitHub MCP 설치](#github-mcp-설치)
     - [Google Map (옵션)](#google-map-옵션)
@@ -33,9 +30,26 @@ MCP서버는 'http'를 통해 연결할 수도 있고 PC에 설치하여 연결�
 ---
 
 ## 사전작업
+
+**1.Node설치**         
+아래 명령으로 node 설치 확인 후 미설치 시 설치   
+```
+node -v
+```
+
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#nodejs-%EC%84%A4%EC%B9%98
+
+**2.Git Client 설치**     
+아래 명령으로 git 설치 확인 후 미설치 시 설치   
+```
+git -v
+```   
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-client-%EC%84%A4%EC%B9%98
   
-**1.bun 설치:**   
+**3.bun 설치:**   
 Linux/Mac사용자는 기본 터미널에서 수행하고, Window사용자는 Window Terminal의 Git Bash에서 수행합니다.   
+Window Terminal 미설치시에는 하단 작업줄의 돋보기 아이콘 클릭 > 'git'입력하여 'Git Bash' 실행    
+
 1)설치    
 ```bash
 curl -fsSL https://bun.sh/install | bash
@@ -48,13 +62,13 @@ echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-Window GitBash          
+Window GitBash    
 ```
 echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-**2.Claude Desktop 설치**    
+**4.Claude Desktop 설치**    
 Claude Desktop에 MCP를 연결하려면 아래 사이트에서 Claude Desktop을 먼저 설치해야 합니다.   
 Claude Desktop은 온라인 Claude와 동일한 기능을 로컬에서 사용하기 위한 로컬 Claude툴입니다.  
 이 툴을 설치하면 온라인에서 할 수 없었던 로컬 파일 접근 이나 수정 작업도 할 수 있습니다.  
@@ -83,9 +97,46 @@ https://github.com/microsoft/playwright-mcp
  
 ---
 
-## Claude Code에 주요 MCP서버 연결 
+## Claude Desktop에 주요 MCP서버 연결
+Claude Desktop의 MCP서버 설정은 OS별로 아래 파일에 설정 합니다.  
+MCP 설정 파일:  
+- **Linux**: "~/.config/Claude/claude_desktop_config.json"
+- **Mac**: "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+- **Windows**: "$HOME/AppData/Roaming/Claude/claude_desktop_config.json"
 
-### 주요 MCP 연결    
+**1.설정파일 열기**    
+Claude Desktop을 열고 설정 페이지를 엽니다.  
+설정 페이지는 좌측 하단에서 로그인 사용자명을 선택하고 '설정'을 클릭합니다.  
+![](images/2025-08-03-10-29-16.png)  
+
+그리고 설정 메뉴 중 가장 하단에 있는 '개발자'를 선택합니다.   
+'[구성편집]'버튼을 누르고 파일을 편집기에서 엽니다.  
+![](images/2025-08-03-10-31-32.png)
+
+**2.설정 추가**  
+OS별로 설정값을 복사합니다.  
+Linux/Mac:
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-linuxmac.json
+
+Windows:
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-window.json
+
+기존 설정 파일 내용을 위 내용으로 덮어쓰고 저장합니다.  
+
+**3.확인**    
+Claude Desktop이 실행 중이면 종료 합니다.   
+단순히 창의 'X'버튼으로 닫지 말고 메인 메뉴에서 '종료'해야 합니다.   
+예를 들어 Mac은 아래와 같이 종료합니다.  
+![](images/2025-08-03-10-34-49.png)  
+
+Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 확인합니다.   
+추가한 MCP서버 목록이 보이고 각 MCP서버를 선택하였을 때 'running'이라고 나와야 합니다.   
+![](images/2025-08-03-10-35-59.png)
+  
+---
+
+## Claude Code에 주요 MCP서버 연결 
+   
 Claude Code의 MCP설정은 '{사용자홈}/.claude.json'파일에 설정합니다.  
 
 **1.MCP 설정값 복사**   
@@ -125,50 +176,7 @@ claude mcp list
 
 ---
 
-### Magic MCP 설치(옵션)
-'.claude.json' 파일의 'mcpServers' 안에 아래 Magic MCP 설정을 추가합니다.  
-API Key는 아래 주소에서 생성하여 지정합니다.   
-- https://github.com/21st-dev/magic-mcp
-- API Key 생성 필요: https://21st.dev/magic/console 에서 'Setup Magic MCP' 버튼 클릭
-
-Window:
-```
-"magic": {
-  "command": "cmd",
-  "args": [
-    "/c",
-    "npx",
-    "-y",
-    "@21st-dev/magic@latest"
-  ],
-  "env": {
-    "API_KEY": "{API Key}"
-  }
-}
-```
-
-Linux/Mac:
-```
-"magic": {
-  "command": "npx",
-  "args": [
-    "-y",
-    "@21st-dev/magic@latest"
-  ],
-  "env": {
-    "API_KEY": "{API Key}"
-  }
-}
-```
-
-파일 저장 후 아래 명령으로 설치를 확인합니다.   
-```
-claude mcp list 
-```
-
----
-
-### Figma MCP 설치(필수)
+## Figma MCP 설치
 Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽을 수 있도록 하는 강력한 기능을 제공합니다.   
 참고로 유투브나 블로그에 여러 방법이 있는데 지금은 동작 안하는 방법이 많습니다.   
 그래서 로컬에 Figma MCP서버를 설치해서 연동하는 방법으로 설명합니다.   
@@ -252,54 +260,49 @@ Claude Code 프롬프트에서 이 채널ID를 제공하여 작업합니다.
 
 ---
 
-## Claude Desktop에 주요 MCP서버 연결
-### 사전준비
-   
-Node설치    
-https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#nodejs-%EC%84%A4%EC%B9%98
-   
-### 주요 MCP 연결 
-Claude Desktop의 MCP서버 설정은 OS별로 아래 파일에 설정 합니다.  
-MCP 설정 파일:  
-- **Linux**: "~/.config/Claude/claude_desktop_config.json"
-- **Mac**: "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
-- **Windows**: "$HOME/AppData/Roaming/Claude/claude_desktop_config.json"
+## Magic MCP 설치(옵션)
+'.claude.json' 파일의 'mcpServers' 안에 아래 Magic MCP 설정을 추가합니다.  
+API Key는 아래 주소에서 생성하여 지정합니다.   
+- https://github.com/21st-dev/magic-mcp
+- API Key 생성 필요: https://21st.dev/magic/console 에서 'Setup Magic MCP' 버튼 클릭
 
-**1.설정파일 열기**    
-Claude Desktop을 열고 설정 페이지를 엽니다.  
-설정 페이지는 좌측 하단에서 로그인 사용자명을 선택하고 '설정'을 클릭합니다.  
-![](images/2025-08-03-10-29-16.png)  
-
-그리고 설정 메뉴 중 가장 하단에 있는 '개발자'를 선택합니다.   
-'[구성편집]'버튼을 누르고 파일을 편집기에서 엽니다.  
-![](images/2025-08-03-10-31-32.png)
-
-**2.설정 추가**  
-OS별로 설정값을 복사합니다.  
-Linux/Mac:
-https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-linuxmac.json
-
-Windows:
-https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-window.json
-
-기존 설정 파일 내용을 위 내용으로 덮어쓰고 저장합니다.  
-
-**3.확인**    
-Claude Desktop이 실행 중이면 종료 합니다.   
-단순히 창의 'X'버튼으로 닫지 말고 메인 메뉴에서 '종료'해야 합니다.   
-예를 들어 Mac은 아래와 같이 종료합니다.  
-![](images/2025-08-03-10-34-49.png)  
-
-Claude Desktop을 다시 시작하여 "설정"페이지의 "개발자"메뉴를 확인합니다.   
-추가한 MCP서버 목록이 보이고 각 MCP서버를 선택하였을 때 'running'이라고 나와야 합니다.   
-![](images/2025-08-03-10-35-59.png)
-  
-프롬프트 창에서 아래와 같이 사용할 수 있습니다.   
+Window:
 ```
-피그마 체널 'pyrrzgaq'에 접속하여 이벤트스토밍결과를 아티팩트로 정리
+"magic": {
+  "command": "cmd",
+  "args": [
+    "/c",
+    "npx",
+    "-y",
+    "@21st-dev/magic@latest"
+  ],
+  "env": {
+    "API_KEY": "{API Key}"
+  }
+}
+```
+
+Linux/Mac:
+```
+"magic": {
+  "command": "npx",
+  "args": [
+    "-y",
+    "@21st-dev/magic@latest"
+  ],
+  "env": {
+    "API_KEY": "{API Key}"
+  }
+}
+```
+
+파일 저장 후 아래 명령으로 설치를 확인합니다.   
+```
+claude mcp list 
 ```
 
 ---
+
 
 ## MCP포탈 이용 방법 
 여러 사이트가 있는데 그 중에 가장 많이 사용하는 곳은 Smithery(스미써리: 대장간)입니다.  
@@ -417,7 +420,4 @@ claude mcp remove {MCP이름} [-s {scope}]
 ```
 claude mcp remove smithery-ai-github -s user
 ```
-
-
-
 
