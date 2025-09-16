@@ -223,7 +223,7 @@ bun socket
 ![](images/2025-08-26-18-22-09.png)  
 
 
-2-2)옵션2: Figma Desktop에 플러그인 설치 
+2-2)옵션2: Figma Desktop에 플러그인 설치     
 -Figma Client설치    
   
 ![](images/2025-08-26-16-48-35.png)
