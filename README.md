@@ -1,8 +1,16 @@
 # Claude를 활용한 서비스 기획, 설계, 개발, 배포 가이드
 
-**⚠️ 법적 고지**    
-본 가이드의 모든 내용은 저작자의 동의없이 상업적 목적으로 사용할 수 없으며, 개인 학습 목적으로만 사용 가능합니다.   
-(저작자: 이해경, 유니콘주식회사 대표, hiondal@gmail.com)  
+## 📄 라이선스
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+이 저작물은 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/) 하에 배포됩니다.
+
+- **저작자 표시**: 원작자(이해경, 유니콘주식회사 대표)와 출처를 명시해야 합니다.
+- **비상업적 이용**: 상업적 목적으로 사용할 수 없습니다.
+- **동일 조건 변경 허락**: 이 저작물을 변경, 변형하거나 2차 저작물을 작성하여 배포하는 경우 원 저작물과 동일한 라이선스를 적용해야 합니다.
+
+**저작자**: 이해경 (hiondal@gmail.com), 유니콘주식회사 대표  
 
 ## 목차  
 - [Claude를 활용한 서비스 기획, 설계, 개발, 배포 가이드](#claude를-활용한-서비스-기획-설계-개발-배포-가이드)
@@ -56,7 +64,7 @@
 
 ---
 
-**경고) 이 가이드는 토큰을 매우 많이 사용합니다. Max Plan(최소 5배 Plan)으로 업그레이드 할 것을 권고합니다.**
+**참고) 이 가이드는 토큰을 매우 많이 사용합니다. Max Plan(최소 5배 Plan)으로 업그레이드 할 것을 권고합니다.**
 
 ## 사전준비 
 - [기본 프로그램 설치(1)](https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md)
