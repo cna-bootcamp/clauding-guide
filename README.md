@@ -619,7 +619,7 @@ AKS기준으로 작성되었으며 다른 클라우드의 Kubernetes서비스는
   db와 redis가 사용하는 포트를 찾습니다.   
   ![](images/2025-09-01-17-33-15.png)
 
-- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/tree/main?tab=readme-ov-file#azure-%EB%B0%A9%ED%99%94%EB%B2%BD-%EC%98%A4%ED%94%88) 참고하여 포트 오픈 
+- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/azure-firewall-open.md) 참고하여 포트 오픈 
 
 
 **팁) 데이터베이스 제거**    
@@ -845,7 +845,7 @@ API swagger 페이지 접속을 위해 방화벽 오픈 작업을 합니다.
 ![](images/2025-09-01-17-43-08.png)   
 ![](images/2025-09-01-17-44-19.png)
 
-- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/tree/main?tab=readme-ov-file#azure-%EB%B0%A9%ED%99%94%EB%B2%BD-%EC%98%A4%ED%94%88) 참고하여 오픈  
+- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/azure-firewall-open.md) 참고하여 오픈  
 
 **7.API별 개발**          
 각 API별로 (AI)API 테스트 -> (AI)코드수정 및 컴파일 -> (사람)서버 재시작의 과정을 반복하면서 완성해 나갑니다.   
@@ -1177,7 +1177,7 @@ API명세서는 design/api 디렉토리에 생성됩니다.
 'npm run dev'를 수행했을 때 표시되는 포트를 확인합니다.   
 보통 3000번 포트입니다.   
 
-- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/tree/main?tab=readme-ov-file#azure-%EB%B0%A9%ED%99%94%EB%B2%BD-%EC%98%A4%ED%94%88) 참고하여 3000번 포트 오픈  
+- [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/azure-firewall-open.md) 참고하여 3000번 포트 오픈  
   
 **1.기본개발 요청(0단계~5단계)**  
 개발요청 프롬프트는 아래와 같습니다.  
@@ -1220,13 +1220,13 @@ API 호출 시 백엔드 서비스별 클라이언트 객체 이용.
 1. 유저스토리: UFR-TRIP-010
 2. 프로토타입: 02-대시보드.html.  
 3. API:  
-1) 상태별 여행목록 구하기: 
+4) 상태별 여행목록 구하기: 
 tripStatus: planning, ongoing, completed
 curl -X 'GET' \
   'http://localhost:8083/api/v1/trips?tripStatus=planning&sort=latest&page=1&size=3' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2YTAxOTBjYi1jZWIxLTQxYTMtODYwMy1mMGZmY2QzMWIxODEiLCJpYXQiOjE3NTY0OTIxMjYsImV4cCI6MTc1NjU3ODUyNiwidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoiaGlvbmRhbCIsImF1dGhvcml0eSI6IlVTRVIifQ.v-c7A_GyxoB_6Xro4G0kY874XWFhNh5FYXLWIEv_Izg'
-2) 사용자 기본정보 구하기
+1) 사용자 기본정보 구하기
 curl -X 'GET' \
   'http://localhost:8081/api/v1/users/profile' \
   -H 'accept: */*' \
