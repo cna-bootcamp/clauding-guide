@@ -171,6 +171,12 @@ context7 MCP를 이용하면 됩니다.
 ```
 원격 commit 'abb2a9d'에서 찾아서 API '일자별 일정 재생성' API와 관련 리소스 클래스를 복원해요.
 ```
+  
+**6.Git 레포지토리 생성 및 푸시**   
+Git 레포지토리를 생성하여 중간 중간 원격 레포지토리에 푸시합니다.    
+서버에 작업결과를 저장하여 다른 사람과 쉽게 공유하기 위해 필요합니다.     
+
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/git-repo-guide.md
 
 | [Top](#목차) |
 
@@ -1259,6 +1265,9 @@ id: user01, pw: P@ssw0rd$
 
 **3.Git 레포지토리 생성 및 푸시**   
 Private 원격 레포지토리를 만들고 푸시 합니다.  
+
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/git-repo-guide.md
+
 
 | [Top](#목차) |
 
