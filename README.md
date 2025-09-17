@@ -181,9 +181,11 @@ context7 MCP를 이용하면 됩니다.
 ### 1.상위수준기획
 Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니다.   
 아래 가이드에서 상위수준 기획인 '서비스 기획서 발표자료 작성'까지만 수행합니다.    
+아래 가이드는 최소한의 구성으로 기획을 실습하기 위해 Claude Desktop에서 수행하도록 작성되어 있습니다.    
+전체과정을 실습하실 분은 Claude Code에서 작업하시면 됩니다.    
+
 [서비스 기획하기](https://github.com/cna-bootcamp/aiguide)
 
-상위수준 서비스 기획은 Claude Desktop에서 수행합니다.   
 
 | [Top](#목차) |
 
