@@ -182,10 +182,23 @@ context7 MCP를 이용하면 됩니다.
 Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니다.   
 아래 가이드에서 상위수준 기획인 '서비스 기획서 발표자료 작성'까지만 수행합니다.    
 아래 가이드는 최소한의 구성으로 기획을 실습하기 위해 Claude Desktop에서 수행하도록 작성되어 있습니다.    
-전체과정을 실습하실 분은 Claude Code에서 작업하시면 됩니다.    
+   
 
 [서비스 기획하기](https://github.com/cna-bootcamp/aiguide)
 
+전체과정을 실습하실 분은 아래 작업을 먼저 하시고 [문제정의](https://github.com/cna-bootcamp/aiguide?tab=readme-ov-file#%EB%AC%B8%EC%A0%9C%EC%A0%95%EC%9D%98)부터 Claude Code에서 작업하시면 됩니다. 
+- 기획에 필요한 reference파일 복사      
+  ```
+  cd ~/home/workspace
+  git clone https://github.com/cna-bootcamp/aiguide.git 
+  cp aiguide/sampels ~/home/workspace/{프로젝트}/
+  ```
+  예시)    
+  ```
+  cd ~/home/workspace
+  git clone https://github.com/cna-bootcamp/aiguide.git 
+  cp aiguide/sampels ~/home/workspace/lifesub/
+  ```  
 
 | [Top](#목차) |
 
