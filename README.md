@@ -1001,7 +1001,7 @@ resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.
 ```
   
 **9.Git 레포지토리 생성 및 푸시**   
-GitHub에 원격 레포지토리를 생성합니다.   
+1)GitHub에 원격 레포지토리를 생성합니다.   
 ![](images/2025-09-12-15-21-00.png) 
 
 Private 레포지토리로 지정합니다.  
@@ -1011,32 +1011,38 @@ Private 레포지토리로 지정합니다.
 원격 레포지토리 주소를 복사합니다.   
 ![](images/2025-09-12-15-22-42.png)  
 
-프로젝트 디렉토리로 이동 후 로컬 레포지토리를 생성합니다.
+2)프로젝트 디렉토리로 이동 후 로컬 레포지토리를 생성합니다.    
+```
+cd ~/home/workspace/{프로젝트}
+```
+
+예)
 ```
 cd ~/home/workspace/phonebill
 ```
 
-Git설정을 먼저 하세요.    
-https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-%EC%84%A4%EC%A0%95
-  
 로컬 레포지토리 생성
 
 ```
 git init
 ```
 
-브랜치를 main으로 변경
+3)브랜치를 main으로 변경  
    
 ```
 git checkout -b main
 ```
 
-원격 레포지토리 주소를 지정.  
+4)원격 레포지토리 주소 지정     
 ```
 git remote add origin {원격 레포지토리 주소}
 ```
+예) 
+```
+git remote add origin https://github.com/cna-bootcamp/phonebill.git
+```
 
-원격 레포지토리로 푸시.   
+5)원격 레포지토리로 푸시       
 ```
 git add . 
 ```
