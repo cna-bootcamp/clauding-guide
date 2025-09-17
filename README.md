@@ -2,6 +2,9 @@
 Claude를 활용하여 사람과 AI가 함께 서비스 기획, 설계, 개발, 배포하는 가이드입니다.   
 이 가이드를 이용하여 개발자는 물론 비개발자도 상업적 수준의 소프트웨어를 개발할 수 있습니다.   
 
+본 가이드는 애자일 방식의 개발/라이프 사이클에 기반하여 작성되었습니다.    
+![](images/2025-09-17-15-56-58.png)
+
 ## 📄 라이선스
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
