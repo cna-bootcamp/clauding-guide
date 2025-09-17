@@ -187,6 +187,7 @@ Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니�
 [서비스 기획하기](https://github.com/cna-bootcamp/aiguide)
 
 전체과정을 실습하실 분은 아래 작업을 먼저 하시고 [문제정의](https://github.com/cna-bootcamp/aiguide?tab=readme-ov-file#%EB%AC%B8%EC%A0%9C%EC%A0%95%EC%9D%98)부터 Claude Code에서 작업하시면 됩니다. 
+각 작업마다 새로운 대화창에서 하는게 좋으며 Claude Code에서는 '/clear'명령을 수행하면 새 대화가 시작됩니다.    
 
 - 기획 가이드 Clone  
   ```
