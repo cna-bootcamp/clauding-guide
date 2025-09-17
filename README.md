@@ -1001,6 +1001,7 @@ resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.
 ```
   
 **9.Git 레포지토리 생성 및 푸시**   
+
 1)GitHub에 원격 레포지토리를 생성합니다.   
 ![](images/2025-09-12-15-21-00.png) 
 
@@ -1012,6 +1013,9 @@ Private 레포지토리로 지정합니다.
 ![](images/2025-09-12-15-22-42.png)  
 
 2)프로젝트 디렉토리로 이동 후 로컬 레포지토리를 생성합니다.    
+작업하는 PC에서 최초로 Git 푸시하는 경우 Git 설정을 먼저 하세요.     
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/00.prepare1.md#git-%EC%84%A4%EC%A0%95
+
 ```
 cd ~/home/workspace/{프로젝트}
 ```
@@ -1022,7 +1026,6 @@ cd ~/home/workspace/phonebill
 ```
 
 로컬 레포지토리 생성
-
 ```
 git init
 ```
