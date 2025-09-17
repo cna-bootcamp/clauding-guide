@@ -191,13 +191,17 @@ Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니�
   ```
   cd ~/home/workspace
   git clone https://github.com/cna-bootcamp/aiguide.git 
-  cp aiguide/sampels ~/home/workspace/{프로젝트}/
+  mkdir -p ~/home/workspace/{프로젝트}/reference
+  cp aiguide/reference/* ~/home/workspace/{프로젝트}/reference/
   ```
   예시)    
   ```
+  PROJECT=lifesub
+
   cd ~/home/workspace
   git clone https://github.com/cna-bootcamp/aiguide.git 
-  cp aiguide/sampels ~/home/workspace/lifesub/
+  mkdir -p ~/home/workspace/${PROJECT}/reference
+  cp aiguide/reference/* ~/home/workspace/${PROJECT}/reference/
   ```  
 
 | [Top](#목차) |
