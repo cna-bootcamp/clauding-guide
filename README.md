@@ -16,7 +16,8 @@ Claude를 활용하여 사람과 AI가 함께 서비스 기획, 설계, 개발, 
 - **동일 조건 변경 허락**: 이 저작물을 변경, 변형하거나 2차 저작물을 작성하여 배포하는 경우 원 저작물과 동일한 라이선스를 적용해야 합니다.
 
 **저작자**: 이해경 (hiondal@gmail.com), 유니콘주식회사 대표  
-
+[저작권등록증](https://drive.google.com/file/d/1bvUha4h9JOQAay02dD5T5yfpRmf4jua6/view?usp=drive_link)   
+  
 ## 목차  
 - [Clauding Garage Academy](#clauding-garage-academy)
   - [📄 라이선스](#-라이선스)
