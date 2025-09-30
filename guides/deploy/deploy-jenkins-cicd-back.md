@@ -20,12 +20,15 @@
   - {ACR_NAME}: Azure Container Registry 이름
   - {RESOURCE_GROUP}: Azure 리소스 그룹명
   - {AKS_CLUSTER}: AKS 클러스터명
+  - {NAMESPACE}: Namespace명
+  
     예시)
   ```
   [실행정보]
-  - ACR_NAME: myproject-acr
-  - RESOURCE_GROUP: rg-myproject-01
-  - AKS_CLUSTER: aks-myproject-01
+  - ACR_NAME: acrdigitalgarage01
+  - RESOURCE_GROUP: rg-digitalgarage-01
+  - AKS_CLUSTER: aks-digitalgarage-01
+  - NAMESPACE: phonebill-dg0500
   ``` 
 
 - 시스템명과 서비스명 확인   
@@ -262,7 +265,7 @@
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
 
-  namespace: {SYSTEM_NAME}-{환경}
+  namespace: {NAMESPACE}
 
   resources:
     - ../../base
@@ -423,7 +426,7 @@
                           sh """
                               az login --service-principal -u \$AZURE_CLIENT_ID -p \$AZURE_CLIENT_SECRET -t \$AZURE_TENANT_ID
                               az aks get-credentials --resource-group ${props.resource_group} --name ${props.cluster_name} --overwrite-existing
-                              kubectl create namespace {SYSTEM_NAME}-${environment} --dry-run=client -o yaml | kubectl apply -f -
+                              kubectl create namespace {NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
                           """
                       }
                   }
