@@ -555,11 +555,11 @@
         - name: Wait for deployments to be ready
           run: |
             echo "Waiting for deployments to be ready..."
-            kubectl -n phonebill-${{ env.ENVIRONMENT }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-api-gateway --timeout=300s
-            kubectl -n phonebill-${{ env.ENVIRONMENT }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-user-service --timeout=300s
-            kubectl -n phonebill-${{ env.ENVIRONMENT }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-bill-service --timeout=300s
-            kubectl -n phonebill-${{ env.ENVIRONMENT }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-product-service --timeout=300s
-            kubectl -n phonebill-${{ env.ENVIRONMENT }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-kos-mock --timeout=300s
+            kubectl -n ${{ env.NAMESPACE }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-api-gateway --timeout=300s
+            kubectl -n ${{ env.NAMESPACE }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-user-service --timeout=300s
+            kubectl -n ${{ env.NAMESPACE }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-bill-service --timeout=300s
+            kubectl -n ${{ env.NAMESPACE }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-product-service --timeout=300s
+            kubectl -n ${{ env.NAMESPACE }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-kos-mock --timeout=300s
 
   ```
 
@@ -641,19 +641,19 @@
   echo "⏳ Waiting for deployments to be ready..."
   # 서비스별 배포 상태 확인
   for service in "${services[@]}"; do
-    kubectl rollout status deployment/${ENVIRONMENT}-$service -n {SYSTEM_NAME}-${ENVIRONMENT} --timeout=300s
+    kubectl rollout status deployment/${ENVIRONMENT}-$service -n {NAMESPACE} --timeout=300s
   done
   
   echo "🔍 Health check..."
   # API Gateway Health Check (첫 번째 서비스가 API Gateway라고 가정)
   GATEWAY_SERVICE=${services[0]}
-  GATEWAY_POD=$(kubectl get pod -n {시스템명}-${ENVIRONMENT} -l app.kubernetes.io/name=${ENVIRONMENT}-$GATEWAY_SERVICE -o jsonpath='{.items[0].metadata.name}')
-  kubectl -n {시스템명}-${ENVIRONMENT} exec $GATEWAY_POD -- curl -f http://localhost:8080/actuator/health || echo "Health check failed, but deployment completed"
+  GATEWAY_POD=$(kubectl get pod -n {NAMESPACE} -l app.kubernetes.io/name=${ENVIRONMENT}-$GATEWAY_SERVICE -o jsonpath='{.items[0].metadata.name}')
+  kubectl -n {NAMESPACE} exec $GATEWAY_POD -- curl -f http://localhost:8080/actuator/health || echo "Health check failed, but deployment completed"
   
   echo "📋 Service Information:"
-  kubectl get pods -n {시스템명}-${ENVIRONMENT}
-  kubectl get services -n {시스템명}-${ENVIRONMENT}
-  kubectl get ingress -n {시스템명}-${ENVIRONMENT}
+  kubectl get pods -n {NAMESPACE}
+  kubectl get services -n {NAMESPACE}
+  kubectl get ingress -n {NAMESPACE}
   
   echo "✅ GitHub Actions deployment completed successfully!"
   ```
@@ -679,10 +679,10 @@
   - kubectl을 이용한 롤백:
     ```bash
     # 특정 버전으로 롤백
-    kubectl rollout undo deployment/{환경}-{서비스명} -n phonebill-{환경} --to-revision=2
+    kubectl rollout undo deployment/{환경}-{서비스명} -n {NAMESPACE} --to-revision=2
     
     # 롤백 상태 확인
-    kubectl rollout status deployment/{환경}-{서비스명} -n phonebill-{환경}
+    kubectl rollout status deployment/{환경}-{서비스명} -n {NAMESPACE}
     ```
   - 수동 스크립트를 이용한 롤백:
     ```bash

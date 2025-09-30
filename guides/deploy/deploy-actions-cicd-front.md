@@ -611,7 +611,7 @@
         - name: Wait for deployments to be ready
           run: |
             echo "Waiting for deployments to be ready..."
-            kubectl -n {SYSTEM_NAME}-${{ env.ENVIRONMENT }} wait --for=condition=available deployment/{SERVICE_NAME} --timeout=300s
+            kubectl -n ${{ env.NAMESPACE }} wait --for=condition=available deployment/{SERVICE_NAME} --timeout=300s
 
   ```
 
@@ -687,17 +687,17 @@
 
   echo "⏳ Waiting for deployments to be ready..."
   # 배포 상태 확인
-  kubectl rollout status deployment/{SERVICE_NAME} -n {SYSTEM_NAME}-${ENVIRONMENT} --timeout=300s
+  kubectl rollout status deployment/{SERVICE_NAME} -n {NAMESPACE} --timeout=300s
 
   echo "🔍 Health check..."
   # Health Check
-  POD=$(kubectl get pod -n {SYSTEM_NAME}-${ENVIRONMENT} -l app.kubernetes.io/name={SERVICE_NAME} -o jsonpath='{.items[0].metadata.name}')
-  kubectl -n {SYSTEM_NAME}-${ENVIRONMENT} exec $POD -- curl -f http://localhost:8080/ || echo "Health check failed, but deployment completed"
+  POD=$(kubectl get pod -n {NAMESPACE} -l app.kubernetes.io/name={SERVICE_NAME} -o jsonpath='{.items[0].metadata.name}')
+  kubectl -n {NAMESPACE} exec $POD -- curl -f http://localhost:8080/ || echo "Health check failed, but deployment completed"
 
   echo "📋 Service Information:"
-  kubectl get pods -n {SYSTEM_NAME}-${ENVIRONMENT}
-  kubectl get services -n {SYSTEM_NAME}-${ENVIRONMENT}
-  kubectl get ingress -n {SYSTEM_NAME}-${ENVIRONMENT}
+  kubectl get pods -n {NAMESPACE}
+  kubectl get services -n {NAMESPACE}
+  kubectl get ingress -n {NAMESPACE}
 
   echo "✅ GitHub Actions frontend deployment completed successfully!"
   ```
@@ -728,10 +728,10 @@
   - kubectl을 이용한 롤백:
     ```bash
     # 특정 버전으로 롤백
-    kubectl rollout undo deployment/{SERVICE_NAME} -n {SYSTEM_NAME}-{환경} --to-revision=2
+    kubectl rollout undo deployment/{SERVICE_NAME} -n {NAMESPACE} --to-revision=2
 
     # 롤백 상태 확인
-    kubectl rollout status deployment/{SERVICE_NAME} -n {SYSTEM_NAME}-{환경}
+    kubectl rollout status deployment/{SERVICE_NAME} -n {NAMESPACE}
     ```
   - 수동 스크립트를 이용한 롤백:
     ```bash

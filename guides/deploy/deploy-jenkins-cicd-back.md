@@ -534,7 +534,7 @@
                           # 배포 상태 확인
                           echo "Waiting for deployments to be ready..."
                           for service in \$services; do
-                              kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/\$service --timeout=300s
+                              kubectl -n {NAMESPACE} wait --for=condition=available deployment/\$service --timeout=300s
                           done
                       """
                   }
@@ -602,9 +602,9 @@
     ```
   - 배포 상태 확인:
     ```
-    kubectl get pods -n {SYSTEM_NAME}-{환경}
-    kubectl get services -n {SYSTEM_NAME}-{환경}
-    kubectl get ingress -n {SYSTEM_NAME}-{환경}
+    kubectl get pods -n {NAMESPACE}
+    kubectl get services -n {NAMESPACE}
+    kubectl get ingress -n {NAMESPACE}
     ```
 
 - 수동 배포 스크립트 작성
@@ -632,7 +632,7 @@
   
   # 배포 상태 확인
   for service in $services; do
-      kubectl rollout status deployment/$service -n {SYSTEM_NAME}-${ENVIRONMENT}
+      kubectl rollout status deployment/$service -n {NAMESPACE}
   done
   
   echo "✅ Deployment completed successfully!"
@@ -775,10 +775,10 @@
   - 이전 버전으로 롤백:
     ```bash
     # 특정 버전으로 롤백
-    kubectl rollout undo deployment/{서비스명} -n {SYSTEM_NAME}-{환경} --to-revision=2
+    kubectl rollout undo deployment/{서비스명} -n {NAMESPACE} --to-revision=2
     
     # 롤백 상태 확인
-    kubectl rollout status deployment/{서비스명} -n {SYSTEM_NAME}-{환경}
+    kubectl rollout status deployment/{서비스명} -n {NAMESPACE}
     ```
   - 이미지 태그 기반 롤백:
     ```bash

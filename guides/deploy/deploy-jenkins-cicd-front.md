@@ -541,7 +541,7 @@
 
                           # 배포 상태 확인
                           echo "Waiting for deployments to be ready..."
-                          kubectl -n {SYSTEM_NAME}-${environment} wait --for=condition=available deployment/{SERVICE_NAME} --timeout=300s
+                          kubectl -n {NAMESPACE} wait --for=condition=available deployment/{SERVICE_NAME} --timeout=300s
                       """
                   }
               }
@@ -638,7 +638,7 @@
   kubectl apply -k .
   
   # 배포 상태 확인
-  kubectl rollout status deployment/{SERVICE_NAME} -n {SYSTEM_NAME}-${ENVIRONMENT} --timeout=300s
+  kubectl rollout status deployment/{SERVICE_NAME} -n {NAMESPACE} --timeout=300s
   
   echo "✅ 배포 완료!"
   ```
@@ -750,9 +750,9 @@
     ```
   - 배포 상태 확인:
     ```
-    kubectl get pods -n {SYSTEM_NAME}-{환경}
-    kubectl get services -n {SYSTEM_NAME}-{환경}
-    kubectl get ingress -n {SYSTEM_NAME}-{환경}
+    kubectl get pods -n {NAMESPACE}
+    kubectl get services -n {NAMESPACE}
+    kubectl get ingress -n {NAMESPACE}
     ```
 
 - 수동 배포 실행 방법
@@ -771,10 +771,10 @@
   - 이전 버전으로 롤백:
     ```bash
     # 특정 버전으로 롤백
-    kubectl rollout undo deployment/{SERVICE_NAME} -n {SYSTEM_NAME}-{환경} --to-revision=2
+    kubectl rollout undo deployment/{SERVICE_NAME} -n {NAMESPACE} --to-revision=2
     
     # 롤백 상태 확인
-    kubectl rollout status deployment/{SERVICE_NAME} -n {SYSTEM_NAME}-{환경}
+    kubectl rollout status deployment/{SERVICE_NAME} -n {NAMESPACE}
     ```
   - 이미지 태그 기반 롤백:
     ```bash
