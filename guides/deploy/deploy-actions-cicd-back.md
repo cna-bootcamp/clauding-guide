@@ -21,12 +21,14 @@
   - {ACR_NAME}: Azure Container Registry 이름
   - {RESOURCE_GROUP}: Azure 리소스 그룹명
   - {AKS_CLUSTER}: AKS 클러스터명
+  - {NAMESPACE}: Namespace명 
     예시)
   ```
   [실행정보]
   - ACR_NAME: acrdigitalgarage01
   - RESOURCE_GROUP: rg-digitalgarage-01
   - AKS_CLUSTER: aks-digitalgarage-01
+  - NAMESPACE: phonebill-dg0500
   ``` 
 
 - 시스템명과 서비스명 확인   
@@ -155,7 +157,6 @@
 
   resources:
     # Common resources
-    - namespace.yaml
     - common/configmap-common.yaml
     - common/secret-common.yaml
     - common/secret-imagepull.yaml
@@ -243,7 +244,7 @@
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
 
-  namespace: {SYSTEM_NAME}-{ENVIRONMENT}
+  namespace: {NAMESPACE}
 
   resources:
     - ../../base
@@ -362,6 +363,7 @@
             IMAGE_ORG="{SYSTEM_NAME}"
             RESOURCE_GROUP="{RESOURCE_GROUP}"
             AKS_CLUSTER="{AKS_CLUSTER}"
+            NAMESPACE="{NAMESPACE}"
             
             # Read environment variables from .github/config file
             if [[ -f ".github/config/deploy_env_vars_${ENV}" ]]; then
@@ -528,7 +530,7 @@
 
         - name: Create namespace
           run: |
-            kubectl create namespace phonebill-${{ env.ENVIRONMENT }} --dry-run=client -o yaml | kubectl apply -f -
+            kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
 
         - name: Install Kustomize
           run: |
@@ -617,8 +619,8 @@
   fi
 
   # Create namespace
-  echo "📝 Creating namespace {SYSTEM_NAME}-${ENVIRONMENT}..."
-  kubectl create namespace {SYSTEM_NAME}-${ENVIRONMENT} --dry-run=client -o yaml | kubectl apply -f -
+  echo "📝 Creating namespace {NAMESPACE}..."
+  kubectl create namespace {NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
 
   # 환경별 이미지 태그 업데이트 (.github/kustomize 사용)
   cd .github/kustomize/overlays/${ENVIRONMENT}
