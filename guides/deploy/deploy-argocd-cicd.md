@@ -111,60 +111,11 @@
     ```
 
  - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
-  ```
-  stage('Update Manifest Repository') {
-    container('git') {
-        withCredentials([usernamePassword(
-            credentialsId: '{JENKINS_GIT_CREDENTIALS}',
-            usernameVariable: 'GIT_USERNAME',
-            passwordVariable: 'GIT_TOKEN'
-        )]) {
-            sh """
-                # 매니페스트 레포지토리 클론
-                REPO_URL=\$(echo "{MANIFEST_REPO_URL}" | sed 's|https://||')
-                git clone https://\${GIT_USERNAME}:\${GIT_TOKEN}@\${REPO_URL} manifest-repo
-                cd manifest-repo
-
-                # Kustomize 설치
-                curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-                mkdir -p \$HOME/bin && mv kustomize \$HOME/bin/
-                export PATH=\$PATH:\$HOME/bin
-
-                # 환경별 매니페스트 업데이트
-                cd {SYSTEM_NAME}/kustomize/overlays/\${environment}
-
-                # 각 서비스별 이미지 태그 업데이트
-                services="{SERVICE_NAMES}"
-                for service in \$services; do
-                    \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:\${environment}-\${imageTag}
-                done
-
-                # Git 설정 및 푸시
-                cd ../../../..
-                git config user.name "Jenkins CI"
-                git config user.email "jenkins@example.com"
-                git add .
-                git commit -m "🚀 Update {SYSTEM_NAME} \${environment} images to \${environment}-\${imageTag}"
-                git push origin main
-
-                echo "✅ 매니페스트 업데이트 완료. ArgoCD가 자동으로 배포합니다."
-            """
-        }
-      }
-    }
     ```
-
-  **2) 프론트엔드 Jenkins 파이프라인 수정**
-  - 기존 파일을 새 파일로 복사
-    ```
-    cp ${FRONTEND_DIR}/deployment/cicd/Jenkinsfile ${FRONTEND_DIR}/deployment/cicd/Jenkinsfile_ArgoCD
-    ```
-  - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
-    ```
-    stage('Update Frontend Manifest Repository') {
+    stage('Update Manifest Repository') {
         container('git') {
             withCredentials([usernamePassword(
-                credentialsId: 'JENKINS_GIT_CREDENTIALS_VALUE',
+                credentialsId: '{JENKINS_GIT_CREDENTIALS}',
                 usernameVariable: 'GIT_USERNAME',
                 passwordVariable: 'GIT_TOKEN'
             )]) {
@@ -174,15 +125,61 @@
                     git clone https://\${GIT_USERNAME}:\${GIT_TOKEN}@\${REPO_URL} manifest-repo
                     cd manifest-repo
 
-                    # Kustomize 설치
-                    curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-                    mkdir -p \$HOME/bin && mv kustomize \$HOME/bin/
-                    export PATH=\$PATH:\$HOME/bin
+                    # 각 서비스별 이미지 태그 업데이트 (sed 명령 사용)
+                    services="{SERVICE_NAMES}"
+                    for service in \$services; do
+                        echo "Updating \$service image tag..."
+                        sed -i "s|image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:.*|image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:${environment}-${imageTag}|g" \\
+                            {SYSTEM_NAME}/kustomize/base/\$service/deployment.yaml
 
-                    # 프론트엔드 매니페스트 업데이트
-                    cd {FRONTEND_SERVICE}/kustomize/overlays/\${environment}
-                    \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}:\${environment}-\${imageTag}
+                        # 변경 사항 확인
+                        echo "Updated \$service deployment.yaml:"
+                        grep "image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service" {SYSTEM_NAME}/kustomize/base/\$service/deployment.yaml
+                    done
 
+                    # Git 설정 및 푸시
+                    git config user.name "Jenkins CI"
+                    git config user.email "jenkins@example.com"
+                    git add .
+                    git commit -m "🚀 Update {SYSTEM_NAME} ${environment} images to ${environment}-${imageTag}"
+                    git push origin main
+
+                    echo "✅ 매니페스트 업데이트 완료. ArgoCD가 자동으로 배포합니다."
+                """
+            }
+        }
+    }
+    ```
+
+  **2) 프론트엔드 Jenkins 파이프라인 수정**
+  - 기존 파일을 새 파일로 복사
+    ```
+    cp ${FRONTEND_DIR}/deployment/cicd/Jenkinsfile ${FRONTEND_DIR}/deployment/cicd/Jenkinsfile_ArgoCD
+    ```
+  - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
+ 
+    ```
+    stage('Update Frontend Manifest Repository') {
+        container('git') {
+            withCredentials([usernamePassword(
+                credentialsId: '{JENKINS_GIT_CREDENTIALS}',
+                usernameVariable: 'GIT_USERNAME',
+                passwordVariable: 'GIT_TOKEN'
+            )]) {
+                sh """
+                    # 매니페스트 레포지토리 클론
+                    REPO_URL=\$(echo "{MANIFEST_REPO_URL}" | sed 's|https://||')
+                    git clone https://\${GIT_USERNAME}:\${GIT_TOKEN}@\${REPO_URL} manifest-repo
+                    cd manifest-repo
+
+                    echo "Updating {FRONTEND_SERVICE} image tag..."
+                    sed -i "s|image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}:.*|image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}:${environment}-${imageTag}|g" \\
+                        {FRONTEND_SERVICE}/kustomize/base/deployment.yaml
+
+                    # 변경 사항 확인
+                    echo "Updated {FRONTEND_SERVICE} deployment.yaml:"
+                    grep "image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}" {FRONTEND_SERVICE}/kustomize/base/deployment.yaml
+                    
                     # Git 설정 및 푸시
                     cd ../../../..
                     git config user.name "Jenkins CI"
