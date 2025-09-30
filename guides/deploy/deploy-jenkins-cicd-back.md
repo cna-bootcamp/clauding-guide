@@ -456,8 +456,8 @@
                                       ./gradlew :${service}:test :${service}:jacocoTestReport :${service}:sonar \\
                                           -Dsonar.projectKey={SYSTEM_NAME}-${service}-${environment} \\
                                           -Dsonar.projectName={SYSTEM_NAME}-${service}-${environment} \\
-                                          -Dsonar.java.binaries=${service}/build/classes/java/main \\
-                                          -Dsonar.coverage.jacoco.xmlReportPaths=${service}/build/reports/jacoco/test/jacocoTestReport.xml \\
+                                          -Dsonar.java.binaries=build/classes/java/main \\
+                                          -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
                                           -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
                                   """
 
