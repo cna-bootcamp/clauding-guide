@@ -1766,6 +1766,7 @@ deployment/cicd 디렉토리 하위에 파일들이 생성됩니다.
 - ACR_NAME: acrdigitalgarage01
 - RESOURCE_GROUP: rg-digitalgarage-01
 - AKS_CLUSTER: aks-digitalgarage-01
+- NAMESPACE: phonebill-dg0500
 ```
 
 deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
@@ -1953,6 +1954,7 @@ deployment/cicd 디렉토리 하위에 파일들이 생성됩니다.
 - ACR_NAME: acrdigitalgarage01
 - RESOURCE_GROUP: rg-digitalgarage-01
 - AKS_CLUSTER: aks-digitalgarage-01 
+- NAMESPACE: phonebill-dg0500
 ```
 
 deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
@@ -2141,6 +2143,7 @@ deployment/.github 디렉토리 하위에 파일들이 생성됩니다.
 - ACR_NAME: acrdigitalgarage01
 - RESOURCE_GROUP: rg-digitalgarage-01
 - AKS_CLUSTER: aks-digitalgarage-01
+- NAMESPACE: phonebill-dg0500
 ```
 
 deployment/.github 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
@@ -2262,7 +2265,7 @@ SKIP_SONARQUBE: true
 vscode를 실행하고 Claude Code도 시작한 후 수행 하세요.   
 아래와 같이 프롬프팅하여 GitHub Actions CI/CD파일들을 작성합니다.  
 [실행정보]는 본인 프로젝트에 맞게 수정하여야 합니다.     
-deployment/.github 디렉토리 하위에 파일들이 생성됩니다.    
+.github 디렉토리 하위에 파일들이 생성됩니다.    
 
 예시)  
 ```
@@ -2273,9 +2276,10 @@ deployment/.github 디렉토리 하위에 파일들이 생성됩니다.
 - ACR_NAME: acrdigitalgarage01
 - RESOURCE_GROUP: rg-digitalgarage-01
 - AKS_CLUSTER: aks-digitalgarage-01 
+- NAMESPACE: phonebill-dg0500
 ```
 
-deployment/.github 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
+.github 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
 
 
 **4.Git Push**     
