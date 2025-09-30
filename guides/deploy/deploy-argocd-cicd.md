@@ -17,7 +17,7 @@
   - {JENKINS_GIT_CREDENTIALS}: 매니페스트 레포지토리를 접근하기 위한 Jenkins Credential 
   - {MANIFEST_SECRET_GIT_USERNAME}: 매니페스트 레포지토리를 접근하기 위한 Git Username을 정의한 GitHub Action 변수명 
   - {MANIFEST_SECRET_GIT_PASSWORD}: 매니페스트 레포지토리를 접근하기 위한 Git Password을 정의한 GitHub Action 변수명 
-
+  
   예시)
   ```
   [실행정보]
