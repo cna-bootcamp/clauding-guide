@@ -339,13 +339,13 @@
 
   ```groovy
   def PIPELINE_ID = "${env.BUILD_NUMBER}"
-  
+
   def getImageTag() {
       def dateFormat = new java.text.SimpleDateFormat('yyyyMMddHHmmss')
       def currentDate = new Date()
       return dateFormat.format(currentDate)
   }
-  
+
   podTemplate(
       label: "${PIPELINE_ID}",
       serviceAccount: 'jenkins',
@@ -365,10 +365,10 @@
       ''',
       containers: [
           containerTemplate(
-              name: 'podman', 
-              image: "mgoltzsche/podman", 
-              ttyEnabled: true, 
-              command: 'cat', 
+              name: 'podman',
+              image: "mgoltzsche/podman",
+              ttyEnabled: true,
+              command: 'cat',
               privileged: true,
               resourceRequestCpu: '500m',
               resourceRequestMemory: '2Gi',
@@ -391,9 +391,9 @@
               ]
           ),
           containerTemplate(
-              name: 'azure-cli', 
-              image: 'hiondal/azure-kubectl:latest', 
-              command: 'cat', 
+              name: 'azure-cli',
+              image: 'hiondal/azure-kubectl:latest',
+              command: 'cat',
               ttyEnabled: true,
               resourceRequestCpu: '200m',
               resourceRequestMemory: '512Mi',
@@ -413,7 +413,7 @@
           def environment = params.ENVIRONMENT ?: 'dev'
           def skipSonarQube = (params.SKIP_SONARQUBE?.toLowerCase() == 'true')
           def services = ['{서비스명1}', '{서비스명2}', '{서비스명3}']
-          
+
           try {
               stage("Get Source") {
                   checkout scm
@@ -446,27 +446,37 @@
                       echo "⏭️ Skipping SonarQube Analysis (SKIP_SONARQUBE=${params.SKIP_SONARQUBE})"
                   } else {
                       container('gradle') {
-                          withSonarQubeEnv('SonarQube') {
-                              // 각 서비스별 테스트 및 SonarQube 분석
-                              services.each { service ->
+                          // 각 서비스별로 개별적으로 SonarQube 분석 및 Quality Gate 확인
+                          services.each { service ->
+                              withSonarQubeEnv('SonarQube') {
+                                  echo "🔍 Starting SonarQube analysis for ${service}..."
+
+                                  // 서비스별 테스트 및 SonarQube 분석
                                   sh """
                                       ./gradlew :${service}:test :${service}:jacocoTestReport :${service}:sonar \\
                                           -Dsonar.projectKey={SYSTEM_NAME}-${service}-${environment} \\
                                           -Dsonar.projectName={SYSTEM_NAME}-${service}-${environment} \\
-                                          -Dsonar.java.binaries=build/classes/java/main \\
-                                          -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \\
+                                          -Dsonar.java.binaries=${service}/build/classes/java/main \\
+                                          -Dsonar.coverage.jacoco.xmlReportPaths=${service}/build/reports/jacoco/test/jacocoTestReport.xml \\
                                           -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
                                   """
+
+                                  echo "✅ SonarQube analysis completed for ${service}"
                               }
-                              
-                              // Quality Gate 확인
-                              timeout(time: 10, unit: 'MINUTES') {
+
+                              // 각 서비스별 Quality Gate 확인
+                              timeout(time: 5, unit: 'MINUTES') {
+                                  echo "⏳ Waiting for Quality Gate result for ${service}..."
                                   def qg = waitForQualityGate()
                                   if (qg.status != 'OK') {
-                                      error "Pipeline aborted due to quality gate failure: \${qg.status}"
+                                      error "❌ Quality Gate failed for ${service}: ${qg.status}"
+                                  } else {
+                                      echo "✅ Quality Gate passed for ${service}"
                                   }
                               }
                           }
+
+                          echo "🎉 All services passed SonarQube Quality Gates!"
                       }
                   }
               }
@@ -482,13 +492,13 @@
                               ),
                               usernamePassword(
                                   credentialsId: 'dockerhub-credentials',
-                                  usernameVariable: 'DOCKERHUB_USERNAME', 
+                                  usernameVariable: 'DOCKERHUB_USERNAME',
                                   passwordVariable: 'DOCKERHUB_PASSWORD'
                               )
                           ]) {
                               // Docker Hub 로그인 (rate limit 해결)
                               sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
-                              
+
                               // ACR 로그인
                               sh "podman login {ACR_NAME}.azurecr.io --username \$ACR_USERNAME --password \$ACR_PASSWORD"
 
@@ -539,11 +549,11 @@
                       """
                   }
               }
-          
+
               // 파이프라인 완료 로그 (Scripted Pipeline 방식)
               stage('Pipeline Complete') {
                   echo "🧹 Pipeline completed. Pod cleanup handled by Jenkins Kubernetes Plugin."
-                  
+
                   // 성공/실패 여부 로깅
                   if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
                       echo "✅ Pipeline completed successfully!"
@@ -551,7 +561,7 @@
                       echo "❌ Pipeline failed with result: ${currentBuild.result}"
                   }
               }
-              
+
           } catch (Exception e) {
               currentBuild.result = 'FAILURE'
               echo "❌ Pipeline failed with exception: ${e.getMessage()}"
