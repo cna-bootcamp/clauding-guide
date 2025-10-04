@@ -748,7 +748,7 @@ Message Queue 설치를 요청합니다.
 /develop-dev-backend
 [개발정보]
 - 개발 아키텍처패턴
-  - user: Layered
+  - auth: Layered
   - bill-inquiry: Clean
   - product-change: Layered
   - kos-mock: Layered
