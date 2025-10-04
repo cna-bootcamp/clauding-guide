@@ -29,7 +29,7 @@
     - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성 
     - '[루트 build.gradle 표준]'대로 최상위 build.gradle 작성
       - SpringBoot 3.3.0, Java 21 사용 
-      - 각 서비스에도 공통으로 사용되는 Dependency는 루트 build.gradle에 지정   
+      - common을 제외한 각 서비스에서 공통으로 사용되는 설정과 Dependency는 루트 build.gradle에 지정   
     - 서비스별 build.gradle 작성
       - 최상위 build.gradle에 정의한 설정은 각 마이크로서비스의 build.gradle에 중복하여 정의하지 않도록 함   
       - 각 서비스의 실행 jar 파일명은 서비스명과 동일하게 함 
@@ -78,12 +78,12 @@
 ---
 
 [설정 Manifest 표준]
+- common모듈은 작성하지 않음 
+- application.yml에 작성 
 - 하드코딩하지 않고 환경변수 사용
   특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함: '<DB/Redis 설정 예제>' 참조    
 - Redis Database는 각 서비스마다 다르게 설정  
 - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정
-- 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
-- 개발모드의 DDL_AUTO값은 update로 함 
 - JWT Secret Key는 모든 서비스가 동일해야 함 
 - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정
  
