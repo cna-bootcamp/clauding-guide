@@ -2,59 +2,59 @@
 
 [요청사항]  
 - <개발원칙>을 준용하여 개발
-- <개발순서>에 따라 아래 3단계로 개발
-  - '0. 준비'를 수행하고 완료 후 다음 단계 진행여부를 사용자에게 확인  
-  - '1. common 모듈 개발'을 수행하고 완료 후 다음 단계 진행여부를 사용자에게 확인   
-  - '2. 각 서비스별 구현'은 사용자와 함께 각 서비스를 개발  
-  
+- <개발순서>에 따라 개발
+- [결과파일] 안내에 따라 파일 작성 
+
 [가이드]
 <개발원칙>
+- 'HighLevel아키텍처정의서 > 6.1.1 백엔드 기술스택'과 일치해야 함
+- 'HighLevel아키텍처정의서 > 6.2 서비스별 개발 아키텍처 패턴'과 일치해야 함
 - '개발주석표준'에 맞게 주석 작성
-- API설계서와 일관성 있게 설계. Controller에 API를 누락하지 말고 모두 개발
+- API개발은 'API설계서'를 준용 
+- '백엔드패키지구조도'와 동일하게 패키지와 클래스 구성  
 - '외부시퀀스설계서'와 '내부시퀀스설계서'와 일치되도록 개발 
-- 각 서비스별 지정된 {설계 아키텍처 패턴}을 적용하여 개발
-  - Layered 아키텍처 적용 시 Service레이어에 Interface 사용 
-  - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용
 - 백킹서비스 연동은 '데이터베이스설치결과서', '캐시설치결과서', 'MQ설치결과서'를 기반으로 개발  
 - 빌드도구는 Gradle 사용   
-- 설정 Manifest(src/main/resources/application*.yml) 작성 시 '[설정 Manifest 표준]' 준용  
+- 설정 Manifest(src/main/resources/application*.yml)의 각 항목값은 하드코딩하지 않고 환경변수 처리 
 <개발순서>
-- 0. 준비:
+- 준비:
   - 참고자료 분석 및 이해 
-  - '패키지구조표준'의 예시를 참조하여 모든 클래스와 파일이 포함된 패키지 구조도를 작성 
-    - plantuml 스크립트가 아니라 트리구조 텍스트로 작성
-    - 결과파일: develop/dev/package-structure.md   
-  - settings.gralde 파일 작성
-  - build.gradle 작성
-    - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성 
-    - '[루트 build.gradle 표준]'대로 최상위 build.gradle 작성
-      - SpringBoot 3.3.0, Java 21 사용 
-      - 각 서비스에도 공통으로 사용되는 Dependency는 루트 build.gradle에 지정   
-    - 서비스별 build.gradle 작성
-      - 최상위 build.gradle에 정의한 설정은 각 마이크로서비스의 build.gradle에 중복하여 정의하지 않도록 함   
-      - 각 서비스의 실행 jar 파일명은 서비스명과 동일하게 함 
-  - 각 서비스별 설정 파일 작성 
-    - 설정 Manifest(application.yml) 작성: '[설정 Manifest 표준]' 준용   
-
-- 1. common 모듈 개발 
-  - 각 서비스에서 공통으로 사용되는 클래스를 개발
-  - 외부(웹브라우저, 데이터베이스, Message Queue, 외부시스템)와의 인터페이스를 위한 클래스는 포함하지 않음  
-  
-- 2. 각 서비스별 개발  
-  - 사용자가 제공한 서비스의 유저스토리, 외부시퀀스설계서, 내부시퀀스설계서, API설계서 파악 
-  - 기존 개발 결과 파악 
-  - API 설계서의 각 API를 순차적으로 개발 
-    - Controller -> Service -> Data 레이어순으로 순차적으로 개발  
-    - 컴파일 및 에러 해결: {프로젝트 루트}/gradlew {service-name}:compileJava
-    - 컴파일까지만 하고 서버 실행은 하지 않음 
-  - 모든 API개발 후 아래 수행
-    - 컴파일 및 에러 해결: {프로젝트 루트}/gradlew {service-name}:compileJava 
-    - 빌드 및 에러 해결: {프로젝트 루트}/gradlew {service-name}:build 
-  - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
-  - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
-  - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
-  - 테스트 코드 작성은 하지 않음     
-
+- 실행:  
+  - '[루트 build.gradle 표준]'대로 최상위 build.gradle 작성
+    - SpringBoot 3.3.0, Java 21 사용 
+    - 각 서비스에도 공통으로 사용되는 Dependency는 루트 build.gradle에 지정     
+  - common 모듈 개발  
+  - 각 서비스별로 '<병렬처리>'가이드대로 동시 개발
+    - 설정 Manifest(application.yml) 작성 
+      - 하드코딩하지 않고 환경변수 사용
+      - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함: '<DB/Redis 설정 예제>' 참조    
+      - Redis Database는 각 서비스마다 다르게 설정  
+      - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정
+      - 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
+      - 개발모드의 DDL_AUTO값은 update로 함 
+      - JWT Secret Key는 모든 서비스가 동일해야 함 
+      - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정  
+    - '<Build.gradle 구성 최적화>' 가이드대로 최상위와 각 서비스별 build.gradle 작성  
+    - 최상위 build.gradle에 정의한 설정은 각 마이크로서비스의 build.gradle에 중복하여 정의하지 않도록 함  
+    - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
+    - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
+    - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
+    - 테스트 코드 작성은 하지 않음     
+  - 개발 결과 설명: dev-backend.md
+- 검토:
+  - Gradle Wrapper 환경 설정
+    - 수행 명령 
+      ```
+      gradle wrapper --gradle-version {Spring Boot버전에 맞는 Gradle 버전}
+      ```
+  - 컴파일 및 오류 수정:
+    - '<병렬처리>'에 따라 동시 수행  
+    - 컴파일 방법: {프로젝트 루트}/gradlew {service-name}:compileJava
+  - 컴파일까지만 하고 서버 실행은 하지 않음 
+<병렬처리>
+- **의존성 분석 선행**: 병렬 처리 전 반드시 의존성 파악
+- **순차 처리 필요시**: 무리한 병렬화보다는 안전한 순차 처리
+- **검증 단계 필수**: 병렬 처리 후 통합 검증
 
 <Build.gradle 구성 최적화>
 - **중앙 버전 관리**: 루트 build.gradle의 `ext` 블록에서 모든 외부 라이브러리 버전 통일 관리
@@ -66,27 +66,22 @@
 
 [참고자료]
 - 유저스토리
+- HighLevel아키텍처정의서
 - API설계서
 - 외부시퀀스설계서
 - 내부시퀀스설계서
+- 클래스설계서
+- 백엔드팩키지구조도
 - 데이터베이스설치결과서
 - 캐시설치결과서
 - MQ설치결과서
 - 테스트코드표준
-- 패키지구조표준
- 
+  
+[결과파일]
+- develop/dev/dev-backend.md
+
 ---
 
-[설정 Manifest 표준]
-- 하드코딩하지 않고 환경변수 사용
-  특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함: '<DB/Redis 설정 예제>' 참조    
-- Redis Database는 각 서비스마다 다르게 설정  
-- 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정
-- 개발모드(dev)와 운영모드(prod)로 나누어서 작성  
-- 개발모드의 DDL_AUTO값은 update로 함 
-- JWT Secret Key는 모든 서비스가 동일해야 함 
-- '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정
- 
 [JWT, CORS, Actuaotr,OpenAPI Documentation,Loggings 표준]
 ```
 # JWT 
@@ -247,6 +242,18 @@ tasks.register('buildAll') {
     dependsOn subprojects.collect { it.tasks.named('build') }
     description = 'Build all subprojects'
 }
+```
+
+[예제]
+<gradle-wrapper.properties 예제>
+```
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.11-bin.zip
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
 ```
 
 <DB/Redis 설정 예제>
@@ -555,7 +562,7 @@ public class JwtTokenProvider {
 }
 ```
 
-1) UserPrincipal
+3) UserPrincipal
 ```
 /**
  * 인증된 사용자 정보
