@@ -746,12 +746,17 @@ Message Queue 설치를 요청합니다.
 
 ```
 /develop-dev-backend
+[개발정보]
+- 서비스명: user, bill-inquiry, product-change, kos-mock
+- 개발 아키텍처패턴
+  - user: Layered
+  - bill-inquiry: Clean
+  - product-change: Layered
+  - kos-mock: Layered
 ```
 
 2)마이크로서비스 확인    
-개발 초기에 settings.gradle이 생성되면 올바르게 마이크로서비스를 정의했는지 확인합니다.   
-만약 잘못되어 있다면 ESC를 눌러 잠깐 중지하고 아래 예와 같이 정정 요청합니다.     
-![](images/2025-09-08-15-49-15.png)
+
 
 
 3)개발완료 체크 요청     
