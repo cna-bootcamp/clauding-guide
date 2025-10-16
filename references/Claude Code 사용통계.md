@@ -13,16 +13,18 @@ curl -fsSL https://bun.sh/install | bash
 export PATH="$HOME/.bun/bin:$PATH"
 ```
 
-## 일별/월별 사용량 보기  
+터미널을 닫고 새 터미널을 열거나,    
+아래 명령으로 설정 적용.   
 
+Linux/Mac:  
 ```
-bunx ccusage daily/monthly [--since YYYYMMDD] [--until YYYYMMDD]   
+source ~/.zshrc
 ```
-Cost는 만약에 Claude API를 사용했다면 예상되는 비용입니다. 
-Claude Plan(Pro, Max)이 쓰는게 좋을 지 API를 쓰는게 좋을 지 판단할 수 있습니다.  
-자주 사용한다면 Claude Plan이 보통 더 좋습니다.   
-결과예시) 
-![](./images/2025-07-29-11-16-31.png)
+  
+Window:   
+```
+source ~/.bashrc
+```
 
 ## 실시간 사용량 보기  
 
@@ -36,3 +38,15 @@ bunx ccusage blocks --live
 ![](./images/2025-07-29-11-13-04.png)
 
 이 창을 계속 띄워 놓으면 거의 실시간으로 사용량을 볼 수 있습니다  
+  
+## 일별/월별 사용량 보기  
+
+```
+bunx ccusage daily/monthly [--since YYYYMMDD] [--until YYYYMMDD]   
+```
+Cost는 만약에 Claude API를 사용했다면 예상되는 비용입니다. 
+Claude Plan(Pro, Max)이 쓰는게 좋을 지 API를 쓰는게 좋을 지 판단할 수 있습니다.  
+자주 사용한다면 Claude Plan이 보통 더 좋습니다.   
+결과예시) 
+![](./images/2025-07-29-11-16-31.png)
+
