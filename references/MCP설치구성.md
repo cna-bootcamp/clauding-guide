@@ -6,7 +6,8 @@
   - [주요 MCP 이해 및 준비 작업](#주요-mcp-이해-및-준비-작업)
   - [Claude Desktop에 주요 MCP서버 연결](#claude-desktop에-주요-mcp서버-연결)
   - [Claude Code에 주요 MCP서버 연결](#claude-code에-주요-mcp서버-연결)
-  - [Figma MCP 설치](#figma-mcp-설치)
+  - [Cursor에 주요 MCP서버 연결](#cursor에-주요-mcp서버-연결)
+  - [Figma MCP Socket 설치](#figma-mcp-socket-설치)
   - [Magic MCP 설치(옵션)](#magic-mcp-설치옵션)
   - [MCP포탈 이용 방법](#mcp포탈-이용-방법)
     - [GitHub MCP 설치](#github-mcp-설치)
@@ -69,11 +70,23 @@ echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-**4.Claude Desktop 설치**    
+**4.AI툴 설치**    
+중요) 아래 AI툴 중 **사용할 툴 한개만 설치**합니다.      
+
+**1)Claude Desktop 설치**    
 Claude Desktop에 MCP를 연결하려면 아래 사이트에서 Claude Desktop을 먼저 설치해야 합니다.   
 Claude Desktop은 온라인 Claude와 동일한 기능을 로컬에서 사용하기 위한 로컬 Claude툴입니다.  
 이 툴을 설치하면 온라인에서 할 수 없었던 로컬 파일 접근 이나 수정 작업도 할 수 있습니다.  
 https://support.anthropic.com/ko/articles/10065433-claude-desktop-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
+
+**2)Claude Code 설치**         
+
+아래 링크에서 Claude Code 설치만 하십시오. SuperClaude는 설치 안해도 됩니다.  
+https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/01.install-claude-code.md#claude-code
+
+**3)Cursor 설치**        
+아래 사이트에서 설치 프로그램 다운로드해서 설치하세요.   
+https://cursor.com/
 
 ---
 
@@ -177,10 +190,28 @@ claude mcp list
 
 ---
 
-## Figma MCP 설치
+## Cursor에 주요 MCP서버 연결 
+
+1)환경설정 클릭  
+![](images/2025-10-20-22-32-41.png)
+
+2)Tools & MCP 선택 후 [Add Custom MCP]클릭   
+![](images/2025-10-20-22-33-20.png)
+
+3)OS에 맞게 MCP설정값 붙여넣기    
+- Linux/Mac: https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-linuxmac.json
+- Windows: https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-window.json
+
+4)불필요한 Figma MCP 기능 비활성화     
+아래 그림과 같이 Read하는 기능만 남기고 Disable합니다.   
+![](images/2025-10-20-22-40-07.png) 
+
+---
+
+## Figma MCP Socket 설치
 Figma MCP는 Figma의 브레인스토밍 결과나 디자인 요소를 AI가 읽을 수 있도록 하는 강력한 기능을 제공합니다.   
 참고로 유투브나 블로그에 여러 방법이 있는데 지금은 동작 안하는 방법이 많습니다.   
-그래서 로컬에 Figma MCP서버를 설치해서 연동하는 방법으로 설명합니다.   
+그래서 로컬에 Figma MCP Socket 서버를 설치해서 연동하는 방법으로 설명합니다.   
 정확히 말하면 Figma MCP는 이미 설치된것이고 이 작업은 Figma에 접근하는 proxy서버를 설치하는 것입니다.  
   
 **1)Figma MCP 서버 설치**    
