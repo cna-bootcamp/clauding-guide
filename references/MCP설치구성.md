@@ -192,13 +192,13 @@ claude mcp list
 
 ## Cursor에 주요 MCP서버 연결 
 
-1)환경설정 클릭  
+1)환경설정 클릭: Cursor > Preferences > Cursor Settings 클릭     
 ![](images/2025-10-20-22-32-41.png)
 
 2)Tools & MCP 선택 후 [Add Custom MCP]클릭   
 ![](images/2025-10-20-22-33-20.png)
 
-3)OS에 맞게 MCP설정값 붙여넣기    
+3)OS에 맞게 MCP설정값 붙여넣은 후 저장 후 닫기       
 - Linux/Mac: https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-linuxmac.json
 - Windows: https://github.com/cna-bootcamp/clauding-guide/blob/main/references/MCP-window.json
 
