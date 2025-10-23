@@ -829,7 +829,6 @@ Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제�
 - Azure EventGrid: https://github.com/ktdsgarage/pubsub.git
   - 이벤트발행 예제: usage
   - 이벤트소비 예제: sms 
-  * EventGrid는 이벤트 밣행 시 소비자 서비스의 API를 호출하는 방식임.  
   
 3)Gradle 프로젝트 인식 확인    
 아래와 같이 우측 바 3번째에 코끼리 아이콘이 나와야 합니다.   
