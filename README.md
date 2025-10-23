@@ -780,7 +780,7 @@ Message Queue 설치를 요청합니다.
 ```
 
 공통 개발은 2개 Step으로 나누어서 개발되고 각 스텝이 끝나면 계속 진행할 지를 묻습니다.  
-만약 묻지 않고 각 서비스 개발을 시작하려하면 중지시키세요.   
+step2 개발 후 만약 묻지 않고 각 서비스 개발을 시작하려 하면 ESC를 눌러 중지시키세요.   
 
 - Step1: 개발준비 - settings.gradle, build.gradle, application.yml 작성  
 - Step2: common 모듈 개발 
