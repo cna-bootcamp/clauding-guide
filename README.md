@@ -971,15 +971,29 @@ AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합�
 CLAUDE.md에 Lessons Learned 섹션을 만들고, 아래 예시처럼 개발 워크플로우를 등록하세요.   
 
 예시)
-# Lessons Learned 
-## 개발 워크플로우 
+## Lessons Learned 
+### 개발 워크플로우 
 - **❗ 핵심 원칙**: 코드 수정 → 컴파일 → 사람에게 서버 시작 요청 → 테스트
 - **소스 수정**: Spring Boot는 코드 변경 후 반드시 컴파일 + 재시작 필요
 - **컴파일**: 최상위 루트에서 `./gradlew {service-name}:compileJava` 명령 사용
 - **서버 시작**: AI가 직접 서버를 시작하지 말고 반드시 사람에게 요청할것
 ```
 
-**5.런타임에러 해결**         
+**5.Spring Boot 설정관리 Lessons Learned 등록**          
+
+CLAUDE.md의 Lessons Learned 항목에 추가하세요.   
+```
+### Spring Boot 설정 관리
+- **설정 파일 구조**: `application.yml` + IntelliJ 실행 프로파일(`.run/*.run.xml`)로 관리
+- **금지 사항**: `application-{profile}.yml` 같은 프로파일별 설정 파일 생성 금지
+- **환경 변수 관리**: IntelliJ 실행 프로파일의 `<option name="env">` 섹션에서 관리
+- **application.yml 작성**: 환경 변수 플레이스홀더 사용 (`${DB_HOST:default}` 형식)
+- **실행 방법**:
+  - IntelliJ: 실행 프로파일 선택 후 실행 (환경 변수 자동 적용)
+  - 명령줄: 환경 변수 또는 `--args` 옵션으로 전달 (`--spring.profiles.active` 불필요)
+```
+  
+**6.런타임에러 해결**         
 '서비스'탭에서 서비스를 실행합니다.   
 에러가 나면 AI에게 에러 메시지를 제공하거나 로그를 분석하여 에러를 해결하도록 요청합니다.    
 
@@ -1000,7 +1014,7 @@ user-service 런타임 에러가 발생합니다.
 
 일단, 모든 서비스의 런타임에러까지 해결한 후 다음 단계를 진행합니다.   
 
-**6.방화벽 오픈**    
+**7.방화벽 오픈**    
 API swagger 페이지 접속을 위해 방화벽 오픈 작업을 합니다.   
 
 - 오픈할 포트 찾기 
@@ -1010,7 +1024,7 @@ API swagger 페이지 접속을 위해 방화벽 오픈 작업을 합니다.
 
 - [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/azure-firewall-open.md) 참고하여 오픈  
 
-**7.API별 개발**          
+**8.API별 개발**          
 각 API별로 (AI)API 테스트 -> (AI)코드수정 및 컴파일 -> (사람)서버 재시작의 과정을 반복하면서 완성해 나갑니다.   
 가장 먼저 완성해야할 API는 '로그인'입니다.   
 
@@ -1089,7 +1103,7 @@ curl -X 'GET' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxYTFhNDViNi1lZmU5LTRjMjMtOWI2Yi05NTgwYmExNWNhZDkiLCJpYXQiOjE3NTY3MTcwNzYsImV4cCI6MTc1NjgwMzQ3NiwidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoidHJpcDAxIiwiYXV0aG9yaXR5IjoiVVNFUiJ9.ht7mmEtZyuba5FXnjtEByDFAQGTXI3Uwb3PLrJyQH8A'
 ```
 
-**8.복잡한 기능 개발**         
+**9.복잡한 기능 개발**         
 복잡한 기능을 개발을 할 때는 계획-수행-테스트의 과정으로 하십시오.   
 아래 예시를 참조하세요.  
 https://github.com/cna-bootcamp/clauding-guide/blob/main/samples/sample-%EA%B8%B0%EB%8A%A5%EC%B6%94%EA%B0%80%EC%98%88%EC%8B%9C.md
@@ -1119,7 +1133,7 @@ sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.
 resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
 ```
   
-**9.Git 레포지토리 생성 및 푸시**   
+**10.Git 레포지토리 생성 및 푸시**   
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/git-repo-guide.md
 
   
