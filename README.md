@@ -871,7 +871,7 @@ A problem occurred configuring root project 'hgzero'.
 
 ```
 
-아래 프롬프트 해결 요청을 하십시오.    
+아래 프롬프트로 해결 요청을 하십시오.    
 ```
 @fix 
 아래 에러를 수정해 주세요.    
