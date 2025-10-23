@@ -804,20 +804,6 @@ step2 개발 후 만약 묻지 않고 각 서비스 개발을 시작하려 하�
 ```
 
 Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제공하시는것이 좋습니다.   
-     
-**팁) Azure MQ 제품별 참조 소스 제공**    
-- Azure EventHub: https://github.com/ktdsgarage/cqrs-simple.git
-  - 이벤트발행 예제: command
-  - 이벤트소비 예제: query
-  
-- Azure ServiceBus: https://github.com/ktdsgarage/usage.git
-  - 이벤트발행 예제: acl-usage
-  - 이벤트소비 예제: sync 
-
-- Azure EventGrid: https://github.com/ktdsgarage/pubsub.git
-  - 이벤트발행 예제: usage
-  - 이벤트소비 예제: sms 
-  * EventGrid는 이벤트 밣행 시 소비자 서비스의 API를 호출하는 방식임.  
 
 프롬프트 예제)
 ```
@@ -831,7 +817,20 @@ Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제�
 
 ```
 
+**팁) Azure MQ 제품별 참조 소스 제공**    
+- Azure EventHub: https://github.com/ktdsgarage/cqrs-simple.git
+  - 이벤트발행 예제: command
+  - 이벤트소비 예제: query
+  
+- Azure ServiceBus: https://github.com/ktdsgarage/usage.git
+  - 이벤트발행 예제: acl-usage
+  - 이벤트소비 예제: sync 
 
+- Azure EventGrid: https://github.com/ktdsgarage/pubsub.git
+  - 이벤트발행 예제: usage
+  - 이벤트소비 예제: sms 
+  * EventGrid는 이벤트 밣행 시 소비자 서비스의 API를 호출하는 방식임.  
+  
 3)Gradle 프로젝트 인식 확인    
 아래와 같이 우측 바 3번째에 코끼리 아이콘이 나와야 합니다.   
 ![](images/2025-09-08-22-43-36.png)  
