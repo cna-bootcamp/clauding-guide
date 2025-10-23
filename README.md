@@ -861,6 +861,25 @@ Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제�
 product service 빌드 및 버그 픽스 
 ```
 
+6)빌드환경 에러   
+아래 예와 같은 에러가 나는 경우 빌드환경에 문제가 있는겁니다.    
+```
+A problem occurred configuring root project 'hgzero'.
+> A build operation failed.
+      Could not read workspace metadata from C:\Users\hiond\.gradle\caches\8.10\transforms\e778b234810493d1652df6ddd5a31860\metadata.bin
+   > Could not read workspace metadata from C:\Users\hiond\.gradle\caches\8.10\transforms\e778b234810493d1652df6ddd5a31860\metadata.bin
+
+```
+
+아래 프롬프트 해결 요청을 하십시오.    
+```
+@fix 
+아래 에러를 수정해 주세요.    
+
+{에러 메시지}
+```
+
+
 **2.실행 프로파일 작성**    
 서비스를 실행하기 위한 실행 프로파일을 작성 요청합니다.    
 각 서비스에 생성된 application.yml을 분석하여 환경변수까지 등록된 IntelliJ의 서비스 실행 프로파일이 작성됩니다.       
