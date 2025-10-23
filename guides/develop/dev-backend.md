@@ -85,7 +85,7 @@
   특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함: '<DB/Redis 설정 예제>' 참조   
 - spring.application.name은 서비스명과 동일하게 함
 - Redis Database는 각 서비스마다 다르게 설정  
-- 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정
+- 민감한 정보의 디폴트값은 생략하거나 간략한 값으로 지정
 - JWT Secret Key는 모든 서비스가 동일해야 함 
 - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정
  
