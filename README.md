@@ -753,6 +753,8 @@ Message Queue 설치를 요청합니다.
 한꺼번에 서비스를 개발하면 간단한 기능은 제대로 개발하나 복잡한 기능은 TODO로 남겨놓는 경우도 많습니다.  
 그래서 아래 명령으로 공통개발까지만 하고 각 서비스별로 개발합니다.   
 
+중요) 여러명이 개발할 때 공통개발은 1사람이 수행하고 푸시하세요.   
+
 ```
 /clear
 ```
@@ -800,6 +802,35 @@ step2 개발 후 만약 묻지 않고 각 서비스 개발을 시작하려 하�
 '백엔드개발가이드'를 참고하여 {서비스명}을 개발해 주세요. 
 기존 개발결과를 먼저 파악한 후 개발해 주세요. 
 ```
+
+Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제공하시는것이 좋습니다.   
+     
+**팁) Azure MQ 제품별 참조 소스 제공**    
+- Azure EventHub: https://github.com/ktdsgarage/cqrs-simple.git
+  - 이벤트발행 예제: command
+  - 이벤트소비 예제: query
+  
+- Azure ServiceBus: https://github.com/ktdsgarage/usage.git
+  - 이벤트발행 예제: acl-usage
+  - 이벤트소비 예제: sync 
+
+- Azure EventGrid: https://github.com/ktdsgarage/pubsub.git
+  - 이벤트발행 예제: usage
+  - 이벤트소비 예제: sms 
+  * EventGrid는 이벤트 밣행 시 소비자 서비스의 API를 호출하는 방식임.  
+
+프롬프트 예제)
+```
+{서비스명}을 개발 하세요. 
+
+[MQ 개발예제]
+- Repository: https://github.com/ktdsgarage/usage.git
+  - 이벤트발행 예제: acl-usage
+  - 이벤트소비 예제: sync 
+- ~/home/workspace/examples/ 하위에 예제 Git Repository Clone하여 참조    
+
+```
+
 
 3)Gradle 프로젝트 인식 확인    
 아래와 같이 우측 바 3번째에 코끼리 아이콘이 나와야 합니다.   
