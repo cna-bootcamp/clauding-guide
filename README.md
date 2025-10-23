@@ -829,7 +829,27 @@ Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제�
 - Azure EventGrid: https://github.com/ktdsgarage/pubsub.git
   - 이벤트발행 예제: usage
   - 이벤트소비 예제: sms 
-  
+
+초기 버전 개발 후 체크 및 추가개발 요청을 하세요.    
+
+```
+@dev-backend
+'백엔드개발가이드'를 참고하여 {서비스명} 개발 결과를 확인하고 필요 시 추가 개발해 주세요.  
+```
+
+역시 Azure MQ를 사용하는 경우는 MQ 개발예제를 제공해 줍니다.   
+예) 
+```
+@dev-backend
+'백엔드개발가이드'를 참고하여 {서비스명} 개발 결과를 확인하고 필요 시 추가 개발해 주세요.
+[MQ 개발예제]
+- Repository: https://github.com/ktdsgarage/usage.git
+  - 이벤트발행 예제: acl-usage
+  - 이벤트소비 예제: sync 
+- ~/home/workspace/examples/ 하위에 예제 Git Repository Clone하여 참조  
+```
+
+
 3)Gradle 프로젝트 인식 확인    
 아래와 같이 우측 바 3번째에 코끼리 아이콘이 나와야 합니다.   
 ![](images/2025-09-08-22-43-36.png)  
