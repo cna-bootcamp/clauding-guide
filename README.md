@@ -1159,7 +1159,7 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/git-repo-gui
 
 | 기능 | IntelliJ (Windows/Linux) | IntelliJ (macOS) | VSCode (Windows/Linux) | VSCode (macOS) |
 |--|--|--|--|--|
-| 메서드/선언부로 이동 (Go to Declaration) | Ctrl + 클릭(또는 b) | Command + b | Ctrl + 클릭 | Command + 클릭 |
+| 메서드/선언부로 이동 (Go to Declaration) | Ctrl + 클릭(또는 b) | Command + 클릭(또는 b) | Ctrl + 클릭 | Command + 클릭 |
 | 구현부로 이동 (Go to Implementation) | Ctrl + Alt + b | Option + Command + b | Ctrl + F12 | Command + F12 | 
 
 2)이전·다음 위치 이동 단축키     
