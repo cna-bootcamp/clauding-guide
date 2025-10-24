@@ -1152,6 +1152,23 @@ resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.
 **10.Git 레포지토리 생성 및 푸시**   
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/git-repo-guide.md
 
+
+**11.코드 이동 단축키**          
+
+1)메서드·선언부 이동 단축키     
+
+| 기능 | IntelliJ (Windows/Linux) | IntelliJ (macOS) | VSCode (Windows/Linux) | VSCode (macOS) |
+|--|--|--|--|--|
+| 메서드/선언부로 이동 (Go to Declaration) | Ctrl + 클릭(또는 b) | Command + b | Ctrl + 클릭 | Command + 클릭 |
+| 구현부로 이동 (Go to Implementation) | Ctrl + Alt + b | Option + Command + b | Ctrl + F12 | Command + F12 | 
+
+2)이전·다음 위치 이동 단축키     
+
+| 기능 | IntelliJ (Windows/Linux) | IntelliJ (macOS) | VSCode (Windows/Linux) | VSCode (macOS) |
+|--|--|--|--|--|
+| 이전 위치로 이동 (Go Back) | Ctrl + Alt + ← | Command + [ | Alt + ← | Control(^) + - |
+| 다음 위치로 이동 (Go Forward) | Ctrl + Alt + → | Command + ] | Alt + → | Control(^) + Shift + - | [14][15][16]
+
   
 | [Top](#목차) |
 
