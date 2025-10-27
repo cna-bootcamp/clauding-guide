@@ -730,6 +730,14 @@ Message Queue 설치계획서 작성을 요청합니다.
 /develop-mq-guide
 ```
 
+설치계획서가 아래 백킹서비스 설치방법에 따라 만들어졌는지 검사합니다.   
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/%EB%B0%B1%ED%82%B9%EC%84%9C%EB%B9%84%EC%8A%A4%EC%84%A4%EC%B9%98%EB%B0%A9%EB%B2%95.md
+
+제대로 작성 안되어 있으면 재작성을 요청합니다.     
+```
+'백킹서비스설치방법'을 준용하여 다시 작성해 주세요.   
+```
+   
 2)MQ설치    
 Message Queue 설치를 요청합니다.   
 '[설치정보]' 섹션에 설치정보를 제공해줘야 합니다.   
