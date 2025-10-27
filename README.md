@@ -877,7 +877,7 @@ Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제�
 - ~/home/workspace/examples/ 하위에 예제 Git Repository Clone하여 참조  
 ```
 
-2.3)API설계서와의 매핑 체크
+2.3)API설계서와의 매핑 체크     
 누락 또는 추가된 API가 있는지 점검합니다.     
 ```
 '{서비스명}' 서비스 controller에 개발된 API와 
