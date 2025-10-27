@@ -118,6 +118,11 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/dev-backend.md
   - 파일명: dev-backend.md
 
+- GradleWrapper생성가이드
+  - 설명: Gradle Wrapper 생성 가이드    
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/gradle-wrapper.md
+  - 파일명: gradle-wrapper.md
+
 - 서비스실행프로파일작성가이드 
   - 설명: 백엔드 서비스 실행 프로파일 작성 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/make-run-profile.md
@@ -317,7 +322,7 @@
 - 백엔드개발결과서: develop/dev/dev-backend.md
 - 백엔드테스트결과서: develop/dev/test-backend.md
 - 프론트엔드설계서: design/frontend/frontend-design.md
-
+ 
 ## 프롬프트 약어 
 ### 역할 약어 
 - "@archi": "--persona-architect"
