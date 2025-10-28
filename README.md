@@ -42,9 +42,22 @@ Claude를 활용하여 사람과 AI가 함께 서비스 기획, 설계, 개발, 
     - [8.High Level 아키텍처 정의서 작성](#8high-level-아키텍처-정의서-작성)
     - [9.물리 아키텍처 설계](#9물리-아키텍처-설계)
   - [클라우드 환경 설정](#클라우드-환경-설정)
-  - [백엔드 개발](#백엔드-개발)
-    - [백킹서비스 설치](#백킹서비스-설치)
-    - [백엔드 개발/테스트](#백엔드-개발테스트)
+  - [백킹서비스 설치](#백킹서비스-설치)
+    - [**사전작업**](#사전작업)
+    - [**데이터베이스 설치**](#데이터베이스-설치)
+    - [**MQ 설치**](#mq-설치)
+  - [백엔드 개발/테스트](#백엔드-개발테스트)
+    - [**Gradle Wraaper 구성**](#gradle-wraaper-구성)
+    - [**개발**](#개발)
+      - [공통 개발요청](#공통-개발요청)
+      - [서비스별 개발](#서비스별-개발)
+      - [추가 작업](#추가-작업)
+      - [**실행 프로파일 작성**](#실행-프로파일-작성)
+      - [기타 추가 수행](#기타-추가-수행)
+      - [**서비스 실행**](#서비스-실행)
+      - [**방화벽 오픈**](#방화벽-오픈)
+      - [**API별 개발**](#api별-개발)
+      - [**Git 레포지토리 생성 및 푸시**](#git-레포지토리-생성-및-푸시)
   - [프론트엔드 설계](#프론트엔드-설계)
   - [프론트엔드 개발](#프론트엔드-개발)
   - [컨테이너로 배포하기](#컨테이너로-배포하기)
@@ -623,9 +636,8 @@ https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 
 ---
 
-## 백엔드 개발
-### 백킹서비스 설치
-**0.사전작업**   
+## 백킹서비스 설치
+### **사전작업**   
 터미널을 열고 데이터베이스를 배포할 클라우드플랫폼에 로그인하고 Kubernetes 인증 정보를 가져옵니다.   
 각 클라우드플랫폼별 CLI와 Kubernetes 인증정보를 갖고 오는 방법은 claude나 perplexity에 문의하세요.    
 
@@ -651,7 +663,7 @@ az aks get-credentials [-g {리소스그룹}] -n {AKS명} -f ~/.kube/config
 az aks get-credentials -n dg0100-aks -f ~/.kube/config
 ```
 
-**1.데이터베이스 설치**    
+### **데이터베이스 설치**    
 1)데이터베이스 설치 계획서 작성    
 'develop/database/plan' 디렉토리에 개발환경과 운영환경의 설치계획서가 생성됩니다.  
 ```
@@ -718,7 +730,7 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/%EB%B0%B1%ED
 '백킹서비스설치방법'을 준용하여 다시 작성해 주세요.   
 ```
 
-**2.MQ 설치**    
+### **MQ 설치**    
 1)설치계획서 작성    
 Message Queue 설치계획서 작성을 요청합니다.    
 결과는 'develop/mq/mq-plan-{대상환경}.md' 파일로 생성됩니다.   
@@ -770,9 +782,9 @@ Message Queue 설치를 요청합니다.
 
 ---
 
-### 백엔드 개발/테스트
+## 백엔드 개발/테스트
 
-**0.Gradle Wraaper 구성**     
+### **Gradle Wraaper 구성**     
 
 아래 프롬프트를 수행하여 gradle디렉토리 밑에 설정 파일과 wrapper jar 파일을 만듭니다.   
 이 파일들이 있어야 gradle로 build가 됩니다.    
@@ -780,8 +792,8 @@ Message Queue 설치를 요청합니다.
 'GradleWrapper생성가이드'를 이용하여 Gradle Wrapper를 구성해 주세요.    
 ```
 
-**1.개발**        
-1)공통 개발요청   
+### **개발**        
+#### 공통 개발요청   
 설계 결과를 참조하여 공통 개발을 요청합니다.    
 한꺼번에 서비스를 개발하면 간단한 기능은 제대로 개발하나 복잡한 기능은 TODO로 남겨놓는 경우도 많습니다.  
 그래서 아래 명령으로 공통개발까지만 하고 각 서비스별로 개발합니다.   
@@ -820,9 +832,9 @@ step2 개발 후 만약 묻지 않고 각 서비스 개발을 시작하려 하�
 - Step1: 개발준비 - settings.gradle, build.gradle, application.yml 작성  
 - Step2: common 모듈 개발 
 
-2)서비스별 개발  
+#### 서비스별 개발  
 
-2.1)1차 개발     
+**1.1차 개발**     
 각 서비스별 개발은 앞의 개발 가이드를 기억해야 하므로 '/clear'하지 않고 진행합니다.   
 인증 서비스부터 하나씩 개발합니다.  
 **서비스간의 참조 관계를 고려하여 참조 대상이 되는 서비스부터 개발**합니다.  
@@ -865,7 +877,7 @@ Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제�
   - 이벤트발행 예제: usage
   - 이벤트소비 예제: sms 
 
-2.2)2차 개발    
+**2.2차 개발**        
 **초기 버전 개발 후 체크 및 추가개발 요청**을 하세요.    
 
 ```
@@ -890,7 +902,7 @@ Azure MQ 제품을 사용하는 경우는 아래와 같이 개발예제를 제�
 - ~/home/workspace/examples/ 하위에 예제 Git Repository Clone하여 참조  
 ```
 
-2.3)API설계서와의 매핑 체크     
+**3.API설계서와의 매핑 체크**         
 누락 또는 추가된 API가 있는지 점검합니다.     
 ```
 '{서비스명}' 서비스 controller에 개발된 API와 
@@ -899,8 +911,24 @@ API설계서간의 매핑표를 작성하세요.
 결과는 develop/dev/ 디렉토리에 생성하세요. 
 ```
   
+**팁: 코드 이동 단축키**          
 
-3)Gradle 프로젝트 인식 확인    
+1)메서드·선언부 이동 단축키     
+
+| 기능 | IntelliJ (Windows/Linux) | IntelliJ (macOS) | VSCode (Windows/Linux) | VSCode (macOS) |
+|--|--|--|--|--|
+| 메서드/선언부로 이동 (Go to Declaration) | Ctrl + 클릭(또는 b) | Command + 클릭(또는 b) | Ctrl + 클릭 | Command + 클릭 |
+| 구현부로 이동 (Go to Implementation) | Ctrl + Alt + b | Option + Command + b | Ctrl + F12 | Command + F12 | 
+
+2)이전·다음 위치 이동 단축키     
+
+| 기능 | IntelliJ (Windows/Linux) | IntelliJ (macOS) | VSCode (Windows/Linux) | VSCode (macOS) |
+|--|--|--|--|--|
+| 이전 위치로 이동 (Go Back) | Ctrl + Alt + ← | Command + [ | Alt + ← | Control(^) + - |
+| 다음 위치로 이동 (Go Forward) | Ctrl + Alt + → | Command + ] | Alt + → | Control(^) + Shift + - |
+
+#### 추가 작업  
+**1.Gradle 프로젝트 인식 확인**        
 아래와 같이 우측 바 3번째에 코끼리 아이콘이 나와야 합니다.   
 ![](images/2025-09-08-22-43-36.png)  
 
@@ -913,11 +941,11 @@ API설계서간의 매핑표를 작성하세요.
 
 프로젝트 재시작 후 Gradle로 인식되는지 확인합니다.   
 
-4)자바 버전 설정    
+**2.자바 버전 설정**         
 설정에서 자바 버전을 루트 build.gradle에 지정한 버전과 일치시킵니다.   
 ![](images/2025-09-08-22-56-55.png)
 
-5)컴파일 하기   
+**3.컴파일 하기**   
 먼저 '빌드' 탭이 나오도록 합니다.    
 ![](images/2025-09-08-22-49-02.png)
 
@@ -931,7 +959,7 @@ API설계서간의 매핑표를 작성하세요.
 product service 빌드 및 버그 픽스 
 ```
 
-6)빌드환경 에러   
+**4.빌드환경 에러 조치**        
 아래 예와 같은 에러가 나는 경우 빌드환경에 문제가 있는겁니다.    
 ```
 A problem occurred configuring root project 'hgzero'.
@@ -950,7 +978,7 @@ A problem occurred configuring root project 'hgzero'.
 ```
 
 
-**2.실행 프로파일 작성**    
+#### **실행 프로파일 작성**    
 서비스를 실행하기 위한 실행 프로파일을 작성 요청합니다.    
 각 서비스에 생성된 application.yml을 분석하여 환경변수까지 등록된 IntelliJ의 서비스 실행 프로파일이 작성됩니다.       
 결과는 {service}/.run/{service}.run.xml로 생성됩니다.    
@@ -995,7 +1023,8 @@ DB나 Redis의 접근 정보는 지정할 필요 없습니다. 특별히 없으�
 문제를 체크하여 수정해 주십시오.  
 ```
 
-**3.로그파일 설정 하기**       
+#### 기타 추가 수행      
+**1.로그파일 설정 하기**       
 application.yml에 'logs/{service-name}.log'로 콘솔 로그를 남기도록 되어 있지 않다면 추가하도록 요청하세요.   
 서버 시작 시 에러나 테스트 시 런타임 에러가 나면 이 로그를 보고 원인을 분석하도록 요청하기 위해서 로그파일을 만듭니다.    
 예제)
@@ -1017,7 +1046,7 @@ logging:
 로그파일이 너무 커지면 Claude가 제대로 못 읽으므로 가끔 삭제해 주세요.    
 서비스를 중단하고 삭제해야 합니다.      
   
-**4.서버 재시작은 사람이 수행하게 하기**           
+**2.서버 재시작은 사람이 수행하게 하기**           
 AI가 서버 재시작을 하면 시간이 오래 걸리거나 제대로 못합니다.    
 서버재시작은 사람이 하겠다고 Lessons Learned에 등록하게 요청 하세요.
 
@@ -1033,7 +1062,7 @@ CLAUDE.md에 Lessons Learned 섹션을 만들고, 아래 예시처럼 개발 워
 - **서버 시작**: AI가 직접 서버를 시작하지 말고 반드시 사람에게 요청할것
 ```
 
-**5.Spring Boot 설정관리 Lessons Learned 등록**          
+**3.Spring Boot 설정관리 Lessons Learned 등록**          
 
 CLAUDE.md의 Lessons Learned 항목에 추가하세요.   
 ```
@@ -1047,7 +1076,7 @@ CLAUDE.md의 Lessons Learned 항목에 추가하세요.
   - 명령줄: 환경 변수 또는 `--args` 옵션으로 전달 (`--spring.profiles.active` 불필요)
 ```
   
-**6.런타임에러 해결**         
+#### **서비스 실행**         
 '서비스'탭에서 서비스를 실행합니다.   
 에러가 나면 AI에게 에러 메시지를 제공하거나 로그를 분석하여 에러를 해결하도록 요청합니다.    
 
@@ -1068,7 +1097,8 @@ user-service 런타임 에러가 발생합니다.
 
 일단, 모든 서비스의 런타임에러까지 해결한 후 다음 단계를 진행합니다.   
 
-**7.방화벽 오픈**    
+
+#### **방화벽 오픈**    
 API swagger 페이지 접속을 위해 방화벽 오픈 작업을 합니다.   
 
 - 오픈할 포트 찾기 
@@ -1078,22 +1108,22 @@ API swagger 페이지 접속을 위해 방화벽 오픈 작업을 합니다.
 
 - [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/azure-firewall-open.md) 참고하여 오픈  
 
-**8.API별 개발**          
+#### **API별 개발**          
 각 API별로 (AI)API 테스트 -> (AI)코드수정 및 컴파일 -> (사람)서버 재시작의 과정을 반복하면서 완성해 나갑니다.   
 가장 먼저 완성해야할 API는 '로그인'입니다.   
 
 로그인API를 예로 해서 API별 개발을 설명하겠습니다.    
-0)사용자등록   
+**1.사용자등록**       
 사용자 등록 API가 없으면 개발 요청을 합니다.      
 개발된 API를 이용하여 로그인을 하여 토큰을 구합니다.  
 
-1)Swagger페이지 접속 및 설정   
+**2.Swagger페이지 접속 및 설정**      
 'http://localhost:{서비스별 포트}/swagger-ui.html'으로 접속합니다.   
 로그인 API를 수행합니다.   
 ![](images/2025-09-01-17-57-51.png)   
 
 
-2)에러 발생 시 API명령을 제공하여 에러 수정 요청   
+**3.에러 발생 시 API명령을 제공하여 에러 수정 요청**    
 
 ![](images/2025-09-01-17-58-20.png)  
 
@@ -1116,25 +1146,25 @@ curl -X 'POST' \
 }'
 ```
 
-3)코드수정 및 컴파일    
+**4.코드수정 및 컴파일**       
 AI가 코드를 수정하고 컴파일까지 하는것을 모니터링 합니다.   
 엉뚱한 수행을 하려고 하면 'ESC'를 눌러 중지시키고 프롬프트에 새로운 요청을 합니다.   
 
 코드 수정 후 컴파일을 제대로 하는지 확인합니다.   
 서버를 시작하려고 하면 즉시 중단시키고 CLAUDE.md의 가이드대로 서버 시작은 사용자에게 요청해야 한다고 말해 줍니다.   
 
-4)서비스 재시작    
+**5.서비스 재시작**       
 '서비스'탭에서 서비스를 재시작 합니다.   
 중단하고 시작하는게 좋습니다.      
 ![](images/2025-09-01-18-03-25.png)  
 
-5)재 테스트를 요청
+**6.재 테스트를 요청**      
 
 ```
 서버 재시작 했어요. 다시 테스트 하세요. 
 ```
 
-'1) ~ 5)' 작업을 각 API별로 수행하십시오.   
+'1 ~ 5' 작업을 각 API별로 수행하십시오.   
 
   
 인증이 필요한 API는 아래와 같이 사전 작업을 한 후 수행하세요.   
@@ -1157,7 +1187,7 @@ curl -X 'GET' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxYTFhNDViNi1lZmU5LTRjMjMtOWI2Yi05NTgwYmExNWNhZDkiLCJpYXQiOjE3NTY3MTcwNzYsImV4cCI6MTc1NjgwMzQ3NiwidHlwZSI6ImFjY2VzcyIsInVzZXJuYW1lIjoidHJpcDAxIiwiYXV0aG9yaXR5IjoiVVNFUiJ9.ht7mmEtZyuba5FXnjtEByDFAQGTXI3Uwb3PLrJyQH8A'
 ```
 
-**9.복잡한 기능 개발**         
+**팁: 복잡한 기능 개발**         
 복잡한 기능을 개발을 할 때는 계획-수행-테스트의 과정으로 하십시오.   
 아래 예시를 참조하세요.  
 https://github.com/cna-bootcamp/clauding-guide/blob/main/samples/sample-%EA%B8%B0%EB%8A%A5%EC%B6%94%EA%B0%80%EC%98%88%EC%8B%9C.md
@@ -1186,26 +1216,9 @@ sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.
 선택한 라인 밑에 scheduleJson과 promptRequest의 값을 파일로 만드는 코드를 추가해요.             
 resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
 ```
-  
-**10.Git 레포지토리 생성 및 푸시**   
+
+#### **Git 레포지토리 생성 및 푸시**   
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/git-repo-guide.md
-
-
-**11.코드 이동 단축키**          
-
-1)메서드·선언부 이동 단축키     
-
-| 기능 | IntelliJ (Windows/Linux) | IntelliJ (macOS) | VSCode (Windows/Linux) | VSCode (macOS) |
-|--|--|--|--|--|
-| 메서드/선언부로 이동 (Go to Declaration) | Ctrl + 클릭(또는 b) | Command + 클릭(또는 b) | Ctrl + 클릭 | Command + 클릭 |
-| 구현부로 이동 (Go to Implementation) | Ctrl + Alt + b | Option + Command + b | Ctrl + F12 | Command + F12 | 
-
-2)이전·다음 위치 이동 단축키     
-
-| 기능 | IntelliJ (Windows/Linux) | IntelliJ (macOS) | VSCode (Windows/Linux) | VSCode (macOS) |
-|--|--|--|--|--|
-| 이전 위치로 이동 (Go Back) | Ctrl + Alt + ← | Command + [ | Alt + ← | Control(^) + - |
-| 다음 위치로 이동 (Go Forward) | Ctrl + Alt + → | Command + ] | Alt + → | Control(^) + Shift + - | [14][15][16]
 
   
 | [Top](#목차) |
