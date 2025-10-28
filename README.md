@@ -1087,6 +1087,9 @@ CLAUDE.md의 Lessons Learned 항목에 추가하세요.
   - IntelliJ: 실행 프로파일 선택 후 실행 (환경 변수 자동 적용)
   - 명령줄: 환경 변수 또는 `--args` 옵션으로 전달 (`--spring.profiles.active` 불필요)
 ```
+
+(중요) CLAUDE.md 수정 후에는 Claude Code를 재시작해야 합니다.    
+
   
 | [Top](#목차) |
 
