@@ -1403,12 +1403,18 @@ API명세서는 design/api 디렉토리에 생성됩니다.
   - trip service: http://localhost:8083/v3/api-docs
   - ai service: http://localhost:8084/v3/api-docs
 [요구사항]
+- 개발언어는 Typescript + React로 함 
 - 각 화면에 Back 아이콘 버튼과 화면 타이틀 표시
 - 하단 네비게이션 바 아이콘화: 홈, 새여행, 주변장소검색, 여행보기
+
 ```
+
+만약, 개발언어를 특정하려면 요구사항에 추가하십시오.    
+
 
 **3.설계서 검토후 수정 요청**       
 설계서를 검토하고 수정 요청을 합니다.  
+
 
 | [Top](#목차) |
 
@@ -1434,6 +1440,7 @@ API명세서는 design/api 디렉토리에 생성됩니다.
 개발요청 프롬프트는 아래와 같습니다.  
 '개발정보'는 프론트엔드 설계서를 보고 본인 프로그램에 맞게 수정해야 합니다.    
 
+예1)
 ```
 @dev-front
 "프론트엔드개발가이드"에 따라 개발해 주세요.   
@@ -1445,6 +1452,20 @@ API명세서는 design/api 디렉토리에 생성됩니다.
 - API통신: Axios
 - 스타일링: MUI + styled-components
 - 빌드도구: Vite
+```
+
+예2)
+```
+@dev-front
+"프론트엔드개발가이드"에 따라 개발해 주세요.   
+[개발정보]
+- 개발프레임워크: TypeScript: 5.5 + Vue 3 
+- UI프레임워크: Vuetify 3
+- 상태관리: Pinia
+- 라우팅: Vue Router 4
+- API통신: Axios
+- 스타일링: Vuetify 3 + SCSS
+- 빌드도구: Vite 5.4
 ```
 
 **2.각 페이지별 개발**   
