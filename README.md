@@ -1379,8 +1379,8 @@ code .
 
 3)유저스토리와 프로토타입 복사      
 백엔드개발 시 만든 유저스토리와 프로토타입을 아래 디렉토리에 복사합니다.   
-- 유저스토리: design/userstory.md
-- 프로토타입: design/prototype/*
+- 유저스토리: design/userstory.md => design/userstory.md
+- 프로토타입: design/uiux/prototype => design/prototype
 
 **2.프론트엔드 설계 요청**       
 프론트엔드설계서 작성 시 API명세서를 참조하므로 백엔드를 실행하고 swagger api docs페이지 주소를 제공합니다.  
