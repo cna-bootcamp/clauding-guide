@@ -56,7 +56,7 @@ Claude를 활용하여 사람과 AI가 함께 서비스 기획, 설계, 개발, 
       - [로깅 및 Lessons Learned 등록](#로깅-및-lessons-learned-등록)
       - [서비스 실행](#서비스-실행)
       - [방화벽 오픈](#방화벽-오픈)
-      - [API별 개발](#api별-개발)
+      - [API별 테스트 및 완성](#api별-테스트-및-완성)
       - [Git 레포지토리 생성 및 푸시](#git-레포지토리-생성-및-푸시)
   - [프론트엔드 설계](#프론트엔드-설계)
   - [프론트엔드 개발](#프론트엔드-개발)
@@ -1108,7 +1108,7 @@ API swagger 페이지 접속을 위해 방화벽 오픈 작업을 합니다.
 
 - [방화벽 오픈](https://github.com/cna-bootcamp/clauding-guide/blob/main/references/azure-firewall-open.md) 참고하여 오픈  
 
-#### API별 개발         
+#### API별 테스트 및 완성            
 각 API별로 (AI)API 테스트 -> (AI)코드수정 및 컴파일 -> (사람)서버 재시작의 과정을 반복하면서 완성해 나갑니다.   
 가장 먼저 완성해야할 API는 '로그인'입니다.   
 
