@@ -202,7 +202,8 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/git-repo-gui
 Design Thinking 기반으로 문제정의와 솔루션 탐색/선택을 합니다.   
 아래 가이드에서 상위수준 기획인 '서비스 기획서 발표자료 작성'까지만 수행합니다.    
 아래 가이드는 최소한의 구성으로 기획을 실습하기 위해 Claude Desktop에서 수행하도록 작성되어 있습니다.    
-   
+또한, Claude Code에서도 사용가능합니다.   
+
 
 [서비스 기획하기](https://github.com/cna-bootcamp/aiguide)
 
@@ -269,18 +270,13 @@ Claude Desktop/Clade Code에서 MCP를 사용하여 Figma를 연동하여 수행
   cd ~/home/workspace/{백엔드 디렉토리}  
   ```
 
-  YOLO모드로 전환   
-  ```
-  claude-yolo
-  ```
-
   Claude Code 시작: 터미널에서 시작하거나 IntelliJ에서 시작합니다.  
   IntelliJ 내부에서 Claude Code 시작: 작업이 더 편해 권장      
   ![](images/2025-09-01-22-25-58.png)   
 
   터미널에서 시작
   ```
-  claude 
+  cy-yolo 
   ```
 
 
@@ -2652,11 +2648,13 @@ code .
 
 **3.매니페스트 구성 및 파이프라인 작성**     
 vscode에서 Claude Code를 수행합니다.   
-YOLO모드로 전환.   
-```
-claude-yolo
-```
+
 Claude Code 수행: View > Command Palette 수행하고 'Run Claude Code'로 실행    
+
+YOLO모드로 실행하려면 View > Terminal을 수행하고 아래 명령으로 시작합니다.   
+```
+cy-yolo
+```
 
 아래 예시와 같이 프롬프팅 합니다.      
 '[실행정보]'는 본인 프로젝트에 맞게 수정해야 합니다.   
