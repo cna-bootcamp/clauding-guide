@@ -17,42 +17,15 @@
   - MQ설치결과서(develop/mq/mq-exec-dev.md) 분석 - 연결 정보 확인
   - kubectl get svc -n tripgen-dev | grep LoadBalancer 실행하여 External IP 목록 확인
 - 실행:
-  - 각 서비스별를 서브에이젼트로 병렬 수행   
+  - 각 서비스별 서브에이젼트로 병렬 수행   
   - 설정 Manifest 수정
     - 하드코딩 되어 있는 값이 있으면 환경변수로 변환
     - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함     
     - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정 
-    - '<로그설정>'을 참조하여 Log 파일 설정
   - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성
     - LoadBalancer External IP를 DB_HOST, REDIS_HOST로 설정
     - MQ 연결 정보를 application.yml의 환경변수명에 맞춰 설정
-  - 서비스 실행 및 오류 수정 
-    - 'IntelliJ서비스실행기'를 'tools' 디렉토리에 다운로드  
-    - python 또는 python3 명령으로 백그라우드로 실행하고 결과 로그를 분석  
-      nohup python3 tools/run-intellij-service-profile.py {service-name} > logs/{service-name}.log 2>&1 & echo "Started {service-name} with PID: $!" 
-    - 서비스 실행은 다른 방법 사용하지 말고 **반드시 python 프로그램 이용** 
-  - 오류 수정 후 필요 시 실행파일의 환경변수를 올바르게 변경  
-  - 서비스 정상 시작 확인 후 서비스 중지 
   - 결과: {service-name}/.run
-<서비스 중지 방법>
-- Window
-  - netstat -ano | findstr :{PORT}
-  - powershell "Stop-Process -Id {Process number} -Force"
-- Linux/Mac
-  - netstat -ano | grep {PORT}
-  - kill -9 {Process number}
-<로그설정>
-- **application.yml 로그 파일 설정**:
-   ```yaml
-   logging:
-     file:
-       name: ${LOG_FILE:logs/trip-service.log}
-     logback:
-       rollingpolicy:
-         max-file-size: 10MB
-         max-history: 7
-         total-size-cap: 100MB
-   ```
 
 <실행프로파일 작성 가이드>
 - {service-name}/.run/{service-name}.run.xml 파일로 작성
@@ -173,3 +146,6 @@
   - MQ 유형 및 연결 정보
   - 연결에 필요한 호스트, 포트, 인증 정보
   - LoadBalancer Service External IP (해당하는 경우)
+
+[결과파일]
+{service-name}/.run/{service-name}.run.xml
