@@ -56,7 +56,7 @@ Claude를 활용하여 사람과 AI가 함께 서비스 기획, 설계, 개발, 
     - [서비스 실행](#서비스-실행)
     - [방화벽 오픈](#방화벽-오픈)
     - [API별 테스트 및 완성](#api별-테스트-및-완성)
-      - [Git 레포지토리 생성 및 푸시](#git-레포지토리-생성-및-푸시)
+    - [Git 레포지토리 생성 및 푸시](#git-레포지토리-생성-및-푸시)
   - [프론트엔드 설계](#프론트엔드-설계)
   - [프론트엔드 개발](#프론트엔드-개발)
   - [컨테이너로 배포하기](#컨테이너로-배포하기)
@@ -1246,7 +1246,11 @@ sample 데이터는 실제 데이터로 하는게 당연히 제일 좋습니다.
 resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.json으로 만들고 계속 덮어쓰면 되요.                                      
 ```
 
-#### Git 레포지토리 생성 및 푸시  
+| [Top](#목차) |
+
+---
+
+### Git 레포지토리 생성 및 푸시  
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/git-repo-guide.md
 
   
