@@ -771,7 +771,15 @@ Message Queue 설치를 요청합니다.
 ---
 
 ### 백엔드 개발/테스트
- 
+
+**0.Gradle Wraaper 구성**     
+
+아래 프롬프트를 수행하여 gradle디렉토리 밑에 설정 파일과 wrapper jar 파일을 만듭니다.   
+이 파일들이 있어야 gradle로 build가 됩니다.    
+```
+'GradleWrapper생성가이드'를 이용하여 Gradle Wrapper를 구성해 주세요.    
+```
+
 **1.개발**        
 1)공통 개발요청   
 설계 결과를 참조하여 공통 개발을 요청합니다.    
