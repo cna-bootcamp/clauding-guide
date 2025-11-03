@@ -197,6 +197,17 @@ kubectl describe certificate phonebill-tls
 kubectl logs -n cert-manager deploy/cert-manager --tail=50
 ```
 
+**참고) DNS서버가 없는 경우 SSL Hosts명 지정**        
+DNS서버가 없는 경우는 wild card DNS형식을 이용할 수 있습니다.    
+{Ingress Service External IP} 뒤에 nip.io 또는 xip.io를 붙이면 됩니다.    
+또한 '{Ingress Service External IP}'앞에 prefix를 붙일 수도 있습니다.   
+예)
+``` 
+4.1.10.100.nip.io
+4.1.10.100.xip.io
+phonebill.4.1.10.100.nip.io
+```
+
 | [Top](#목차) |
 
 ---
