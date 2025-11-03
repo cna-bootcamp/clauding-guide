@@ -72,6 +72,7 @@ source ~/.bashrc
 
 **4.AI툴 설치**    
 중요) 아래 AI툴 중 **사용할 툴 한개만 설치**합니다.      
+설계, 개발, 배포까지 진행하려면 Claude Code를 설치하길 권장합니다.    
 
 **1)Claude Desktop 설치**    
 Claude Desktop에 MCP를 연결하려면 아래 사이트에서 Claude Desktop을 먼저 설치해야 합니다.   
