@@ -11,6 +11,7 @@ Deployment, StatefulSet, DaemonSet, Job, CronJob이 그것이죠.
 - [Kubernetes Manifest 이해](#kubernetes-manifest-이해)
   - [목차](#목차)
   - [**1.Ingress**](#1ingress)
+  - [Ingress에  SSL 설정하기](#ingress에--ssl-설정하기)
   - [**2.Service**](#2service)
   - [**3.Workload Controller**](#3workload-controller)
   - [**4.ConfigMap과 Secret**](#4configmap과-secret)
@@ -93,6 +94,108 @@ spec:
 
 
 더 자세한 정보를 원하시면 [서비스 로드 밸런서 인그레스](https://happycloud-lee.tistory.com/254)을 참조하세요.      
+
+
+| [Top](#목차) |
+
+---
+
+## Ingress에  SSL 설정하기     
+**1.NGINX Ingress Controller 설치**    
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.0/deploy/static/provider/cloud/deploy.yaml
+```
+
+만약 이미 Ingress Controller가 설치되어 있어도 위 명령으로 추가 오브젝트를 생성합니다.   
+위 manifest로 설치되는 대상 네임스페이스는 ingress-nginx입니다.   
+
+아래 명령으로 pod 실행이 되는지 체크합니다.    
+```
+k get po -n ingress-nginx 
+```
+
+**2.cert-manager 설치**    
+Let's Encrypt 자동 인증서로 정식 인증서를 만듭니다.   
+```
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
+```
+
+Pod가 잘 실행되는지 체크합니다.  
+```
+k get po -n cert-manager
+```
+
+**3.ClusterIssuer 생성**    
+
+Cluster Level Object인 ClusterIssuer 오브젝트를 생성합니다.   
+```
+cat << EOF | kubectl apply -f -
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: hiondal@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+EOF
+```
+
+
+**4.Ingress with TLS**      
+
+Ingress를 생성합니다.    
+이때 metadata.annotation에 cert manager를 이용하는 설정을 반드시 추가합니다.    
+
+아래는 ingress yaml의 예제입니다.    
+```
+cat << EOF | kubectl apply -f -
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: phonebill-front
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - phonebill.kubepia.com
+    secretName: phonebill-tls  
+  rules:
+  - host: phonebill.kubepia.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: phonebill-front
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+EOF      
+```         
+
+---
+
+spec.tls.secretName에 지정된 secret이 자동으로 생성되며, 이 안에는 SSL인증서가 담깁니다.    
+         
+아래 명령으로 인증서 발급상태를 볼 수 있습니다. 
+```
+kubectl describe certificate phonebill-tls
+```
+
+아래 명령으로 로그를 볼 수 있습니다.   
+```
+kubectl logs -n cert-manager deploy/cert-manager --tail=50
+```
 
 | [Top](#목차) |
 
