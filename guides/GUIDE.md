@@ -1,5 +1,5 @@
 # Clauding Guide 
-최종 수정일시: 2025-08-22 11:50
+최종 수정일시: 2025-11-18 20:10
 
 ## 서비스기획 가이드 
 - 서비스기획프롬프트
@@ -35,7 +35,7 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/uiux-prototype.md
   - 파일명: uiux-prototype.md
   
-- 아키텍처패턴선정 가이드
+- 클라우드아키텍처패턴선정가이드
   - 설명: 클라우드 아키텍처 패턴 선정 방법 안내 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/design/architecture-patterns.md
   - 파일명: architecture-patterns.md
@@ -141,6 +141,10 @@
 ---
 
 ## 배포 가이드
+- 배포실행프롬프트
+  - 설명: 각 배포 단계 실행을 위한 프롬프트 모음
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/prompt/05.deploy-prompt.md 
+  - 파일명: deploy-prompt.md
 - 백엔드컨테이너이미지작성가이드
   - 설명: 백엔드 컨테이너 이미지 작성 가이드  
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/build-image-back.md
