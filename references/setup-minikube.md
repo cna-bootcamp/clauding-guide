@@ -45,6 +45,7 @@ https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 
 
 VM을 생성하십시오. 
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/create-vm.md
 
 
 ---
@@ -65,6 +66,16 @@ export VM_IP=72.155.72.236
 # 서버 접속
 ssh -i ${VM_KEY} ${VM_USER}@${VM_IP}
 ```
+팁) ~/.ssh/config 파일을 만들고 아래와 같이 설정하면 지정한 Host로 접근할 수 있음   
+
+```
+Host k8s
+    HostName 72.155.72.236
+    User azureuser
+    Port 22
+    IdentityFile ~/home/k8s_key.pem
+```
+접속: ssh k8s 
 
 ### minikube 설치
 ```
