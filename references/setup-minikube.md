@@ -53,7 +53,7 @@ https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 
 
 ## VM 생성 
-VM을 생성하십시오. 
+VM을 생성하십시오.    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/create-vm.md
 
 ## 필수 프로그램 설치
@@ -79,30 +79,30 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/create-vm.md
 
   맨 끝에 alias k=kubectl 추가 
 
-- kubens/kubectx 설치
-kubens는 Kubernetes namespace 변경을 쉽게 해주는 유틸리티입니다.   
-kubectx는 Kubernetes Cluster 변경을 쉽게 해주는 유틸리티입니다.  
+- kubens/kubectx 설치   
+  kubens는 Kubernetes namespace 변경을 쉽게 해주는 유틸리티입니다.    
+  kubectx는 Kubernetes Cluster 변경을 쉽게 해주는 유틸리티입니다.  
 
-설치      
-```
-# Git 클론 방식
-git clone https://github.com/ahmetb/kubectx.git ~/.kubectx
-sudo ln -sf ~/.kubectx/kubectx /usr/local/bin/kubectx
-sudo ln -sf ~/.kubectx/kubens /usr/local/bin/kubens
-```
+  설치      
+  ```
+  # Git 클론 방식
+  git clone https://github.com/ahmetb/kubectx.git ~/.kubectx
+  sudo ln -sf ~/.kubectx/kubectx /usr/local/bin/kubectx
+  sudo ln -sf ~/.kubectx/kubens /usr/local/bin/kubens
+  ```
 
-```
-vi ~/.bashrc
-```
-아래 내용 추가  
-```
-export PATH=$PATH:~/.kubectx 
-```
+  ```
+  vi ~/.bashrc
+  ```
+  아래 내용 추가  
+  ```
+  export PATH=$PATH:~/.kubectx 
+  ```
 
-아래 명령어로 적용합니다.  
-```
-source ~/.bashrc
-```
+  아래 명령어로 적용합니다.  
+  ```
+  source ~/.bashrc
+  ```
 
 - Docker설치   
   필요한 패키지 설치
