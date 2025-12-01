@@ -17,20 +17,18 @@
 [작업순서]
 - 사전 준비사항 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
-  - Image Registry: container image registry
-  - Image Organization: container image organization
-  - Jenkins Kubernetes Cloud Name: Jenkins에 설정한 k8s Cloud 이름 
-  - k8s context: Kubernetes Context
-  - NAMESPACE: 네임스페이스 
+  - {ACR_NAME}: Azure Container Registry 이름
+  - {RESOURCE_GROUP}: Azure 리소스 그룹명
+  - {AKS_CLUSTER}: AKS 클러스터명
+  - {NAMESPACE}: Namespace명
   
     예시)
   ```
   [실행정보]
-  - Image Registry: docker.io
-  - Image Organization: phonebill
-  - Jenkins Kubernetes Cloud Name: k8s  
-  - k8s context: minikube
-  - NAMESPACE: phonebill
+  - ACR_NAME: acrdigitalgarage01
+  - RESOURCE_GROUP: rg-digitalgarage-01
+  - AKS_CLUSTER: aks-digitalgarage-01
+  - NAMESPACE: phonebill-dg0500
   ``` 
 
 - 시스템명과 서비스명 확인   
@@ -74,6 +72,22 @@
 
   - Jenkins Credentials 등록 방법 안내
     ```
+    # Azure Service Principal
+    Manage Jenkins > Credentials > Add Credentials
+    - Kind: Microsoft Azure Service Principal
+    - ID: azure-credentials
+    - Subscription ID: {구독ID}
+    - Client ID: {클라이언트ID}
+    - Client Secret: {클라이언트시크릿}
+    - Tenant ID: {테넌트ID}
+    - Azure Environment: Azure
+    
+    # ACR Credentials  
+    - Kind: Username with password
+    - ID: acr-credentials
+    - Username: {ACR_NAME}
+    - Password: {ACR_PASSWORD}
+
     # Docker Hub Credentials (Rate Limit 해결용)
     - Kind: Username with password
     - ID: dockerhub-credentials
@@ -153,11 +167,11 @@
     version: v1
 
   images:
-    - name: {Image Registry}/{Image Organization}/{서비스명1}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명1}
       newTag: latest
-    - name: {Image Registry}/{Image Organization}/{서비스명2}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명2}
       newTag: latest
-    - name: {Image Registry}/{Image Organization}/{서비스명3}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명3}
       newTag: latest
     # ... 각 서비스별로 image 항목 추가
   ```
@@ -279,7 +293,7 @@
         name: secret-{서비스명}
 
   images:
-    - name: {Image Registry}/{Image Organization}/{서비스명}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명}
       newTag: latest
 
   ```
@@ -288,8 +302,8 @@
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법
   ```bash
   # {환경} Environment Configuration
-  k8s_context=minikube-{환경}
-  namespace={namespace}
+  resource_group={RESOURCE_GROUP}
+  cluster_name={AKS_CLUSTER}
   ```
 
 - Jenkinsfile 작성    
@@ -323,8 +337,6 @@
   - 변경 전: `svc_list=(service1 service2)` → `for service in "\${svc_list[@]}"`
   - 변경 후: `services="service1 service2"` → `for service in \$services`
 
-
-  Jenkinsfile 예시:   
   ```groovy
   def PIPELINE_ID = "${env.BUILD_NUMBER}"
 
@@ -335,7 +347,6 @@
   }
 
   podTemplate(
-      cloud: {Jenkins Kubernetes Cloud Name}, 
       label: "${PIPELINE_ID}",
       serviceAccount: 'jenkins',
       slaveConnectTimeout: 300,
@@ -346,6 +357,11 @@
           spec:
             terminationGracePeriodSeconds: 3
             restartPolicy: Never
+            tolerations:
+            - effect: NoSchedule
+              key: dedicated
+              operator: Equal
+              value: cicd
       ''',
       containers: [
           containerTemplate(
@@ -375,7 +391,7 @@
               ]
           ),
           containerTemplate(
-              name: 'kubectl',
+              name: 'azure-cli',
               image: 'hiondal/azure-kubectl:latest',
               command: 'cat',
               ttyEnabled: true,
@@ -404,12 +420,15 @@
                   props = readProperties file: "deployment/cicd/config/deploy_env_vars_${environment}"
               }
 
-              stage("Setup Kubernetes") {
-                  container('kubectl') {
-                      sh """
-                          kubectl config use-context {k8s context}
-                          kubectl create namespace ${props.namespace} --dry-run=client -o yaml | kubectl apply -f -
-                      """
+              stage("Setup AKS") {
+                  container('azure-cli') {
+                      withCredentials([azureServicePrincipal('azure-credentials')]) {
+                          sh """
+                              az login --service-principal -u \$AZURE_CLIENT_ID -p \$AZURE_CLIENT_SECRET -t \$AZURE_TENANT_ID
+                              az aks get-credentials --resource-group ${props.resource_group} --name ${props.cluster_name} --overwrite-existing
+                              kubectl create namespace {NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+                          """
+                      }
                   }
               }
 
@@ -467,9 +486,9 @@
                       container('podman') {
                           withCredentials([
                               usernamePassword(
-                                  credentialsId: 'imagereg-credentials',
-                                  usernameVariable: 'IMG_USERNAME',
-                                  passwordVariable: 'IMG_PASSWORD'
+                                  credentialsId: 'acr-credentials',
+                                  usernameVariable: 'ACR_USERNAME',
+                                  passwordVariable: 'ACR_PASSWORD'
                               ),
                               usernamePassword(
                                   credentialsId: 'dockerhub-credentials',
@@ -481,7 +500,7 @@
                               sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
 
                               // ACR 로그인
-                              sh "podman login {Image Registry} --username \$IMG_USERNAME --password \$IMG_PASSWORD"
+                              sh "podman login {ACR_NAME}.azurecr.io --username \$ACR_USERNAME --password \$ACR_PASSWORD"
 
                               services.each { service ->
                                   sh """
@@ -489,9 +508,9 @@
                                           --build-arg BUILD_LIB_DIR="${service}/build/libs" \\
                                           --build-arg ARTIFACTORY_FILE="${service}.jar" \\
                                           -f deployment/container/Dockerfile-backend \\
-                                          -t {Image Registry} /{Image Organization}/${service}:${environment}-${imageTag} .
+                                          -t {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag} .
 
-                                      podman push {Image Registry}/{Image Organization}/${service}:${environment}-${imageTag}
+                                      podman push {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/${service}:${environment}-${imageTag}
                                   """
                               }
                           }
@@ -500,7 +519,7 @@
               }
 
               stage('Update Kustomize & Deploy') {
-                  container('kubectl') {
+                  container('azure-cli') {
                       sh """
                           # Kustomize 설치 (sudo 없이 사용자 디렉토리에 설치)
                           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
@@ -785,6 +804,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 ## 📋 사전 준비 체크리스트
 - [ ] settings.gradle에서 시스템명과 서비스명 확인 완료
 - [ ] 루트 build.gradle에서 JDK버전 확인 완료
+- [ ] 실행정보 섹션에서 ACR명, 리소스 그룹, AKS 클러스터명 확인 완료
 
 ## 📂 Kustomize 구조 생성 체크리스트
 - [ ] 디렉토리 구조 생성: `deployment/cicd/kustomize/{base,overlays/{dev,staging,prod}}`
