@@ -152,9 +152,6 @@
     
     # ... 추가 서비스들도 동일한 패턴으로 계속 작성
 
-  commonLabels:
-    app: {SYSTEM_NAME}
-    version: v1
 
   images:
     - name: {Image Registry}/{Image Organization}/{서비스명1}
