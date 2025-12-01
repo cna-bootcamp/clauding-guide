@@ -1,3 +1,7 @@
+아래 가이드는 예제 프로그램 phonebill 을 minikube에서 학습하기 위한 환경설정입니다.    
+프로젝트 소스는 아래에 있습니다.   
+https://github.com/cna-bootcamp/phonebill.git
+https://github.com/cna-bootcamp/phonebill-front.git
 
 
 - [사전 작업](#사전-작업)
@@ -137,6 +141,10 @@ sudo kubectl --kubeconfig=$HOME/.kube/config port-forward svc/ingress-nginx-cont
 ```
 
 (중요) VM의 방화벽(Azure의 경우는 NSG)에서 80,443 포트 오픈   
+![](images/2025-12-01-15-32-27.png)
+![](images/2025-12-01-15-32-46.png)
+![](images/2025-12-01-15-33-24.png)
+
 
 웹브라우저에서 http://{VM IP}로 접근하였을 때 '404 Not Found'라는 페이지가 연결되면 성공임.    
 
