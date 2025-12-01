@@ -42,6 +42,7 @@ Claude를 활용하여 사람과 AI가 함께 서비스 기획, 설계, 개발, 
     - [8.High Level 아키텍처 정의서 작성](#8high-level-아키텍처-정의서-작성)
     - [9.물리 아키텍처 설계](#9물리-아키텍처-설계)
   - [클라우드 환경 설정](#클라우드-환경-설정)
+  - [minikube 환경구성 가이드 (옵션)](#minikube-환경구성-가이드-옵션)
   - [백킹서비스 설치](#백킹서비스-설치)
     - [사전작업](#사전작업)
     - [데이터베이스 설치](#데이터베이스-설치)
@@ -629,6 +630,13 @@ Azure외의 클라우드 플랫폼은 Claude나 Perplexity를 이용하여 작�
 https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 
 | [Top](#목차) |
+
+---
+
+
+## minikube 환경구성 가이드 (옵션)   
+비용을 최소화하기 위해 Minikube에서 학습 환경을 구성하는 가이드입니다.   
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/setup-minikube.md
 
 ---
 
@@ -2884,6 +2892,7 @@ Workflow 완료 후 약 3분 후 ArgoCD에서 Pod의 이미지 Tag가 변경되�
 
 ---
 
+
 ## 맺음말 
 
 ![](images/2025-09-16-02-58-43.png)
@@ -2908,4 +2917,6 @@ Workflow 완료 후 약 3분 후 ArgoCD에서 Pod의 이미지 Tag가 변경되�
 그리고 이 여정에서 얻은 경험과 자신감이 평생의 자산이 되기를 진심으로 응원합니다.   
 
 | [Top](#목차) |
+
+---
 
