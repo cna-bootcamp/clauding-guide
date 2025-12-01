@@ -424,7 +424,7 @@
                   props = readProperties file: "deployment/cicd/config/deploy_env_vars_${environment}"
               }
 
-              stage("Setup AKS") {
+              stage("Setup Kubernetes") {
                   container('kubectl') {
                       withCredentials([azureServicePrincipal('azure-credentials')]) {
                           sh """
