@@ -33,11 +33,11 @@ description: 배포 작업 순서 안내
 
 7단계: 백엔드 Jenkins CI/CD 가이드 작성 (선택)
 /deploy-jenkins-cicd-guide-back
-- [실행정보] 섹션에 ACR_NAME, RESOURCE_GROUP 등 제공 필요
+- [실행정보] 섹션에 Image Registry, Image Organization, Jenkins Kubernetes Cloud Name, NAMESPACE 제공 필요
 
 8단계: 프론트엔드 Jenkins CI/CD 가이드 작성 (선택)
 /deploy-jenkins-cicd-guide-front
-- [실행정보] 섹션에 SYSTEM_NAME, ACR_NAME 등 제공 필요
+- [실행정보] 섹션에 Image Registry, Image Organization, Jenkins Kubernetes Cloud Name, NAMESPACE 제공 필요
 
 9단계: 백엔드 GitHub Actions CI/CD 가이드 작성 (선택)
 /deploy-actions-cicd-guide-back
