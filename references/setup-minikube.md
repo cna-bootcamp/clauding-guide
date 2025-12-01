@@ -7,6 +7,9 @@
 **목차**   
 
 - [사전 작업](#사전-작업)
+  - [Azure 구독](#azure-구독)
+  - [VM 생성](#vm-생성)
+  - [필수 프로그램 설치](#필수-프로그램-설치)
 - [Ubuntu 서버에 Minikube 설치 및 접속](#ubuntu-서버에-minikube-설치-및-접속)
   - [1. 서버에서 Minikube 시작](#1-서버에서-minikube-시작)
     - [minikube 설치](#minikube-설치)
@@ -39,20 +42,175 @@
 
 # 사전 작업
 
+## Azure 구독   
 Azure 상에서 환경 구성하기 위한 가이드를 참고하여 아래 작업만 하십시오.
 
 - Azure 구독
 - 리소스 프로바이더 등록
 - 리소스그룹 생성
-- Azure CLI 설치 및 로그인
-- 기본 configuratioon 셋팅
 
 https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 
 
+## VM 생성 
 VM을 생성하십시오. 
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/create-vm.md
 
+## 필수 프로그램 설치
+- kubectl 설치 
+  ```
+  sudo snap install kubectl --classic
+  ```
+
+  만약 잘 안되면 아래 명령으로 설치합니다.  
+  ```
+  sudo apt-get update
+  sudo apt-get install -y apt-transport-https ca-certificates curl
+  curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+  echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+  sudo apt-get update
+  sudo apt-get install -y kubectl
+  ```
+  
+  Alias등록 
+  ```
+  vi ~/.bashrc
+  ```
+
+  맨 끝에 alias k=kubectl 추가 
+
+- kubens/kubectx 설치
+kubens는 Kubernetes namespace 변경을 쉽게 해주는 유틸리티입니다.   
+kubectx는 Kubernetes Cluster 변경을 쉽게 해주는 유틸리티입니다.  
+
+설치      
+```
+# Git 클론 방식
+git clone https://github.com/ahmetb/kubectx.git ~/.kubectx
+sudo ln -sf ~/.kubectx/kubectx /usr/local/bin/kubectx
+sudo ln -sf ~/.kubectx/kubens /usr/local/bin/kubens
+```
+
+```
+vi ~/.bashrc
+```
+아래 내용 추가  
+```
+export PATH=$PATH:~/.kubectx 
+```
+
+아래 명령어로 적용합니다.  
+```
+source ~/.bashrc
+```
+
+- Docker설치   
+  필요한 패키지 설치
+  ```
+  sudo apt-get update
+  sudo apt-get install -y \
+      ca-certificates \
+      curl \
+      gnupg \
+      lsb-release
+  ```
+
+  Docker GPG key 추가
+  ```
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  ```
+
+  Docker repository 설정
+  ```
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  ```
+
+  Docker 엔진 설치
+  ```
+  sudo apt-get update
+  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  ```
+
+  현재 사용자를 docker 그룹에 추가 (sudo 없이 docker 명령어 사용 가능)
+  ```
+  sudo usermod -aG docker $USER
+  ```
+
+  Docker 서비스 시작
+  ```
+  sudo service docker start
+  ```
+
+  터미널을 닫고 새 터미널에서 version확인 
+  ```
+  docker version 
+  ```
+
+- buildx 설치   
+  buildx는 Docker CLI의 플러그인으로, 컨테이너 이미지 빌드 기능을 확장합니다.  
+  설치 안해도 되지만 안하면 Image build 시 경고 메시지가 나와 설치하는게 좋습니다.  
+
+  ```
+  wget https://github.com/docker/buildx/releases/download/v0.12.1/buildx-v0.12.1.linux-amd64
+  ```
+
+  plugins 디렉토리 생성 및 buildx 설치
+  ```bash
+  mkdir -p ~/.docker/cli-plugins
+  mv buildx-v0.12.1.linux-* ~/.docker/cli-plugins/docker-buildx
+  chmod +x ~/.docker/cli-plugins/docker-buildx
+  ```
+
+  설치 확인
+  ```bash
+  docker buildx version
+  ```
+
+- helm 설치  
+  ```
+  mkdir -p ~/install/helm && cd ~/install/helm
+  wget https://get.helm.sh/helm-v3.16.4-linux-amd64.tar.gz
+  
+  tar xvf helm-v3.16.4-linux-amd64.tar.gz
+  cd linux-amd64
+  sudo cp helm /usr/local/bin
+
+  helm version
+  ```
+
+- openjdk 설치  
+  ```
+  sudo apt-get install -u openjdk-21-jdk
+
+  readlink -f /usr/bin/javac/usr/lib/jvm/java-21-openjdk-amd64/bin/javac
+  ```
+
+  profile 오픈 후 맨 끝에 환경변수 추가 
+  ```
+  sudo vi /etc/profile 
+  ```
+  
+  커서를 맨 아래로 내립니다.   
+  ESC 누르고 'i'를 누릅니다.
+  아래 내용을 복사하고 우측 마우스 버튼을 눌러 붙여넣기 합니다.   
+  ESC를 누르고 ':'을 입력 합니다. 그리고 wq를 누른 후 닫기를 누릅니다.  
+   
+  ```
+  JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+  PATH=$PATH:$JAVA_HOME/bin
+  CLASSPATH=$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar
+
+  export JAVA_HOME PATH CLASSPATH
+  ```
+  > Tip: vi 사용이 힘들면 기본 에디터로 열어 수정 하십시오.    
+
+  profile 적용 
+  ```
+  source /etc/profile
+  ```
 
 ---
 
