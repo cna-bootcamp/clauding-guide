@@ -45,12 +45,13 @@
 ## Azure 구독   
 Azure 상에서 환경 구성하기 위한 가이드를 참고하여 아래 작업만 하십시오.
 
-- Azure 구독
+- Azure 구독: 'Pay as you Go'를 선택하여 유료 플랜으로 구매   
 - 리소스 프로바이더 등록
 - 리소스그룹 생성
 
 https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 
+(중요) Azure 구독 시 유료플랜이 아니면 4core이상의 VM을 만들수 없으므로 반드시 유료플랜으로 구독    
 
 ## VM 생성 
 VM을 생성하십시오.    
