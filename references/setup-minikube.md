@@ -34,8 +34,8 @@
     - [port forward 중지](#port-forward-중지)
 - [minikube에 CI/CD 툴 설치](#minikube에-cicd-툴-설치)
   - [minikube에 Jenkins 설치](#minikube에-jenkins-설치)
-    - [jenkins.yaml 작성](#jenkinsyaml-작성)
     - [Ingress 생성](#ingress-생성)
+    - [환경설정](#환경설정)
   - [minikube에 ArgoCD 설치](#minikube에-argocd-설치)
 
 ---
@@ -597,13 +597,31 @@ ps -ef | grep port-forward
 
 # minikube에 CI/CD 툴 설치
 
-아래 링크를 참조하여 helm으로 설치.   
-https://github.com/cna-bootcamp/clauding-guide/blob/882cabb67d64150513f1c580b00a5b377e23109d/guides/setup/05.setup-cicd-tools.md
-
-
 ## minikube에 Jenkins 설치
 
-### jenkins.yaml 작성
+**1.Helm registry추가**    
+```
+helm repo add bitnami https://charts.bitnami.com/bitnami 
+helm repo update
+```
+
+**2.Jenkins Helm chart 다운로드**     
+```
+mkdir -p ~/install && cd ~/install
+
+helm search repo jenkins 
+
+helm pull bitnami/jenkins --version 13.6.17
+```
+
+압축해제
+```
+tar xvf {helm chart 압축파일명명}
+
+cd jenkins
+```
+
+**3.설치 매니페스트 작성**    
 
 ```
 cat > jenkins.yaml << EOF
@@ -654,6 +672,44 @@ serviceAccount:
 EOF
 ```
 
+**4.설치**     
+```
+kubectl create ns jenkins
+
+kubens jenkins
+
+helm upgrade -i jenkins -f jenkins.yaml . --dry-run
+
+helm upgrade -i jenkins -f jenkins.yaml .
+```
+
+Pod가 정상 실행될때까지 기다립니다.  
+```
+k get po -w
+```
+
+**5.hosts파일에 등록**   
+1)Window에서 hosts파일 열기        
+'Window키 + d'를 눌러 바탕화면으로 이동합니다.  
+아래와 같이 바로가기를 만듭니다.  이름은 'hosts'로 합니다.  
+```
+notepad "c:\windows\system32\drivers\etc\hosts"
+```
+우측마우스 버튼 메뉴에서 '관리자 권한으로 실행하기'를 선택하여 엽니다.  
+
+2)Linux/Mac에서 hosts 파일 열기         
+```
+sudo vi /etc/hosts
+```
+
+3)등록    
+VM ip로 'myjenkins.io'을 등록합니다.  
+예시)
+```
+# Jenkins
+20.214.195.168	myjenkins.io
+```
+
 ### Ingress 생성
 yaml 작성  
 ```
@@ -699,16 +755,64 @@ sudo vi /etc/hosts
 72.155.72.236   myjenkins.io
 ```
 
+### 환경설정   
+브라우저에서 myjenkins.io로 접근한 후 id: admin, pw: P@ssw0rd$로 로그인합니다.    
+아래 링크를 오픈하고 6,7,8,13번을 수행합니다.        
+- 6.플러그인 설치
+- 7.Kubernetes 연결 설정
+- 8.Jenkins tunnel 포트 설정
+- 13.DockerHub Credentials 생성
+
+https://github.com/cna-bootcamp/clauding-guide/blob/882cabb67d64150513f1c580b00a5b377e23109d/guides/setup/05.setup-cicd-tools.md#jenkins%EC%84%A4%EC%B9%98
+
 ---
 
 ## minikube에 ArgoCD 설치
+
+**1.install 디렉토리로 이동**    
+```
+cd ~/install
+```
+
+**2.Helm registry 추가**    
+```
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+```
+
+**3.Helm chart 다운로드**     
+```
+mkdir -p ~/install && cd ~/install
+```
+
+```
+helm search repo argocd
+
+NAME                            CHART VERSION   APP VERSION 
+argo/argocd-applicationset      1.12.1          v0.4.1       
+argo/argocd-apps                2.0.2                        
+argo/argocd-image-updater       0.12.0          v0.15.2      
+argo/argocd-notifications       1.8.1           v1.2.1      
+argo/argo-cd                    3.35.4          v2.2.5 
+```
+
+```
+helm pull argo/argo-cd
+```
+
+```
+tar xvf {helm chart 압축파일명}
+
+cd argo-cd
+```
+
+**4.설치 manifest 파일 작성**     
 
 minikube가 설치된 VM IP로 환경변수 생성   
 ```
 export ING_IP=72.155.72.236
 ```
 
-설정 파일 생성
 ```
 cat > argocd.yaml << EOF
 global:
@@ -732,6 +836,40 @@ certificate:
   enabled: false  # 자체 서명 인증서 사용 비활성화 (외부 인증서 사용 시)
 EOF
 ```
+
+**5.namespace 작성**    
+
+```
+k create ns argocd
+kubens argocd
+```
+
+
+**6.TLS 인증서 작성 및 Secret 객체 작성**      
+```
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=argo.$ING_IP.nip.io"
+
+kubectl create secret tls argocd-tls-secret \
+  --namespace argocd \
+  --key tls.key \
+  --cert tls.crt
+```
+
+**7.설치하기**    
+```
+helm upgrade -i argocd -f argocd.yaml .
+```
+
+**8.접속하기**     
+위 manifest에서 지정한 host name으로 접속합니다.   
+예) https://argo.20.249.128.1.nip.io  
+
+ID는 admin이고 초기 암호는 아래와 같이 구합니다.   
+```
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+```
+
+비밀번호는 로그인 후 'User Info'에서 변경할 수 있습니다. 
 
 ---
 
