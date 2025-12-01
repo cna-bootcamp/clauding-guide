@@ -744,16 +744,6 @@ ingress 생성
 k apply -f jenkins-ingress.yaml  
 ```
 
-hosts 추가
-```
-sudo vi /etc/hosts
-```
-
-예시)
-```
-# Jenkins
-72.155.72.236   myjenkins.io
-```
 
 ### 환경설정   
 브라우저에서 myjenkins.io로 접근한 후 id: admin, pw: P@ssw0rd$로 로그인합니다.    
