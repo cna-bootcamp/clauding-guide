@@ -569,6 +569,7 @@ helm upgrade -i cache -f values-cache.yaml bitnami/redis
 ---
 
 ## 로컬에서 port forward
+이 작업은 로컬에서 백그라운드 서비스를 실행하기 위해서만 필요합니다.     
 
 ### Port Forward
 새로운 터미널을 열어 수행하세요.  
