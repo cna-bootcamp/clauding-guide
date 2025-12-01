@@ -1,5 +1,6 @@
 
 
+- [사전 작업](#사전-작업)
 - [Ubuntu 서버에 Minikube 설치 및 접속](#ubuntu-서버에-minikube-설치-및-접속)
   - [1. 서버에서 Minikube 시작](#1-서버에서-minikube-시작)
     - [minikube 설치](#minikube-설치)
@@ -28,9 +29,37 @@
     - [Ingress 생성](#ingress-생성)
   - [minikube에 ArgoCD 설치](#minikube에-argocd-설치)
 
+---
+
+# 사전 작업
+
+Azure 상에서 환경 구성하기 위한 가이드를 참고하여 아래 작업만 하십시오.
+
+- Azure 구독
+- 리소스 프로바이더 등록
+- 리소스그룹 생성
+- Azure CLI 설치 및 로그인
+- 기본 configuratioon 셋팅
+
+https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
+
+
+VM을 생성하십시오. 
+
+
+---
+
 # Ubuntu 서버에 Minikube 설치 및 접속
 
 ## 1. 서버에서 Minikube 시작
+
+환경변수 선언(Local에서 수행).   
+VM_KEY, VM_IP는 본인 것으로 변경해야 함    
+```
+export VM_KEY=~/home/k8s_key.pem
+export VM_USER=azureuser
+export VM_IP=72.155.72.236
+```
 
 ```bash
 # 서버 접속
