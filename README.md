@@ -1847,6 +1847,25 @@ IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합�
 - 리소스(메모리): 256Mi/1024Mi
 ```
 
+참고)   
+minikube나 vanilla k8s에 배포할 때 프롬프트 예시  
+
+```
+/deploy-k8s-guide-back
+AKS가 아닌 minikube에 배포하는 가이드 작성
+[실행정보]
+- Image Registry: docker.io
+- Image Organization: hiondal
+- k8s context: minikube-remote
+- 네임스페이스: phonebill
+- 파드수: 1
+- 리소스(CPU): 256m/1024m
+- 리소스(메모리): 256Mi/1024Mi
+- Gateway Ingress Host: phonebill-api.72.155.72.236.nip.io
+```
+k8s context 구하기: k config current-context  
+
+   
 만약 아래와 같이 '배포 전 필수 작업'을 안내하면 매니페스트에 정확한 값이 안들어간것입니다.   
 ![](images/2025-09-11-10-58-32.png)
 
@@ -1856,6 +1875,8 @@ IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합�
 ```
 
 deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스에 객체를 생성합니다.  
+
+
 
 | [Top](#목차) |
 
@@ -1885,6 +1906,24 @@ kubectl get ing
 - 리소스(CPU): 256m/1024m
 - 리소스(메모리): 256Mi/1024Mi
 - Gateway Host: http://tripgen-api.20.214.196.128.nip.io
+```
+
+
+참고)   
+minikube나 vanilla k8s에 배포할 때 프롬프트 예시  
+```
+@cicd
+'프론트엔드배포가이드'에 따라 프론트엔드 서비스 배포 방법을 작성해 주세요.
+[실행정보]
+- 시스템명: phonebill
+- Image Registry: docker.io
+- Image Organization: hiondal
+- k8s context: minikube-remote
+- 네임스페이스: phonebill
+- 파드수: 1
+- 리소스(CPU): 256m/1024m
+- 리소스(메모리): 256Mi/1024Mi
+- Gateway Host: http://phonebill-api.72.155.72.236.nip.io
 ```
 
 deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스에 객체를 생성합니다.  
