@@ -56,6 +56,12 @@ https://github.com/cna-bootcamp/handson-azure/blob/main/prepare/setup-server.md
 VM을 생성하십시오.    
 https://github.com/cna-bootcamp/clauding-guide/blob/main/references/create-vm.md
 
+다운로드한 파일의 권한을 변경해야 사용할 수 있습니다.   
+즉 최소 권한인, 현재 OS유저에게 읽은 권한만 부여합니다.   
+```
+chmod 400 {private key file}
+```
+
 ## 필수 프로그램 설치
 - kubectl 설치 
   ```
