@@ -74,6 +74,12 @@
 
   - Jenkins Credentials 등록 방법 안내
     ```
+    # Image Credentials
+    - Kind: Username with password
+    - ID: imagereg-credentials
+    - Username: {IMG_NAME}
+    - Password: {IMG_PASSWORD}
+      
     # Docker Hub Credentials (Rate Limit 해결용)
     - Kind: Username with password
     - ID: dockerhub-credentials
@@ -516,7 +522,7 @@
 
                           # 이미지 태그 업데이트
                           for service in \$services; do
-                              \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:${environment}-${imageTag}
+                              \$HOME/bin/kustomize edit set image {Image Registry}/{Image Organization}/\$service:${environment}-${imageTag}
                           done
 
                           # 매니페스트 적용
@@ -775,7 +781,7 @@
     ```bash
     # 이전 안정 버전 이미지 태그로 업데이트
     cd deployment/cicd/kustomize/overlays/{환경}
-    kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{서비스명}:{환경}-{이전태그}
+    kustomize edit set image {Image Registry}/{Image Organization}/{서비스명}:{환경}-{이전태그}
     kubectl apply -k .
     ```
 

@@ -19,20 +19,19 @@
 [작업순서]
 - 프롬프트 제공정보 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
-  - Image Registry: container image registry
-  - Image Organization: container image organization
-  - Jenkins Kubernetes Cloud Name: Jenkins에 설정한 k8s Cloud 이름 
-  - k8s context prefix: Kubernetes Context의 prefix 값. 이 값 뒤에 '-대상환경'이 붙음   
-  - NAMESPACE: 네임스페이스 
-     
+  - {SYSTEM_NAME}: 시스템명 
+  - {ACR_NAME}: Azure Container Registry 이름
+  - {RESOURCE_GROUP}: Azure 리소스 그룹명
+  - {AKS_CLUSTER}: AKS 클러스터명
+  - {NAMESPACE}: Namespace명
     예시)
   ```
   [실행정보]
-  - Image Registry: docker.io
-  - Image Organization: phonebill
-  - Jenkins Kubernetes Cloud Name: k8s  
-  - k8s context prefix: minikube
-  - NAMESPACE: phonebill
+  - SYSTEM-NAME: phonebill
+  - ACR_NAME: acrdigitalgarage01
+  - RESOURCE_GROUP: rg-digitalgarage-01
+  - AKS_CLUSTER: aks-digitalgarage-01
+  - NAMESPACE: phonebill-dg0500  
   ``` 
 
 - 서비스명 확인   
@@ -72,12 +71,12 @@
     - Azure Environment: Azure
     ```
 
-    - Image Credentials
+    - ACR Credentials
     ```
     - Kind: Username with password
-    - ID: imagereg-credentials
-    - Username: {IMG_NAME}
-    - Password: {IMG_PASSWORD}
+    - ID: acr-credentials
+    - Username: {ACR_NAME}
+    - Password: {ACR_PASSWORD}
     ```
 
     - Docker Hub Credentials (Rate Limit 해결용)
@@ -219,7 +218,7 @@
     - ingress.yaml
 
   images:
-    - name: {Image Registry}/{Image Organization}/{SERVICE_NAME}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
       newTag: latest
   ```
   
@@ -301,7 +300,7 @@
         name: {SERVICE_NAME}
 
   images:
-    - name: {Image Registry}/{Image Organization}/{SERVICE_NAME}
+    - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
       newTag: latest
 
   ```
@@ -310,8 +309,8 @@
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법
   ```bash
   # {환경} Environment Configuration
-  context={k8s context prefix}-{환경}
-  namespace={namespace}
+  resource_group={RESOURCE_GROUP}
+  cluster_name={AKS_CLUSTER}
   ```
 
 - Jenkinsfile 작성    
@@ -348,7 +347,6 @@
   }
   
   podTemplate(
-      cloud: {Jenkins Kubernetes Cloud Name}, 
       label: "${PIPELINE_ID}",
       serviceAccount: 'jenkins',
       slaveConnectTimeout: 300,
@@ -388,7 +386,7 @@
               resourceLimitMemory: '4Gi'
           ),
           containerTemplate(
-              name: 'kubectl', 
+              name: 'azure-cli', 
               image: 'hiondal/azure-kubectl:latest', 
               command: 'cat', 
               ttyEnabled: true,
@@ -428,11 +426,12 @@
               }
 
               stage("Setup AKS") {
-                  container('kubectl') {
+                  container('azure-cli') {
                       withCredentials([azureServicePrincipal('azure-credentials')]) {
                           sh """
-                            kubectl config use-context {props.context}
-                            kubectl create namespace ${props.namespace} --dry-run=client -o yaml | kubectl apply -f -
+                              az login --service-principal -u \$AZURE_CLIENT_ID -p \$AZURE_CLIENT_SECRET -t \$AZURE_TENANT_ID
+                              az aks get-credentials --resource-group ${props.resource_group} --name ${props.cluster_name} --overwrite-existing
+                              kubectl create namespace {NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
                           """
                       }
                   }
@@ -491,9 +490,9 @@
                       container('podman') {
                           withCredentials([
                               usernamePassword(
-                                  credentialsId: 'imagereg-credentials',
-                                  usernameVariable: 'IMG_USERNAME',
-                                  passwordVariable: 'IMG_PASSWORD'
+                                  credentialsId: 'acr-credentials',
+                                  usernameVariable: 'ACR_USERNAME',
+                                  passwordVariable: 'ACR_PASSWORD'
                               ),
                               usernamePassword(
                                   credentialsId: 'dockerhub-credentials',
@@ -505,7 +504,7 @@
                               sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
                               
                               // ACR 로그인
-                              sh "podman login {Image Registry} --username \$IMG_USERNAME --password \$IMG_PASSWORD"
+                              sh "podman login {ACR_NAME}.azurecr.io --username \$ACR_USERNAME --password \$ACR_PASSWORD"
 
                               sh """
                                   podman build \\
@@ -513,9 +512,9 @@
                                       --build-arg PROJECT_FOLDER="." \\
                                       --build-arg BUILD_FOLDER="deployment/container" \\
                                       --build-arg EXPORT_PORT="8080" \\
-                                      -t {Image Registry}/{Image Organization}/{SERVICE_NAME}:${environment}-${imageTag} .
+                                      -t {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}:${environment}-${imageTag} .
 
-                                  podman push {Image Registry}/{Image Organization}/{SERVICE_NAME}:${environment}-${imageTag}
+                                  podman push {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}:${environment}-${imageTag}
                               """
                           }
                       }
@@ -523,7 +522,7 @@
               }
 
               stage('Update Kustomize & Deploy') {
-                  container('kubectl') {
+                  container('azure-cli') {
                       sh """
                           # Kustomize 설치 (sudo 없이 사용자 디렉토리에 설치)
                           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
@@ -535,7 +534,7 @@
                           cd deployment/cicd/kustomize/overlays/${environment}
 
                           # 이미지 태그 업데이트
-                          \$HOME/bin/kustomize edit set image {Image Registry}/{Image Organization}/{SERVICE_NAME}:${environment}-${imageTag}
+                          \$HOME/bin/kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}:${environment}-${imageTag}
 
                           # 매니페스트 적용
                           kubectl apply -k .
@@ -633,7 +632,7 @@
   cd deployment/cicd/kustomize/overlays/${ENVIRONMENT}
   
   # 이미지 태그 업데이트
-  kustomize edit set image {Image Registry}/{Image Organization}/{SERVICE_NAME}:${ENVIRONMENT}-${IMAGE_TAG}
+  kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}:${ENVIRONMENT}-${IMAGE_TAG}
   
   # 배포 실행
   kubectl apply -k .
@@ -781,7 +780,7 @@
     ```bash
     # 이전 안정 버전 이미지 태그로 업데이트
     cd deployment/cicd/kustomize/overlays/{환경}
-    kustomize edit set image {Image Registry}/{Image Organization}/{SERVICE_NAME}:{환경}-{이전태그}
+    kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}:{환경}-{이전태그}
     kubectl apply -k .
     ```
 
