@@ -415,7 +415,7 @@
           def props
           def imageTag = getImageTag()
           def environment = params.ENVIRONMENT ?: 'dev'
-          def skipSonarQube = (params.SKIP_SONARQUBE?.toLowerCase() == 'true')
+          def skipSonarQube = params.SKIP_SONARQUBE ?: 'true'
           def sonarScannerHome = '/opt/sonar-scanner'
           
           try {
