@@ -2248,7 +2248,6 @@ ACR + AKS 사용 시
 
 deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
 
-
 **4.Git Push**     
 Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다.   
 따라서 로컬에서 수정하면 반드시 원격 Git Repo에 푸시해야 합니다.    
