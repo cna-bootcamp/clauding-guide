@@ -1,8 +1,10 @@
 아래 가이드는 예제 프로그램 phonebill 을 minikube에서 학습하기 위한 환경설정입니다.    
 프로젝트 소스는 아래에 있습니다.   
-https://github.com/cna-bootcamp/phonebill.git
-https://github.com/cna-bootcamp/phonebill-front.git
+- 백엔드: https://github.com/cna-bootcamp/phonebill.git
+- 프론트엔드: https://github.com/cna-bootcamp/phonebill-front.git
 
+---
+**목차**   
 
 - [사전 작업](#사전-작업)
 - [Ubuntu 서버에 Minikube 설치 및 접속](#ubuntu-서버에-minikube-설치-및-접속)
