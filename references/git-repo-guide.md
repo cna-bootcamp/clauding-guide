@@ -80,3 +80,30 @@ git add . && git commit -m "push first" && git push -u origin main
 
 '-u origin main'은 최초 한번만 하면 됩니다. 
 
+---
+
+## 원격 레포지토리 변경
+만약 다른 사람의 git repository를 clone 한 경우 자신의 repository로 변경 후 푸시하는 방법입니다.   
+
+현재 원격 레포지토리 구하기
+```
+git remote get-url origin 
+```
+
+자신의 원격 레포지토리로 변경   
+```
+git remote set-url origin {본인 원격 repository 주소}
+```
+
+예)
+```
+git remote set-url origin https://github.com/agilpia/phonebill.git
+```
+
+변경 후 푸시 
+```
+git add . && git commit -m "push first" && git push -u origin main
+```
+
+'-u origin main'은 최초 한번만 하면 됩니다. 
+
