@@ -1,4 +1,4 @@
-# Ubuntu 서버에 Minikube 설치 및 접속
+
 
 - [Ubuntu 서버에 Minikube 설치 및 접속](#ubuntu-서버에-minikube-설치-및-접속)
   - [1. 서버에서 Minikube 시작](#1-서버에서-minikube-시작)
@@ -12,21 +12,23 @@
   - [5. 로컬의 kubeconfig 업데이트 (로컬에서 최초 1번 실행)](#5-로컬의-kubeconfig-업데이트-로컬에서-최초-1번-실행)
   - [6. 연결 테스트](#6-연결-테스트)
   - [7. SSH 터널 관리](#7-ssh-터널-관리)
-  - [Backing Service 설치](#backing-service-설치)
-    - [Database 설치](#database-설치)
-      - [PostgresSQL 설정 파일 작성](#postgressql-설정-파일-작성)
-      - [PostgresSQL 설치](#postgressql-설치)
-    - [Redis 설치](#redis-설치)
-      - [설정파일 작성](#설정파일-작성)
-      - [Redis 설치](#redis-설치-1)
-    - [로컬에서 port forward](#로컬에서-port-forward)
-      - [Port Forward](#port-forward)
-      - [port forward 중지](#port-forward-중지)
-  - [minikube에 CI/CD 툴 설치](#minikube에-cicd-툴-설치)
-    - [minikube에 Jenkins 설치](#minikube에-jenkins-설치)
-      - [jenkins.yaml 작성](#jenkinsyaml-작성)
-      - [Ingress 생성](#ingress-생성)
-    - [minikube에 ArgoCD 설치](#minikube에-argocd-설치)
+- [Backing Service 설치](#backing-service-설치)
+  - [Database 설치](#database-설치)
+    - [PostgresSQL 설정 파일 작성](#postgressql-설정-파일-작성)
+    - [PostgresSQL 설치](#postgressql-설치)
+  - [Redis 설치](#redis-설치)
+    - [설정파일 작성](#설정파일-작성)
+    - [Redis 설치](#redis-설치-1)
+  - [로컬에서 port forward](#로컬에서-port-forward)
+    - [Port Forward](#port-forward)
+    - [port forward 중지](#port-forward-중지)
+- [minikube에 CI/CD 툴 설치](#minikube에-cicd-툴-설치)
+  - [minikube에 Jenkins 설치](#minikube에-jenkins-설치)
+    - [jenkins.yaml 작성](#jenkinsyaml-작성)
+    - [Ingress 생성](#ingress-생성)
+  - [minikube에 ArgoCD 설치](#minikube에-argocd-설치)
+
+# Ubuntu 서버에 Minikube 설치 및 접속
 
 ## 1. 서버에서 Minikube 시작
 
@@ -190,7 +192,7 @@ ssh -i ${VM_KEY} -L 8443:${MINIKUBE_IP}:8443 ${VM_USER}@${VM_IP} -N &
 
 ---
 
-## Backing Service 설치
+# Backing Service 설치
 아래 작업을 로컬 PC에서 수행하세요.    
 
 작업 디렉토리 작성
@@ -204,9 +206,9 @@ k create ns phonebill
 kubens phonebill
 ```
 
-### Database 설치
+## Database 설치
 
-#### PostgresSQL 설정 파일 작성  
+### PostgresSQL 설정 파일 작성  
 
 아래와 같이 SVC변수를 auth, inquiry, change로 변경하여 각 서비스별 설정 파일 생성      
 ```
@@ -279,7 +281,7 @@ image:
 EOF
 ```
 
-#### PostgresSQL 설치  
+### PostgresSQL 설치  
 ```
 helm upgrade -i auth -f values-auth.yaml bitnami/postgresql --version 12.12.10
 helm upgrade -i inquiry -f values-inquiry.yaml bitnami/postgresql --version 12.12.10
@@ -288,9 +290,9 @@ helm upgrade -i change -f values-change.yaml bitnami/postgresql --version 12.12.
 
 ---
 
-### Redis 설치
+## Redis 설치
 
-#### 설정파일 작성
+### 설정파일 작성
 
 ```
 cat > values-cache.yaml << EOF
@@ -345,16 +347,16 @@ image:
 EOF
 ```
 
-#### Redis 설치
+### Redis 설치
 ```
 helm upgrade -i cache -f values-cache.yaml bitnami/redis
 ```
 
 ---
 
-### 로컬에서 port forward
+## 로컬에서 port forward
 
-#### Port Forward
+### Port Forward
 새로운 터미널을 열어 수행하세요.  
 ```
 k port-forward svc/auth-postgresql 15432:5432 &
@@ -363,7 +365,7 @@ k port-forward svc/change-postgresql 35432:5432 &
 k port-forward svc/cache-redis-master 16379:6379 &
 ```
 
-#### port forward 중지
+### port forward 중지
 프로세스 ID 확인   
 ```
 ps -ef | grep port-forward
@@ -379,15 +381,15 @@ ps -ef | grep port-forward
 
 ---
 
-## minikube에 CI/CD 툴 설치
+# minikube에 CI/CD 툴 설치
 
 아래 링크를 참조하여 helm으로 설치.   
 https://github.com/cna-bootcamp/clauding-guide/blob/882cabb67d64150513f1c580b00a5b377e23109d/guides/setup/05.setup-cicd-tools.md
 
 
-### minikube에 Jenkins 설치
+## minikube에 Jenkins 설치
 
-#### jenkins.yaml 작성
+### jenkins.yaml 작성
 
 ```
 cat > jenkins.yaml << EOF
@@ -438,7 +440,7 @@ serviceAccount:
 EOF
 ```
 
-#### Ingress 생성
+### Ingress 생성
 yaml 작성  
 ```
 cat > jenkins-ingress.yaml << EOF
@@ -485,7 +487,7 @@ sudo vi /etc/hosts
 
 ---
 
-### minikube에 ArgoCD 설치
+## minikube에 ArgoCD 설치
 
 minikube가 설치된 VM IP로 환경변수 생성   
 ```
@@ -518,4 +520,5 @@ EOF
 ```
 
 ---
+
 
