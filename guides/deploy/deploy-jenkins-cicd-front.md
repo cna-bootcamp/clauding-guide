@@ -426,11 +426,10 @@
 
               stage("Setup Kubernetes") {
                   container('kubectl') {
-                      withCredentials([azureServicePrincipal('azure-credentials')]) {
-                          sh """
-                            kubectl create namespace ${props.namespace} --dry-run=client -o yaml | kubectl apply -f -
-                          """
-                      }
+                        sh """
+                          kubectl create namespace ${props.namespace} --dry-run=client -o yaml | kubectl apply -f -
+                        """
+                    
                   }
               }
 
