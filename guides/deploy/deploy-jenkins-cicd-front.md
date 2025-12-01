@@ -22,7 +22,6 @@
   - Image Registry: container image registry
   - Image Organization: container image organization
   - Jenkins Kubernetes Cloud Name: Jenkins에 설정한 k8s Cloud 이름 
-  - k8s context prefix: Kubernetes Context의 prefix 값. 이 값 뒤에 '-대상환경'이 붙음   
   - NAMESPACE: 네임스페이스 
      
     예시)
@@ -31,7 +30,6 @@
   - Image Registry: docker.io
   - Image Organization: phonebill
   - Jenkins Kubernetes Cloud Name: k8s  
-  - k8s context prefix: minikube
   - NAMESPACE: phonebill
   ``` 
 
@@ -310,7 +308,6 @@
   `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법
   ```bash
   # {환경} Environment Configuration
-  context={k8s context prefix}-{환경}
   namespace={namespace}
   ```
 
@@ -431,7 +428,6 @@
                   container('kubectl') {
                       withCredentials([azureServicePrincipal('azure-credentials')]) {
                           sh """
-                            kubectl config use-context {props.context}
                             kubectl create namespace ${props.namespace} --dry-run=client -o yaml | kubectl apply -f -
                           """
                       }

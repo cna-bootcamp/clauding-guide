@@ -2032,7 +2032,6 @@ DockerHub + minikube 사용 시
 - Image Registry: docker.io
 - Image Organization: hiondal
 - Jenkins Kubernetes Cloud Name: k8s  
-- k8s context prefix: minikube 
 - NAMESPACE: phonebill
 ```
 
@@ -2044,29 +2043,10 @@ ACR + AKS 사용 시
 - Image Registry: acrdigitalgarage01.azurecr.io
 - Image Organization: phonebill
 - Jenkins Kubernetes Cloud Name: aks  
-- k8s context prefix: minikube 
 - NAMESPACE: phonebill-0500
 ```
 
 deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
-
-**(중요) k8s context prefix 값 지정 방법**          
-아래 명령으로 현재 컨텍스트 정보를 구하여 지정함         
-```
-k config current-context
-```
-
-**(중요) Jenkinsfile의 k8s context값 변경**             
-아래와 같이 대상 k8s Context 환경을 변경하는 부분이 있습니다.     
-```
-kubectl config use-context ${props.context}
-```
-따라서 deployment/cicd/config/deploy_env_var_{대상환경} 파일에서 context값을 올바르게 변경해야 합니다.     
-각 대상환경에 맞게 context값을 변경하세요.    
-교육시에는 dev서버에 배포하므로 deploy_env_var_dev 파일의 내용을 아래 명령으로 구한 값으로 변경하십시오.    
-```
-k config current-context
-```
 
 **4.Git Push**     
 Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다.   
@@ -2240,7 +2220,7 @@ vscode를 실행하고 프론트엔드 서비스를 오픈하세요.
 Claude Code도 시작한 후 수행 하세요.   
 아래와 같이 프롬프팅하여 Jenkins CI/CD파일들을 작성합니다.    
 deployment/cicd 디렉토리 하위에 파일들이 생성됩니다.    
-
+'Jenkins Kubernetes Cloud Name'은 Jenkins Cloud 설정에 추가한 이름을 지정합니다.   
 
 예시)  
 DockerHub + minikube 사용 시 
@@ -2252,7 +2232,6 @@ DockerHub + minikube 사용 시
 - Image Registry: docker.io
 - Image Organization: hiondal
 - Jenkins Kubernetes Cloud Name: k8s  
-- k8s context prefix: minikube 
 - NAMESPACE: phonebill
 ```
 
@@ -2264,29 +2243,11 @@ ACR + AKS 사용 시
 - Image Registry: acrdigitalgarage01.azurecr.io
 - Image Organization: phonebill
 - Jenkins Kubernetes Cloud Name: aks  
-- k8s context prefix: minikube 
 - NAMESPACE: phonebill-0500
 ```
 
 deployment/cicd 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
 
-**(중요) k8s context prefix 값 지정 방법**          
-아래 명령으로 현재 컨텍스트 정보를 구하여 지정함         
-```
-k config current-context
-```
-
-**(중요) Jenkinsfile의 k8s context값 변경**             
-아래와 같이 대상 k8s Context 환경을 변경하는 부분이 있습니다.     
-```
-kubectl config use-context ${props.context}
-```
-따라서 deployment/cicd/config/deploy_env_var_{대상환경} 파일에서 context값을 올바르게 변경해야 합니다.     
-각 대상환경에 맞게 context값을 변경하세요.    
-교육시에는 dev서버에 배포하므로 deploy_env_var_dev 파일의 내용을 아래 명령으로 구한 값으로 변경하십시오.    
-```
-k config current-context
-```
 
 **4.Git Push**     
 Jenkins 파이프라인 구동 시 원격 Git Repo에서 소스와 CI/CD파일들을 내려 받아 수행합니다.   
