@@ -8,7 +8,7 @@ description: 프론트엔드 Jenkins CI/CD 가이드 작성
 {안내메시지}
 '[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.
 [실행정보]
-- Image Registry: docker.io
-- Image Organization: phonebill
-- Jenkins Kubernetes Cloud Name: k8s
+- IMG_REG: docker.io
+- IMG_ORG: phonebill
+- JENKINS_CLOUD_NAME: k8s
 - NAMESPACE: phonebill

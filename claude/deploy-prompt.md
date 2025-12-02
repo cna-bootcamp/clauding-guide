@@ -1,0 +1,188 @@
+# 배포 프롬프트
+
+## 백엔드 컨테이너 이미지 작성 요청
+command: "/deploy-build-image-back"
+prompt:
+```  
+@cicd 
+'백엔드컨테이너이미지작성가이드'에 따라 컨테이너 이미지를 작성해 주세요. 
+```
+
+## 프론트엔드 컨테이너 이미지 작성 요청
+command: "/deploy-build-image-front"
+prompt:
+```  
+@cicd 
+'프론트엔드컨테이너이미지작성가이드'에 따라 컨테이너 이미지를 작성해 주세요. 
+```
+
+## 백엔드 컨테이너 실행방법 작성 요청
+command: "/deploy-run-container-guide-back"
+prompt:
+```  
+@cicd 
+'백엔드컨테이너실행방법가이드'에 따라 컨테이너 실행 가이드를 작성해 주세요. 
+프롬프트에 '[실행정보]'항목이 없으면 수행을 중단하고 안내 메시지를 표시해 주세요. 
+{안내메시지}
+'[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.   
+[실행정보]
+ACR 이용시: 
+[실행정보]
+- ACR명: acrdigitalgarage01
+- VM
+  - KEY파일: ~/home/bastion-dg0500
+  - USERID: azureuser
+  - IP: 4.230.5.6
+
+다른 컨테이너 이미지 레지스트리 이용 시: 
+[실행정보]
+- IMG_REG: docker.io
+- IMG_ORG: hiondal
+- IMG_ID: hiondal
+- IMG_PW: dckr_pat_0E1PBHpAMf_I02OvMZRddddd
+- VM
+  - KEY파일: ~/home/bastion-dg0500
+  - USERID: azureuser
+  - IP: 4.230.5.6
+```
+
+## 프론트엔드 컨테이너 실행 요청
+command: "/deploy-run-container-guide-front"
+prompt:
+```  
+@cicd 
+'프론트엔드컨테이너실행방법가이드'에 따라 컨테이너 실행 가이드를 작성해 주세요. 
+프롬프트에 '[실행정보]'항목이 없으면 수행을 중단하고 안내 메시지를 표시해 주세요. 
+{안내메시지}
+'[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.   
+[실행정보]
+ACR 이용시: 
+[실행정보]
+- {시스템명: tripgen
+- ACR명: acrdigitalgarage01
+- VM
+  - KEY파일: ~/home/bastion-dg0500
+  - USERID: azureuser
+  - IP: 4.230.5.6
+
+다른 컨테이너 이미지 레지스트리 이용 시: 
+[실행정보]
+- 시스템명: tripgen
+- IMG_REG: docker.io
+- IMG_ORG: hiondal
+- IMG_ID: hiondal
+- IMG_PW: dckr_pat_0E1PBHpAMf_I02OvMZRddddd
+- VM
+  - KEY파일: ~/home/bastion-dg0500
+  - USERID: azureuser
+  - IP: 4.230.5.6
+```
+
+## 백엔드 배포 가이드 작성 요청
+command: "/deploy-k8s-guide-back"
+prompt:
+
+```
+@cicd 
+'백엔드배포가이드'에 따라 백엔드 서비스 배포 방법을 작성해 주세요. 
+프롬프트에 '[실행정보]'항목이 없으면 수행을 중단하고 안내 메시지를 표시해 주세요. 
+{안내메시지}
+'[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.   
+[실행정보]
+- ACR명: acrdigitalgarage01
+- k8s명: aks-digitalgarage-01
+- 네임스페이스: tripgen
+- 파드수: 2
+- 리소스(CPU): 256m/1024m
+- 리소스(메모리): 256Mi/1024Mi
+```
+
+## 프론트엔드 배포 가이드 작성 요청
+command: "/deploy-k8s-guide-front"
+prompt:
+
+```
+@cicd 
+'프론트엔드배포가이드'에 따라 프론트엔드 서비스 배포 방법을 작성해 주세요. 
+프롬프트에 '[실행정보]'항목이 없으면 수행을 중단하고 안내 메시지를 표시해 주세요. 
+{안내메시지}
+'[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.   
+[실행정보]
+- 시스템명: tripgen
+- ACR명: acrdigitalgarage01
+- k8s명: aks-digitalgarage-01
+- 네임스페이스: tripgen
+- 파드수: 2
+- 리소스(CPU): 256m/1024m
+- 리소스(메모리): 256Mi/1024Mi
+- Gateway Host: http://tripgen-api.20.214.196.128.nip.io
+```
+
+## 백엔드 Jenkins CI/CD 가이드 작성 요청
+command: "/deploy-jenkins-cicd-guide-back"
+prompt:
+
+```
+@cicd 
+'백엔드Jenkins파이프라인작성가이드'에 따라 Jenkins를 이용한 CI/CD 가이드를 작성해 주세요. 
+프롬프트에 '[실행정보]'항목이 없으면 수행을 중단하고 안내 메시지를 표시해 주세요. 
+{안내메시지}
+'[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.   
+[실행정보]
+- IMG_REG: docker.io
+- IMG_ORG: phonebill
+- JENKINS_CLOUD_NAME: k8s  
+- NAMESPACE: phonebill
+```
+
+## 프론트엔드 Jenkins CI/CD 가이드 작성 요청
+command: "/deploy-jenkins-cicd-guide-front"
+prompt:
+
+```
+@cicd 
+'프론트엔드Jenkins파이프라인작성가이드'에 따라 Jenkins를 이용한 CI/CD 가이드를 작성해 주세요. 
+프롬프트에 '[실행정보]'항목이 없으면 수행을 중단하고 안내 메시지를 표시해 주세요. 
+{안내메시지}
+'[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.   
+[실행정보]
+- IMG_REG: docker.io
+- IMG_ORG: phonebill
+- JENKINS_CLOUD_NAME: k8s  
+- NAMESPACE: phonebill
+```
+
+## 백엔드 GitHub Actions CI/CD 가이드 작성 요청
+command: "/deploy-actions-cicd-guide-back"
+prompt:
+
+```
+@cicd 
+'백엔드GitHubActions파이프라인작성가이드'에 따라 GitHub Actions를 이용한 CI/CD 가이드를 작성해 주세요. 
+프롬프트에 '[실행정보]'항목이 없으면 수행을 중단하고 안내 메시지를 표시해 주세요. 
+{안내메시지}
+'[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.   
+[실행정보]
+- ACR_NAME: acrdigitalgarage01
+- RESOURCE_GROUP: rg-digitalgarage-01
+- AKS_CLUSTER: aks-digitalgarage-01 
+- NAMESPACE: phonebill-dg0500
+```
+
+## 프론트엔드 GitHub Actions CI/CD 가이드 작성 요청
+command: "/deploy-actions-cicd-guide-front"
+prompt:
+
+```
+@cicd 
+'프론트엔드GitHubActions파이프라인작성가이드'에 따라 GitHub Actions를 이용한 CI/CD 가이드를 작성해 주세요. 
+프롬프트에 '[실행정보]'항목이 없으면 수행을 중단하고 안내 메시지를 표시해 주세요. 
+{안내메시지}
+'[실행정보]'섹션 하위에 아래 예와 같이 필요한 정보를 제시해 주세요.   
+[실행정보]
+- SYSTEM_NAME: phonebill
+- ACR_NAME: acrdigitalgarage01
+- RESOURCE_GROUP: rg-digitalgarage-01
+- AKS_CLUSTER: aks-digitalgarage-01 
+- NAMESPACE: phonebill-dg0500
+```

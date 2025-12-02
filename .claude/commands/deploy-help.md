@@ -31,19 +31,15 @@ description: 배포 작업 순서 안내
 /deploy-k8s-guide-front
 - [실행정보] 섹션에 시스템명, ACR명, k8s명, Gateway Host 등 제공 필요
 
-7단계: 백엔드 Jenkins CI/CD 가이드 작성 (선택)
-/deploy-jenkins-cicd-guide-back
-- [실행정보] 섹션에 Image Registry, Image Organization, Jenkins Kubernetes Cloud Name, NAMESPACE 제공 필요
+7단계: CI/CD 파이프라인 작성 (택1)
 
-8단계: 프론트엔드 Jenkins CI/CD 가이드 작성 (선택)
-/deploy-jenkins-cicd-guide-front
-- [실행정보] 섹션에 Image Registry, Image Organization, Jenkins Kubernetes Cloud Name, NAMESPACE 제공 필요
+[Jenkins 사용 시]
+/deploy-jenkins-cicd-guide-back - 백엔드 Jenkins CI/CD
+/deploy-jenkins-cicd-guide-front - 프론트엔드 Jenkins CI/CD
+- [실행정보] 필수: IMG_REG, IMG_ORG, JENKINS_CLOUD_NAME, NAMESPACE
 
-9단계: 백엔드 GitHub Actions CI/CD 가이드 작성 (선택)
-/deploy-actions-cicd-guide-back
-- [실행정보] 섹션에 ACR_NAME, RESOURCE_GROUP 등 제공 필요
-
-10단계: 프론트엔드 GitHub Actions CI/CD 가이드 작성 (선택)
-/deploy-actions-cicd-guide-front
-- [실행정보] 섹션에 SYSTEM_NAME, ACR_NAME 등 제공 필요
+[GitHub Actions 사용 시]
+/deploy-actions-cicd-guide-back - 백엔드 GitHub Actions CI/CD
+/deploy-actions-cicd-guide-front - 프론트엔드 GitHub Actions CI/CD
+- [실행정보] 필수: ACR_NAME, RESOURCE_GROUP, AKS_CLUSTER, NAMESPACE
 ```
