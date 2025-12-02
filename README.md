@@ -2539,6 +2539,8 @@ Azure Cloud 배포용:
 ```
 
 minikube 배포용:
+minikube ip는 minikube가 설치된 VM에서 'minikube ip' 명령으로 확인하세요.   
+
 ```
 @cicd 
 아래 가이드에 따라 GitHub Actions를 이용한 CI/CD 가이드를 작성해 주세요. 
@@ -2637,6 +2639,8 @@ Azure Cloud 배포용
 ```
 
 minikube 배포용:
+minikube ip는 minikube가 설치된 VM에서 'minikube ip' 명령으로 확인하세요.   
+
 ```
 @cicd 
 아래 가이드에 따라 GitHub Actions를 이용한 CI/CD 가이드를 작성해 주세요. 
