@@ -2828,7 +2828,7 @@ GitHub Actions기반의 CI/CD 분리:
 Jenkins와 GitHub Actions 모두 CI/CD 분리시:
 ```
 @cicd
-'ArgoCD파이프라인준비가이드'에 따라 Jenkins기반의 CI와 CD분리 준비 작업을 해주세요.   
+'ArgoCD파이프라인준비가이드'에 따라 CI와 CD분리 준비 작업을 해주세요.   
 [실행정보]
 - SYSTEM_NAME: phonebill
 - FRONTEND_SERVICE: phonebill-front
