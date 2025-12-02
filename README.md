@@ -1659,6 +1659,7 @@ IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합�
 '[실행정보]'에 정확한 값을 제공합니다.   
 
 예시) 
+ACR 이용 시: 
 ```
 /deploy-run-container-guide-back
 [실행정보]
@@ -1668,6 +1669,20 @@ IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합�
   - USERID: azureuser
   - IP: 4.230.5.6
 ```
+다른 컨테이너 이미지 이용 시:
+```
+/deploy-run-container-guide-back
+[실행정보]
+- IMG_REG: docker.io
+- IMG_ORG: hiondal
+- IMG_ID: hiondal
+- IMG_PW: dckr_pat_0E1PBHpAMf_I02OvMZRddddd
+- VM
+  - KEY파일: ~/home/bastion-dg0500
+  - USERID: azureuser
+  - IP: 4.230.5.6
+```
+
 실행이 완료되면 'deployment/container/run-container-guide.md'파일을 열어 내용을 검토 및 수정합니다.    
 특히 'localhost'로 찾아서 잘못된 부분이 있으면 수정합니다.    
 그리고 프롬프트에 '푸시'라고 입력하여 원격 Git Repo에 푸시합니다.   
@@ -1692,6 +1707,7 @@ vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행�
 '[실행정보]'에 정확한 값을 제공합니다.   
 
 예시) 
+ACR 이용 시:   
 ```
 @cicd 
 '프론트엔드컨테이너실행방법가이드'에 따라 컨테이너 실행 가이드를 작성해 주세요. 
@@ -1703,6 +1719,21 @@ vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행�
   - USERID: azureuser
   - IP: 4.230.5.6
 ```
+다른 컨테이너 이미지 이용 시:
+```
+/deploy-run-container-guide-back
+[실행정보]
+- 시스템명: tripgen
+- IMG_REG: docker.io
+- IMG_ORG: hiondal
+- IMG_ID: hiondal
+- IMG_PW: dckr_pat_0E1PBHpAMf_I02OvMZRddddd
+- VM
+  - KEY파일: ~/home/bastion-dg0500
+  - USERID: azureuser
+  - IP: 4.230.5.6
+```
+
 실행이 완료되면 'deployment/container/run-container-guide.md'파일을 열어 내용을 검토 및 수정합니다.    
 특히 'localhost'로 찾아서 잘못된 부분이 있으면 수정합니다.    
 그리고 프롬프트에 '푸시'라고 입력하여 원격 Git Repo에 푸시합니다.   
@@ -1862,8 +1893,8 @@ minikube나 vanilla k8s에 배포할 때 프롬프트 예시
 /deploy-k8s-guide-back
 AKS가 아닌 minikube에 배포하는 가이드 작성
 [실행정보]
-- Image Registry: docker.io
-- Image Organization: hiondal
+- IMG_REG: docker.io
+- IMG_ORG: hiondal
 - k8s context: minikube-remote
 - 네임스페이스: phonebill
 - 파드수: 1
@@ -1924,8 +1955,8 @@ minikube나 vanilla k8s에 배포할 때 프롬프트 예시
 '프론트엔드배포가이드'에 따라 프론트엔드 서비스 배포 방법을 작성해 주세요.
 [실행정보]
 - 시스템명: phonebill
-- Image Registry: docker.io
-- Image Organization: hiondal
+- IMG_REG: docker.io
+- IMG_ORG: hiondal
 - k8s context: minikube-remote
 - 네임스페이스: phonebill
 - 파드수: 1

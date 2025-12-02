@@ -8,7 +8,12 @@
 [작업순서]
 - 실행정보 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인  
-  - {ACR명}: 컨테이너 레지스트리 이름 
+  - {IMG_REG}: 컨테이너 이미지 레지스트리 주소
+  - {IMG_ORG}: 컨테이너 이미지 Organization 주소
+  - {IMG_ID}: 컨테이너 이미지 레지스트리 유저ID
+  - {IMG_PW}: 컨테이너 이미지 레지스트리 암호(Access Token)
+  - {BACKEND_HOST}: Baeckend 게이트웨이의 Ingress Host 주소  
+  - {FRONTEND_HOST}: 프론트엔드 Ingress Host 주소  
   - {네임스페이스}: 배포할 네임스페이스 
   - {파드수}: 생성할 파드수 
   - {리소스(CPU)}: 요청값/최대값
@@ -17,9 +22,14 @@
   예시)
   ```
   [실행정보]
-  - ACR명: acrdigitalgarage01
-  - 네임스페이스: tripgen
-  - 파드수: 2
+  - IMG_REG: docker.io
+  - IMG_ORG: hiondal
+  - IMG_ID: hiondal
+  - IMG_PW: dckr_pat_0E1PBHpAMf_I02OvMZRV5ddddd
+  - BACKEND_HOST: phonebill-api.72.155.72.236.nip.io
+  - FRONTEND_HOST: phonebill.72.155.72.236.nip.io
+  - 네임스페이스: phonebill
+  - 파드수: 1
   - 리소스(CPU): 256m/1024m
   - 리소스(메모리): 256Mi/1024Mi
   ``` 
@@ -61,34 +71,27 @@
     - name: {시스템명}
     - USERNAME과 PASSWORD을 아래 명령으로 구하여 매니페스트 파일 작성  
       ```
-      USERNAME=$(az acr credential show -n ${ACR명} --query "username" -o tsv)
-      PASSWORD=$(az acr credential show -n ${ACR명} --query "passwords[0].value" -o tsv)
+      USERNAME=$(IMG_ID)
+      PASSWORD=$(IMG_PW)
       ```   
     - USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정    
   - Ingress 매니페스트 작성: ingress.yaml 
-    - **중요**: Ingress Host는 반드시 아래 명령으로 실제 External IP를 확인하여 사용할 것.
-      {Ingress External IP}는 실제 확인한 EXTERNAL-IP값.   
-      ```  
-      kubectl get svc ingress-nginx-controller -n ingress-nginx   
-      ```     
-      출력 예시: EXTERNAL-IP 컬럼에서 실제 IP 확인 (예:20.214.196.128)
-    - ingressClassName: nginx
-    - host: {시스템명}-api.{Ingress External IP}.nip.io
-      **잘못된 예**: tripgen-api.임의IP.nip.io ❌
-      **올바른 예**: tripgen-api.20.214.196.128.nip.io ✅
-
-    - API Gateway 서비스가 없는 경우 Ingress에서 각 백엔드 서비스 연결  
+    - API Gateway 서비스가 없는 경우 Ingress에서 각 백엔드 서비스 연결   
+      - ingressClassName: nginx
+      - host: {BACKEND_HOST}
       - path: 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정   
       - pathType: Prefix
       - backend.service.name: {서비스명}
-      - backend.service.port.number: 80
+      - backend.service.port.number: 80  
     - API Gateway 서비스가 있는 경우 
+      - ingressClassName: nginx
+      - host: {BACKEND_HOST}
       - path: /   
       - pathType: Prefix
       - backend.service.name: {API Gateway 서비스명}
-      - backend.service.port.number: {API Gateway 포트}     
+      - backend.service.port.number: {API Gateway 포트}
     - **중요**: annotation에 'nginx.ingress.kubernetes.io/rewrite-target' 설정 절대 하지 말것.     
-  
+       
   - 공통 ConfigMap과 Secret 매니페스트 작성  
     - 각 서비스의 실행 프로파일({서비스명}/.run/{서비스명}.run.xml)을 읽어 공통된 환경변수를 추출.   
     - 보안이 필요한 환경변수(암호, 인증토큰 등)는 Secret 매니페스트로 작성: secret-common.yaml(name:cm-common)
@@ -100,7 +103,7 @@
       ``` 
     - REDIS_DATABASE는 각 서비스별 ConfigMap에 지정
     - 주의) Database는 공통 ConfigMap/Secret으로 작성 금지
-    - 공통 ConfigMap에 CORS_ALLOWED_ORIGINS 설정: 'http://localhost:8081,http://localhost:8082,http://localhost:8083,http://localhost:8084,http://{시스템명}.{Ingress External IP}.nip.io'
+    - 공통 ConfigMap에 CORS_ALLOWED_ORIGINS 설정: 'http://localhost:8081,http://localhost:8082,http://localhost:8083,http://localhost:8084,http://{FRONTEND_HOST}'
   
 - 서비스별 매니페스트 작성: deployment/k8s/{서비스명}/ 디렉토리 하위에 작성  
   - ConfigMap과 Secret 매니페스트 작성   
@@ -115,7 +118,7 @@
       ```
     - REDIS_DATABASE는 실행 프로파일에 지정된 값으로 서비스별 ConfigMap에 지정 
   - Service 매니페스트 작성  
-    - API Gateway 서비스가 없는 경우  
+    - API Gateway 서비스가 없는 경우 
       - name: {서비스명}
       - port: 80
       - targetPort: 실행 프로파일의 SERVER_PORT값  
@@ -130,7 +133,7 @@
     - replicas: {파드수}
     - ImagePullPolicy: Always
     - ImagePullSecrets: {시스템명}
-    - image: {ACR명}.azurecr.io/{시스템명}/{서비스명}:latest 
+    - image: {IMG_REG}/{IMG_ORG}/{서비스명}:latest 
     - ConfigMap과 Secret은 'env'대신에 'envFrom'을 사용하여 지정 
     - envFrom: 
       - configMapRef: 공통 ConfigMap 'cm-common'과 각 서비스 ConfigMap 'cm-{서비스명}'을 지정  
@@ -154,12 +157,7 @@
   - JWT_SECRET을 openssl 명령으로 생성해서 지정했는가?
   - 매니페스트 파일 안에 환경변수를 사용하지 않고 실제 값을 지정 했는가?
   - Image Pull Secret에 USERNAME과 PASSWORD의 실제 값을 매니페스트에 지정 했는가?
-  - Image명이 '{ACR명}.azurecr.io/{시스템명}/{서비스명}:latest' 형식인지 재확인 
-  - Ingress Controller External IP 확인 및 매니페스트에 반영 확인
-    kubectl get svc ingress-nginx-controller -n ingress-nginx        
-    EXTERNAL-IP 컬럼의 실제 값이 ingress.yaml의 host에 정확하게 설정되었는지 재확인할 것
-  - Ingress 매니페스트의 각 서비스 backend.service.port.number와 Service 매니페스트의 port가 "80"으로 동일한가 ?   
-  - Ingress의 path는 각 서비스 별 Controller 클래스의 '@RequestMapping'과 클래스 내 메소드의 매핑정보를 읽어 지정했는가?
+  - Image명이 '{IMG_REG}/{IMG_ORG}/{서비스명}:latest' 형식인지 재확인 
   - 보안이 필요한 환경변수는 Secret 매니페스트로 지정했는가?
   - REDIS_DATABASE는 각 서비스마다 다르게 지정했는가?
   - ConfigMap과 Secret은 'env'대신에 'envFrom'을 사용하였는가?
@@ -189,23 +187,14 @@
 
 - 배포 가이드 작성
   - 배포가이드 검증 결과
-  - 사전확인 방법 가이드 
-    - Azure 로그인 상태 확인
-      ```
-      az account show
-      ```
-    - AKS Credential 확인: 
-      ```
-      kubectl cluster-info  
-      ``` 
+  - 사전확인 방법 가이드  
     - namespace 존재 확인   
       ```
       kubectl get ns {네임스페이스}  
       ``` 
   - 매니페스트 적용 가이드
     ```
-    kubectl apply -f deployment/k8s/common
-    kubectl apply -f deployment/k8s/{서비스명}
+    kubectl apply -f deployment/k8s -R
     ``` 
   - 객체 생성 확인 가이드
 
