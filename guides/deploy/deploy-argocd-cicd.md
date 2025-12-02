@@ -10,22 +10,20 @@
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인  
   - {SYSTEM_NAME}: 대표 시스템명 
   - {FRONTEND_SERVICE}: 프론트엔드 서비스명
-  - {ACR_NAME}: Azure Container Registry 이름
-  - {RESOURCE_GROUP}: Azure 리소스 그룹명
-  - {AKS_CLUSTER}: AKS 클러스터명
+  - {IMG_REG}: Container Image Registry 주소
+  - {IMG_ORG}: Container Image Organization
   - {MANIFEST_REPO_URL}: 'git remote get-url origin' 명령으로 매니페스트 원격 주소를 구함  
-  - {JENKINS_GIT_CREDENTIALS}: 매니페스트 레포지토리를 접근하기 위한 Jenkins Credential 
-  - {MANIFEST_SECRET_GIT_USERNAME}: 매니페스트 레포지토리를 접근하기 위한 Git Username을 정의한 GitHub Action 변수명 
-  - {MANIFEST_SECRET_GIT_PASSWORD}: 매니페스트 레포지토리를 접근하기 위한 Git Password을 정의한 GitHub Action 변수명 
+  - {JENKINS_GIT_CREDENTIALS}: 매니페스트 레포지토리를 접근하기 위한 Jenkins Credential. Jenkins기반일때만 필요    
+  - {MANIFEST_SECRET_GIT_USERNAME}: 매니페스트 레포지토리를 접근하기 위한 Git Username을 정의한 GitHub Action 변수명. GitHub Actions에만 필요
+  - {MANIFEST_SECRET_GIT_PASSWORD}: 매니페스트 레포지토리를 접근하기 위한 Git Password을 정의한 GitHub Action 변수명. GitHub Actions에만 필요 
   
   예시)
   ```
   [실행정보]
   - SYSTEM_NAME: phonebill
   - FRONTEND_SERVICE: phonebill-front
-  - ACR_NAME: acrdigitalgarage01
-  - RESOURCE_GROUP: rg-digitalgarage-01
-  - AKS_CLUSTER: aks-digitalgarage-01
+  - IMG_REG: docker.io
+  - IMG_ORG: hiondal
   - MANIFEST_REPO_URL: https://github.com/cna-bootcamp/phonebill-manifest.git
   - JENKINS_GIT_CREDENTIALS: github-credentials-dg0500
   - MANIFEST_SECRET_GIT_USERNAME: GIT_USERNAME
@@ -67,6 +65,7 @@
   ```
 
 - CI/CD가 분리된 Jenkins 파이프라인 스크립트 작성
+  (중요) 'JENKINS_GIT_CREDENTIALS' 값이 있는 경우만 수행.  
 
   **분석된 기존 파이프라인 구조:**
   - Build & Test → SonarQube Analysis → Build & Push Images → **Deploy (직접 K8s 배포)**
@@ -129,12 +128,12 @@
                     services="{SERVICE_NAMES}"
                     for service in \$services; do
                         echo "Updating \$service image tag..."
-                        sed -i "s|image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:.*|image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service:${environment}-${imageTag}|g" \\
+                        sed -i "s|image: {IMG_REG}/{IMG_ORG}/\$service:.*|image: {IMG_REG}/{IMG_ORG}/\$service:${environment}-${imageTag}|g" \\
                             {SYSTEM_NAME}/kustomize/base/\$service/deployment.yaml
 
                         # 변경 사항 확인
                         echo "Updated \$service deployment.yaml:"
-                        grep "image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/\$service" {SYSTEM_NAME}/kustomize/base/\$service/deployment.yaml
+                        grep "image: {IMG_REG}/{IMG_ORG}/\$service" {SYSTEM_NAME}/kustomize/base/\$service/deployment.yaml
                     done
 
                     # Git 설정 및 푸시
@@ -173,12 +172,12 @@
                     cd manifest-repo
 
                     echo "Updating {FRONTEND_SERVICE} image tag..."
-                    sed -i "s|image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}:.*|image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}:${environment}-${imageTag}|g" \\
+                    sed -i "s|image: {IMG_REG}/{IMG_ORG}/{FRONTEND_SERVICE}:.*|image: {IMG_REG}/{IMG_ORG}/{FRONTEND_SERVICE}:${environment}-${imageTag}|g" \\
                         {FRONTEND_SERVICE}/kustomize/base/deployment.yaml
 
                     # 변경 사항 확인
                     echo "Updated {FRONTEND_SERVICE} deployment.yaml:"
-                    grep "image: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}" {FRONTEND_SERVICE}/kustomize/base/deployment.yaml
+                    grep "image: {IMG_REG}/{IMG_ORG}/{FRONTEND_SERVICE}" {FRONTEND_SERVICE}/kustomize/base/deployment.yaml
                     
                     # Git 설정 및 푸시
                     cd ../../../..
@@ -196,7 +195,7 @@
     ```
 
 - CI/CD가 분리된 GitHub Actions Workflow 작성
-
+  (중요) 'MANIFEST_SECRET_GIT_USERNAME'과 'MANIFEST_SECRET_GIT_PASSWORD'가 있는 경우만 수행.   
   **1) 백엔드 GitHub Actions Workflow 수정**
   - 기존 파일을 새 파일로 복사
     ```
@@ -233,7 +232,7 @@
         # 각 서비스별 이미지 태그 업데이트
         services="{SERVICE_NAMES}"
         for service in $services; do
-          kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/$service:${{ env.ENVIRONMENT }}-${{ env.IMAGE_TAG }}
+          kustomize edit set image {IMG_REG}/{IMG_ORG}/$service:${{ env.ENVIRONMENT }}-${{ env.IMAGE_TAG }}
         done
 
         # Git 설정 및 푸시
@@ -280,7 +279,7 @@
           cd {FRONTEND_SERVICE}/kustomize/overlays/${{ env.ENVIRONMENT }}
 
           # 이미지 태그 업데이트
-          kustomize edit set image {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{FRONTEND_SERVICE}:${{ env.ENVIRONMENT }}-${{ env.IMAGE_TAG }}
+          kustomize edit set image {IMG_REG}/{IMG_ORG}/{FRONTEND_SERVICE}:${{ env.ENVIRONMENT }}-${{ env.IMAGE_TAG }}
 
           # Git 설정 및 푸시
           cd ../../../..

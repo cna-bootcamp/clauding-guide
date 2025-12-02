@@ -2756,15 +2756,42 @@ cy-yolo
 '[실행정보]'는 본인 프로젝트에 맞게 수정해야 합니다.   
 
 예시) 
+Jenkins기반의 CI/CD 분리:  
 ```
 @cicd
-'ArgoCD파이프라인준비가이드'에 따라 CI와 CD분리 준비 작업을 해주세요.   
+'ArgoCD파이프라인준비가이드'에 따라 Jenkins기반의 CI와 CD분리 준비 작업을 해주세요.   
 [실행정보]
 - SYSTEM_NAME: phonebill
 - FRONTEND_SERVICE: phonebill-front
-- ACR_NAME: acrdigitalgarage01
-- RESOURCE_GROUP: rg-digitalgarage-01
-- AKS_CLUSTER: aks-digitalgarage-01
+- IMG_REG: acrdigitalgarage01.azurecr.io
+- IMG_ORG: phonebill
+- MANIFEST_REG: https://github.com/cna-bootcamp/phonebill-manifest.git
+- JENKINS_GIT_CREDENTIALS: github-credentials-dg0500
+```
+
+GitHub Actions기반의 CI/CD 분리: 
+```
+@cicd
+'ArgoCD파이프라인준비가이드'에 따라 GitHub Actions기반의 CI와 CD분리 준비 작업을 해주세요.   
+[실행정보]
+- SYSTEM_NAME: phonebill
+- FRONTEND_SERVICE: phonebill-front
+- IMG_REG: acrdigitalgarage01.azurecr.io
+- IMG_ORG: phonebill
+- MANIFEST_REG: https://github.com/cna-bootcamp/phonebill-manifest.git
+- MANIFEST_SECRET_GIT_USERNAME: GIT_USERNAME
+- MANIFEST_SECRET_GIT_PASSWORD: GIT_PASSWORD
+```
+
+Jenkins와 GitHub Actions 모두 CI/CD 분리시:
+```
+@cicd
+'ArgoCD파이프라인준비가이드'에 따라 Jenkins기반의 CI와 CD분리 준비 작업을 해주세요.   
+[실행정보]
+- SYSTEM_NAME: phonebill
+- FRONTEND_SERVICE: phonebill-front
+- IMG_REG: acrdigitalgarage01.azurecr.io
+- IMG_ORG: phonebill
 - MANIFEST_REG: https://github.com/cna-bootcamp/phonebill-manifest.git
 - JENKINS_GIT_CREDENTIALS: github-credentials-dg0500
 - MANIFEST_SECRET_GIT_USERNAME: GIT_USERNAME
