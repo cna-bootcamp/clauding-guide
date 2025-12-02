@@ -23,7 +23,6 @@
   - [4. SSH 터널 생성 (로컬에서 실행)](#4-ssh-터널-생성-로컬에서-실행)
   - [5. 로컬의 kubeconfig 업데이트 (로컬에서 최초 1번 실행)](#5-로컬의-kubeconfig-업데이트-로컬에서-최초-1번-실행)
   - [6. 연결 테스트](#6-연결-테스트)
-  - [7. SSH 터널 관리](#7-ssh-터널-관리)
 - [Backing Service 설치](#backing-service-설치)
   - [Database 설치](#database-설치)
     - [PostgresSQL 설정 파일 작성](#postgressql-설정-파일-작성)
@@ -408,19 +407,50 @@ scp -i ${VM_KEY} ${VM_USER}@${VM_IP}:~/.minikube/profiles/minikube/client.key ~/
 
 ## 4. SSH 터널 생성 (로컬에서 실행)
 
-```bash
-# MINIKUBE_IP는 2단계에서 확인한 minikube ip 결과값
-export MINIKUBE_IP=192.168.49.2
+Window/Linux는 ~/.bashrc 파일에 Mac은 ~/.zshrc에 Alias로 등록합니다.    
+'k8s'는 ~/.ssh/config 파일에 등록한 연결명으로 수정하세요.   
 
-# SSH 터널 생성 (백그라운드 실행)
-ssh -i ${VM_KEY} -L 8443:${MINIKUBE_IP}:8443 ${VM_USER}@${VM_IP} -N &
-만약 ~/.ssh/config디렉토리에 VM 연결 설정을 했다면 아래와 같이 할 수 있습니다. 'k8s'는 본인의 연결이름으로 바꾸세요.    
+아래 내용을 추가합니다.   
 ```
-ssh -L 8443:192.168.49.2:8443 k8s -N &
+# ======= K8s 터널링 =========
+k8s-tunnel() {
+    if lsof -i :8443 > /dev/null 2>&1; then
+        echo "이미 8443 포트 터널링 중"
+    else
+        ssh -L 8443:192.168.49.2:8443 k8s -N -f && echo "터널링 시작됨"
+    fi
+}
+
+# 터널링 종료
+k8s-tunnel-stop() {
+    pkill -f "ssh -L 8443:192.168.49.2:8443 k8s" && echo "터널링 종료됨" || echo "실행 중인 터널 없음"
+}
+
+# 터널링 상태 확인
+k8s-tunnel-status() {
+    if lsof -i :8443 > /dev/null 2>&1; then
+        echo "터널링 활성화"
+        lsof -i :8443 | head -2
+    else
+        echo "터널링 비활성화"
+    fi
+}
+# ===========================
 ```
 
-# 터널 프로세스 확인
-ps aux | grep ssh
+터널링 명령어를 실행합니다.
+```
+k8s-tunnel
+```
+
+터널링 상태 보기
+```
+k8s-tunnel-status
+```
+
+터널링 중단
+```
+k8s-tunnel-stop
 ```
 
 ## 5. 로컬의 kubeconfig 업데이트 (로컬에서 최초 1번 실행)
@@ -458,20 +488,6 @@ kubectl get nodes
 
 # 파드 확인
 kubectl get pods -A
-```
-
-## 7. SSH 터널 관리
-
-```bash
-# 터널 종료
-pkill -f "ssh -i ${VM_KEY} -L 8443"
-
-# 터널 재시작
-ssh -i ${VM_KEY} -L 8443:${MINIKUBE_IP}:8443 ${VM_USER}@${VM_IP} -N &
-```
-만약 ~/.ssh/config디렉토리에 VM 연결 설정을 했다면 아래와 같이 할 수 있습니다. 'k8s'는 본인의 연결이름으로 바꾸세요.    
-```
-ssh -L 8443:192.168.49.2:8443 k8s -N &
 ```
 
 ---
