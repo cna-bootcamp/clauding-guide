@@ -1721,7 +1721,8 @@ ACR 이용 시:
 ```
 다른 컨테이너 이미지 이용 시:
 ```
-/deploy-run-container-guide-back
+@cicd 
+'프론트엔드컨테이너실행방법가이드'에 따라 컨테이너 실행 가이드를 작성해 주세요. 
 [실행정보]
 - 시스템명: tripgen
 - IMG_REG: docker.io
