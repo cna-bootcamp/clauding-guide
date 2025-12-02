@@ -16,6 +16,8 @@
     - [외부 접근 가능하도록 minikube 시작](#외부-접근-가능하도록-minikube-시작)
     - [Ingress 활성화](#ingress-활성화)
     - [외부에서 Nginx Ingress Controller POD 접속 설정](#외부에서-nginx-ingress-controller-pod-접속-설정)
+    - [Port forward를 System Daemon으로 등록하기](#port-forward를-system-daemon으로-등록하기)
+    - [방화벽 오픈](#방화벽-오픈)
   - [2. 서버에서 인증서 파일 확인](#2-서버에서-인증서-파일-확인)
   - [3. 서버에서 로컬로 파일 복사 (로컬에서 실행)](#3-서버에서-로컬로-파일-복사-로컬에서-실행)
   - [4. SSH 터널 생성 (로컬에서 실행)](#4-ssh-터널-생성-로컬에서-실행)
@@ -307,6 +309,65 @@ sudo kubectl --kubeconfig=$HOME/.kube/config port-forward svc/ingress-nginx-cont
 sudo kubectl --kubeconfig=$HOME/.kube/config port-forward svc/ingress-nginx-controller 443:443 -n ingress-nginx --address 0.0.0.0 &
 ```
 
+### Port forward를 System Daemon으로 등록하기    
+위 port forward는 터미널을 닫으면 끊깁니다.   
+아래와 같이 System daemon으로 등록하여 계속 실행되게 할 수 있습니다.    
+
+System Daemon 파일 생성하기:   
+아래 명령을 터미널에서 수행하세요.       
+```
+# HTTP용 서비스 생성
+sudo tee /etc/systemd/system/forward-http.service << 'EOF'
+[Unit]
+Description=Kubernetes Ingress Port Forward HTTP
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/snap/bin/kubectl --kubeconfig=/home/azureuser/.kube/config port-forward svc/ingress-nginx-controller 80:80 -n ingress-nginx --address 0.0.0.0
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# HTTPS용 서비스 생성
+sudo tee /etc/systemd/system/forward-https.service << 'EOF'
+[Unit]
+Description=Kubernetes Ingress Port Forward HTTP
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/snap/bin/kubectl --kubeconfig=/home/azureuser/.kube/config port-forward svc/ingress-nginx-controller 443:443 -n ingress-nginx --address 0.0.0.0
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+서비스를 갱신합니다. 한번만 수행하면 됩니다.   
+```
+$ sudo systemctl daemon-reload
+```
+
+서비스를 시작합니다.    
+```
+$ sudo systemctl start forward-http
+$ sudo systemctl start forward-https
+```
+
+상태를 확인합니다.   
+```
+$ sudo systemctl status forward-http
+
+$ sudo systemctl status forward-https
+```
+
+### 방화벽 오픈   
 (중요) VM의 방화벽(Azure의 경우는 NSG)에서 80,443 포트 오픈   
 ![](images/2025-12-01-15-32-27.png)
 ![](images/2025-12-01-15-32-46.png)
@@ -403,6 +464,10 @@ pkill -f "ssh -i ${VM_KEY} -L 8443"
 
 # 터널 재시작
 ssh -i ${VM_KEY} -L 8443:${MINIKUBE_IP}:8443 ${VM_USER}@${VM_IP} -N &
+```
+만약 ~/.ssh/config디렉토리에 VM 연결 설정을 했다면 아래와 같이 할 수 있습니다. 'k8s'는 본인의 연결이름으로 바꾸세요.    
+```
+ssh -L 8443:192.168.49.2:8443 k8s -N &
 ```
 
 ---
