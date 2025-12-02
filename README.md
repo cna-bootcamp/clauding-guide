@@ -2498,7 +2498,7 @@ DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
 minikube에 배포할때만 등록합니다.    
 - VM_IP: minikube가 설치된 VM의 public IP 
 - VM_USER: minikube가 설치된 VM의 OS User 
-- VM_SSH_KEY: minikube가 설치된 VM 접속을 위한 private key file 
+- VM_SSH_KEY: minikube가 설치된 VM 접속을 위한 private key file   
   Local에서 key file 내용을 읽어 등록   
   ```
   cat {SSH Key file 경로}
