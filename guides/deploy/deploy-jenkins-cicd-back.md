@@ -17,17 +17,17 @@
 [작업순서]
 - 사전 준비사항 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
-  - Image Registry: container image registry
-  - Image Organization: container image organization
-  - Jenkins Kubernetes Cloud Name: Jenkins에 설정한 k8s Cloud 이름 
-  - NAMESPACE: 네임스페이스 
+  - {IMG_REG}: container 컨테이너 이미지 레지스트리 주소
+  - {IMG_ORG}: container IMG_ORG
+  - {JENKINS_CLOUD_NAME}: Jenkins에 설정한 k8s Cloud 이름 
+  - {NAMESPACE}: 네임스페이스 
   
     예시)
   ```
   [실행정보]
-  - Image Registry: docker.io
-  - Image Organization: phonebill
-  - Jenkins Kubernetes Cloud Name: k8s  
+  - IMG_REG: docker.io
+  - IMG_ORG: phonebill
+  - JENKINS_CLOUD_NAME: k8s  
   - NAMESPACE: phonebill
   ``` 
 
@@ -154,11 +154,11 @@
 
 
   images:
-    - name: {Image Registry}/{Image Organization}/{서비스명1}
+    - name: {IMG_REG}/{IMG_ORG}/{서비스명1}
       newTag: latest
-    - name: {Image Registry}/{Image Organization}/{서비스명2}
+    - name: {IMG_REG}/{IMG_ORG}/{서비스명2}
       newTag: latest
-    - name: {Image Registry}/{Image Organization}/{서비스명3}
+    - name: {IMG_REG}/{IMG_ORG}/{서비스명3}
       newTag: latest
     # ... 각 서비스별로 image 항목 추가
   ```
@@ -280,7 +280,7 @@
         name: secret-{서비스명}
 
   images:
-    - name: {Image Registry}/{Image Organization}/{서비스명}
+    - name: {IMG_REG}/{IMG_ORG}/{서비스명}
       newTag: latest
 
   ```
@@ -335,7 +335,7 @@
   }
 
   podTemplate(
-      cloud: {Jenkins Kubernetes Cloud Name}, 
+      cloud: {JENKINS_CLOUD_NAME}, 
       label: "${PIPELINE_ID}",
       serviceAccount: 'jenkins',
       slaveConnectTimeout: 300,
@@ -480,7 +480,7 @@
                               sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
 
                               // ACR 로그인
-                              sh "podman login {Image Registry} --username \$IMG_USERNAME --password \$IMG_PASSWORD"
+                              sh "podman login {IMG_REG} --username \$IMG_USERNAME --password \$IMG_PASSWORD"
 
                               services.each { service ->
                                   sh """
@@ -488,9 +488,9 @@
                                           --build-arg BUILD_LIB_DIR="${service}/build/libs" \\
                                           --build-arg ARTIFACTORY_FILE="${service}.jar" \\
                                           -f deployment/container/Dockerfile-backend \\
-                                          -t {Image Registry} /{Image Organization}/${service}:${environment}-${imageTag} .
+                                          -t {IMG_REG} /{IMG_ORG}/${service}:${environment}-${imageTag} .
 
-                                      podman push {Image Registry}/{Image Organization}/${service}:${environment}-${imageTag}
+                                      podman push {IMG_REG}/{IMG_ORG}/${service}:${environment}-${imageTag}
                                   """
                               }
                           }
@@ -515,7 +515,7 @@
 
                           # 이미지 태그 업데이트
                           for service in \$services; do
-                              \$HOME/bin/kustomize edit set image {Image Registry}/{Image Organization}/\$service:${environment}-${imageTag}
+                              \$HOME/bin/kustomize edit set image {IMG_REG}/{IMG_ORG}/\$service:${environment}-${imageTag}
                           done
 
                           # 매니페스트 적용
@@ -774,7 +774,7 @@
     ```bash
     # 이전 안정 버전 이미지 태그로 업데이트
     cd deployment/cicd/kustomize/overlays/{환경}
-    kustomize edit set image {Image Registry}/{Image Organization}/{서비스명}:{환경}-{이전태그}
+    kustomize edit set image {IMG_REG}/{IMG_ORG}/{서비스명}:{환경}-{이전태그}
     kubectl apply -k .
     ```
 

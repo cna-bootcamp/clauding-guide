@@ -2111,9 +2111,9 @@ DockerHub + minikube 사용 시
 /deploy-jenkins-cicd-guide-back
 
 [실행정보]
-- Image Registry: docker.io
-- Image Organization: hiondal
-- Jenkins Kubernetes Cloud Name: k8s  
+- IMG_REG: docker.io
+- IMG_ORG: phonebill
+- JENKINS_CLOUD_NAME: k8s  
 - NAMESPACE: phonebill
 ```
 
@@ -2122,9 +2122,9 @@ ACR + AKS 사용 시
 /deploy-jenkins-cicd-guide-back
 
 [실행정보]
-- Image Registry: acrdigitalgarage01.azurecr.io
-- Image Organization: phonebill
-- Jenkins Kubernetes Cloud Name: aks  
+- IMG_REG: acrdigitalgarage01.azurecr.io
+- IMG_ORG: phonebill
+- JENKINS_CLOUD_NAME: aks  
 - NAMESPACE: phonebill-0500
 ```
 
@@ -2311,9 +2311,9 @@ DockerHub + minikube 사용 시
 '프론트엔드Jenkins파이프라인작성가이드'에 따라 Jenkins를 이용한 CI/CD 가이드를 작성해 주세요. 
 
 [실행정보]
-- Image Registry: docker.io
-- Image Organization: hiondal
-- Jenkins Kubernetes Cloud Name: k8s  
+- IMG_REG: docker.io
+- IMG_ORG: phonebill
+- JENKINS_CLOUD_NAME: k8s  
 - NAMESPACE: phonebill
 ```
 
@@ -2322,9 +2322,9 @@ ACR + AKS 사용 시
 @cicd 
 '프론트엔드Jenkins파이프라인작성가이드'에 따라 Jenkins를 이용한 CI/CD 가이드를 작성해 주세요. 
 [실행정보]
-- Image Registry: acrdigitalgarage01.azurecr.io
-- Image Organization: phonebill
-- Jenkins Kubernetes Cloud Name: aks  
+- IMG_REG: acrdigitalgarage01.azurecr.io
+- IMG_ORG: phonebill
+- JENKINS_CLOUD_NAME: aks  
 - NAMESPACE: phonebill-0500
 ```
 

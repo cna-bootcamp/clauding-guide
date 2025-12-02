@@ -19,17 +19,17 @@
 [작업순서]
 - 프롬프트 제공정보 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
-  - Image Registry: container image registry
-  - Image Organization: container image organization
-  - Jenkins Kubernetes Cloud Name: Jenkins에 설정한 k8s Cloud 이름 
-  - NAMESPACE: 네임스페이스 
+  - {IMG_REG}: container 컨테이너 이미지 레지스트리 주소
+  - {IMG_ORG}: container IMG_ORG
+  - {JENKINS_CLOUD_NAME}: Jenkins에 설정한 k8s Cloud 이름 
+  - {NAMESPACE}: 네임스페이스 
      
     예시)
   ```
   [실행정보]
-  - Image Registry: docker.io
-  - Image Organization: phonebill
-  - Jenkins Kubernetes Cloud Name: k8s  
+  - IMG_REG: docker.io
+  - IMG_ORG: phonebill
+  - JENKINS_CLOUD_NAME: k8s  
   - NAMESPACE: phonebill
   ``` 
 
@@ -217,7 +217,7 @@
     - ingress.yaml
 
   images:
-    - name: {Image Registry}/{Image Organization}/{SERVICE_NAME}
+    - name: {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}
       newTag: latest
   ```
   
@@ -299,7 +299,7 @@
         name: {SERVICE_NAME}
 
   images:
-    - name: {Image Registry}/{Image Organization}/{SERVICE_NAME}
+    - name: {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}
       newTag: latest
 
   ```
@@ -345,7 +345,7 @@
   }
   
   podTemplate(
-      cloud: {Jenkins Kubernetes Cloud Name}, 
+      cloud: {JENKINS_CLOUD_NAME}, 
       label: "${PIPELINE_ID}",
       serviceAccount: 'jenkins',
       slaveConnectTimeout: 300,
@@ -500,7 +500,7 @@
                               sh "podman login docker.io --username \$DOCKERHUB_USERNAME --password \$DOCKERHUB_PASSWORD"
                               
                               // ACR 로그인
-                              sh "podman login {Image Registry} --username \$IMG_USERNAME --password \$IMG_PASSWORD"
+                              sh "podman login {IMG_REG} --username \$IMG_USERNAME --password \$IMG_PASSWORD"
 
                               sh """
                                   podman build \\
@@ -508,9 +508,9 @@
                                       --build-arg PROJECT_FOLDER="." \\
                                       --build-arg BUILD_FOLDER="deployment/container" \\
                                       --build-arg EXPORT_PORT="8080" \\
-                                      -t {Image Registry}/{Image Organization}/{SERVICE_NAME}:${environment}-${imageTag} .
+                                      -t {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}:${environment}-${imageTag} .
 
-                                  podman push {Image Registry}/{Image Organization}/{SERVICE_NAME}:${environment}-${imageTag}
+                                  podman push {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}:${environment}-${imageTag}
                               """
                           }
                       }
@@ -530,7 +530,7 @@
                           cd deployment/cicd/kustomize/overlays/${environment}
 
                           # 이미지 태그 업데이트
-                          \$HOME/bin/kustomize edit set image {Image Registry}/{Image Organization}/{SERVICE_NAME}:${environment}-${imageTag}
+                          \$HOME/bin/kustomize edit set image {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}:${environment}-${imageTag}
 
                           # 매니페스트 적용
                           kubectl apply -k .
@@ -628,7 +628,7 @@
   cd deployment/cicd/kustomize/overlays/${ENVIRONMENT}
   
   # 이미지 태그 업데이트
-  kustomize edit set image {Image Registry}/{Image Organization}/{SERVICE_NAME}:${ENVIRONMENT}-${IMAGE_TAG}
+  kustomize edit set image {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}:${ENVIRONMENT}-${IMAGE_TAG}
   
   # 배포 실행
   kubectl apply -k .
@@ -776,7 +776,7 @@
     ```bash
     # 이전 안정 버전 이미지 태그로 업데이트
     cd deployment/cicd/kustomize/overlays/{환경}
-    kustomize edit set image {Image Registry}/{Image Organization}/{SERVICE_NAME}:{환경}-{이전태그}
+    kustomize edit set image {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}:{환경}-{이전태그}
     kubectl apply -k .
     ```
 
