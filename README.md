@@ -1875,6 +1875,7 @@ IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합�
 '[실행정보]'에 정확한 값을 제공합니다.   
 실행결과는 deployment/k8s 디렉토리 밑에 생성됩니다.   
 
+Azure Cloud에 배포시 프롬프트 예시     
 ```
 /deploy-k8s-guide-back
 [실행정보]
@@ -1886,23 +1887,25 @@ IntelliJ에서 백엔드 프로젝트를 오픈하고 Claude Code를 실행합�
 - 리소스(메모리): 256Mi/1024Mi
 ```
 
-참고)   
 minikube나 vanilla k8s에 배포할 때 프롬프트 예시  
-
 ```
-/deploy-k8s-guide-back
-AKS가 아닌 minikube에 배포하는 가이드 작성
+@cicd 
+아래 가이드에 따라 쿠버네티스 배포 가이드를 작성해 주세요. 
+[가이드]
+- URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-k8s-back-minikube.md
+- 파일명: deploy-k8s-back-minikube.md
 [실행정보]
 - IMG_REG: docker.io
 - IMG_ORG: hiondal
-- k8s context: minikube-remote
+- IMG_ID: hiondal
+- IMG_PW: dckr_pat_0E1PBHpAMf_I02OvMZRV5ddddd
+- BACKEND_HOST: phonebill-api.72.155.72.236.nip.io
+- FRONTEND_HOST: phonebill.72.155.72.236.nip.io
 - 네임스페이스: phonebill
 - 파드수: 1
 - 리소스(CPU): 256m/1024m
 - 리소스(메모리): 256Mi/1024Mi
-- Gateway Ingress Host: phonebill-api.72.155.72.236.nip.io
 ```
-k8s context 구하기: k config current-context  
 
    
 만약 아래와 같이 '배포 전 필수 작업'을 안내하면 매니페스트에 정확한 값이 안들어간것입니다.   
@@ -1925,14 +1928,14 @@ deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스
 vscode에서 프론트엔드 프로젝트를 오픈하고 Claude Code를 실행합니다.   
 아래 프롬프트 예제와 같이 프론트엔드 배포를 위한 매니페스트와 배포 가이드 작성을 요청합니다.   
 '[실행정보]'에 정확한 값을 제공합니다.   
-Gateway Host는 아래 명령으로 백엔드 Ingress Host의 값을 읽어 지정합니다.   
+Gateway Host와 BACKEND_HOST는 아래 명령으로 백엔드 Ingress Host의 값을 읽어 지정합니다.   
 ```
 kubectl get ing
 ```
 
 실행결과는 deployment/k8s 디렉토리 밑에 생성됩니다.   
 
-예시)   
+Azure Cloud에 배포 시 프롬프트 예시   
 ```
 @cicd 
 '프론트엔드배포가이드'에 따라 프론트엔드 서비스 배포 방법을 작성해 주세요. 
@@ -1946,23 +1949,24 @@ kubectl get ing
 - 리소스(메모리): 256Mi/1024Mi
 - Gateway Host: http://tripgen-api.20.214.196.128.nip.io
 ```
-
-
-참고)   
+     
 minikube나 vanilla k8s에 배포할 때 프롬프트 예시  
 ```
-@cicd
-'프론트엔드배포가이드'에 따라 프론트엔드 서비스 배포 방법을 작성해 주세요.
+@cicd 
+아래 가이드에 따라 쿠버네티스 배포 가이드를 작성해 주세요. 
+[가이드]
+- URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-k8s-front-minikube.md
+- 파일명: deploy-k8s-front-minikube.md
 [실행정보]
-- 시스템명: phonebill
+- 시스템명: tripgen
 - IMG_REG: docker.io
 - IMG_ORG: hiondal
-- k8s context: minikube-remote
-- 네임스페이스: phonebill
-- 파드수: 1
+- BACKEND_HOST: phonebill-api.72.155.72.236.nip.io
+- FRONTEND_HOST: phonebill.72.155.72.236.nip.io
+- 네임스페이스: tripgen
+- 파드수: 2
 - 리소스(CPU): 256m/1024m
 - 리소스(메모리): 256Mi/1024Mi
-- Gateway Host: http://phonebill-api.72.155.72.236.nip.io
 ```
 
 deployment/k8s/deploy-k8s-guide.md의 배포 가이드에 따라 쿠버네티스에 객체를 생성합니다.  

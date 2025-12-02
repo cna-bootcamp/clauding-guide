@@ -10,8 +10,6 @@
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인  
   - {IMG_REG}: 컨테이너 이미지 레지스트리 주소
   - {IMG_ORG}: 컨테이너 이미지 Organization 주소
-  - {IMG_ID}: 컨테이너 이미지 레지스트리 유저ID
-  - {IMG_PW}: 컨테이너 이미지 레지스트리 암호(Access Token)
   - {BACKEND_HOST}: Baeckend 게이트웨이의 Ingress Host 주소  
   - {FRONTEND_HOST}: 프론트엔드 Ingress Host 주소  
   - {네임스페이스}: 배포할 네임스페이스 
@@ -24,8 +22,6 @@
   [실행정보]
   - IMG_REG: docker.io
   - IMG_ORG: hiondal
-  - IMG_ID: hiondal
-  - IMG_PW: dckr_pat_0E1PBHpAMf_I02OvMZRV5ddddd
   - BACKEND_HOST: phonebill-api.72.155.72.236.nip.io
   - FRONTEND_HOST: phonebill.72.155.72.236.nip.io
   - 네임스페이스: phonebill
