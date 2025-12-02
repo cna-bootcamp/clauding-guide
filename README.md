@@ -2538,7 +2538,7 @@ Azure Cloud 배포용:
 - NAMESPACE: phonebill-dg0500
 ```
 
-minikube 배포용:
+minikube 배포용:    
 minikube ip는 minikube가 설치된 VM에서 'minikube ip' 명령으로 확인하세요.   
 
 ```
@@ -2638,7 +2638,7 @@ Azure Cloud 배포용
 - NAMESPACE: phonebill-dg0500
 ```
 
-minikube 배포용:
+minikube 배포용:    
 minikube ip는 minikube가 설치된 VM에서 'minikube ip' 명령으로 확인하세요.   
 
 ```
