@@ -414,6 +414,10 @@ export MINIKUBE_IP=192.168.49.2
 
 # SSH 터널 생성 (백그라운드 실행)
 ssh -i ${VM_KEY} -L 8443:${MINIKUBE_IP}:8443 ${VM_USER}@${VM_IP} -N &
+만약 ~/.ssh/config디렉토리에 VM 연결 설정을 했다면 아래와 같이 할 수 있습니다. 'k8s'는 본인의 연결이름으로 바꾸세요.    
+```
+ssh -L 8443:192.168.49.2:8443 k8s -N &
+```
 
 # 터널 프로세스 확인
 ps aux | grep ssh

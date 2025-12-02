@@ -118,15 +118,14 @@
     # Workflow 제어 변수
     Repository Settings > Secrets and variables > Actions > Variables > Repository variables에 등록
 
-    ENVIRONMENT: dev (기본값, 수동실행시 선택 가능: dev/staging/prod)
-    SKIP_SONARQUBE: true (기본값, 수동실행시 선택 가능: true/false)
+    ENVIRONMENT: dev (기본값: dev/staging/prod)
+    SKIP_SONARQUBE: true (기본값: true/false)
     ```
 
     **사용 방법:**
-    - **자동 실행**: Push/PR 시 기본값 사용 (ENVIRONMENT=dev, SKIP_SONARQUBE=true)
+    - **자동 실행**: Push/PR 시 Variables에 설정된 값 사용
     - **수동 실행**: Actions 탭 > "Frontend CI/CD" > "Run workflow" 버튼 클릭
-      - Environment: dev/staging/prod 선택
-      - Skip SonarQube Analysis: true/false 선택
+    - **변수 변경**: Repository Settings에서 Variables 값 수정
 
 - ESLint 설정 파일 작성
   TypeScript React 프로젝트를 위한 `.eslintrc.cjs` 파일을 프로젝트 루트에 생성합니다.
@@ -367,24 +366,6 @@
     pull_request:
       branches: [ main ]
     workflow_dispatch:
-      inputs:
-        ENVIRONMENT:
-          description: 'Target environment'
-          required: true
-          default: 'dev'
-          type: choice
-          options:
-            - dev
-            - staging
-            - prod
-        SKIP_SONARQUBE:
-          description: 'Skip SonarQube Analysis'
-          required: false
-          default: 'true'
-          type: choice
-          options:
-            - 'true'
-            - 'false'
 
   env:
     REGISTRY: {ACR_NAME}.azurecr.io
@@ -414,8 +395,7 @@
         - name: Determine environment
           id: determine_env
           run: |
-            # Use input parameter or default to 'dev'
-            ENVIRONMENT="${{ github.event.inputs.ENVIRONMENT || 'dev' }}"
+            ENVIRONMENT="${{ vars.ENVIRONMENT || 'dev' }}"
             echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
 
         - name: Load environment variables
@@ -463,23 +443,13 @@
             npm run lint
 
         - name: SonarQube Analysis & Quality Gate
+          if: ${{ vars.SKIP_SONARQUBE != 'true' }}
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
             SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           run: |
-            # Check if SonarQube should be skipped
-            SKIP_SONARQUBE="${{ github.event.inputs.SKIP_SONARQUBE || 'true' }}"
-
-            if [[ "$SKIP_SONARQUBE" == "true" ]]; then
-              echo "⏭️ Skipping SonarQube Analysis (SKIP_SONARQUBE=$SKIP_SONARQUBE)"
-              exit 0
-            fi
-
-            # Install SonarQube Scanner
             npm install -g sonarqube-scanner
-
-            # Run SonarQube analysis
             sonar-scanner \
               -Dsonar.projectKey={SERVICE_NAME}-${{ steps.determine_env.outputs.environment }} \
               -Dsonar.projectName={SERVICE_NAME}-${{ steps.determine_env.outputs.environment }} \
@@ -790,7 +760,7 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
   - Node.js 버전 확인: `node-version: '{NODE_VERSION}'`
   - 변수 참조 문법 확인: `${{ needs.build.outputs.* }}` 사용
   - 서비스명이 실제 프로젝트 서비스명으로 치환되었는지 확인
-  - **환경 변수 SKIP_SONARQUBE 처리 확인**: 기본값 'true', 조건부 실행
+  - **vars.ENVIRONMENT, vars.SKIP_SONARQUBE 사용 확인**
   - **플레이스홀더 사용 확인**: {ACR_NAME}, {SYSTEM_NAME}, {SERVICE_NAME} 등
 
 - [ ] 수동 배포 스크립트 `.github/scripts/deploy-actions-frontend.sh` 생성 완료

@@ -2396,13 +2396,14 @@ k delete -f deployment/k8s -R
 'GitHub hook trigger for GITScm polling'을 uncheck합니다.    
 ![](images/2025-09-15-16-00-47.png)
 
-**1.Repository Secrets 설정**      
-
+**1.Repository Secrets 설정(Azure)**      
 GitHub Repository > Settings > Secrets and variables > Actions > Repository secrets에 다음 항목들을 등록하세요:   
 
-![](images/2025-09-15-15-50-03.png)
+Frontend에서도 사용하므로 **Organization Secret으로 등록**합니다.    
+![](images/2025-12-02-16-58-23.png)
 
-1)Azure 인증 정보   
+1)Azure 인증 정보    
+Azure Cloude에 배포할때만 등록합니다.   
 ```json
 AZURE_CREDENTIALS:
 {
@@ -2419,6 +2420,7 @@ AZURE_CREDENTIALS:
 https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/05.setup-cicd-tools.md#jenkins%EC%84%A4%EC%B9%98
     
 2)ACR Credentials    
+Azure Cloude에 배포할때만 등록합니다.   
 ```bash
 # ACR 자격 증명 확인 명령어   
 az acr credential show --name acrdigitalgarage01
@@ -2455,7 +2457,24 @@ Docker Hub 패스워드 작성 방법
 DOCKERHUB_USERNAME: {Docker Hub 사용자명}
 DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
 ```
-  
+
+5)VM_IP, VM_USER, VM_SSH_KEY, KUBECONFIG 등록     
+minikube에 배포할때만 등록합니다.    
+- VM_IP: minikube가 설치된 VM의 public IP 
+- VM_USER: minikube가 설치된 VM의 OS User 
+- VM_SSH_KEY: minikube가 설치된 VM 접속을 위한 private key file 
+  Local에서 key file 내용을 읽어 등록   
+  ```
+  cat {SSH Key file 경로}
+  ``` 
+  예) cat ~/home/minikube_key.pem 
+- KUBECONFIG: minikube kubeconfig 파일 내용  
+  Local에서 아래 명령을 수행한 결과를 등록    
+  ```
+  kubectl config view --minify --flatten 
+  ``` 
+
+
 **2.Repository Variables 설정**    
 
 GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:
@@ -2472,6 +2491,7 @@ IntelliJ를 실행하고 Claude Code도 시작한 후 수행 하세요.
 deployment/.github 디렉토리 하위에 파일들이 생성됩니다.    
 
 예시)  
+Azure Cloud 배포용:   
 ```
 /deploy-actions-cicd-guide-back
 
@@ -2480,6 +2500,23 @@ deployment/.github 디렉토리 하위에 파일들이 생성됩니다.
 - RESOURCE_GROUP: rg-digitalgarage-01
 - AKS_CLUSTER: aks-digitalgarage-01
 - NAMESPACE: phonebill-dg0500
+```
+
+minikube 배포용:
+```
+@cicd 
+아래 가이드에 따라 GitHub Actions를 이용한 CI/CD 가이드를 작성해 주세요. 
+[가이드]
+- URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-actions-cicd-back-minikube.md
+- 파일명: deploy-actions-cicd-back-minikube.md
+[실행정보]
+- SYSTEM_NAME: phonebill
+- IMG_REG: docker.io
+- IMG_ORG: hiondal
+- NAMESPACE: phonebill
+- VM_IP: 52.231.227.173
+- VM_USER: azureuser
+- MINIKUBE_IP: 192.168.49.2
 ```
 
 deployment/.github 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
@@ -2532,65 +2569,12 @@ k delete -f deployment/k8s
 
 **1.Repository Secrets 설정**      
 
-GitHub Repository > Settings > Secrets and variables > Actions > Repository secrets에 다음 항목들을 등록하세요:   
+백엔드 배포 시 Organization Secret으로 등록한 값을 사용하므로 추가 등록 안합니다.  
 
-1)Azure 인증 정보   
-```json
-AZURE_CREDENTIALS:
-{
-  "clientId": "5e4b5b41-7208-48b7-b821-d6d5acf50ecf",
-  "clientSecret": "ldu8Q~GQEzFYU.dJX7_QsahR7n7C2xqkIM6hqbV8",
-  "subscriptionId": "2513dd36-7978-48e3-9a7c-b221d4874f66",
-  "tenantId": "4f0a3bfd-1156-4cce-8dc2-a049a13dba23"
-}
-```
-
-팁) Azure Service Principal 등록   
-위 Azure Credential 정보를 등록하는 방법은 아래 링크의 '10.Service Principal 작성'을 참고하세요.   
-실습시에는 이미 되어 있으므로 절대 수행하지는 마세요.   
-https://github.com/cna-bootcamp/clauding-guide/blob/main/guides/setup/05.setup-cicd-tools.md#jenkins%EC%84%A4%EC%B9%98
-
-2)ACR Credentials    
-```bash
-# ACR 자격 증명 확인 명령어   
-az acr credential show --name acrdigitalgarage01
-```
-```
-ACR_USERNAME: acrdigitalgarage01
-ACR_PASSWORD: {ACR패스워드}
-```
-
-3)SonarQube 설정    
-GitHub Actions 파이프라인에서 SonarQube를 접근하기 위한 정보를 등록합니다.   
-```bash
-# SonarQube URL 확인
-kubectl get svc -n sonarqube
-
-# SonarQube 토큰 생성 방법:
-1. SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭  
-2. Security 탭 선택 후 토큰 생성  
-```
-```
-SONAR_HOST_URL: http://{External IP}
-SONAR_TOKEN: {SonarQube토큰}
-```
-
-4)Docker Hub 설정 (Rate Limit 해결)    
-```
-Docker Hub 패스워드 작성 방법
-- DockerHub(https://hub.docker.com)에 로그인
-- 우측 상단 프로필 아이콘 클릭 후 Account Settings를 선택
-- 좌측메뉴에서 'Personal Access Tokens' 클릭하여 생성  
-```
-
-```
-DOCKERHUB_USERNAME: {Docker Hub 사용자명}
-DOCKERHUB_PASSWORD: {Docker Hub 패스워드}
-```
-  
 **2.Repository Variables 설정**    
 
-GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:  
+GitHub Repository > Settings > Secrets and variables > Actions > Variables > Repository variables에 등록:
+![](images/2025-09-15-15-50-36.png)  
 
 ```
 ENVIRONMENT: dev
@@ -2604,6 +2588,7 @@ vscode를 실행하고 Claude Code도 시작한 후 수행 하세요.
 .github 디렉토리 하위에 파일들이 생성됩니다.    
 
 예시)  
+Azure Cloud 배포용  
 ```
 @cicd 
 '프론트엔드GitHubActions파이프라인작성가이드'에 따라 GitHub Actions를 이용한 CI/CD 가이드를 작성해 주세요.   
@@ -2613,6 +2598,23 @@ vscode를 실행하고 Claude Code도 시작한 후 수행 하세요.
 - RESOURCE_GROUP: rg-digitalgarage-01
 - AKS_CLUSTER: aks-digitalgarage-01 
 - NAMESPACE: phonebill-dg0500
+```
+
+minikube 배포용:
+```
+@cicd 
+아래 가이드에 따라 GitHub Actions를 이용한 CI/CD 가이드를 작성해 주세요. 
+[가이드]
+- URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/deploy/deploy-actions-cicd-front-minikube.md
+- 파일명: deploy-actions-cicd-front-minikube.md
+[실행정보]
+- SYSTEM_NAME: phonebill
+- IMG_REG: docker.io
+- IMG_ORG: hiondal
+- NAMESPACE: phonebill
+- VM_IP: 52.231.227.173
+- VM_USER: azureuser
+- MINIKUBE_IP: 192.168.49.2
 ```
 
 .github 디렉토리 밑에 생성된 파일을 검토하고 수정합니다.   
