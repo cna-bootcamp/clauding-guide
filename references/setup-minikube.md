@@ -477,6 +477,30 @@ kubectl config set-context minikube-remote \
 kubectl config use-context minikube-remote
 ```
 
+위 명령을 수행한 결과는 ~/.kube/config 파일에 반영됩니다.    
+예시)
+```
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: minikube-certs/ca.crt
+    server: https://127.0.0.1:8443
+  name: minikube-remote
+contexts:
+- context:
+    cluster: minikube-remote
+    namespace: phonebill
+    user: minikube-remote
+  name: minikube-remote
+current-context: minikube-remote
+kind: Config
+users:
+- name: minikube-remote
+  user:
+    client-certificate: minikube-certs/client.crt
+    client-key: minikube-certs/client.key
+```
+
 ## 6. 연결 테스트
 
 ```bash
