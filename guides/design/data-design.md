@@ -76,8 +76,9 @@ Agent 1~N: 각 서비스별 데이터베이스 설계
 - 클래스설계서
   
 [예시]
-- 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-데이터설계서.puml
-  
+- 데이터베이스설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-데이터설계서.puml
+- 캐시DB설계서: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-cache-db-design.md
+    
 [결과파일]
 - design/backend/database/{service-name}.md
 - design/backend/database/{service-name}-erd.puml
