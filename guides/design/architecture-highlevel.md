@@ -70,6 +70,9 @@
 - HighLevel아키텍처정의서템플릿
 - 백킹서비스설치방법
 - 제품별버전가이드  
-
+  
+[예제]  
+https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-highlevel%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%EC%A0%95%EC%9D%98%EC%84%9C.md
+  
 [결과파일]
 - design/high-level-architecture.md
