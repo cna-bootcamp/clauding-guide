@@ -1,11 +1,11 @@
 # 클래스설계가이드 
-
+  
 [요청사항]
 - <작성원칙>을 준용하여 설계
 - <작성순서>에 따라 설계
 - [결과파일] 안내에 따라 파일 작성   
-
-[가이드]
+  
+[가이드]  
 <작성원칙>
 - **유저스토리와 매칭**되어야 함. **불필요한 추가 설계 금지**
 - API설계서와 일관성 있게 설계. Controller에 API를 누락하지 말고 모두 설계 
@@ -17,7 +17,7 @@
 - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용
 - 클래스의 프라퍼티와 메소드를 모두 기술할 것. 단 "Getter/Setter 메소드"는 작성하지 않음    
 - 클래스 간의 관계를 표현: Generalization, Realization, Dependency, Association, Aggregation, Composition
-
+  
 <작성순서>
 - **서브 에이전트를 활용한 병렬 작성 필수**
 - **3단계 하이브리드 접근법 적용**
@@ -48,17 +48,17 @@
   - 의존성 검증
   - 크로스 서비스 참조 검증
   - **PlantUML 스크립트 파일 검사 실행**: 'PlantUML문법검사가이드' 준용
-
+  
 [참고자료]
 - 유저스토리
 - API설계서
 - 내부시퀀스설계서
 - 패키지구조표준
 - PlantUML문법검사가이드
-
+  
 [예시]
 - 링크: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/samples/sample-클래스설계서.puml
-  
+   
 [결과파일]
 - 패키지 구조도: design/backend/class/package-structure.md
 - 클래스설계서: 
