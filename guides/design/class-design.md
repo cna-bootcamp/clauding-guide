@@ -17,12 +17,9 @@
 - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용
 - 클래스의 프라퍼티와 메소드를 모두 기술할 것. 단 "Getter/Setter 메소드"는 작성하지 않음    
 - 클래스 간의 관계를 표현: Generalization, Realization, Dependency, Association, Aggregation, Composition
-  
-<작성순서>
-- **서브 에이전트를 활용한 병렬 작성 필수**
-- **3단계 하이브리드 접근법 적용**
-- **마이크로서비스 아키텍처 기반 설계**
-
+- **마이크로서비스 아키텍처 기반 설계**    
+     
+<작성순서>   
 - 1단계: 공통 컴포넌트 설계 (순차적)
   - 결과: design/backend/class/common-base.puml
 
