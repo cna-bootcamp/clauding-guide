@@ -1,5 +1,6 @@
-아래 가이드는 예제 프로그램 phonebill 을 minikube에서 학습하기 위한 환경설정입니다.    
-프로젝트 소스는 아래에 있습니다.   
+아래 가이드는 minikube로 학습하기 위한 환경설정입니다.    
+
+예제로 학습하시려면 아래 프로젝트 소스를 이용하세요.       
 - 백엔드: https://github.com/cna-bootcamp/phonebill.git
 - 프론트엔드: https://github.com/cna-bootcamp/phonebill-front.git
 
@@ -42,6 +43,8 @@
 ---
 
 # 사전 작업
+클라우드에서 VM을 구독하는 방법을 안내합니다.    
+Azure 기준으로 되어있는데 다른 클라우드는 해당 클라우드 설명서나 AI를 이용하여 찾아서 수행해 주세요.     
 
 ## Azure 구독   
 Azure 상에서 환경 구성하기 위한 가이드를 참고하여 아래 작업만 하십시오.
@@ -519,22 +522,31 @@ kubectl get pods -A
 # Backing Service 설치
 아래 작업을 로컬 PC에서 수행하세요.    
 
-작업 디렉토리 작성
+작업 디렉토리 작성:        
+{system} 명으로 디렉토리를 생성합니다.    
+```
+mkdir ~/install/{system} && cd ~/install/{system}
+```
+예)  
 ```
 mkdir ~/install/phonebill && cd ~/install/phonebill
 ```
-
-namespace 작성/변경
+  
+namespace 작성/변경:   
+```
+k create ns {namespace}  
+kubens {namespace}
+```
+예)   
 ```
 k create ns phonebill  
 kubens phonebill
 ```
-
+  
 ## Database 설치
 
 ### PostgresSQL 설정 파일 작성  
-
-아래와 같이 SVC변수를 auth, inquiry, change로 변경하여 각 서비스별 설정 파일 생성      
+아래 예와 같이 SVC변수를 각 마이크로서비스명으로 변경하여 설정 파일을 생성합니다.      
 ```
 export SVC=auth
 ```
