@@ -13,11 +13,11 @@
 - Database나 Redis를 Kubernetes에 배포한 경우 로컬에서 연결하기 위한 LoadBalancer 타입의 서비스 객체 생성   
 - '[결과파일]' 안내에 따라 파일 작성 
 - 설치 결과 파일에는 설치 helm 명령, 설치 시 사용한 values.yaml 등을 포함하여 작성   
-
+  
 [참고자료]
 - 데이터베이스설치계획서
 - 캐시설치계획서
-
+  
 [결과파일]
 - develop/database/exec/db-exec-{설치대상환경}.md
 - develop/database/exec/cache-exec-{설치대상환경}.md

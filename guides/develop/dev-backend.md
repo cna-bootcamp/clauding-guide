@@ -6,8 +6,8 @@
   - '0. 준비'를 수행하고 완료 후 다음 단계 진행여부를 사용자에게 확인  
   - '1. common 모듈 개발'을 수행하고 완료 후 다음 단계 진행여부를 사용자에게 확인   
   - '2. 각 서비스별 구현'은 사용자와 함께 각 서비스를 개발  
-  
-[가이드]
+    
+[가이드]     
 <개발원칙>
 - '개발주석표준'에 맞게 주석 작성
 - API설계서와 일관성 있게 설계. Controller에 API를 누락하지 말고 모두 개발
@@ -18,6 +18,7 @@
 - 백킹서비스 연동은 '데이터베이스설치결과서', '캐시설치결과서', 'MQ설치결과서'를 기반으로 개발  
 - 빌드도구는 Gradle 사용   
 - 설정 Manifest(src/main/resources/application*.yml) 작성 시 '[설정 Manifest 표준]' 준용  
+  
 <개발순서>
 - 0. 준비:
   - 참고자료 분석 및 이해 
@@ -35,12 +36,12 @@
       - 각 서비스의 실행 jar 파일명은 서비스명과 동일하게 함 
   - 각 서비스별 설정 파일 작성 
     - 설정 Manifest(application.yml) 작성: '[설정 Manifest 표준]' 준용   
-
+  
 - 1. common 모듈 개발 
   - 각 서비스에서 공통으로 사용되는 클래스를 개발
   - 외부(웹브라우저, 데이터베이스, Message Queue, 외부시스템)와의 인터페이스를 위한 클래스는 포함하지 않음  
   - 개발 완료 후 컴파일 및 에러 해결: {프로젝트 루트}/gradlew common:compileJava
-
+  
 - 2. 각 서비스별 개발  
   - 사용자가 제공한 서비스의 유저스토리, 외부시퀀스설계서, 내부시퀀스설계서, API설계서 파악 
   - 기존 개발 결과 파악 
@@ -55,8 +56,7 @@
   - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
   - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
   - 테스트 코드 작성은 하지 않음     
-
-
+  
 <Build.gradle 구성 최적화>
 - **중앙 버전 관리**: 루트 build.gradle의 `ext` 블록에서 모든 외부 라이브러리 버전 통일 관리
 - **Spring Boot BOM 활용**: Spring Boot/Cloud에서 관리하는 라이브러리는 버전 명시 불필요 (자동 호환성 보장)
@@ -64,7 +64,7 @@
 - **서비스별 최적화**: 공통 의존성(API 문서화, 테스트 등)은 루트에서 일괄 적용
 - **JWT 버전 통일**: 라이브러리 버전 변경시 API 호환성 확인 필수 (`parserBuilder()` → `parser()`)
 - **dependency-management 적용**: 모든 서브프로젝트에 Spring BOM 적용으로 버전 충돌 방지
-
+  
 [참고자료]
 - 유저스토리
 - API설계서
@@ -75,9 +75,9 @@
 - MQ설치결과서
 - 테스트코드표준
 - 패키지구조표준
- 
+   
 ---
-
+  
 [설정 Manifest 표준]
 - common모듈은 작성하지 않음 
 - application.yml에 작성 
@@ -88,7 +88,7 @@
 - 민감한 정보의 디폴트값은 생략하거나 간략한 값으로 지정
 - JWT Secret Key는 모든 서비스가 동일해야 함 
 - '[JWT,CORS,Actuaotr,OpenAPI Documentation,Loggings 표준]'을 준수하여 설정
- 
+   
 [JWT, CORS, Actuaotr,OpenAPI Documentation,Loggings 표준]
 ```
 # JWT 
@@ -142,7 +142,7 @@ logging:
     name: ${LOG_FILE_PATH:logs/{서비스명}.log}
 
 ```
-
+  
 [루트 build.gradle 표준]
 ```
 plugins {
@@ -250,7 +250,7 @@ tasks.register('buildAll') {
     description = 'Build all subprojects'
 }
 ```
-
+  
 <DB/Redis 설정 예제>
 ```
 spring:
@@ -292,7 +292,7 @@ spring:
       database: ${REDIS_DATABASE:0}
   
 ```
-
+  
 <SecurityConfig 예제>
 ```
 /**
@@ -359,10 +359,10 @@ public class SecurityConfig {
     }
 }
 ```
-
+  
 <JWT 인증처리 예제>
 
-1) JwtAuthenticationFilter
+1) JwtAuthenticationFilter     
 ```
 /**
  * JWT 인증 필터
@@ -433,7 +433,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 }
 ```
-
+  
 1) JwtTokenProvider
 ```
 /**
@@ -660,3 +660,4 @@ public class SwaggerConfig {
     }
 }
 ```
+  

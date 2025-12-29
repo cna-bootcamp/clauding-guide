@@ -4,8 +4,8 @@
 - <수행원칙>을 준용하여 수행
 - <수행순서>에 따라 수행
 - [결과파일] 안내에 따라 파일 작성 
-
-[가이드]
+  
+[가이드]      
 <수행원칙>
 - 설정 Manifest(src/main/resources/application*.yml)의 각 항목의 값은 하드코딩하지 않고 환경변수 처리 
 - Kubernetes에 배포된 데이터베이스는 LoadBalacer유형의 Service를 만들어 연결   
@@ -26,7 +26,7 @@
     - LoadBalancer External IP를 DB_HOST, REDIS_HOST로 설정
     - MQ 연결 정보를 application.yml의 환경변수명에 맞춰 설정
   - 결과: {service-name}/.run
-
+  
 <실행프로파일 작성 가이드>
 - {service-name}/.run/{service-name}.run.xml 파일로 작성
 - Spring Boot가 아니고 **Gradle 실행 프로파일**이어야 함: '[실행프로파일 예시]' 참조  
@@ -55,7 +55,7 @@
 - application.yaml의 민감 정보는 기본값으로 지정하지 않고 실제 백킹서비스 정보로 지정
 - 백킹서비스 연결 확인 결과를 바탕으로 정확한 값을 지정  
 - 기존에 파일이 있으면 내용을 분석하여 항목 추가/수정/삭제  
-
+  
 [실행프로파일 예시]
 ```
 <component name="ProjectRunConfigurationManager">
@@ -134,7 +134,7 @@
   </configuration>
 </component>
 ```
-
+  
 [참고자료]
 - 데이터베이스설치결과서: develop/database/exec/db-exec-dev.md
   - 각 서비스별 DB 연결 정보 (사용자명, 비밀번호, DB명)
@@ -146,6 +146,6 @@
   - MQ 유형 및 연결 정보
   - 연결에 필요한 호스트, 포트, 인증 정보
   - LoadBalancer Service External IP (해당하는 경우)
-
+  
 [결과파일]
 {service-name}/.run/{service-name}.run.xml

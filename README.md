@@ -635,6 +635,7 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/setup-miniku
 ---
 
 ## 백킹서비스 설치
+
 ### 사전작업   
 터미널을 열고 데이터베이스를 배포할 클라우드플랫폼에 로그인하고 Kubernetes 인증 정보를 가져옵니다.   
 각 클라우드플랫폼별 CLI와 Kubernetes 인증정보를 갖고 오는 방법은 claude나 perplexity에 문의하세요.    
@@ -692,9 +693,7 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/%EB%B0%B1%ED
 ```
 /develop-db-install
 [설치정보]
-- 설치대상환경: 개발환경
-- AKS Resource Group: rg-digitalgarage-01
-- AKS Name: aks-digitalgarage-01
+- 설치대상환경: 개발환경  
 - Namespace: tripgen-dev
 ```
 
