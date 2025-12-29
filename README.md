@@ -635,6 +635,10 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/setup-miniku
 ---
 
 ## 백킹서비스 설치
+minikube로 실습하시는 분들은 위 minikube 환경구성 가이드를 참고하여 수동으로 백킹서비스를 설치하세요.    
+아래는 Azure에 백킹서비스를 설치하는 가이드입니다.    
+다른 클라우드를 사용하시는 분은 아래 뱅킹서비스 설치가이드를 참고하여 수동으로 백킹 서비스를 설치하세요.    
+https://github.com/cna-bootcamp/clauding-guide/blob/main/references/%EB%B0%B1%ED%82%B9%EC%84%9C%EB%B9%84%EC%8A%A4%EC%84%A4%EC%B9%98%EB%B0%A9%EB%B2%95.md
 
 ### 사전작업   
 터미널을 열고 데이터베이스를 배포할 클라우드플랫폼에 로그인하고 Kubernetes 인증 정보를 가져옵니다.   
@@ -676,13 +680,6 @@ az aks get-credentials -n dg0100-aks -f ~/.kube/config
 - NAMESPACE: tripgen
 ```
 
-설치계획서가 아래 백킹서비스 설치방법에 따라 만들어졌는지 검사합니다.   
-https://github.com/cna-bootcamp/clauding-guide/blob/main/references/%EB%B0%B1%ED%82%B9%EC%84%9C%EB%B9%84%EC%8A%A4%EC%84%A4%EC%B9%98%EB%B0%A9%EB%B2%95.md
-
-제대로 작성 안되어 있으면 재작성을 요청합니다.     
-```
-'백킹서비스설치방법'을 준용하여 다시 작성해 주세요.   
-```
 
 2)데이터베이스 설치 수행    
 데이터베이스를 계획서에 따라 설치합니다.   
