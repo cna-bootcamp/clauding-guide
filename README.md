@@ -670,7 +670,10 @@ az aks get-credentials -n dg0100-aks -f ~/.kube/config
 ```
 
 ```
-/develop-db-guide
+/develop-db-guide  
+[설치정보]
+- 설치대상환경: 개발환경
+- NAMESPACE: tripgen
 ```
 
 설치계획서가 아래 백킹서비스 설치방법에 따라 만들어졌는지 검사합니다.   
@@ -694,7 +697,7 @@ https://github.com/cna-bootcamp/clauding-guide/blob/main/references/%EB%B0%B1%ED
 /develop-db-install
 [설치정보]
 - 설치대상환경: 개발환경  
-- Namespace: tripgen-dev
+- NAMESPACE: tripgen
 ```
 
 
@@ -737,6 +740,9 @@ Message Queue 설치계획서 작성을 요청합니다.
 
 ```
 /develop-mq-guide
+- 설치대상환경: 개발환경
+- RESOURCE_GROUP: rg-digitalgarage-01
+- NAMESPACE: tripgen
 ```
 
 설치계획서가 아래 백킹서비스 설치방법에 따라 만들어졌는지 검사합니다.   
@@ -760,8 +766,8 @@ Message Queue 설치를 요청합니다.
 /develop-mq-install
 [설치정보]
 - 설치대상환경: 개발환경
-- Resource Group: rg-digitalgarage-01
-- Namespace: tripgen-dev
+- RESOURCE_GROUP: rg-digitalgarage-01
+- NAMESPACE: tripgen
 ```
 
 **팁) MQ 제거**    
