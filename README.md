@@ -1256,14 +1256,18 @@ resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.
 ### 테스트코드 작성              
 각 서비스별로 테스트 코드를 작성합니다.      
 테스트 유형은 단위테스트, 통합테스트, E2E테스트 중 하나로 지정합니다.   
-  
-예)  
+테스트 대상은 클래스명을 지정합니다.   
+E2E테스트는 테스트 대상을 지정하지 않습니다.    
+     
+예1)  
 ```
 /develop-dev-backend-testcode
 [개발정보]
 - 서비스: auth
 - 테스트유형: 단위테스트
+- 테스트대상: UserService 클래스  
 ```
+
 
 ---
 
