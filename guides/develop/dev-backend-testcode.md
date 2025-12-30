@@ -23,7 +23,7 @@
     - 테스트 설정 Manifest(src/test/resources/application*.yml)의 각 항목의 값은 하드코딩하지 않고 환경변수 처리
   - 테스트 수행 및 오류 해결 
     - 각 서비스별로 서브에이젼트를 사용하여 동시 수행
-    - 백킹서비스는 {서비스}의 설정 파일(application.yml)과 서비스 실행 프로파일을 읽어 연결하여 수행  
+    - 백킹서비스는 {서비스}의 설정 파일(application.yml)과 서비스 실행 프로파일을 읽어 작성    
     - 테스트 실패 시 오류 해결하고 모두 성공할 때까지 계속 수행 
   - 설정 Manifest(src/main/resources/application*.yml) 변경  
     - 테스트 결과를 이용하여 Manifest를 검토하여 필요 시 수정  
