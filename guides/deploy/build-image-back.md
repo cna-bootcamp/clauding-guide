@@ -28,6 +28,11 @@
   }
   ```
 
+- 실행Jar 빌드
+  ```
+  ./gradlew clean bootJar -x test
+  ```
+  
 - Dockerfile 생성   
   아래 내용으로 deployment/container/Dockerfile-backend 생성  
   ```
