@@ -39,4 +39,4 @@
   
 [결과파일]
 - 테스트 코드: {서비스}/src/test 하위에 테스트 코드 작성
-- 테스트 결과: develop/test-backend-{서비스}-{테스트유형}.md
+- 테스트 결과: develop/test/test-backend-{서비스}-{테스트유형}.md
