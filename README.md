@@ -1257,7 +1257,8 @@ resource/validate_place_schedule.json과 resource/valiedate_place_promptrequest.
 각 서비스별로 테스트 코드를 작성합니다.      
 테스트 유형은 단위테스트, 통합테스트, E2E테스트 중 하나로 지정합니다.   
 테스트 대상은 클래스명을 지정합니다.   
-E2E테스트는 테스트 대상을 지정하지 않습니다.    
+E2E테스트는 테스트 대상에 특정 controller 클래스를 지정할 수 있고   
+지정하지 않은 경우 AI가 적절한 시나리오를 선정하여 테스트코드를 작성합니다.       
      
 예1)  
 ```
