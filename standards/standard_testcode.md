@@ -1,5 +1,26 @@
 # 테스트코드표준
 
+- [테스트코드표준](#테스트코드표준)
+  - [TDD 기본 이해](#tdd-기본-이해)
+    - [TDD 목적](#tdd-목적)
+    - [테스트 유형](#테스트-유형)
+    - [테스트 피라미드](#테스트-피라미드)
+    - [Red-Green-Refactor 사이클](#red-green-refactor-사이클)
+  - [테스트 전략](#테스트-전략)
+    - [테스트 수행 원칙: FIRST 원칙](#테스트-수행-원칙-first-원칙)
+    - [공통전략](#공통전략)
+      - [테스트 코드 작성 관련](#테스트-코드-작성-관련)
+      - [테스트 코드 관리 관련](#테스트-코드-관리-관련)
+    - [단위테스트 전략](#단위테스트-전략)
+    - [통합테스트 전략](#통합테스트-전략)
+    - [E2E테스트 전략](#e2e테스트-전략)
+  - [테스트 코드 네이밍 컨벤션](#테스트-코드-네이밍-컨벤션)
+    - [패키지 네이밍](#패키지-네이밍)
+    - [클래스 네이밍](#클래스-네이밍)
+    - [메소드 네이밍](#메소드-네이밍)
+    - [테스트 데이터 네이밍](#테스트-데이터-네이밍)
+
+
 ## TDD 기본 이해
 
 ### TDD 목적  
@@ -47,7 +68,7 @@ Red-Green-Refactor는 TDD(Test-Driven Development)를 수행하는 핵심 사이
 - Self-validating: 테스트는 성공/실패가 명확해야 함
 - Timely: 테스트는 실제 코드 작성 전/직후에 작성되어야 함
 
-### 공통 전략
+### 공통전략
 #### 테스트 코드 작성 관련
 - 한 테스트는 한 가지만 테스트
 - Given-When-Then 패턴 사용
@@ -83,8 +104,7 @@ Red-Green-Refactor는 TDD(Test-Driven Development)를 수행하는 핵심 사이
 
 ---
 
-### 단위 테스트 전략
-#### 단위테스트 원칙 
+### 단위테스트 전략
 - 테스트 범위 명확화
   - 클래스의 각 public 메소드가 수행하는 단일 책임을 검증
   - private 메서드는 public 메서드를 통해 간접적으로 테스트
@@ -101,23 +121,23 @@ Red-Green-Refactor는 TDD(Test-Driven Development)를 수행하는 핵심 사이
   - 테스트 대상 클래스당 하나의 테스트 클래스
   - 테스트 메서드는 한 가지 시나리오만 검증
 
-#### Mocking 전략
-- 외부 시스템(DB, 외부 API 등)은 반드시 Mocking
-- 같은 레이어의 의존성 있는 클래스는 실제 객체 사용
-- 예외적으로 의존 객체가 매우 복잡하거나 무거운 경우 Mocking 고려
+- Mocking 전략
+  - 외부 시스템(DB, 외부 API 등)은 반드시 Mocking
+  - 같은 레이어의 의존성 있는 클래스는 실제 객체 사용
+  - 예외적으로 의존 객체가 매우 복잡하거나 무거운 경우 Mocking 고려
 
-* 참고: 모의 객체 테스트 균형점 찾기  
+- 참고: 모의 객체 테스트 균형점 찾기  
   출처: When to mocking by Uncle Bob(https://blog.cleancoder.com/uncle-bob/2014/05/10/WhenToMock.html)
-- 모의 객체를 이용 안 하면: 테스트가 오래 걸리고 결과를 신뢰하기 어려우며 인프라에 너무 많은 영향을 받음
-- 모의 객체를 지나치게 사용하면: 복잡하고 수정에 영향을 너무 많이 받으며 모의 인터페이스가 폭발적으로 증가
-- 균형점 찾기
-  - 아키텍처적으로 중요한 경계에서만 모의 테스트를 수행하고, 그 경계 안에서는 하지 않는다.  
-    (Mock across architecturally significant boundaries, but not within those boundaries.)
-  - 여기서 경계란 Controller, Service, Repository, Domain등의 레이어를 의미함
+  - 모의 객체를 이용 안 하면: 테스트가 오래 걸리고 결과를 신뢰하기 어려우며 인프라에 너무 많은 영향을 받음
+  - 모의 객체를 지나치게 사용하면: 복잡하고 수정에 영향을 너무 많이 받으며 모의 인터페이스가 폭발적으로 증가
+  - 균형점 찾기
+    - 아키텍처적으로 중요한 경계에서만 모의 테스트를 수행하고, 그 경계 안에서는 하지 않는다.  
+      (Mock across architecturally significant boundaries, but not within those boundaries.)
+    - 여기서 경계란 Controller, Service, Repository, Domain등의 레이어를 의미함
 
 ---
 
-### 통합 테스트 전략
+### 통합테스트 전략
 - 웹 서버 인터페이스
   - @WebMvcTest, @WebFluxTest 활용
   - Controller 계층의 요청/응답 검증
@@ -132,25 +152,33 @@ Red-Green-Refactor는 TDD(Test-Driven Development)를 수행하는 핵심 사이
   - 실제 API 스펙 기반 테스트
 
 - 테스트 환경 구성
-  - 테스트용 별도 설정 파일 구성
+  - 테스트용 별도 설정 파일 구성: 테스트 Class에 @ActiveProfile("integreation-test")로 지정
   - 테스트 데이터는 테스트 시작 시 초기화
   - @Transactional을 활용한 테스트 격리
   - 테스트 간 독립성 보장
 
 ---
 
-### E2E 테스트 전략
+### E2E테스트 전략
 - 원칙
   - 단위 테스트나 컴포넌트 테스트에서 놓칠 수 있는 시나리오를 찾아내는 것이 목표임
   - 조건별 로직이나 분기 상황(edge cases)이 아닌 상위 수준의 일반적인 시나리오만 테스트
   - 만약 어떤 시스템 테스트 시나리오가 실패 했는데 단위 테스트나 통합 테스트가 없다면 만들어야 함
 
 - 운영과 동일한 테스트 환경 구성: 웹서버/WAS, DB, 캐시, MQ, 외부시스템
+
 - 테스트 데이터 관리
   - 테스트용 마스터 데이터 구성
   - 시나리오별 테스트 데이터 세트 준비
   - 데이터 초기화 및 정리 자동화
-- 테스트 자동화 전략
+
+- 테스트 환경 구성
+  - 테스트용 별도 설정 파일 구성: 테스트 Class에 @ActiveProfile("e2e-test")로 지정
+  - 테스트 데이터는 테스트 시작 시 초기화
+  - @Transactional을 활용한 테스트 격리
+  - 테스트 간 독립성 보장
+
+- 테스트 자동화 툴
   - UI 테스트: Selenium, Cucumber, Playwright 등 도구 활용
   - API 테스트: Rest-Assured, Postman 등 도구 활용
 
