@@ -133,6 +133,11 @@
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/test-backend.md
   - 파일명: test-backend.md
 
+- 백엔드테스트코드작성가이드 
+  - 설명: 백엔드 테스트코드 작성 가이드 
+  - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/dev-backend-testcode.md
+  - 파일명: dev-backend-testcode.md
+
 - 프론트엔드개발가이드
   - 설명: 프론트엔드 개발 가이드 
   - URL: https://raw.githubusercontent.com/cna-bootcamp/clauding-guide/refs/heads/main/guides/develop/dev-frontend.md
