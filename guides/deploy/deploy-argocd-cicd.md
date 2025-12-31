@@ -16,7 +16,7 @@
   - {JENKINS_GIT_CREDENTIALS}: 매니페스트 레포지토리를 접근하기 위한 Jenkins Credential. Jenkins기반일때만 필요    
   - {MANIFEST_SECRET_GIT_USERNAME}: 매니페스트 레포지토리를 접근하기 위한 Git Username을 정의한 GitHub Action 변수명. GitHub Actions에만 필요
   - {MANIFEST_SECRET_GIT_PASSWORD}: 매니페스트 레포지토리를 접근하기 위한 Git Password을 정의한 GitHub Action 변수명. GitHub Actions에만 필요 
-  
+    
   예시)
   ```
   [실행정보]
@@ -29,7 +29,7 @@
   - MANIFEST_SECRET_GIT_USERNAME: GIT_USERNAME
   - MANIFEST_SECRET_GIT_PASSWORD: GIT_PASSWORD
   ``` 
-
+  
 - 작업 편의를 위한 환경변수   
   - {BASE_DIR}: ..
   - {BACKEND_DIR}: ${BASE_DIR}/${SYSTEM_NAME}
@@ -37,9 +37,9 @@
   - {MANIFEST_DIR}: .
   
 - 백엔드 서비스명 확인   
-  ${BACKEND_DIR}/settings.gradle에서 확인.
-  {SERVICE_NAMES}: include 'common'하위의 include문 뒤의 값임
-
+  ${BACKEND_DIR}/settings.gradle에서 확인.  
+  {SERVICE_NAMES}: include 'common'하위의 include문 뒤의 값임  
+  
   예시) include 'common'하위의 서비스명들.
   ```
   rootProject.name = 'phonebill'
@@ -50,7 +50,7 @@
   include 'order-service'
   include 'payment-service'
   ```  
-
+  
 - 매니페스트 레포지토리 구성
   - 백엔드 매니페스트 복사
   ```bash
@@ -65,16 +65,16 @@
   ```
 
 - CI/CD가 분리된 Jenkins 파이프라인 스크립트 작성
-  (중요) 'JENKINS_GIT_CREDENTIALS' 값이 있는 경우만 수행.  
-
+  (중요) 'JENKINS_GIT_CREDENTIALS' 값이 있는 경우만 수행.    
+  
   **분석된 기존 파이프라인 구조:**
   - Build & Test → SonarQube Analysis → Build & Push Images → **Deploy (직접 K8s 배포)**
-
+  
   **ArgoCD 적용 시 변경사항:**
   - Deploy 단계를 **매니페스트 레포지토리 업데이트**로 교체
   - `kubectl apply` 제거하고 `git push`로 ArgoCD 트리거
   - Git 전용 컨테이너 추가로 매니페스트 업데이트 작업 분리
-
+  
   **컨테이너 템플릿 추가:**
   Jenkins 파이프라인의 containers 섹션에 Git 컨테이너 추가:
   ```
@@ -102,14 +102,14 @@
       )
   ]
   ```
-
-  **1) 백엔드 Jenkins 파이프라인 수정**
+  
+  **1) 백엔드 Jenkins 파이프라인 수정**  
   - 기존 파일을 새 파일로 복사
     ```
     cp ${BACKEND_DIR}/deployment/cicd/Jenkinsfile ${BACKEND_DIR}/deployment/cicd/Jenkinsfile_ArgoCD
     ```
 
- - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
+  - Jenkinsfile_ArgoCD파일을 ArgoCD용으로 수정: 'Update Kustomize & Deploy' 스테이지를 다음으로 교체
     ```
     stage('Update Manifest Repository') {
         container('git') {
@@ -149,8 +149,8 @@
         }
     }
     ```
-
-  **2) 프론트엔드 Jenkins 파이프라인 수정**
+  
+  **2) 프론트엔드 Jenkins 파이프라인 수정**  
   - 기존 파일을 새 파일로 복사
     ```
     cp ${FRONTEND_DIR}/deployment/cicd/Jenkinsfile ${FRONTEND_DIR}/deployment/cicd/Jenkinsfile_ArgoCD
@@ -193,15 +193,15 @@
         }
     }
     ```
-
+  
 - CI/CD가 분리된 GitHub Actions Workflow 작성
-  (중요) 'MANIFEST_SECRET_GIT_USERNAME'과 'MANIFEST_SECRET_GIT_PASSWORD'가 있는 경우만 수행.   
-  **1) 백엔드 GitHub Actions Workflow 수정**
+  (중요) 'MANIFEST_SECRET_GIT_USERNAME'과 'MANIFEST_SECRET_GIT_PASSWORD'가 있는 경우만 수행.        
+  **1) 백엔드 GitHub Actions Workflow 수정**  
   - 기존 파일을 새 파일로 복사
     ```
     cp ${BACKEND_DIR}/.github/workflows/backend-cicd.yaml ${BACKEND_DIR}/.github/workflows/backend-cicd_ArgoCD.yaml
     ```
-
+  
   - backend-cicd_ArgoCD.yaml의 deploy job을 **update-manifest** job으로 교체
   ```
   update-manifest:
@@ -245,7 +245,7 @@
 
         echo "✅ 매니페스트 업데이트 완료. ArgoCD가 자동으로 배포합니다."
   ```
-
+  
   **2) 프론트엔드 GitHub Actions Workflow 수정**
   - 기존 파일을 새 파일로 복사
     ```
@@ -291,7 +291,7 @@
 
           echo "✅ 프론트엔드 매니페스트 업데이트 완료. ArgoCD가 자동으로 배포합니다."
     ```
-
+  
 [결과파일]
 작업결과: deploy-argocd-prepare.md
 
