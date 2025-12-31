@@ -1,5 +1,5 @@
 # 백엔드 Jenkins 파이프라인 작성 가이드
-
+  
 [요청사항]
 - Jenkins + Kustomize 기반 CI/CD 파이프라인 구축 가이드 작성
 - 환경별(dev/staging/prod) 매니페스트 관리 및 자동 배포 구현
@@ -13,16 +13,16 @@
   - 환경별 설정 파일 작성
   - Jenkinsfile 작성
   - 수동 배포 스크립트 작성
-
+  
 [작업순서]
-- 사전 준비사항 확인   
-  프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
+- 사전 준비사항 확인    
+  프롬프트의 '[실행정보]'섹션에서 아래정보를 확인  
   - {IMG_REG}: container 컨테이너 이미지 레지스트리 주소
   - {IMG_ORG}: container IMG_ORG
   - {JENKINS_CLOUD_NAME}: Jenkins에 설정한 k8s Cloud 이름 
   - {NAMESPACE}: 네임스페이스 
-  
-    예시)
+    
+  예시)
   ```
   [실행정보]
   - IMG_REG: docker.io
@@ -30,13 +30,13 @@
   - JENKINS_CLOUD_NAME: k8s  
   - NAMESPACE: phonebill
   ``` 
-
+  
 - 시스템명과 서비스명 확인   
-  settings.gradle에서 확인.
+  settings.gradle에서 확인.  
   - {SYSTEM_NAME}: rootProject.name
   - {SERVICE_NAMES}: include 'common'하위의 include문 뒤의 값임
-
-  예시) include 'common'하위의 서비스명들.
+  
+  예시) include 'common'하위의 서비스명들.  
   ```
   rootProject.name = 'myproject'
 
@@ -46,8 +46,8 @@
   include 'order-service'
   include 'payment-service'
   ```  
-
-- JDK버전 확인
+  
+- JDK버전 확인  
   루트 build.gradle에서 JDK 버전 확인.   
   {JDK_VERSION}: 'java' 섹션에서 JDK 버전 확인. 아래 예에서는 21임.
   ```
@@ -57,7 +57,7 @@
       }
   }
   ``` 
-
+  
 - Jenkins 서버 환경 구성 안내
   - Jenkins 설치 및 필수 플러그인 설치
     ```
@@ -90,7 +90,7 @@
     - ID: sonarqube-token
     - Secret: {SonarQube토큰}
     ```
-
+  
 - Kustomize 디렉토리 구조 생성
   - 프로젝트 루트에 CI/CD 디렉토리 생성
     ```
@@ -107,16 +107,16 @@
     # 네임스페이스 하드코딩 제거
     find deployment/cicd/kustomize/base -name "*.yaml" -exec sed -i 's/namespace: .*//' {} \;
     ``` 
-
-- Base Kustomization 작성
-  `deployment/cicd/kustomize/base/kustomization.yaml` 파일 생성 방법 안내
   
-  **⚠️ 중요: 리소스 누락 방지 가이드**
+- Base Kustomization 작성  
+  `deployment/cicd/kustomize/base/kustomization.yaml` 파일 생성 방법 안내  
+    
+  **⚠️ 중요: 리소스 누락 방지 가이드**  
   1. **디렉토리별 파일 확인**: 각 서비스 디렉토리의 모든 yaml 파일을 확인
   2. **일관성 체크**: 모든 서비스가 동일한 파일 구조를 가지는지 확인 (deployment, service, configmap, secret)
   3. **누락 검증**: `ls deployment/cicd/kustomize/base/{서비스명}/` 명령으로 실제 파일과 kustomization.yaml 리스트 비교
   4. **명명 규칙 준수**: ConfigMap은 `cm-{서비스명}.yaml`, Secret은 `secret-{서비스명}.yaml` 패턴 확인
-
+  
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
@@ -162,8 +162,8 @@
       newTag: latest
     # ... 각 서비스별로 image 항목 추가
   ```
-  
-  **검증 명령어**:
+    
+  **검증 명령어**:  
   ```bash
   # 각 서비스 디렉토리의 파일 확인
   ls deployment/cicd/kustomize/base/*/
@@ -178,36 +178,36 @@
     ls "$dir"*.yaml 2>/dev/null || echo "No YAML files found"
   done
   ```
-
-- 환경별 Patch 파일 생성
-  각 환경별로 필요한 patch 파일들을 생성합니다.   
+  
+- 환경별 Patch 파일 생성  
+  각 환경별로 필요한 patch 파일들을 생성합니다.    
   **중요원칙**:
   - **base 매니페스트에 없는 항목은 추가 않함**
   - **base 매니페스트와 항목이 일치해야 함**
   - Secret 매니페스트에 'data'가 아닌 'stringData'사용
-
-  **1. ConfigMap Common Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/cm-common-patch.yaml`
+  
+  **1. ConfigMap Common Patch 파일 생성**  
+  `deployment/cicd/kustomize/overlays/{환경}/cm-common-patch.yaml`  
 
   - base 매니페스트를 환경별로 복사
     ```
     cp deployment/cicd/kustomize/base/common/cm-common.yaml deployment/cicd/kustomize/overlays/{환경}/cm-common-patch.yaml
     ```
-
+  
   - SPRING_PROFILES_ACTIVE를 환경에 맞게 설정 (dev/staging/prod)
   - DDL_AUTO 설정: dev는 "update", staging/prod는 "validate"
   - JWT 토큰 유효시간은 prod에서 보안을 위해 짧게 설정
-
-  **2. Secret Common Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml`
-
+  
+  **2. Secret Common Patch 파일 생성**  
+  `deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml`  
+  
   - base 매니페스트를 환경별로 복사
     ```
     cp deployment/cicd/kustomize/base/common/secret-common.yaml deployment/cicd/kustomize/overlays/{환경}/secret-common-patch.yaml
     ```
-
-  **3. Ingress Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
+  
+  **3. Ingress Patch 파일 생성**  
+  `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`  
   - base의 ingress.yaml을 환경별로 오버라이드
   - **⚠️ 중요**: 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 **정확히 동일하게** 함
     - base에서 `host: phonebill-api.20.214.196.128.nip.io` 이면
@@ -218,11 +218,11 @@
   - Staging/prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
-
-  **4. deployment Patch 파일 생성** ⚠️ **중요**
-  각 서비스별로 별도 파일 생성
-  `deployment/cicd/kustomize/overlays/{환경}/deployment-{서비스명}-patch.yaml`
-
+  
+  **4. deployment Patch 파일 생성** ⚠️ **중요**  
+  각 서비스별로 별도 파일 생성  
+  `deployment/cicd/kustomize/overlays/{환경}/deployment-{서비스명}-patch.yaml`  
+  
   **필수 포함 사항:**
   - ✅ **replicas 설정**: 각 서비스별 Deployment의 replica 수를 환경별로 설정
     - dev: 모든 서비스 1 replica (리소스 절약)
@@ -232,22 +232,22 @@
     - dev: requests(256m CPU, 256Mi Memory), limits(1024m CPU, 1024Mi Memory)
     - staging: requests(512m CPU, 512Mi Memory), limits(2048m CPU, 2048Mi Memory)
     - prod: requests(1024m CPU, 1024Mi Memory), limits(4096m CPU, 4096Mi Memory)
-
+  
   **작성 형식:**
   - **Strategic Merge Patch 형식** 사용 (JSON Patch 아님)
   - 각 서비스별로 별도의 Deployment 리소스로 분리하여 작성
   - replicas와 resources를 **반드시 모두** 포함
-
-  **5. 서비스별 Secret Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`
-
+  
+  **5. 서비스별 Secret Patch 파일 생성**  
+  `deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml`  
+  
   - base 매니페스트를 환경별로 복사
     ```
     cp deployment/cicd/kustomize/base/{서비스명}/secret-{서비스명}.yaml deployment/cicd/kustomize/overlays/{환경}/secret-{서비스명}-patch.yaml
     ```  
-
+  
 - 환경별 Overlay 작성  
-  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성
+  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성  
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
@@ -285,44 +285,44 @@
 
   ```
 
-- 환경별 설정 파일 작성    
-  `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법
+- 환경별 설정 파일 작성     
+  `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법  
   ```bash
   # {환경} Environment Configuration
   namespace={namespace}
-  ```
-
+  ``` 
+  
 - Jenkinsfile 작성    
-  `deployment/cicd/Jenkinsfile` 파일 생성 방법을 안내합니다.
+  `deployment/cicd/Jenkinsfile` 파일 생성 방법을 안내합니다.  
 
-  주요 구성 요소:
+  주요 구성 요소:  
   - **Pod Template**: Gradle, Podman, Azure-CLI 컨테이너
   - **Build**: Gradle 기반 빌드 (테스트 제외)
   - **SonarQube Analysis & Quality Gate**: 항상 표시되는 단계, 내부에서 조건부 실행으로 테스트, 코드 품질 분석, Quality Gate 처리
   - **Container Build & Push**: 30분 timeout 설정과 함께 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
   - **Pod Cleanup**: 파이프라인 완료 시 에이전트 파드 자동 정리
-
-  **⚠️ 중요: Pod 자동 정리 설정**
-  에이전트 파드가 파이프라인 완료 시 즉시 정리되도록 다음 설정들이 적용됨:
+  
+  **⚠️ 중요: Pod 자동 정리 설정**  
+  에이전트 파드가 파이프라인 완료 시 즉시 정리되도록 다음 설정들이 적용됨:  
   - **podRetention: never()**: 파이프라인 완료 시 파드 즉시 삭제 (문법 주의: 문자열 'never' 아님)
   - **idleMinutes: 1**: 유휴 시간 1분으로 설정하여 빠른 정리
   - **terminationGracePeriodSeconds: 3**: 파드 종료 시 3초 내 강제 종료
   - **restartPolicy: Never**: 파드 재시작 방지
   - **try-catch-finally**: 예외 발생 시에도 정리 로직 실행 보장
-
+  
   **⚠️ 중요: 변수 참조 문법 및 충돌 해결**
   Jenkins Groovy에서 bash shell로 변수 전달 시:
   - **올바른 문법**: `${variable}` (Groovy 문자열 보간)
   - **잘못된 문법**: `\${variable}` (bash 특수문자 이스케이프로 인한 "syntax error: bad substitution" 오류)
-  
+    
   **쉘 호환성 문제 해결**:
   - Jenkins 컨테이너에서 기본 쉘이 `/bin/sh` (dash)인 경우 Bash 배열 문법 `()` 미지원
   - **"syntax error: unexpected '('" 에러 발생** - Bash 배열 문법을 인식하지 못함
   - **해결책**: Bash 배열 대신 공백 구분 문자열 사용 (모든 POSIX 쉘에서 호환)
   - 변경 전: `svc_list=(service1 service2)` → `for service in "\${svc_list[@]}"`
   - 변경 후: `services="service1 service2"` → `for service in \$services`
-
+  
 
   Jenkinsfile 예시:   
   ```groovy
@@ -553,8 +553,8 @@
       }
   }
   ```
-
-- Jenkins Pipeline Job 생성 방법 안내
+  
+- Jenkins Pipeline Job 생성 방법 안내  
   - Jenkins 웹 UI에서 New Item > Pipeline 선택
   - Pipeline script from SCM 설정 방법:
     ```
@@ -569,7 +569,7 @@
     IMAGE_TAG: String Parameter (default: latest)
     SKIP_SONARQUBE: String Parameter (default: true)
     ```
-
+  
 - SonarQube 프로젝트 설정 방법 작성
   - SonarQube에서 각 서비스별 프로젝트 생성
   - Quality Gate 설정:
@@ -580,8 +580,8 @@
     Reliability Rating: <= A
     Security Rating: <= A
     ```
-
-- 배포 실행 방법 작성
+  
+- 배포 실행 방법 작성  
   - Jenkins 파이프라인 실행:
     ```
     1. Jenkins > {프로젝트명} > Build with Parameters
@@ -596,9 +596,9 @@
     kubectl get services -n {NAMESPACE}
     kubectl get ingress -n {NAMESPACE}
     ```
-
-- 수동 배포 스크립트 작성
-  `deployment/cicd/scripts/deploy.sh` 파일 생성:
+  
+- 수동 배포 스크립트 작성  
+  `deployment/cicd/scripts/deploy.sh` 파일 생성:  
   ```bash
   #!/bin/bash
   set -e
@@ -626,10 +626,10 @@
   done
   
   echo "✅ Deployment completed successfully!"
-  ```
-
-- **리소스 검증 스크립트 생성** 
-  `deployment/cicd/scripts/validate-resources.sh` 파일 생성:
+  ``` 
+  
+- **리소스 검증 스크립트 생성**   
+  `deployment/cicd/scripts/validate-resources.sh` 파일 생성:  
   ```bash
   #!/bin/bash
   # Base 리소스 누락 검증 스크립트 (범용)
@@ -760,7 +760,7 @@
       exit 1
   fi
   ```
-
+  
 - 롤백 방법 작성
   - 이전 버전으로 롤백:
     ```bash
@@ -777,10 +777,10 @@
     kustomize edit set image {IMG_REG}/{IMG_ORG}/{서비스명}:{환경}-{이전태그}
     kubectl apply -k .
     ```
-
-[체크리스트]
-Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한 체크리스트입니다.
-
+  
+[체크리스트]  
+Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한 체크리스트입니다.  
+  
 ## 📋 사전 준비 체크리스트
 - [ ] settings.gradle에서 시스템명과 서비스명 확인 완료
 - [ ] 루트 build.gradle에서 JDK버전 확인 완료
@@ -850,10 +850,11 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] **리소스 검증 스크립트 `scripts/validate-resources.sh` 생성 완료**
 - [ ] 스크립트 실행 권한 설정 완료 (`chmod +x scripts/*.sh`)
 - [ ] **검증 스크립트 실행하여 누락 리소스 확인 완료** (`./scripts/validate-resources.sh`)
-
+  
 [결과파일]
 - 가이드: deployment/cicd/jenkins-pipeline-guide.md
 - 환경별 설정 파일: deployment/cicd/config/*
 - Kustomize 파일: deployment/cicd/kustomize/*
 - 수동배포 스크립트: deployment/cicd/scripts
 - Jenkins 스크립트: deployment/cicd/Jenkinsfile
+  

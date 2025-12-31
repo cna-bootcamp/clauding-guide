@@ -1,5 +1,5 @@
 # 프론트엔드 Jenkins 파이프라인 작성 가이드
-
+  
 [요청사항]
 - Jenkins + Kustomize 기반 CI/CD 파이프라인 구축 가이드 작성
 - 환경별(dev/staging/prod) 매니페스트 관리 및 자동 배포 구현
@@ -15,7 +15,7 @@
   - 환경별 설정 파일 작성
   - Jenkinsfile 작성
   - 수동 배포 스크립트 작성
-
+  
 [작업순서]
 - 프롬프트 제공정보 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
@@ -24,7 +24,7 @@
   - {JENKINS_CLOUD_NAME}: Jenkins에 설정한 k8s Cloud 이름 
   - {NAMESPACE}: 네임스페이스 
      
-    예시)
+  예시)
   ```
   [실행정보]
   - IMG_REG: docker.io
@@ -32,9 +32,9 @@
   - JENKINS_CLOUD_NAME: k8s  
   - NAMESPACE: phonebill
   ``` 
-
+  
 - 서비스명 확인   
-  서비스명은 package.json에서 확인.
+  서비스명은 package.json에서 확인.  
   - {SERVICE_NAME}: package.json의 "name" 필드
   예시)
   ```json
@@ -43,10 +43,10 @@
     "name": "phonebill-front",
     ...
   }
-
-- Jenkins 서버 환경 구성 안내
-  - Jenkins 설치 및 필수 플러그인
-  Jenkins 필수 플러그인 목록:
+  
+- Jenkins 서버 환경 구성 안내  
+  - Jenkins 설치 및 필수 플러그인  
+  Jenkins 필수 플러그인 목록:  
   ```
   - Kubernetes
   - Pipeline Utility Steps
@@ -56,7 +56,7 @@
   - Azure Credentials
   - EnvInject Plugin
   ```
-
+  
   - Jenkins Credentials 등록
     - Azure Service Principal
     ```
@@ -93,11 +93,11 @@
     - ID: sonarqube-token
     - Secret: {SonarQube토큰}
     ```
-
-- ESLint 설정 파일 작성
-  TypeScript React 프로젝트를 위한 `.eslintrc.cjs` 파일을 프로젝트 루트에 생성합니다.
   
-  **⚠️ 중요**: ES 모듈 프로젝트에서는 `.eslintrc.cjs` 확장자 사용 필수
+- ESLint 설정 파일 작성
+  TypeScript React 프로젝트를 위한 `.eslintrc.cjs` 파일을 프로젝트 루트에 생성합니다.  
+   
+  **⚠️ 중요**: ES 모듈 프로젝트에서는 `.eslintrc.cjs` 확장자 사용 필수  
   
   ```javascript
   module.exports = {
@@ -162,22 +162,22 @@
     ]
   }
   ```
-
-  **필수 ESLint 관련 devDependencies 설치**:
+  
+  **필수 ESLint 관련 devDependencies 설치**:  
   ```bash
   npm install --save-dev eslint-plugin-react
   ```
-  
-  **package.json lint 스크립트 수정** (max-warnings 20으로 설정):
+    
+  **package.json lint 스크립트 수정** (max-warnings 20으로 설정):  
   ```json
   {
     "scripts": {
       "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 20"
     }
   }
-  ```
-
-- Kustomize 디렉토리 구조 생성
+  ```  
+  
+- Kustomize 디렉토리 구조 생성  
   - 프로젝트 루트에 CI/CD 디렉토리 생성
     ```
     mkdir -p deployment/cicd/kustomize/{base,overlays/{dev,staging,prod}}
@@ -192,11 +192,11 @@
     # 네임스페이스 하드코딩 제거
     find deployment/cicd/kustomize/base -name "*.yaml" -exec sed -i 's/namespace: .*//' {} \;
     ```
-
-- Base Kustomization 작성
-  `deployment/cicd/kustomize/base/kustomization.yaml` 파일 생성 방법 안내
   
-  **⚠️ 중요: 리소스 누락 방지 가이드**
+- Base Kustomization 작성
+  `deployment/cicd/kustomize/base/kustomization.yaml` 파일 생성 방법 안내  
+  
+  **⚠️ 중요: 리소스 누락 방지 가이드**  
   1. **디렉토리별 파일 확인**: base 디렉토리의 모든 yaml 파일을 확인
   2. **일관성 체크**: 모든 리소스가 동일한 파일 구조를 가지는지 확인
   3. **누락 검증**: `ls deployment/cicd/kustomize/base/` 명령으로 실제 파일과 kustomization.yaml 리스트 비교
@@ -221,7 +221,7 @@
       newTag: latest
   ```
   
-  **검증 명령어**:
+  **검증 명령어**:  
   ```bash
   # base 디렉토리의 파일 확인
   ls deployment/cicd/kustomize/base/
@@ -231,8 +231,8 @@
   ```
 
 - 환경별 Patch 파일 생성
-  각 환경별로 필요한 patch 파일들을 생성합니다.   
-  **중요원칙**:
+  각 환경별로 필요한 patch 파일들을 생성합니다.     
+  **중요원칙**:  
   - **base 매니페스트에 없는 항목은 추가 않함**
   - **base 매니페스트와 항목이 일치해야 함**
 
@@ -246,9 +246,9 @@
 
   - 환경별 API 엔드포인트 설정
   - dev: 개발 API 서버 주소, staging/prod: 운영 API 서버 주소
-
-  **2. Ingress Patch 파일 생성**
-  `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`
+  
+  **2. Ingress Patch 파일 생성**  
+  `deployment/cicd/kustomize/overlays/{환경}/ingress-patch.yaml`  
   - base의 ingress.yaml을 환경별로 오버라이드
   - **⚠️ 중요**: 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 **정확히 동일하게** 함
   - Staging/Prod 환경별 도메인 설정: {SERVICE_NAME}-{환경}.도메인 형식
@@ -256,10 +256,10 @@
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
-  **3. Deployment Patch 파일 생성** ⚠️ **중요**
-  `deployment/cicd/kustomize/overlays/{환경}/deployment-patch.yaml`
+  **3. Deployment Patch 파일 생성** ⚠️ **중요**  
+  `deployment/cicd/kustomize/overlays/{환경}/deployment-patch.yaml`  
 
-  **필수 포함 사항:**
+  **필수 포함 사항:**  
   - ✅ **replicas 설정**: Deployment의 replica 수를 환경별로 설정
     - dev: 1 replica (리소스 절약)
     - staging: 2 replicas
@@ -268,13 +268,13 @@
     - dev: requests(256m CPU, 256Mi Memory), limits(1024m CPU, 1024Mi Memory)
     - staging: requests(512m CPU, 512Mi Memory), limits(2048m CPU, 2048Mi Memory)
     - prod: requests(1024m CPU, 1024Mi Memory), limits(4096m CPU, 4096Mi Memory)
-
+  
   **작성 형식:**
   - **Strategic Merge Patch 형식** 사용 (JSON Patch 아님)
   - replicas와 resources를 **반드시 모두** 포함
-
-- 환경별 Overlay 작성  
-  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성
+  
+- 환경별 Overlay 작성   
+  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성  
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
@@ -303,38 +303,38 @@
       newTag: latest
 
   ```
-
+  
 - 환경별 설정 파일 작성    
-  `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법
+  `deployment/cicd/config/deploy_env_vars_{환경}` 파일 생성 방법  
   ```bash
   # {환경} Environment Configuration
   namespace={namespace}
   ```
+  
+- Jenkinsfile 작성     
+  `deployment/cicd/Jenkinsfile` 파일 생성 방법을 안내합니다.   
 
-- Jenkinsfile 작성    
-  `deployment/cicd/Jenkinsfile` 파일 생성 방법을 안내합니다.
-
-  주요 구성 요소:
+  주요 구성 요소:  
   - **Pod Template**: Node.js, Podman, Azure-CLI 컨테이너
   - **Build & Test**: Node.js 기반 빌드 및 단위 테스트
   - **SonarQube Analysis**: 프론트엔드 코드 품질 분석 및 Quality Gate
   - **Container Build & Push**: 30분 timeout 설정과 함께 환경별 이미지 태그로 빌드 및 푸시
   - **Kustomize Deploy**: 환경별 매니페스트 적용
   - **Pod Cleanup**: 파이프라인 완료 시 에이전트 파드 자동 정리
-
-  **⚠️ 중요: Pod 자동 정리 설정**
-  에이전트 파드가 파이프라인 완료 시 즉시 정리되도록 다음 설정들이 적용됨:
+  
+  **⚠️ 중요: Pod 자동 정리 설정**  
+  에이전트 파드가 파이프라인 완료 시 즉시 정리되도록 다음 설정들이 적용됨:   
   - **podRetention: never()**: 파이프라인 완료 시 파드 즉시 삭제 (문법 주의: 문자열 'never' 아님)
   - **idleMinutes: 1**: 유휴 시간 1분으로 설정하여 빠른 정리
   - **terminationGracePeriodSeconds: 3**: 파드 종료 시 3초 내 강제 종료
   - **restartPolicy: Never**: 파드 재시작 방지
   - **try-catch-finally**: 예외 발생 시에도 정리 로직 실행 보장
-
-  **⚠️ 중요: 변수 참조 문법 및 충돌 해결**
-  Jenkins Groovy에서 bash shell로 변수 전달 시:
+  
+  **⚠️ 중요: 변수 참조 문법 및 충돌 해결**   
+  Jenkins Groovy에서 bash shell로 변수 전달 시:   
   - **올바른 문법**: `${variable}` (Groovy 문자열 보간)
   - **잘못된 문법**: `\${variable}` (bash 특수문자 이스케이프로 인한 "syntax error: bad substitution" 오류)
-
+  
   ```groovy
   def PIPELINE_ID = "${env.BUILD_NUMBER}"
   
@@ -565,9 +565,9 @@
       }
   }
   ```
-
+  
 - Jenkins Pipeline Job 생성 안내
-
+  
   - Pipeline Job 설정
   1. Jenkins 웹 UI에서 **New Item > Pipeline** 선택
   2. **Pipeline script from SCM** 설정:
@@ -593,7 +593,7 @@
   - Default: true
   - Description: SonarQube 코드 분석 스킵 여부 (true/false)
   ```
-
+  
 - SonarQube 프로젝트 설정 안내
 
   - SonarQube 프로젝트 생성
@@ -612,9 +612,9 @@
   Bugs: = 0
   Vulnerabilities: = 0
   ```
-
-- 수동 배포 스크립트 작성
-  `deployment/cicd/scripts/deploy.sh` 파일 생성:
+  
+- 수동 배포 스크립트 작성  
+  `deployment/cicd/scripts/deploy.sh` 파일 생성:    
   ```bash
   #!/bin/bash
   set -e
@@ -638,9 +638,9 @@
   
   echo "✅ 배포 완료!"
   ```
-
-- **리소스 검증 스크립트 생성** 
-  `deployment/cicd/scripts/validate-resources.sh` 파일 생성:
+  
+- **리소스 검증 스크립트 생성**   
+  `deployment/cicd/scripts/validate-resources.sh` 파일 생성:   
   ```bash
   #!/bin/bash
   # Frontend 리소스 누락 검증 스크립트
@@ -735,7 +735,7 @@
       exit 1
   fi
   ```
-
+  
 - 배포 실행 방법 작성
   - Jenkins 파이프라인 실행:
     ```
@@ -750,7 +750,7 @@
     kubectl get services -n {NAMESPACE}
     kubectl get ingress -n {NAMESPACE}
     ```
-
+  
 - 수동 배포 실행 방법
   ```bash
   # 개발환경 배포
@@ -762,7 +762,7 @@
   # 운영환경 배포
   ./deployment/cicd/scripts/deploy.sh prod latest
   ```
-
+  
 - 롤백 방법 작성
   - 이전 버전으로 롤백:
     ```bash
@@ -779,10 +779,10 @@
     kustomize edit set image {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}:{환경}-{이전태그}
     kubectl apply -k .
     ```
-
-[체크리스트]
-Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한 체크리스트입니다.
-
+  
+[체크리스트]  
+Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한 체크리스트입니다.  
+  
 ## 📋 사전 준비 체크리스트
 - [ ] package.json에서 프로젝트명 확인 완료
 - [ ] 실행정보 섹션에서 ACR명, 리소스 그룹, AKS 클러스터명 확인 완료
@@ -801,31 +801,31 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] **검증 명령어 실행 완료**:
   - [ ] `kubectl kustomize deployment/cicd/kustomize/base/` 정상 실행 확인
   - [ ] 에러 메시지 없이 모든 리소스 출력 확인
-
+  
 ## 🔧 환경별 Overlay 구성 체크리스트
 ### 공통 체크 사항
 - **base 매니페스트에 없는 항목을 추가하지 않았는지 체크**
 - **base 매니페스트와 항목이 일치 하는지 체크**
 - **⚠️ Kustomize patch 방법**: `patches` (target 명시)
-
+  
 ### DEV 환경
 - [ ] `overlays/dev/kustomization.yaml` 생성 완료
 - [ ] `overlays/dev/configmap-patch.yaml` 생성 완료 (개발 API 엔드포인트)
 - [ ] `overlays/dev/ingress-patch.yaml` 생성 완료 (**Host 기본값은 base의 ingress.yaml과 동일**)
 - [ ] `overlays/dev/deployment-patch.yaml` 생성 완료 (replicas=1, dev 리소스)
-
+  
 ### STAGING 환경
 - [ ] `overlays/staging/kustomization.yaml` 생성 완료
 - [ ] `overlays/staging/configmap-patch.yaml` 생성 완료 (스테이징 API 엔드포인트)
 - [ ] `overlays/staging/ingress-patch.yaml` 생성 완료 (staging 도메인, HTTPS)
 - [ ] `overlays/staging/deployment-patch.yaml` 생성 완료 (replicas=2, staging 리소스)
-
+  
 ### PROD 환경
 - [ ] `overlays/prod/kustomization.yaml` 생성 완료
 - [ ] `overlays/prod/configmap-patch.yaml` 생성 완료 (운영 API 엔드포인트)
 - [ ] `overlays/prod/ingress-patch.yaml` 생성 완료 (prod 도메인, HTTPS, SSL 인증서)
 - [ ] `overlays/prod/deployment-patch.yaml` 생성 완료 (replicas=3, prod 리소스)
-
+  
 ## ⚙️ 설정 및 스크립트 체크리스트
 - [ ] 환경별 설정 파일 생성: `config/deploy_env_vars_{dev,staging,prod}`
 - [ ] `Jenkinsfile` 생성 완료
@@ -839,7 +839,7 @@ Jenkins CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한
 - [ ] 스크립트 실행 권한 설정 완료 (`chmod +x scripts/*.sh`)
 - [ ] **검증 스크립트 실행하여 누락 리소스 확인 완료** (`./scripts/validate-resources.sh`)
 - [ ] Dockerfile 및 Nginx 설정 파일 생성 완료
-
+  
 [결과파일]
 - 가이드: deployment/cicd/jenkins-pipeline-guide.md
 - 환경별 설정 파일: deployment/cicd/config/*

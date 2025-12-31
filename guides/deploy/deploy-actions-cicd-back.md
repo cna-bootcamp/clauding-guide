@@ -14,7 +14,7 @@
   - GitHub Actions 워크플로우 파일 작성
   - 환경별 배포 변수 파일 작성
   - 수동 배포 스크립트 작성
-
+  
 [작업순서]
 - 사전 준비사항 확인   
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인  
@@ -22,7 +22,7 @@
   - {RESOURCE_GROUP}: Azure 리소스 그룹명
   - {AKS_CLUSTER}: AKS 클러스터명
   - {NAMESPACE}: Namespace명 
-    예시)
+  예시)
   ```
   [실행정보]
   - ACR_NAME: acrdigitalgarage01
@@ -30,9 +30,9 @@
   - AKS_CLUSTER: aks-digitalgarage-01
   - NAMESPACE: phonebill-dg0500
   ``` 
-
-- 시스템명과 서비스명 확인   
-  settings.gradle에서 확인.
+  
+- 시스템명과 서비스명 확인     
+  settings.gradle에서 확인.  
   - {SYSTEM_NAME}: rootProject.name
   - {SERVICE_NAMES}: include 'common'하위의 include문 뒤의 값임
 
@@ -46,10 +46,10 @@
   include 'order-service'
   include 'payment-service'
   ```  
-
-- JDK버전 확인
-  루트 build.gradle에서 JDK 버전 확인.   
-  {JDK_VERSION}: 'java' 섹션에서 JDK 버전 확인. 아래 예에서는 21임.
+  
+- JDK버전 확인  
+  루트 build.gradle에서 JDK 버전 확인.    
+  {JDK_VERSION}: 'java' 섹션에서 JDK 버전 확인. 아래 예에서는 21임.  
   ```
   java {
       toolchain {
@@ -122,8 +122,8 @@
     ENVIRONMENT: dev (기본값, 수동실행시 선택 가능: dev/staging/prod)
     SKIP_SONARQUBE: true (기본값, 수동실행시 선택 가능: true/false)
     ```
-    
-    **사용 방법:**
+      
+    **사용 방법:**  
     - **자동 실행**: Push/PR 시 기본값 사용 (ENVIRONMENT=dev, SKIP_SONARQUBE=true)  
     - **수동 실행**: Actions 탭 > "Backend Services CI/CD" > "Run workflow" 버튼 클릭
       - Environment: dev/staging/prod 선택
@@ -175,13 +175,13 @@
 
 - 환경별 Patch 파일 생성
   각 환경별로 필요한 patch 파일들을 생성합니다.   
-  **중요원칙**:
+  **중요원칙**:  
   - **base 매니페스트에 없는 항목은 추가 안함**
   - **base 매니페스트와 항목이 일치해야 함**
   - Secret 매니페스트에 'data'가 아닌 'stringData'사용
 
-  **1. ConfigMap Common Patch 파일 생성**
-  `.github/kustomize/overlays/{ENVIRONMENT}/cm-common-patch.yaml`
+  **1. ConfigMap Common Patch 파일 생성**   
+  `.github/kustomize/overlays/{ENVIRONMENT}/cm-common-patch.yaml`  
 
   - base 매니페스트를 환경별로 복사
     ```
@@ -192,16 +192,16 @@
   - DDL_AUTO 설정: dev는 "update", staging/prod는 "validate"
   - JWT 토큰 유효시간은 prod에서 보안을 위해 짧게 설정
 
-  **2. Secret Common Patch 파일 생성**
-  `.github/kustomize/overlays/{ENVIRONMENT}/secret-common-patch.yaml`
+  **2. Secret Common Patch 파일 생성**    
+  `.github/kustomize/overlays/{ENVIRONMENT}/secret-common-patch.yaml`     
 
   - base 매니페스트를 환경별로 복사
     ```
     cp .github/kustomize/base/common/secret-common.yaml .github/kustomize/overlays/{ENVIRONMENT}/secret-common-patch.yaml
     ```
-
-  **3. Ingress Patch 파일 생성**
-  `.github/kustomize/overlays/{ENVIRONMENT}/ingress-patch.yaml`
+  
+  **3. Ingress Patch 파일 생성**  
+  `.github/kustomize/overlays/{ENVIRONMENT}/ingress-patch.yaml`   
   - base의 ingress.yaml을 환경별로 오버라이드
   - **⚠️ 중요**: 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 **정확히 동일하게** 함
     - base에서 `host: {SYSTEM_NAME}-api.20.214.196.128.nip.io` 이면
@@ -213,11 +213,11 @@
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
-  **4. deployment Patch 파일 생성** ⚠️ **중요**
-  각 서비스별로 별도 파일 생성
-  `.github/kustomize/overlays/{ENVIRONMENT}/deployment-{SERVICE_NAME}-patch.yaml`
+  **4. deployment Patch 파일 생성** ⚠️ **중요**  
+  각 서비스별로 별도 파일 생성    
+  `.github/kustomize/overlays/{ENVIRONMENT}/deployment-{SERVICE_NAME}-patch.yaml`   
 
-  **필수 포함 사항:**
+  **필수 포함 사항:**  
   - ✅ **replicas 설정**: 각 서비스별 Deployment의 replica 수를 환경별로 설정
     - dev: 모든 서비스 1 replica (리소스 절약)
     - staging: 모든 서비스 2 replicas
@@ -227,19 +227,19 @@
     - staging: requests(512m CPU, 512Mi Memory), limits(2048m CPU, 2048Mi Memory)
     - prod: requests(1024m CPU, 1024Mi Memory), limits(4096m CPU, 4096Mi Memory)
 
-  **5. Secret Service Patch 파일 생성**
-  각 서비스별로 별도 파일 생성
-  `.github/kustomize/overlays/{ENVIRONMENT}/secret-{SERVICE_NAME}-patch.yaml`
+  **5. Secret Service Patch 파일 생성**  
+  각 서비스별로 별도 파일 생성  
+  `.github/kustomize/overlays/{ENVIRONMENT}/secret-{SERVICE_NAME}-patch.yaml`   
 
   - base 매니페스트를 환경별로 복사
     ```
     cp .github/kustomize/base/{SERVICE_NAME}/secret-{SERVICE_NAME}.yaml .github/kustomize/overlays/{ENVIRONMENT}/secret-{SERVICE_NAME}-patch.yaml
     ```
-  - 환경별 데이터베이스 연결 정보로 수정
+  - 환경별 데이터베이스 연결 정보로 수정  
   - **⚠️ 중요**: 패스워드 등 민감정보는 실제 환경 구축 시 별도 설정
-
-- 환경별 Overlay 작성  
-  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성
+  
+- 환경별 Overlay 작성   
+  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성   
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
@@ -276,11 +276,11 @@
       newTag: {ENVIRONMENT}-latest
 
   ```
-
-- GitHub Actions 워크플로우 작성 
-  `.github/workflows/backend-cicd.yaml` 파일 생성 방법을 안내합니다.
   
-  주요 구성 요소:
+- GitHub Actions 워크플로우 작성   
+  `.github/workflows/backend-cicd.yaml` 파일 생성 방법을 안내합니다.   
+  
+  주요 구성 요소:  
   - **Build & Test**: Gradle 기반 빌드 및 단위 테스트
   - **SonarQube Analysis**: 코드 품질 분석 및 Quality Gate
   - **Container Build & Push**: 환경별 이미지 태그로 빌드 및 푸시
@@ -562,35 +562,35 @@
             kubectl -n ${{ env.NAMESPACE }} wait --for=condition=available deployment/${{ env.ENVIRONMENT }}-kos-mock --timeout=300s
 
   ```
-
-- GitHub Actions 전용 환경별 설정 파일 작성    
-  `.github/config/deploy_env_vars_{환경}` 파일 생성 방법  
   
-  **.github/config/deploy_env_vars_dev**
+- GitHub Actions 전용 환경별 설정 파일 작성     
+  `.github/config/deploy_env_vars_{환경}` 파일 생성 방법    
+  
+  **.github/config/deploy_env_vars_dev**  
   ```bash
   # dev Environment Configuration
   resource_group={RESOURCE_GROUP}
   cluster_name={AKS_CLUSTER}
   ```
 
-  **.github/config/deploy_env_vars_staging**
+  **.github/config/deploy_env_vars_staging**  
   ```bash
   # staging Environment Configuration
   resource_group={RESOURCE_GROUP}
   cluster_name={AKS_CLUSTER}
   ```
 
-  **.github/config/deploy_env_vars_prod**
+  **.github/config/deploy_env_vars_prod**  
   ```bash
   # prod Environment Configuration
   resource_group={RESOURCE_GROUP}
   cluster_name={AKS_CLUSTER}
   ```
-  
-  **참고**: Kustomize 방식에서는 namespace, replicas, resources 등은 kustomization.yaml과 patch 파일에서 관리됩니다.
+    
+  **참고**: Kustomize 방식에서는 namespace, replicas, resources 등은 kustomization.yaml과 patch 파일에서 관리됩니다.   
 
-- GitHub Actions 전용 수동 배포 스크립트 작성
-  `.github/scripts/deploy-actions.sh` 파일 생성:
+- GitHub Actions 전용 수동 배포 스크립트 작성  
+  `.github/scripts/deploy-actions.sh` 파일 생성:  
   ```bash
   #!/bin/bash
   set -e
@@ -689,10 +689,10 @@
     # 이전 안정 버전 이미지 태그로 배포
     ./deployment/cicd/scripts/deploy-actions.sh {환경} {이전태그}
     ```
-
+  
 [체크리스트]
 GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한 체크리스트입니다.
-
+  
 ## 📋 사전 준비 체크리스트
 - [ ] settings.gradle에서 시스템명과 서비스명 확인 완료
 - [ ] 실행정보 섹션에서 ACR명, 리소스 그룹, AKS 클러스터명 확인 완료
@@ -761,7 +761,7 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 
 - [ ] 수동 배포 스크립트 `.github/scripts/deploy-actions.sh` 생성 완료
 - [ ] 스크립트 실행 권한 설정 완료 (`chmod +x .github/scripts/*.sh`)
-
+  
 [결과파일]
 - 가이드: .github/actions-pipeline-guide.md
 - GitHub Actions 워크플로우: .github/workflows/backend-cicd.yaml

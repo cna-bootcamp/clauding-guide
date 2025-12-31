@@ -1,5 +1,5 @@
 # 프론트엔드 GitHub Actions 파이프라인 작성 가이드
-
+  
 [요청사항]
 - GitHub Actions + Kustomize 기반 CI/CD 파이프라인 구축 가이드 작성
 - 환경별(dev/staging/prod) 매니페스트 관리 및 자동 배포 구현
@@ -15,7 +15,7 @@
   - GitHub Actions 워크플로우 파일 작성
   - 환경별 배포 변수 파일 작성
   - 수동 배포 스크립트 작성
-
+  
 [작업순서]
 - 사전 준비사항 확인
   프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
@@ -25,17 +25,17 @@
   - {AKS_CLUSTER}: AKS 클러스터명
   - {NAMESPACE}: Namespace명 
     예시)
-  ```
-  [실행정보]
-  - SYSTEM_NAME: phonebill
-  - ACR_NAME: acrdigitalgarage01
-  - RESOURCE_GROUP: rg-digitalgarage-01
-  - AKS_CLUSTER: aks-digitalgarage-01
-  - NAMESPACE: phonebill-dg0500
-  ```
+    ```
+    [실행정보]
+    - SYSTEM_NAME: phonebill
+    - ACR_NAME: acrdigitalgarage01
+    - RESOURCE_GROUP: rg-digitalgarage-01
+    - AKS_CLUSTER: aks-digitalgarage-01
+    - NAMESPACE: phonebill-dg0500
+    ```
 
-- 서비스명 확인
-  package.json에서 확인.
+- 서비스명 확인  
+  package.json에서 확인.    
   - {SERVICE_NAME}: package.json의 "name" 필드
   예시)
   ```json
@@ -47,7 +47,7 @@
   ```
 
 - Node.js 버전 확인
-  package.json에서 Node.js 버전 확인.
+  package.json에서 Node.js 버전 확인.   
   {NODE_VERSION}: "engines" 섹션에서 Node.js 버전 확인. 없으면 20 버전 사용.
   ```json
   {
@@ -81,19 +81,19 @@
     ```
 
     - ACR Credentials
-      Credential 구하는 방법 안내
-      az acr credential show --name {acr 이름}
-      예) az acr credential show --name acrdigitalgarage01
+      Credential 구하는 방법 안내    
+      az acr credential show --name {acr 이름}    
+      예) az acr credential show --name acrdigitalgarage01    
       ```
       ACR_USERNAME: {ACR_NAME}
       ACR_PASSWORD: {ACR패스워드}
       ```
     - SonarQube URL과 인증 토큰
-      SONAR_HOST_URL 구하는 방법과 SONAR_TOKEN 작성법 안내
-      SONAR_HOST_URL: 아래 명령 수행 후 http://{External IP}를 지정
-      k get svc -n sonarqube
-      예) http://20.249.187.69
-
+      SONAR_HOST_URL 구하는 방법과 SONAR_TOKEN 작성법 안내    
+      SONAR_HOST_URL: 아래 명령 수행 후 http://{External IP}를 지정   
+      k get svc -n sonarqube   
+      예) http://20.249.187.69     
+  
       SONAR_TOKEN 값은 아래와 같이 작성
       - SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭
       - Security 탭 선택 후 토큰 생성
@@ -104,8 +104,8 @@
       ```
 
     - Docker Hub (Rate Limit 해결용)
-      Docker Hub 패스워드 작성 방법 안내
-      - DockerHub(https://hub.docker.com)에 로그인
+      Docker Hub 패스워드 작성 방법 안내   
+      - DockerHub(https://hub.docker.com)에 로그인   
       - 우측 상단 프로필 아이콘 클릭 후 Account Settings를 선택
       - 좌측메뉴에서 'Personal Access Tokens' 클릭하여 생성
       ```
@@ -122,16 +122,16 @@
     SKIP_SONARQUBE: true (기본값: true/false)
     ```
 
-    **사용 방법:**
+    **사용 방법:**  
     - **자동 실행**: Push/PR 시 Variables에 설정된 값 사용
     - **수동 실행**: Actions 탭 > "Frontend CI/CD" > "Run workflow" 버튼 클릭
     - **변수 변경**: Repository Settings에서 Variables 값 수정
 
 - ESLint 설정 파일 작성
-  TypeScript React 프로젝트를 위한 `.eslintrc.cjs` 파일을 프로젝트 루트에 생성합니다.
+  TypeScript React 프로젝트를 위한 `.eslintrc.cjs` 파일을 프로젝트 루트에 생성합니다.  
 
   **⚠️ 중요**: ES 모듈 프로젝트에서는 `.eslintrc.cjs` 확장자 사용 필수
-
+  
   ```javascript
   module.exports = {
     root: true,
@@ -196,7 +196,7 @@
   }
   ```
 
-  **필수 ESLint 관련 devDependencies 설치**:
+  **필수 ESLint 관련 devDependencies 설치**:  
   ```bash
   npm install --save-dev eslint-plugin-react
   ```
@@ -228,7 +228,7 @@
 
 - Base Kustomization 작성
   `.github/kustomize/base/kustomization.yaml` 파일 생성
-
+  
   **⚠️ 중요: 리소스 누락 방지 가이드**
   1. **디렉토리별 파일 확인**: base 디렉토리의 모든 yaml 파일을 확인
   2. **일관성 체크**: 모든 리소스가 동일한 파일 구조를 가지는지 확인
@@ -253,7 +253,7 @@
     - name: {ACR_NAME}.azurecr.io/{SYSTEM_NAME}/{SERVICE_NAME}
       newTag: latest
   ```
-
+  
   **검증 명령어**:
   ```bash
   # base 디렉토리의 파일 확인
@@ -264,14 +264,14 @@
   ```
 
 - 환경별 Patch 파일 생성
-  각 환경별로 필요한 patch 파일들을 생성합니다.
-  **중요원칙**:
+  각 환경별로 필요한 patch 파일들을 생성합니다.   
+  **중요원칙**:   
   - **base 매니페스트에 없는 항목은 추가 안함**
   - **base 매니페스트와 항목이 일치해야 함**
 
-  **1. ConfigMap Patch 파일 생성**
+  **1. ConfigMap Patch 파일 생성**   
   `.github/kustomize/overlays/{ENVIRONMENT}/configmap-patch.yaml`
-
+  
   - base 매니페스트를 환경별로 복사
     ```
     cp .github/kustomize/base/configmap.yaml .github/kustomize/overlays/{ENVIRONMENT}/configmap-patch.yaml
@@ -279,9 +279,9 @@
 
   - 환경별 API 엔드포인트 설정
   - dev: 개발 API 서버 주소, staging/prod: 운영 API 서버 주소
-
-  **2. Ingress Patch 파일 생성**
-  `.github/kustomize/overlays/{ENVIRONMENT}/ingress-patch.yaml`
+  
+  **2. Ingress Patch 파일 생성**  
+  `.github/kustomize/overlays/{ENVIRONMENT}/ingress-patch.yaml`  
   - base의 ingress.yaml을 환경별로 오버라이드
   - **⚠️ 중요**: 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 **정확히 동일하게** 함
     - base에서 `host: {SERVICE_NAME}.20.214.196.128.nip.io` 이면
@@ -291,10 +291,10 @@
   - Staging/prod 환경은 HTTPS 강제 적용 및 SSL 인증서 설정
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
-
-  **3. Deployment Patch 파일 생성** ⚠️ **중요**
+  
+  **3. Deployment Patch 파일 생성** ⚠️ **중요**  
   `.github/kustomize/overlays/{ENVIRONMENT}/deployment-patch.yaml`
-
+  
   **필수 포함 사항:**
   - ✅ **replicas 설정**: Deployment의 replica 수를 환경별로 설정
     - dev: 1 replica (리소스 절약)
@@ -304,13 +304,13 @@
     - dev: requests(256m CPU, 256Mi Memory), limits(1024m CPU, 1024Mi Memory)
     - staging: requests(512m CPU, 512Mi Memory), limits(2048m CPU, 2048Mi Memory)
     - prod: requests(1024m CPU, 1024Mi Memory), limits(4096m CPU, 4096Mi Memory)
-
+  
   **작성 형식:**
   - **Strategic Merge Patch 형식** 사용 (JSON Patch 아님)
   - replicas와 resources를 **반드시 모두** 포함
-
+  
 - 환경별 Overlay 작성
-  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성
+  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성  
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
@@ -339,10 +339,10 @@
       newTag: latest
 
   ```
-
+  
 - GitHub Actions 워크플로우 작성
-  `.github/workflows/frontend-cicd.yaml` 파일 생성 방법을 안내합니다.
-
+  `.github/workflows/frontend-cicd.yaml` 파일 생성 방법을 안내합니다.  
+  
   주요 구성 요소:
   - **Build & Test**: Node.js 기반 빌드 및 단위 테스트, ESLint 검사
   - **SonarQube Analysis**: 프론트엔드 코드 품질 분석 및 Quality Gate
@@ -584,33 +584,33 @@
             kubectl -n ${{ env.NAMESPACE }} wait --for=condition=available deployment/{SERVICE_NAME} --timeout=300s
 
   ```
-
+   
 - GitHub Actions 전용 환경별 설정 파일 작성
-  `.github/config/deploy_env_vars_{환경}` 파일 생성 방법
+  `.github/config/deploy_env_vars_{환경}` 파일 생성 방법  
 
-  **.github/config/deploy_env_vars_dev**
+  **.github/config/deploy_env_vars_dev**  
   ```bash
   # dev Environment Configuration
   resource_group={RESOURCE_GROUP}
   cluster_name={AKS_CLUSTER}
   ```
-
+  
   **.github/config/deploy_env_vars_staging**
   ```bash
   # staging Environment Configuration
   resource_group={RESOURCE_GROUP}
   cluster_name={AKS_CLUSTER}
   ```
-
+  
   **.github/config/deploy_env_vars_prod**
   ```bash
   # prod Environment Configuration
   resource_group={RESOURCE_GROUP}
   cluster_name={AKS_CLUSTER}
   ```
-
+  
   **참고**: Kustomize 방식에서는 namespace, replicas, resources 등은 kustomization.yaml과 patch 파일에서 관리됩니다.
-
+  
 - GitHub Actions 전용 수동 배포 스크립트 작성
   `.github/scripts/deploy-actions-frontend.sh` 파일 생성:
   ```bash
@@ -671,7 +671,7 @@
 
   echo "✅ GitHub Actions frontend deployment completed successfully!"
   ```
-
+  
 - SonarQube 프로젝트 설정 방법 작성
   - SonarQube에서 프론트엔드 프로젝트 생성
   - 프로젝트 키: `{SERVICE_NAME}-{환경}`
@@ -687,7 +687,7 @@
     Bugs: = 0
     Vulnerabilities: = 0
     ```
-
+  
 - 롤백 방법 작성
   - GitHub Actions에서 이전 버전으로 롤백:
     ```bash
@@ -708,7 +708,7 @@
     # 이전 안정 버전 이미지 태그로 배포
     ./.github/scripts/deploy-actions-frontend.sh {환경} {이전태그}
     ```
-
+  
 [체크리스트]
 GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한 체크리스트입니다.
 
@@ -765,7 +765,7 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 
 - [ ] 수동 배포 스크립트 `.github/scripts/deploy-actions-frontend.sh` 생성 완료
 - [ ] 스크립트 실행 권한 설정 완료 (`chmod +x .github/scripts/*.sh`)
-
+  
 [결과파일]
 - 가이드: .github/actions-pipeline-guide.md
 - GitHub Actions 워크플로우: .github/workflows/frontend-cicd.yaml
