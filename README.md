@@ -23,9 +23,25 @@
 **저작자**: 이해경 (hiondal@gmail.com), 유니콘주식회사 대표  
 [저작권등록증](https://drive.google.com/file/d/1bvUha4h9JOQAay02dD5T5yfpRmf4jua6/view?usp=drive_link)   
   
+## Human + AI 협업 개념도    
+Clauding Garage Academy의 Human과 AI와의 협업 개념도입니다.    
+
+![](images/2025-12-31-15-48-04.png)  
+
+| 단계 | 수행 주체 | 영역 | 상세 내용 |
+|:---:|:---:|:---:|:---|
+| **1. 요청** | 👤 Human | PC | 터미널이나 채팅창에서 `/design-api`와 같은 명령어를 입력하여 작업을 트리거합니다. |
+| **2. 탐색** | 🤖 AI | PC (Local) | `.claude/commands` 디렉토리에서 해당 커맨드의 설명과 기본 프롬프트 형식을 찾습니다. |
+| **3. 해석** | 🤖 AI | PC (Local) | `CLAUDE.md` 파일을 읽어 프롬프트에 포함된 약어(`@architecture` 등)를 풀이하고, 필요한 가이드 문서의 URL을 파악합니다. |
+| **4. 동기화** | 🤖 AI | Repo ↔ PC | 중앙 레포지토리에서 최신 가이드(`api-design.md` 등)를 curl로 다운로드하여 로컬 `claude/` 디렉토리에 저장합니다. |
+| **5. 추론** | 🤖 AI | Claude | 조합된 프롬프트(약어 풀이 + 요청 사항)와 가이드 문서의 지침을 결합하여 컨텍스트를 구성합니다. |
+| **6. 완료** | 🤖 AI | Claude → PC | 설계서 작성, 코드 생성 등 기획-설계-개발-배포 단계에 맞는 최종 결과물을 사용자에게 전달합니다. |
+
+      
 ## 목차  
 - [Clauding Garage Academy](#clauding-garage-academy)
   - [📄 라이선스](#-라이선스)
+  - [Human + AI 협업 개념도](#human--ai-협업-개념도)
   - [목차](#목차)
   - [사전준비](#사전준비)
   - [프로젝트 생성 및 Instruction 설정](#프로젝트-생성-및-instruction-설정)
