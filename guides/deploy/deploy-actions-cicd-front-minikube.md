@@ -694,6 +694,6 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 - [ ] 스크립트 실행 권한 설정 완료 (`chmod +x .github/scripts/*.sh`)
   
 [결과파일]
-- 가이드: .github/actions-pipeline-guide.md
+- 가이드: deployment/cicd/actions-pipeline-guide.md
 - GitHub Actions 워크플로우: .github/workflows/frontend-cicd.yaml
 - GitHub Actions 전용 Kustomize 매니페스트: .github/kustomize/*
