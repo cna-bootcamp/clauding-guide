@@ -113,16 +113,16 @@
       # (base64 인코딩 없이 원본 그대로 등록)
       ```
 
-    - SonarQube URL과 인증 토큰 (선택사항)
-      SONAR_HOST_URL 구하는 방법과 SONAR_TOKEN 작성법 안내
-      SONAR_HOST_URL: 아래 명령 수행 후 http://{External IP}를 지정
-      k get svc -n sonarqube
-      예) http://20.249.187.69
-
-      SONAR_TOKEN 값은 아래와 같이 작성
+    - SonarQube URL과 인증 토큰 (선택사항)   
+      SONAR_HOST_URL 구하는 방법과 SONAR_TOKEN 작성법 안내.    
+      SONAR_HOST_URL: 아래 명령 수행 후 http://{External IP}를 지정.    
+      k get svc -n sonarqube.    
+      예) http://20.249.187.69.   
+        
+      SONAR_TOKEN 값은 아래와 같이 작성.   
       - SonarQube 로그인 후 우측 상단 'Administrator' > My Account 클릭
       - Security 탭 선택 후 토큰 생성
-
+  
       ```
       SONAR_TOKEN: {SonarQube토큰}
       SONAR_HOST_URL: {SonarQube서버URL}
