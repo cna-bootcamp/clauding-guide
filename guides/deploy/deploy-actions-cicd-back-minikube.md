@@ -14,10 +14,10 @@
   - 환경별 Patch 파일 생성
   - GitHub Actions 워크플로우 파일 작성
   - 수동 배포 스크립트 작성
-
+  
 [작업순서]
 - 사전 준비사항 확인
-  프롬프트의 '[실행정보]'섹션에서 아래정보를 확인
+  프롬프트의 '[실행정보]'섹션에서 아래정보를 확인  
   - {SYSTEM_NAME}: 시스템명
   - {IMG_REG}: 이미지 레지스트리 (docker.io)
   - {IMG_ORG}: 이미지 Organization (Docker Hub 사용자명)
@@ -25,23 +25,23 @@
   - {VM_IP}: Minikube가 설치된 VM의 Public IP
   - {VM_USER}: VM 접속 사용자명
   - {MINIKUBE_IP}: Minikube 클러스터 IP (기본값: 192.168.49.2)
-    예시)
-  ```
-  [실행정보]
-  - SYSTEM_NAME: phonebill
-  - IMG_REG: docker.io
-  - IMG_ORG: hiondal
-  - NAMESPACE: phonebill
-  - VM_IP: 52.231.227.173
-  - VM_USER: azureuser
-  - MINIKUBE_IP: 192.168.49.2
-  ```
-
-- 시스템명과 서비스명 확인
-  settings.gradle에서 확인.
+    예시)  
+    ```
+    [실행정보]
+    - SYSTEM_NAME: phonebill
+    - IMG_REG: docker.io
+    - IMG_ORG: hiondal
+    - NAMESPACE: phonebill
+    - VM_IP: 52.231.227.173
+    - VM_USER: azureuser
+    - MINIKUBE_IP: 192.168.49.2
+    ```
+  
+- 시스템명과 서비스명 확인  
+  settings.gradle에서 확인.  
   - {SYSTEM_NAME}: rootProject.name
   - {SERVICE_NAMES}: include 'common'하위의 include문 뒤의 값임
-
+  
   예시) include 'common'하위의 서비스명들.
   ```
   rootProject.name = 'phonebill'
@@ -53,10 +53,10 @@
   include 'product-service'
   include 'kos-mock'
   ```
-
-- JDK버전 확인
-  루트 build.gradle에서 JDK 버전 확인.
-  {JDK_VERSION}: 'java' 섹션에서 JDK 버전 확인. 아래 예에서는 21임.
+  
+- JDK버전 확인  
+  루트 build.gradle에서 JDK 버전 확인.  
+  {JDK_VERSION}: 'java' 섹션에서 JDK 버전 확인. 아래 예에서는 21임.  
   ```
   java {
       toolchain {
@@ -64,9 +64,9 @@
       }
   }
   ```
-
-- GitHub 저장소 환경 구성 안내
-  - GitHub Repository Secrets 설정
+  
+- GitHub 저장소 환경 구성 안내  
+  - GitHub Repository Secrets 설정  
     ```
     Repository Settings > Secrets and variables > Actions > Repository secrets에 등록
     ```
@@ -81,13 +81,13 @@
       DOCKERHUB_PASSWORD: {Docker Hub Access Token}
       ```
 
-    - VM SSH 접속 정보 (Minikube 배포용)
+    - VM SSH 접속 정보 (Minikube 배포용)  
       ```
       VM_IP: {VM의 Public IP 주소}
       VM_USER: {VM 접속 사용자명}
       VM_SSH_KEY: {VM 접속용 SSH 개인키 내용 전체}
       ```
-      **VM_SSH_KEY 작성 방법:**
+      **VM_SSH_KEY 작성 방법:**  
       ```bash
       # 로컬에서 SSH 개인키 내용 확인
       cat ~/.ssh/id_rsa
@@ -98,9 +98,9 @@
       # -----BEGIN OPENSSH PRIVATE KEY----- 부터
       # -----END OPENSSH PRIVATE KEY----- 까지 전체
       ```
-
-    - KUBECONFIG 설정
-      Minikube 클러스터의 kubeconfig 파일 내용을 등록
+  
+    - KUBECONFIG 설정  
+      Minikube 클러스터의 kubeconfig 파일 내용을 등록  
       ```
       KUBECONFIG: {kubeconfig 파일 내용 전체}
       ```
@@ -112,8 +112,8 @@
       # 출력된 내용 전체를 복사하여 Secret에 등록
       # (base64 인코딩 없이 원본 그대로 등록)
       ```
-
-    - SonarQube URL과 인증 토큰 (선택사항)   
+  
+    - SonarQube URL과 인증 토큰 (선택사항)    
       SONAR_HOST_URL 구하는 방법과 SONAR_TOKEN 작성법 안내.    
       SONAR_HOST_URL: 아래 명령 수행 후 http://{External IP}를 지정.    
       k get svc -n sonarqube.    
@@ -127,8 +127,8 @@
       SONAR_TOKEN: {SonarQube토큰}
       SONAR_HOST_URL: {SonarQube서버URL}
       ```
-
-  - GitHub Repository Variables 설정
+  
+  - GitHub Repository Variables 설정  
     ```
     # Workflow 제어 변수
     Repository Settings > Secrets and variables > Actions > Variables > Repository variables에 등록
@@ -136,20 +136,20 @@
     ENVIRONMENT: dev (기본값: dev/staging/prod)
     SKIP_SONARQUBE: true (기본값: true/false)
     ```
-
+  
     **사용 방법:**
     - **자동 실행**: Push/PR 시 Variables에 설정된 값 사용
     - **수동 실행**: Actions 탭 > "Backend Services CI/CD (Generic K8s)" > "Run workflow" 버튼 클릭
     - **변수 변경**: Repository Settings에서 Variables 값 수정
-
-- Kustomize 디렉토리 구조 생성
-  - GitHub Actions 전용 Kustomize 디렉토리 생성
+  
+- Kustomize 디렉토리 구조 생성  
+  - GitHub Actions 전용 Kustomize 디렉토리 생성  
     ```bash
     mkdir -p .github/kustomize/{base,overlays/{dev,staging,prod}}
     mkdir -p .github/kustomize/base/{common,{서비스명1},{서비스명2},...}
     mkdir -p .github/scripts
     ```
-  - 기존 k8s 매니페스트를 base로 복사
+  - 기존 k8s 매니페스트를 base로 복사  
     ```bash
     # 기존 deployment/k8s/* 파일들을 base로 복사
     cp deployment/k8s/common/* .github/kustomize/base/common/
@@ -158,16 +158,16 @@
     # 네임스페이스 하드코딩 제거
     find .github/kustomize/base -name "*.yaml" -exec sed -i 's/namespace: .*//' {} \;
     ```
-
-- Base Kustomization 작성
-  `.github/kustomize/base/kustomization.yaml` 파일 생성
-
+  
+- Base Kustomization 작성  
+  `.github/kustomize/base/kustomization.yaml` 파일 생성  
+    
   **⚠️ 중요: 리소스 누락 방지 가이드**
   1. **디렉토리별 파일 확인**: base 디렉토리의 모든 yaml 파일을 확인
   2. **일관성 체크**: 모든 리소스가 동일한 파일 구조를 가지는지 확인
   3. **누락 검증**: `ls .github/kustomize/base/*/` 명령으로 실제 파일과 kustomization.yaml 리스트 비교
   4. **명명 규칙 준수**: ConfigMap은 `cm-{SERVICE_NAME}.yaml`, Secret은 `secret-{SERVICE_NAME}.yaml` 패턴 확인
-
+  
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
@@ -190,7 +190,7 @@
     - name: {IMG_REG}/{IMG_ORG}/{SERVICE_NAME}
       newTag: latest
   ```
-
+  
   **검증 명령어**:
   ```bash
   # base 디렉토리의 파일 확인
@@ -199,36 +199,36 @@
   # kustomization.yaml 유효성 검사
   kubectl kustomize .github/kustomize/base/
   ```
-
-- 환경별 Patch 파일 생성
-  각 환경별로 필요한 patch 파일들을 생성합니다.
+  
+- 환경별 Patch 파일 생성  
+  각 환경별로 필요한 patch 파일들을 생성합니다.  
   **중요원칙**:
   - **base 매니페스트에 없는 항목은 추가 안함**
   - **base 매니페스트와 항목이 일치해야 함**
   - Secret 매니페스트에 'data'가 아닌 'stringData'사용
-
-  **1. ConfigMap Common Patch 파일 생성**
+  
+  **1. ConfigMap Common Patch 파일 생성**  
   `.github/kustomize/overlays/{ENVIRONMENT}/cm-common-patch.yaml`
-
-  - base 매니페스트를 환경별로 복사
+  
+  - base 매니페스트를 환경별로 복사  
     ```
     cp .github/kustomize/base/common/cm-common.yaml .github/kustomize/overlays/{ENVIRONMENT}/cm-common-patch.yaml
     ```
-
+  
   - SPRING_PROFILES_ACTIVE를 환경에 맞게 설정 (dev/staging/prod)
   - DDL_AUTO 설정: dev는 "update", staging/prod는 "validate"
   - JWT 토큰 유효시간은 prod에서 보안을 위해 짧게 설정
-
-  **2. Secret Common Patch 파일 생성**
+  
+  **2. Secret Common Patch 파일 생성**  
   `.github/kustomize/overlays/{ENVIRONMENT}/secret-common-patch.yaml`
-
+  
   - base 매니페스트를 환경별로 복사
     ```
     cp .github/kustomize/base/common/secret-common.yaml .github/kustomize/overlays/{ENVIRONMENT}/secret-common-patch.yaml
     ```
-
-  **3. Ingress Patch 파일 생성**
-  `.github/kustomize/overlays/{ENVIRONMENT}/ingress-patch.yaml`
+  
+  **3. Ingress Patch 파일 생성**  
+  `.github/kustomize/overlays/{ENVIRONMENT}/ingress-patch.yaml`  
   - base의 ingress.yaml을 환경별로 오버라이드
   - **⚠️ 중요**: 개발환경 Ingress Host의 기본값은 base의 ingress.yaml과 **정확히 동일하게** 함
     - base에서 `host: {SYSTEM_NAME}-api.{VM_IP}.nip.io` 이면
@@ -238,12 +238,12 @@
   - service name을 '{서비스명}'으로 함.
   - dev는 nginx.ingress.kubernetes.io/ssl-redirect: "false"
   - staging/prod는 nginx.ingress.kubernetes.io/ssl-redirect: "true"
-
-  **4. Deployment Patch 파일 생성** ⚠️ **중요**
-  각 서비스별로 별도 파일 생성
+  
+  **4. Deployment Patch 파일 생성** ⚠️ **중요**  
+  각 서비스별로 별도 파일 생성  
   `.github/kustomize/overlays/{ENVIRONMENT}/deployment-{SERVICE_NAME}-patch.yaml`
-
-  **필수 포함 사항:**
+  
+  **필수 포함 사항:**  
   - ✅ **replicas 설정**: 각 서비스별 Deployment의 replica 수를 환경별로 설정
     - dev: 모든 서비스 1 replica (리소스 절약)
     - staging: 모든 서비스 2 replicas
@@ -252,20 +252,20 @@
     - dev: requests(256m CPU, 256Mi Memory), limits(1024m CPU, 1024Mi Memory)
     - staging: requests(512m CPU, 512Mi Memory), limits(2048m CPU, 2048Mi Memory)
     - prod: requests(1024m CPU, 1024Mi Memory), limits(4096m CPU, 4096Mi Memory)
-
-  **5. Secret Service Patch 파일 생성**
-  각 서비스별로 별도 파일 생성
-  `.github/kustomize/overlays/{ENVIRONMENT}/secret-{SERVICE_NAME}-patch.yaml`
-
-  - base 매니페스트를 환경별로 복사
+  
+  **5. Secret Service Patch 파일 생성**  
+  각 서비스별로 별도 파일 생성  
+  `.github/kustomize/overlays/{ENVIRONMENT}/secret-{SERVICE_NAME}-patch.yaml`  
+  
+  - base 매니페스트를 환경별로 복사  
     ```
     cp .github/kustomize/base/{SERVICE_NAME}/secret-{SERVICE_NAME}.yaml .github/kustomize/overlays/{ENVIRONMENT}/secret-{SERVICE_NAME}-patch.yaml
     ```
   - 환경별 데이터베이스 연결 정보로 수정
   - **⚠️ 중요**: 패스워드 등 민감정보는 실제 환경 구축 시 별도 설정
-
-- 환경별 Overlay 작성
-  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성
+  
+- 환경별 Overlay 작성  
+  각 환경별로 `overlays/{환경}/kustomization.yaml` 생성  
   ```yaml
   apiVersion: kustomize.config.k8s.io/v1beta1
   kind: Kustomization
@@ -302,16 +302,16 @@
       newTag: {ENVIRONMENT}-latest
 
   ```
-
-- GitHub Actions 워크플로우 작성
-  `.github/workflows/backend-cicd.yaml` 파일 생성 방법을 안내합니다.
-
-  주요 구성 요소:
+  
+- GitHub Actions 워크플로우 작성  
+  `.github/workflows/backend-cicd.yaml` 파일 생성 방법을 안내합니다.  
+  
+  주요 구성 요소:  
   - **Build & Test**: Gradle 기반 빌드 및 단위 테스트
   - **SonarQube Analysis**: 코드 품질 분석 및 Quality Gate (vars.SKIP_SONARQUBE로 제어)
   - **Container Build & Push**: Docker Hub에 이미지 빌드 및 푸시
   - **SSH Tunnel & Deploy**: SSH 터널링을 통한 Minikube 클러스터 배포
-
+  
   ```yaml
   name: Backend Services CI/CD (Generic K8s)
 
@@ -554,9 +554,9 @@
             pkill -f "ssh.*8443" || true
 
   ```
-
-- GitHub Actions 전용 수동 배포 스크립트 작성
-  `.github/scripts/deploy-actions.sh` 파일 생성:
+  
+- GitHub Actions 전용 수동 배포 스크립트 작성  
+  `.github/scripts/deploy-actions.sh` 파일 생성:  
   ```bash
   #!/bin/bash
   set -e
@@ -608,8 +608,8 @@
 
   echo "✅ GitHub Actions backend deployment completed successfully!"
   ```
-
-- SonarQube 프로젝트 설정 방법 작성
+  
+- SonarQube 프로젝트 설정 방법 작성  
   - SonarQube에서 각 서비스별 프로젝트 생성
   - 프로젝트 키: `{SYSTEM_NAME}-{서비스명}-{환경}`
   - Quality Gate 설정:
@@ -620,8 +620,8 @@
     Reliability Rating: <= A
     Security Rating: <= A
     ```
-
-- 롤백 방법 작성
+  
+- 롤백 방법 작성  
   - GitHub Actions에서 이전 버전으로 롤백:
     ```bash
     # 이전 워크플로우 실행으로 롤백
@@ -641,14 +641,14 @@
     # 이전 안정 버전 이미지 태그로 배포
     ./.github/scripts/deploy-actions.sh {환경} {이전태그}
     ```
-
+  
 [체크리스트]
 GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기 위한 체크리스트입니다.
-
-## 📋 사전 준비 체크리스트
+  
+## 📋 사전 준비 체크리스트  
 - [ ] settings.gradle에서 시스템명과 서비스명 확인 완료
 - [ ] 실행정보 섹션에서 Docker Hub 사용자명, VM IP, Namespace 확인 완료
-
+  
 ## 🔐 GitHub Secrets 설정 체크리스트
 - [ ] DOCKERHUB_USERNAME: Docker Hub 사용자명
 - [ ] DOCKERHUB_PASSWORD: Docker Hub Access Token
@@ -658,11 +658,11 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 - [ ] KUBECONFIG: kubeconfig 파일 내용 (base64 인코딩 없이)
 - [ ] SONAR_TOKEN: SonarQube 토큰 (선택사항)
 - [ ] SONAR_HOST_URL: SonarQube 서버 URL (선택사항)
-
+  
 ## 🔧 GitHub Variables 설정 체크리스트
 - [ ] ENVIRONMENT: dev (기본값)
 - [ ] SKIP_SONARQUBE: true (기본값)
-
+  
 ## 📂 GitHub Actions 전용 Kustomize 구조 생성 체크리스트
 - [ ] 디렉토리 구조 생성: `.github/kustomize/{base,overlays/{dev,staging,prod}}`
 - [ ] 서비스별 base 디렉토리 생성: `.github/kustomize/base/{common,{서비스명들}}`
@@ -680,17 +680,17 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 - [ ] **검증 명령어 실행 완료**:
   - [ ] `kubectl kustomize .github/kustomize/base/` 정상 실행 확인
   - [ ] 에러 메시지 없이 모든 리소스 출력 확인
-
+  
 ## 🔧 GitHub Actions 전용 환경별 Overlay 구성 체크리스트
 ### 중요 체크 사항
 - Base Kustomization에서 존재하지 않는 Secret 파일들 제거
-
+  
 ### 공통 체크 사항
 - **base 매니페스트에 없는 항목을 추가하지 않았는지 체크**
 - **base 매니페스트와 항목이 일치 하는지 체크**
 - Secret 매니페스트에 'data'가 아닌 'stringData'사용했는지 체크
 - **⚠️ Kustomize patch 방법 변경**: `patchesStrategicMerge` → `patches` (target 명시)
-
+  
 ### DEV 환경
 - [ ] `.github/kustomize/overlays/dev/kustomization.yaml` 생성 완료
 - [ ] `.github/kustomize/overlays/dev/cm-common-patch.yaml` 생성 완료 (dev 프로파일, update DDL)
@@ -698,7 +698,7 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 - [ ] `.github/kustomize/overlays/dev/ingress-patch.yaml` 생성 완료 (**Host 기본값은 base의 ingress.yaml과 동일**)
 - [ ] `.github/kustomize/overlays/dev/deployment-{서비스명}-patch.yaml` 생성 완료 (replicas, resources 지정)
 - [ ] 각 서비스별 `.github/kustomize/overlays/dev/secret-{서비스명}-patch.yaml` 생성 완료
-
+  
 ### STAGING 환경
 - [ ] `.github/kustomize/overlays/staging/kustomization.yaml` 생성 완료
 - [ ] `.github/kustomize/overlays/staging/cm-common-patch.yaml` 생성 완료 (staging 프로파일, validate DDL)
@@ -706,7 +706,7 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 - [ ] `.github/kustomize/overlays/staging/ingress-patch.yaml` 생성 완료 (staging 도메인, HTTPS)
 - [ ] `.github/kustomize/overlays/staging/deployment-{서비스명}-patch.yaml` 생성 완료 (replicas, resources 지정)
 - [ ] 각 서비스별 `.github/kustomize/overlays/staging/secret-{서비스명}-patch.yaml` 생성 완료
-
+  
 ### PROD 환경
 - [ ] `.github/kustomize/overlays/prod/kustomization.yaml` 생성 완료
 - [ ] `.github/kustomize/overlays/prod/cm-common-patch.yaml` 생성 완료 (prod 프로파일, validate DDL, 짧은 JWT)
@@ -714,7 +714,7 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
 - [ ] `.github/kustomize/overlays/prod/ingress-patch.yaml` 생성 완료 (prod 도메인, HTTPS)
 - [ ] `.github/kustomize/overlays/prod/deployment-{서비스명}-patch.yaml` 생성 완료 (replicas, resources 지정)
 - [ ] 각 서비스별 `.github/kustomize/overlays/prod/secret-{서비스명}-patch.yaml` 생성 완료
-
+  
 ## ⚙️ GitHub Actions 설정 및 스크립트 체크리스트
 - [ ] GitHub Actions 워크플로우 파일 `.github/workflows/backend-cicd.yaml` 생성 완료
 - [ ] 워크플로우 주요 내용 확인
@@ -725,11 +725,11 @@ GitHub Actions CI/CD 파이프라인 구축 작업을 누락 없이 진행하기
   - **vars.ENVIRONMENT, vars.SKIP_SONARQUBE 사용 확인**
   - **SSH 터널링 및 KUBECONFIG 설정 확인**
   - **Docker Hub pull secret 생성 단계 확인**
-
+  
 - [ ] 수동 배포 스크립트 `.github/scripts/deploy-actions.sh` 생성 완료
 - [ ] 스크립트 실행 권한 설정 완료 (`chmod +x .github/scripts/*.sh`)
-
-[결과파일]
+  
+[결과파일]  
 - 가이드: .github/actions-pipeline-guide.md
 - GitHub Actions 워크플로우: .github/workflows/backend-cicd.yaml
 - GitHub Actions 전용 Kustomize 매니페스트: .github/kustomize/*
