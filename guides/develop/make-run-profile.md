@@ -4,7 +4,7 @@
 - <수행원칙>을 준용하여 수행
 - <수행순서>에 따라 수행
 - [결과파일] 안내에 따라 파일 작성 
-  
+   
 [가이드]      
 <수행원칙>
 - 설정 Manifest(src/main/resources/application*.yml)의 각 항목의 값은 하드코딩하지 않고 환경변수 처리 
@@ -21,7 +21,7 @@
     - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정 
   - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성
   - 결과: {service-name}/.run
-  
+   
 <실행프로파일 작성 가이드>
 - {service-name}/.run/{service-name}.run.xml 파일로 작성
 - Spring Boot가 아니고 **Gradle 실행 프로파일**이어야 함: '[실행프로파일 예시]' 참조  
@@ -31,7 +31,7 @@
 - application.yaml의 환경변수와 일치하도록 환경변수 설정 
 - application.yaml의 민감 정보는 기본값으로 지정하지 않고 실제 백킹서비스 정보로 지정
 - 기존에 파일이 있으면 내용을 분석하여 항목 추가/수정/삭제  
-  
+    
 [실행프로파일 예시]
 ```
 <component name="ProjectRunConfigurationManager">
