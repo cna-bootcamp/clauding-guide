@@ -8,14 +8,11 @@
 [가이드]      
 <수행원칙>
 - 설정 Manifest(src/main/resources/application*.yml)의 각 항목의 값은 하드코딩하지 않고 환경변수 처리 
-- Kubernetes에 배포된 데이터베이스는 LoadBalacer유형의 Service를 만들어 연결   
-- MQ 이용 시 'MQ설치결과서'의 연결 정보를 실행 프로파일의 환경변수로 등록 
+- '백킹서비스설치결과서'에 정의된 값과 일치
+
 <수행순서>
 - 준비:
-  - 데이터베이스설치결과서(develop/database/exec/db-exec-dev.md) 분석
-  - 캐시설치결과서(develop/database/exec/cache-exec-dev.md) 분석  
-  - MQ설치결과서(develop/mq/mq-exec-dev.md) 분석 - 연결 정보 확인
-  - kubectl get svc -n tripgen-dev | grep LoadBalancer 실행하여 External IP 목록 확인
+  - 백킹서비스설치결과서 분석
 - 실행:
   - 각 서비스별 서브에이젼트로 병렬 수행   
   - 설정 Manifest 수정
@@ -23,37 +20,16 @@
     - 특히, 데이터베이스, MQ 등의 연결 정보는 반드시 환경변수로 변환해야 함     
     - 민감한 정보의 디퐅트값은 생략하거나 간략한 값으로 지정 
   - '<실행프로파일 작성 가이드>'에 따라 서비스 실행프로파일 작성
-    - LoadBalancer External IP를 DB_HOST, REDIS_HOST로 설정
-    - MQ 연결 정보를 application.yml의 환경변수명에 맞춰 설정
   - 결과: {service-name}/.run
   
 <실행프로파일 작성 가이드>
 - {service-name}/.run/{service-name}.run.xml 파일로 작성
 - Spring Boot가 아니고 **Gradle 실행 프로파일**이어야 함: '[실행프로파일 예시]' 참조  
-- Kubernetes에 배포된 데이터베이스의 LoadBalancer Service 확인:
-  - kubectl get svc -n {namespace} | grep LoadBalancer 명령으로 LoadBalancer IP 확인
-  - 각 서비스별 데이터베이스의 LoadBalancer External IP를 DB_HOST로 사용
-  - 캐시(Redis)의 LoadBalancer External IP를 REDIS_HOST로 사용
-- MQ 연결 설정:
-  - MQ설치결과서(develop/mq/mq-exec-dev.md)에서 연결 정보 확인
-  - MQ 유형에 따른 연결 정보 설정 예시:
-    - RabbitMQ: RABBITMQ_HOST, RABBITMQ_PORT, RABBITMQ_USERNAME, RABBITMQ_PASSWORD
-    - Kafka: KAFKA_BOOTSTRAP_SERVERS, KAFKA_SECURITY_PROTOCOL
-    - Azure Service Bus: SERVICE_BUS_CONNECTION_STRING
-    - AWS SQS: AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
-    - Redis (Pub/Sub): REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
-    - ActiveMQ: ACTIVEMQ_BROKER_URL, ACTIVEMQ_USER, ACTIVEMQ_PASSWORD
-    - 기타 MQ: 해당 MQ의 연결에 필요한 호스트, 포트, 인증정보, 연결문자열 등을 환경변수로 설정
-  - application.yml에 정의된 환경변수명 확인 후 매핑
-- 백킹서비스 연결 정보 매핑:
-  - 데이터베이스설치결과서에서 각 서비스별 DB 인증 정보 확인
-  - 캐시설치결과서에서 각 서비스별 Redis 인증 정보 확인
-  - LoadBalancer의 External IP를 호스트로 사용 (내부 DNS 아님)
+- 백킹서비스설치결과서에 정의된 값과 일치하게 작성 
 - 개발모드의 DDL_AUTO값은 update로 함 
 - JWT Secret Key는 모든 서비스가 동일해야 함
 - application.yaml의 환경변수와 일치하도록 환경변수 설정 
 - application.yaml의 민감 정보는 기본값으로 지정하지 않고 실제 백킹서비스 정보로 지정
-- 백킹서비스 연결 확인 결과를 바탕으로 정확한 값을 지정  
 - 기존에 파일이 있으면 내용을 분석하여 항목 추가/수정/삭제  
   
 [실행프로파일 예시]
@@ -90,8 +66,6 @@
           <entry key="SERVER_PORT" value="8081" />
           <entry key="SPRING_PROFILES_ACTIVE" value="dev" />
           <!-- MQ 사용하는 서비스의 경우 MQ 유형에 맞게 추가 -->
-          <!-- Azure Service Bus 예시 -->
-          <entry key="SERVICE_BUS_CONNECTION_STRING" value="Endpoint=sb://...;SharedAccessKeyName=...;SharedAccessKey=..." />
           <!-- RabbitMQ 예시 -->
           <entry key="RABBITMQ_HOST" value="20.xxx.xxx.xxx" />
           <entry key="RABBITMQ_PORT" value="5672" />
@@ -136,16 +110,7 @@
 ```
   
 [참고자료]
-- 데이터베이스설치결과서: develop/database/exec/db-exec-dev.md
-  - 각 서비스별 DB 연결 정보 (사용자명, 비밀번호, DB명)
-  - LoadBalancer Service External IP 목록
-- 캐시설치결과서: develop/database/exec/cache-exec-dev.md  
-  - 각 서비스별 Redis 연결 정보
-  - LoadBalancer Service External IP 목록
-- MQ설치결과서: develop/mq/mq-exec-dev.md
-  - MQ 유형 및 연결 정보
-  - 연결에 필요한 호스트, 포트, 인증 정보
-  - LoadBalancer Service External IP (해당하는 경우)
+백킹서비스설치결과서: develop/backing-service.md
   
 [결과파일]
 {service-name}/.run/{service-name}.run.xml
