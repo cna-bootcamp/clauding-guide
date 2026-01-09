@@ -69,7 +69,7 @@ Clauding Garage Academy의 Human과 AI와의 협업 개념도입니다.
     - [데이터베이스 설치](#데이터베이스-설치)
     - [MQ 설치](#mq-설치)
   - [백엔드 개발/테스트](#백엔드-개발테스트)
-    - [Gradle Wraaper 구성](#gradle-wraaper-구성)
+    - [Gradle Wrapper 구성](#gradle-wrapper-구성)
     - [공통 개발요청](#공통-개발요청)
     - [서비스별 개발](#서비스별-개발)
     - [빌드관련 작업 수행](#빌드관련-작업-수행)
@@ -801,7 +801,7 @@ Message Queue 설치를 요청합니다.
 
 ## 백엔드 개발/테스트
 
-### Gradle Wraaper 구성     
+### Gradle Wrapper 구성     
 
 아래 프롬프트를 수행하여 gradle디렉토리 밑에 설정 파일과 wrapper jar 파일을 만듭니다.   
 이 파일들이 있어야 gradle로 build가 됩니다.    
