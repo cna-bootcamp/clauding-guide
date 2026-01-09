@@ -145,7 +145,7 @@ plugins {
     id 'io.freefair.lombok' version '8.10' apply false
 }
 
-group = 'com.unicorn.{시스템명}'
+group = 'com.{회사/조직명}.{시스템명}'
 version = '1.0.0'
 
 allprojects {
@@ -248,9 +248,9 @@ tasks.register('buildAll') {
 ```
 spring:
   datasource:
-    url: jdbc:${DB_KIND:postgresql}://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:phonebill_auth}
-    username: ${DB_USERNAME:phonebill_user}
-    password: ${DB_PASSWORD:phonebill_pass}
+    url: jdbc:${DB_KIND:postgresql}://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:}
+    username: ${DB_USERNAME:}
+    password: ${DB_PASSWORD:}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 20
@@ -282,7 +282,7 @@ spring:
           max-idle: 8
           min-idle: 0
           max-wait: -1ms
-      database: ${REDIS_DATABASE:0}
+      database: ${REDIS_DATABASE:}
   
 ```
   
