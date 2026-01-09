@@ -310,6 +310,7 @@
 - 데이터설계서: design/backend/database/{service-name}.md, design/backend/database/cache-db-design.md
 - HighLevel아키텍처정의서: design/high-level-architecture.md
 - 물리아키텍처: design/backend/physical/*
+- 백킹서비스설치결과서: develop/backing-service.md
 - 데이터베이스설치계획서 
   - develop/database/plan/db-plan-{service-name}-dev.md
   - develop/database/plan/db-plan-{service-name}-prod.md
