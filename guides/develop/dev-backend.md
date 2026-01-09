@@ -12,7 +12,7 @@
 - '개발주석표준'에 맞게 주석 작성
 - API설계서와 일관성 있게 개발. Controller에 API를 누락하지 말고 모두 개발
 - '외부시퀀스설계서'와 '내부시퀀스설계서'와 일치되도록 개발 
-- '백엔드패키지구조도'와 클래스설계와 일관성 있게 개발
+- '백엔드패키지구조도'와 '클래스설계서'와 일관성 있게 개발
 - 각 서비스별 지정된 {설계 아키텍처 패턴}을 적용하여 개발
   - Layered 아키텍처 적용 시 Service레이어에 Interface 사용 
   - Clean아키텍처 적용 시 Port/Adapter라는 용어 대신 Clean 아키텍처에 맞는 용어 사용  
@@ -43,19 +43,17 @@
   - 개발 완료 후 컴파일 및 에러 해결: {프로젝트 루트}/gradlew common:compileJava
   
 - 2. 각 서비스별 개발  
-  - 사용자가 제공한 서비스의 유저스토리, 외부시퀀스설계서, 내부시퀀스설계서, API설계서 파악 
+  - 사용자가 제공한 서비스의 유저스토리, 외부시퀀스설계서, 내부시퀀스설계서, API설계서, 백엔드패키지구조도, 클래스설계서 파악 
   - 기존 개발 결과 파악 
-  - API 설계서의 각 API를 순차적으로 개발 
-    - Controller -> Service -> Data 레이어순으로 순차적으로 개발  
-    - 컴파일 및 에러 해결: {프로젝트 루트}/gradlew {service-name}:compileJava
-    - 컴파일까지만 하고 서버 실행은 하지 않음 
-  - 모든 API개발 후 아래 수행
-    - 컴파일 및 에러 해결: {프로젝트 루트}/gradlew {service-name}:compileJava 
-    - 빌드 및 에러 해결: {프로젝트 루트}/gradlew {service-name}:build 
-  - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
-  - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
-  - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
+  - 클래스설계서의 각 클래스를 순차적으로 개발 
+    - Controller -> Service -> Data 레이어순으로 순차적으로 개발   
+    - 모든 클래스 개발 후 컴파일 및 에러 해결: {프로젝트 루트}/gradlew {service-name}:compileJava 
+    - SecurityConfig 클래스 작성: '<SecurityConfig 예제>' 참조 
+    - JWT 인증 처리 클래스 작성: '<JWT 인증처리 예제>' 참조 
+    - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
   - 테스트 코드 작성은 하지 않음     
+
+---
   
 <Build.gradle 구성 최적화>
 - **중앙 버전 관리**: 루트 build.gradle의 `ext` 블록에서 모든 외부 라이브러리 버전 통일 관리
