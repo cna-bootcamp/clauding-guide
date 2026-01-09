@@ -300,14 +300,14 @@
 - 스타일가이드: design/uiux/style-guide.md  
 - 프로토타입: design/uiux/prototype/*.html 
 - 아키텍처패턴: design/pattern/architecture-pattern.md
-- 논리아키텍처: design/backend/logical/*
+- 논리아키텍처: design/backend/logical/logical-architecture.md
 - API설계서: design/backend/api/*
 - API명세서: design/backend/api/spec/*
 - 외부시퀀스설계서: design/backend/sequence/outer/{플로우명}.puml
 - 내부시퀀스설계서: design/backend/sequence/inner/{service-name}-{flow-name}.puml
-- 클래스설계서: design/backend/class/*
-- 백엔드패키지구조도: 클래스설계 결과(design/backend/class/class.md)의 '패키지 구조도' 섹션 
-- 데이터설계서: design/backend/database/*
+- 클래스설계서: design/backend/class/common-base.puml,design/backend/class/{service-name}.puml
+- 백엔드패키지구조도: design/backend/class/package-structure.md
+- 데이터설계서: design/backend/database/{service-name}.md, design/backend/database/cache-db-design.md
 - HighLevel아키텍처정의서: design/high-level-architecture.md
 - 물리아키텍처: design/backend/physical/*
 - 데이터베이스설치계획서 
