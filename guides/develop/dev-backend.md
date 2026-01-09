@@ -53,8 +53,6 @@
     - Swagger Config 클래스 작성: '<SwaggerConfig 예제>' 참조 
   - 테스트 코드 작성은 하지 않음     
 
----
-  
 <Build.gradle 구성 최적화>
 - **중앙 버전 관리**: 루트 build.gradle의 `ext` 블록에서 모든 외부 라이브러리 버전 통일 관리
 - **Spring Boot BOM 활용**: Spring Boot/Cloud에서 관리하는 라이브러리는 버전 명시 불필요 (자동 호환성 보장)
