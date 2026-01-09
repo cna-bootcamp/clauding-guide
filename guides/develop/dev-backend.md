@@ -92,7 +92,7 @@ jwt:
 
 # CORS Configuration
 cors:
-  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:*}
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:}
 
 # Actuator
 management:
@@ -124,10 +124,10 @@ springdoc:
 # Logging
 logging:
   level:
-    {서비스 패키지 경로}: ${LOG_LEVEL_APP:DEBUG}
+    com.{회사/조직명}.{시스템명}: ${LOG_LEVEL_APP:DEBUG}
     org.springframework.web: ${LOG_LEVEL_WEB:INFO}
-    org.hibernate.SQL: ${LOG_LEVEL_SQL:DEBUG}
-    org.hibernate.type: ${LOG_LEVEL_SQL_TYPE:TRACE}
+    org.hibernate.SQL: ${LOG_LEVEL_SQL:INFO}
+    org.hibernate.type: ${LOG_LEVEL_SQL_TYPE:INFO}
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
