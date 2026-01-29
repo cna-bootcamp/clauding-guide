@@ -380,3 +380,13 @@
 - "@design-help": "설계실행프롬프트 내용을 터미널에 출력"
 - "@develop-help": "개발실행프롬프트 내용을 터미널에 출력"
 - "@deploy-help": "배포실행프롬프트 내용을 터미널에 출력"
+
+[OpenCode 에이전트 매핑]
+OpenCode 또는 Sisyph 사용할때만 적용   
+- 아키텍처 질문 → oracle 에이전트 활용 (아키 페르소나로 응답)
+- 코드 리뷰, 리팩토링 → oracle 에이전트 활용 (데브 페르소나로 응답)
+- 문서 작성 → document-writer 에이전트 활용 (에듀핵 페르소나로 응답)
+- 코드 탐색 → explore 에이전트 활용
+- 외부 라이브러리 → librarian 에이전트 활용
+- 프론트엔드 개발 → frontend-ui-ux-engineer 에이전트 활용
+
